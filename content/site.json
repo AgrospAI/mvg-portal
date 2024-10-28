@@ -1,9 +1,9 @@
 {
-  "siteTitle": "Pontus-X Ecosystem - powered by Gaia-X",
-  "siteTagline": "Streamlined interoperability across digital service ecosystems.",
-  "siteUrl": "https://portal.pontus-x.eu",
+  "siteTitle": "AgrospAI",
+  "siteTagline": "Agri-food Data Space Demonstrator for Sovereign Data-Sharing and Artificial Intelligence Services",
+  "siteUrl": "https://agrospai.udl.cat",
   "siteImage": "/share.png",
-  "copyright": "All Rights Reserved. Powered by [Gaia-X](https://gaia-x.eu/), [Oasis](https://oasisprotocol.org/) and [Ocean Enterprise](https://www.oceanenterprise.io/). Built by [deltaDAO](https://delta-dao.com).",
+  "copyright": "All Rights Reserved. Powered by [Gaia-X](https://gaia-x.eu/), [Oasis](https://oasisprotocol.org/) and [Ocean Enterprise](https://www.oceanenterprise.io/). Built by [deltaDAO](https://delta-dao.com) and [Universitat de Lleida](https://www.udl.cat).",
   "menu": [
     {
       "name": "Catalogue",
@@ -29,6 +29,12 @@
     {
       "name": "Ecosystem",
       "subItems": [
+        {
+          "name": "Pontus-X",
+          "link": "https://www.pontus-x.eu/",
+          "description": "Streamlined interoperability across digital service ecosystems.",
+          "isLive": true
+        },
         {
           "name": "EuProGigant",
           "link": "https://portal.euprogigant.io/",
@@ -110,10 +116,10 @@
           "isLive": true
         },
         {
-          "name": "UdL Research Data Space",
-          "link": "https://dataspace.angliru.udl.cat/",
-          "description": "An open research platform following the FAIR guiding principles of findability, accessibility, interoperability and reusability, while guaranteeing data sovereignty.",
-          "image": "udl-logo.webp",
+          "name": "Agrifood TEF",
+          "link": "http://dataspace.agrifoodtef.eu/",
+          "description": "The European Testing and Experimentation Facilities for Agrifood Innovation.",
+          "image": "agrifoodTEF.webp",
           "category": "agriculture",
           "isLive": true
         },
@@ -144,14 +150,14 @@
       ]
     }
   ],
-  "announcement": "The Pontus-X Devnet is currently undergoing a scheduled load test. The network remains stable and fully operational during this period.",
+  "announcement": "",
   "devPreviewAnnouncement": "You are visiting the SITE-TITLE-PLACEHOLDER Developer Preview. Please note that some functionalities are in beta and may not work as expected. Visit the [SITE-TITLE-PLACEHOLDER portal](SITE-LINK-PLACEHOLDER) instead.",
   "warning": {
     "ctd": "Please note that Compute-to-Data is still in alpha phase."
   },
   "footer": {
     "subtitle": "Transforming Data Act Compliance into Scalable Monetization Opportunities",
-    "copyright": "Built by [deltaDAO](https://delta-dao.com)",
+    "copyright": "Developed by [Universitat de Lleida](https://www.udl.cat) and powered by [deltaDAO](https://delta-dao.com)",
     "privacyTitle": "Privacy",
     "content": [
       {

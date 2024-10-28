@@ -4,6 +4,7 @@
   display: flex;
   align-items: center;
   flex-wrap: wrap;
+  background-color: var(--color-agrospai-light);
 }
 
 .logo {
@@ -164,6 +165,6 @@ svg.caret {
   }
 
   .navigation {
-    margin-left: calc(var(--spacer) / 2);
+    margin-left: calc(var(--spacer) * 4);
   }
 }
