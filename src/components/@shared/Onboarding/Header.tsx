@@ -14,6 +14,7 @@ interface OnboardingHeaderData {
 
 export default function Header(): ReactElement {
   const { title, subtitle, body }: OnboardingHeaderData = content
+  const { showOnboardingModule, setShowOnboardingModule } = useUserPreferences()
 
   return (
     <Container className={styles.container}>
