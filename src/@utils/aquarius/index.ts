@@ -140,6 +140,7 @@ export function generateBaseQuery(
           ...(baseQueryParams.chainIds
             ? [getFilterTerm('chainId', baseQueryParams.chainIds)]
             : []),
+          getFilterTerm('metadata.tags.keyword', ['agrospai', 'udl']),
           getFilterTerm(
             '_index',
             getIndexForChainIds(baseQueryParams.chainIds)
