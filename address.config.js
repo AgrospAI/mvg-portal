@@ -8,7 +8,6 @@ module.exports = {
   featured: [
     {
       title: 'AI-based Animal Well-being Assessment without Images Leakage',
-      title: 'AI-based Animal Well-being Assessment without Images Leakage',
       assets: [
         // Mask R-CNN segmentation & Tracking
         'did:op:60d977086cc8e499b996c3a50e1f2f57c023e25b77db58b394beb70b10fdfd21',
@@ -17,8 +16,6 @@ module.exports = {
       ]
     },
     {
-      title:
-        'Precision Pig Feeding Semantic Data Integration and Sovereign Data Pooling',
       title:
         'Precision Pig Feeding Semantic Data Integration and Sovereign Data Pooling',
       assets: [

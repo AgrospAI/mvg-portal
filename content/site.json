@@ -4,7 +4,6 @@
   "siteUrl": "https://portal.agrospai.udl.cat",
   "siteImage": "/share.png",
   "copyright": "All Rights Reserved. Powered by [Gaia-X](https://gaia-x.eu/), [Oasis](https://oasisprotocol.org/) and [Ocean Enterprise](https://www.oceanenterprise.io/). Built by [deltaDAO](https://delta-dao.com) and [Universitat de Lleida](https://www.udl.cat).",
-  "copyright": "All Rights Reserved. Powered by [Gaia-X](https://gaia-x.eu/), [Oasis](https://oasisprotocol.org/) and [Ocean Enterprise](https://www.oceanenterprise.io/). Built by [deltaDAO](https://delta-dao.com) and [Universitat de Lleida](https://www.udl.cat).",
   "menu": [
     {
       "name": "About",
@@ -199,7 +198,6 @@
   },
   "footer": {
     "subtitle": "Transforming Data Act Compliance into Scalable Monetization Opportunities",
-    "copyright": "Developed by [Universitat de Lleida](https://www.udl.cat) and powered by [deltaDAO](https://delta-dao.com)",
     "copyright": "Developed by [Universitat de Lleida](https://www.udl.cat) and powered by [deltaDAO](https://delta-dao.com)",
     "privacyTitle": "Legal",
     "content": [
