@@ -97,7 +97,7 @@ function UserPreferencesProvider({
 
   const [showOnboardingModule, setShowOnboardingModule] = useState<boolean>(
     localStorage?.showOnboardingModule === undefined
-      ? false
+      ? true
       : localStorage?.showOnboardingModule
   )
 

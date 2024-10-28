@@ -495,7 +495,7 @@ export async function verifyRawServiceCredential(
   //   parsedServiceSD?.selfDescriptionCredential?.['@context']
   // )
 
-  const baseUrl = `${complianceUri}/v1/api/credential-offers`
+  const baseUrl = `${complianceUri}/api/credential-offers`
 
   try {
     const response = await axios.post(baseUrl, parsedServiceCredential)
