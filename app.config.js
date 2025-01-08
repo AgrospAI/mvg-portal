@@ -128,5 +128,5 @@ module.exports = {
     'https://registry.lab.gaia-x.eu/v2206'
   ],
 
-  plausibleDataDomain: 'portal.pontus-x.eu'
+  plausibleDataDomain: false
 }
