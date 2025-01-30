@@ -19,7 +19,7 @@ export default function PageHome(): ReactElement {
       <Script
         defer
         src="https://umami.agrospai.udl.cat/umami"
-        data-website-id="584819b4-4484-4ba7-a74a-0cdfefbdb0fd"
+        data-website-id="5caff1a8-feb8-43ef-8bb8-d81deb1499a4"
       />
       <Home />
     </Page>
