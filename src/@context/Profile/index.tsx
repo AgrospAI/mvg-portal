@@ -18,7 +18,6 @@ import {
 import axios, { CancelToken } from 'axios'
 import { useMarketMetadata } from '../MarketMetadata'
 import { isAddress } from 'ethers/lib/utils'
-import { getConsentsUser } from '@utils/consentsUser'
 
 interface ProfileProviderValue {
   assets: Asset[]
@@ -29,8 +28,6 @@ interface ProfileProviderValue {
   isDownloadsLoading: boolean
   sales: number
   ownAccount: boolean
-  pendingConsents: number
-  totalConsents: number
 }
 
 interface ExtendedPagedAssets extends Omit<PagedAssets, 'totalResults'> {
@@ -209,30 +206,6 @@ function ProfileProvider({
     getUserSalesNumber()
   }, [accountId, chainIds])
 
-  //
-  // PENDING CONSENTS NUMBER
-  //
-  const [pendingConsents, setPendingConsents] = useState(0)
-  const [totalConsents, setTotalConsents] = useState(0)
-  useEffect(() => {
-    if (!accountId) {
-      return
-    }
-
-    async function getUserPendingConsentsNumber() {
-      try {
-        LoggerInstance.error('FETCHING CONSENTS')
-
-        const userConsentsData = await getConsentsUser(accountId)
-        setPendingConsents(userConsentsData.pending_consents)
-        setTotalConsents(userConsentsData.total_consents)
-      } catch (error) {
-        LoggerInstance.error(error.message)
-      }
-    }
-    getUserPendingConsentsNumber()
-  }, [accountId])
-
   return (
     <ProfileContext.Provider
       value={{
@@ -243,9 +216,7 @@ function ProfileProvider({
         downloadsTotal,
         isDownloadsLoading,
         ownAccount,
-        sales,
-        pendingConsents,
-        totalConsents
+        sales
       }}
     >
       {children}

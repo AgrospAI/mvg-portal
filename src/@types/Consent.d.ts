@@ -13,7 +13,7 @@ interface Consent {
 }
 
 interface ConsentsUserData {
-  address: str
-  pending_consents: number
-  total_consents: number
+  public_key: str
+  incoming_consents: number
+  outgoing_consents: number
 }

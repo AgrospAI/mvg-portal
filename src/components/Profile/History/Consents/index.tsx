@@ -4,23 +4,16 @@ import Table, { TableOceanColumn } from '@components/@shared/atoms/Table'
 import Refresh from '@images/refresh.svg'
 import { useAccount } from 'wagmi'
 import styles from './index.module.css'
-
-interface Props {
-  consents?: Consent[]
-  refetchConsents?: any
-  isLoading?: boolean
-}
+import Publisher from '@components/@shared/Publisher'
 
 const columns: TableOceanColumn<Consent>[] = [
   {
     name: 'Asset DID',
-    selector: (row) => (
-      <AssetListTitle did={row.asset_did} title={row.asset_did} />
-    )
+    selector: (row) => <AssetListTitle did={row.asset_did} />
   },
   {
     name: 'Reason',
-    selector: (row) => <span>{row.reason}</span>
+    selector: (row) => <span>{'Show more'}</span>
   },
   {
     name: 'State',
@@ -28,7 +21,9 @@ const columns: TableOceanColumn<Consent>[] = [
   },
   {
     name: 'User Public Key',
-    selector: (row) => <span>{row.user_public_key}</span>
+    selector: (row) => (
+      <Publisher account={row.user_public_key} showName={true} />
+    )
   }
 ]
 
@@ -36,7 +31,11 @@ export default function ConsentsTab({
   consents,
   refetchConsents,
   isLoading
-}: Props) {
+}: {
+  consents?: Consent[]
+  refetchConsents?: any
+  isLoading?: boolean
+}) {
   const { address } = useAccount()
 
   return address ? (
