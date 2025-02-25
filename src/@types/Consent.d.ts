@@ -1,19 +1,21 @@
 enum ConsentState {
-  PENDING = 0,
-  ACCEPTED = 1,
-  REJECTED = 2
+  PENDING = 'Pending',
+  ACCEPTED = 'Accepted',
+  REJECTED = 'Rejected'
 }
 
 interface Consent {
   id: number
-  asset_did: string
   reason: string
   state: ConsentState
-  user_public_key: string
+  asset: string
+  owner: string
+  solicitor: string
+  created_at: string
 }
 
 interface ConsentsUserData {
-  public_key: str
-  incoming_consents: number
-  outgoing_consents: number
+  address: str
+  incoming_pending_consents: number
+  outgoing_pending_consents: number
 }

@@ -11,7 +11,7 @@ import { LoggerInstance } from '@oceanprotocol/lib'
 import { useAccount } from 'wagmi'
 import { useAutomation } from '../../../@context/Automation/AutomationProvider'
 import ConsentsTab from './Consents'
-import { getConsents } from '@utils/consent'
+import { useUserConsents } from '@context/Profile/ConsentsProvider'
 
 interface HistoryTab {
   title: string
@@ -28,7 +28,8 @@ function getTabs(
   isLoadingJobs: boolean,
   refetchJobs: boolean,
   setRefetchJobs: any,
-  consents: Consent[],
+  incomingConsents: Consent[],
+  outgoingConsents: Consent[],
   isLoadingConsents: boolean,
   refetchConsents: boolean,
   setRefetchConsents: any
@@ -57,7 +58,8 @@ function getTabs(
     title: 'Consents',
     content: (
       <ConsentsTab
-        consents={consents}
+        incomingConsents={incomingConsents}
+        outgoingConsents={outgoingConsents}
         isLoading={isLoadingConsents}
         refetchConsents={() => setRefetchConsents(!refetchConsents)}
       />
@@ -84,15 +86,19 @@ export default function HistoryPage({
   const { address: accountId } = useAccount()
   const { autoWallet } = useAutomation()
   const { chainIds } = useUserPreferences()
+  const {
+    incoming: incomingConsents,
+    outgoing: outgoingConsents,
+    isLoading: isLoadingConsents,
+    refetch: refetchConsents,
+    setRefetch: setRefetchConsents
+  } = useUserConsents()
+
   const newCancelToken = useCancelToken()
 
   const [refetchJobs, setRefetchJobs] = useState(false)
   const [isLoadingJobs, setIsLoadingJobs] = useState(false)
   const [jobs, setJobs] = useState<ComputeJobMetaData[]>([])
-
-  const [refetchConsents, setRefetchConsents] = useState(false)
-  const [isLoadingConsents, setIsLoadingConsents] = useState(false)
-  const [consents, setConsents] = useState<Consent[]>([])
 
   const [tabIndex, setTabIndex] = useState<number>()
 
@@ -129,30 +135,6 @@ export default function HistoryPage({
     ]
   )
 
-  const fetchConsents = useCallback(
-    async (type: string) => {
-      if (!accountId) {
-        return
-      }
-
-      try {
-        type === 'init' && setIsLoadingConsents(true)
-        const consents = await getConsents(
-          accountIdentifier === autoWallet?.address
-            ? autoWallet?.address
-            : accountId
-        )
-
-        setConsents(consents)
-        setIsLoadingConsents(false)
-      } catch (error) {
-        LoggerInstance.error(error.message)
-        setIsLoadingConsents(false)
-      }
-    },
-    [autoWallet?.address, accountIdentifier, accountId, newCancelToken]
-  )
-
   useEffect(() => {
     fetchJobs('init')
 
@@ -166,20 +148,6 @@ export default function HistoryPage({
       clearInterval(balanceInterval)
     }
   }, [accountId, refetchJobs, fetchJobs])
-
-  useEffect(() => {
-    fetchConsents('init')
-
-    // init periodic refresh for consents
-    const balanceInterval = setInterval(
-      () => fetchConsents('repeat'),
-      refreshInterval
-    )
-
-    return () => {
-      clearInterval(balanceInterval)
-    }
-  }, [accountId, refetchConsents, fetchConsents])
 
   const getDefaultIndex = useCallback((): number => {
     const url = new URL(location.href)
@@ -208,7 +176,8 @@ export default function HistoryPage({
     isLoadingJobs,
     refetchJobs,
     setRefetchJobs,
-    consents,
+    incomingConsents,
+    outgoingConsents,
     isLoadingConsents,
     refetchConsents,
     setRefetchConsents

@@ -1,46 +1,53 @@
-import React, {
+import { useCancelToken } from '@hooks/useCancelToken'
+import { LoggerInstance } from '@oceanprotocol/lib'
+import {
+  getUserConsents,
+  getUserConsentsAmount,
+  getUserIncomingConsents,
+  getUserOutgoingConsents
+} from '@utils/consentsUser'
+import {
   createContext,
-  PropsWithChildren,
   useCallback,
   useContext,
   useEffect,
   useState
 } from 'react'
-import ReasonModal from './ReasonModal'
 import { useAccount } from 'wagmi'
-import { LoggerInstance } from '@oceanprotocol/lib'
-import { getConsentsUser } from '@utils/consentsUser'
-import { useCancelToken } from '@hooks/useCancelToken'
+import ReasonModal from './ReasonModal'
 
 export interface ConsentsProviderValue {
-  incomingPendingConsents: number
-  outgoingPendingConsents: number
-  setSelectedConsent: (consent: Consent) => void
-}
-
-interface Props {
-  address: string
+  incoming: Consent[]
+  outgoing: Consent[]
+  incomingPending: number
+  outgoingPending: number
+  isLoading: boolean
+  refetch: boolean
+  setSelected: (consent: Consent) => void
+  setRefetch: (value: boolean) => void
 }
 
 const refreshInterval = 20000
 
-const ConsentContext = createContext({} as ConsentsProviderValue)
+const AccountConsentContext = createContext({} as ConsentsProviderValue)
 
-function AccountConsentsProvider({
-  children,
-  address
-}: PropsWithChildren<Props>) {
+function AccountConsentsProvider({ children }) {
   const { address: public_key } = useAccount()
 
   const [hasReasonInspect, setHasReasonInspect] = useState(false)
   const [incomingPendingConsents, setIncomingPendingConsents] = useState(0)
   const [outgoingPendingConsents, setOutgoingPendingConsents] = useState(0)
+  const [refetchConsents, setRefetchConsents] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
   const [selectedConsent, setSelectedConsent] = useState<Consent | null>(null)
+  const [incomingConsents, setIncomingConsents] = useState<Consent[]>([])
+  const [outgoingConsents, setOutgoingConsents] = useState<Consent[]>([])
+
   const newCancelToken = useCancelToken()
 
-  const fetchUserConsents = useCallback(
+  // Periodic fetching of user consents amount
+  const fetchUserConsentsAmount = useCallback(
     async (type: string) => {
       if (!public_key) {
         return
@@ -48,10 +55,11 @@ function AccountConsentsProvider({
 
       try {
         type === 'init' && setIsLoading(true)
-        const userConsentsData = await getConsentsUser(public_key)
 
-        setIncomingPendingConsents(userConsentsData.incoming_consents)
-        setOutgoingPendingConsents(userConsentsData.outgoing_consents)
+        const userConsentsData = await getUserConsentsAmount(public_key)
+
+        setIncomingPendingConsents(userConsentsData.incoming_pending_consents)
+        setOutgoingPendingConsents(userConsentsData.outgoing_pending_consents)
 
         setIsLoading(false)
       } catch (error) {
@@ -63,28 +71,95 @@ function AccountConsentsProvider({
   )
 
   useEffect(() => {
-    fetchUserConsents('init')
+    fetchUserConsentsAmount('init')
 
     // init periodic refresh for consents
-    const balanceInterval = setInterval(
-      () => fetchUserConsents('repeat'),
+    const consentsAmountInterval = setInterval(
+      () => fetchUserConsentsAmount('repeat'),
       refreshInterval
     )
 
     return () => {
-      clearInterval(balanceInterval)
+      clearInterval(consentsAmountInterval)
     }
   }, [public_key])
+
+  useEffect(() => {
+    const fetchUserConsents = async () => {
+      if (!public_key) {
+        return
+      }
+      setIsLoading(true)
+
+      try {
+        const consentsData = await getUserConsents(public_key)
+        setIncomingConsents(
+          consentsData.filter((consent) => consent.owner === public_key)
+        )
+        setOutgoingConsents(
+          consentsData.filter((consent) => consent.solicitor === public_key)
+        )
+      } catch (error) {
+        LoggerInstance.error(error.message)
+      }
+      setIsLoading(false)
+    }
+
+    fetchUserConsents()
+  }, [public_key, refetchConsents])
+
+  // Fetch user incoming consents on mount and when incomingPendingConsents changes
+  useEffect(() => {
+    const fetchUserConsents = async () => {
+      if (!public_key) {
+        return
+      }
+      setIsLoading(true)
+
+      try {
+        const consentsData = await getUserIncomingConsents(public_key)
+        setIncomingConsents(consentsData)
+      } catch (error) {
+        LoggerInstance.error(error.message)
+      }
+      setIsLoading(false)
+    }
+    fetchUserConsents()
+  }, [public_key, incomingPendingConsents])
+
+  // Fetch user outgoing consents on mount and when outgoingPendingConsents changes
+  useEffect(() => {
+    const fetchUserConsents = async () => {
+      if (!public_key) {
+        return
+      }
+      setIsLoading(true)
+
+      try {
+        const consentsData = await getUserOutgoingConsents(public_key)
+        setOutgoingConsents(consentsData)
+      } catch (error) {
+        LoggerInstance.error(error.message)
+      }
+      setIsLoading(false)
+    }
+    fetchUserConsents()
+  }, [public_key, outgoingPendingConsents])
 
   const acceptConsent = async () => {}
   const rejectConsent = async () => {}
 
   return (
-    <ConsentContext.Provider
+    <AccountConsentContext.Provider
       value={{
-        incomingPendingConsents,
-        outgoingPendingConsents,
-        setSelectedConsent
+        incoming: incomingConsents,
+        outgoing: outgoingConsents,
+        incomingPending: incomingPendingConsents,
+        outgoingPending: outgoingPendingConsents,
+        setSelected: setSelectedConsent,
+        isLoading,
+        refetch: refetchConsents,
+        setRefetch: setRefetchConsents
       }}
     >
       {children}
@@ -96,15 +171,12 @@ function AccountConsentsProvider({
         onAcceptConfirm={acceptConsent}
         onRejectConfirm={rejectConsent}
       />
-    </ConsentContext.Provider>
+    </AccountConsentContext.Provider>
   )
 }
 
-const useConsents = (): ConsentsProviderValue => useContext(ConsentContext)
+const useUserConsents = (): ConsentsProviderValue =>
+  useContext(AccountConsentContext)
 
-export {
-  ConsentContext,
-  AccountConsentsProvider as ConsentsProvider,
-  useConsents
-}
+export { AccountConsentContext, AccountConsentsProvider, useUserConsents }
 export default AccountConsentsProvider
