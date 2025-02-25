@@ -8,41 +8,7 @@ import Publisher from '@components/@shared/Publisher'
 import Time from '@components/@shared/atoms/Time'
 import Tabs, { TabsItem } from '@components/@shared/atoms/Tabs'
 import { useState } from 'react'
-
-const columns: TableOceanColumn<Consent>[] = [
-  {
-    name: 'Asset DID',
-    selector: (row) => <AssetListTitle did={row.asset} />
-  },
-  {
-    name: 'Reason',
-    selector: (row) => <span>{'Show more'}</span>
-  },
-  {
-    name: 'State',
-    selector: (row) => <span>{row.state}</span>
-  },
-  {
-    name: 'Owner',
-    selector: (row) => <Publisher account={row.owner} showName={true} />
-  },
-  {
-    name: 'Solicitor',
-    selector: (row) => <Publisher account={row.solicitor} showName={true} />
-  },
-  {
-    name: 'Date Created',
-    selector: (row) => <Time date={row.created_at} relative />
-  },
-  {
-    name: 'Actions',
-    selector: (row) => (
-      <Button size="small" title="Actions">
-        ...
-      </Button>
-    )
-  }
-]
+import { useUserConsents } from '@context/Profile/ConsentsProvider'
 
 export default function ConsentsTab({
   incomingConsents,
@@ -56,6 +22,7 @@ export default function ConsentsTab({
   isLoading?: boolean
 }) {
   const { address } = useAccount()
+  const { setSelected } = useUserConsents()
 
   if (!address) {
     return <div>Please connect your wallet.</div>
@@ -64,6 +31,55 @@ export default function ConsentsTab({
   if (incomingConsents?.length === 0 && outgoingConsents?.length === 0) {
     return <div>No consents</div>
   }
+
+  const columns: TableOceanColumn<Consent>[] = [
+    {
+      name: 'Asset DID',
+      selector: (row) => <AssetListTitle did={row.asset} />
+    },
+    {
+      name: 'Reason',
+      selector: (row) =>
+        row.reason ? (
+          <Button
+            style="text"
+            size="small"
+            title="View reason"
+            onClick={() => {
+              setSelected(row)
+            }}
+          >
+            View
+          </Button>
+        ) : (
+          <span>—</span>
+        )
+    },
+    {
+      name: 'State',
+      selector: (row) => <span>{row.state}</span>
+    },
+    {
+      name: 'Owner',
+      selector: (row) => <Publisher account={row.owner} showName={true} />
+    },
+    {
+      name: 'Solicitor',
+      selector: (row) => <Publisher account={row.solicitor} showName={true} />
+    },
+    {
+      name: 'Date Created',
+      selector: (row) => <Time date={row.created_at} relative />
+    },
+    {
+      name: 'Actions',
+      selector: (row) => (
+        <Button size="small" title="Actions">
+          ...
+        </Button>
+      )
+    }
+  ]
 
   const getTabs = (): TabsItem[] => {
     return [

@@ -8,7 +8,7 @@ interface Props {
   consentPetition?: Consent
   disabled: boolean
   hasReasonInspect: boolean
-  setHasReasonInspect: (hasReasonInspect: boolean) => void
+  disableReasonInspect: () => void
   onAcceptConfirm: () => void
   onRejectConfirm: () => void
 }
@@ -17,14 +17,14 @@ export default function ReasonModal({
   consentPetition,
   disabled,
   hasReasonInspect,
-  setHasReasonInspect,
+  disableReasonInspect,
   onAcceptConfirm,
   onRejectConfirm
 }: Props) {
   return (
     <Modal
       title="Consent request reason"
-      onToggleModal={() => setHasReasonInspect(!hasReasonInspect)}
+      onToggleModal={disableReasonInspect}
       isOpen={hasReasonInspect}
       className={styles.modal}
     >
@@ -35,27 +35,25 @@ export default function ReasonModal({
       <div className={styles.modalActions}>
         <Button
           size="small"
-          className={styles.modalCancelBtn}
-          onClick={() => setHasReasonInspect(false)}
+          className={styles.modalRejectBtn}
+          onClick={() => {
+            onRejectConfirm()
+            disableReasonInspect()
+          }}
           disabled={disabled}
         >
-          Cancel
+          {disabled ? <Loader message={`Loading...`} /> : `Reject`}
         </Button>
         <Button
           size="small"
           className={styles.modalConfirmBtn}
-          onClick={() => onAcceptConfirm()}
+          onClick={() => {
+            onAcceptConfirm()
+            disableReasonInspect()
+          }}
           disabled={disabled}
         >
-          {disabled ? <Loader message={`Loading...`} /> : `Confirm`}
-        </Button>
-        <Button
-          size="small"
-          className={styles.modalRejectBtn}
-          onClick={() => onRejectConfirm()}
-          disabled={disabled}
-        >
-          {disabled ? <Loader message={`Loading...`} /> : `Reject`}
+          {disabled ? <Loader message={`Loading...`} /> : `Approve`}
         </Button>
       </div>
     </Modal>

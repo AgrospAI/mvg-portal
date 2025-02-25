@@ -1,10 +1,12 @@
 import { useCancelToken } from '@hooks/useCancelToken'
 import { LoggerInstance } from '@oceanprotocol/lib'
 import {
+  ConsentState,
   getUserConsents,
   getUserConsentsAmount,
   getUserIncomingConsents,
-  getUserOutgoingConsents
+  getUserOutgoingConsents,
+  updateConsent
 } from '@utils/consentsUser'
 import {
   createContext,
@@ -34,7 +36,6 @@ const AccountConsentContext = createContext({} as ConsentsProviderValue)
 function AccountConsentsProvider({ children }) {
   const { address: public_key } = useAccount()
 
-  const [hasReasonInspect, setHasReasonInspect] = useState(false)
   const [incomingPendingConsents, setIncomingPendingConsents] = useState(0)
   const [outgoingPendingConsents, setOutgoingPendingConsents] = useState(0)
   const [refetchConsents, setRefetchConsents] = useState(false)
@@ -146,8 +147,12 @@ function AccountConsentsProvider({ children }) {
     fetchUserConsents()
   }, [public_key, outgoingPendingConsents])
 
-  const acceptConsent = async () => {}
-  const rejectConsent = async () => {}
+  const acceptSelectedConsent = async () => {
+    updateConsent(selectedConsent.id, ConsentState.ACCEPTED)
+  }
+  const rejectSelectedConsent = async () => {
+    updateConsent(selectedConsent.id, ConsentState.REJECTED)
+  }
 
   return (
     <AccountConsentContext.Provider
@@ -166,10 +171,10 @@ function AccountConsentsProvider({ children }) {
       <ReasonModal
         consentPetition={selectedConsent}
         disabled={isLoading}
-        hasReasonInspect={hasReasonInspect}
-        setHasReasonInspect={setHasReasonInspect}
-        onAcceptConfirm={acceptConsent}
-        onRejectConfirm={rejectConsent}
+        hasReasonInspect={!!selectedConsent}
+        disableReasonInspect={() => setSelectedConsent(null)}
+        onAcceptConfirm={acceptSelectedConsent}
+        onRejectConfirm={rejectSelectedConsent}
       />
     </AccountConsentContext.Provider>
   )

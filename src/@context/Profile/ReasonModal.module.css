@@ -4,12 +4,10 @@
 
 .modalActions {
   display: flex;
-  justify-content: space-between;
+  column-gap: 0.5rem;
+  align-items: end;
+  justify-content: end;
   margin: calc(var(--spacer) / 2) 0;
-}
-
-.modalCancelBtn {
-  background-color: var(--brand-alert-red);
 }
 
 .modalConfirmBtn {
@@ -17,7 +15,7 @@
 }
 
 .modalRejectBtn {
-  background-color: var(--brand-alert-orange);
+  background-color: var(--brand-alert-red);
 }
 
 .modalHighlight {
