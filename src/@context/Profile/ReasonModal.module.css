@@ -5,8 +5,8 @@
 .modalActions {
   display: flex;
   column-gap: 0.5rem;
-  align-items: end;
-  justify-content: end;
+  align-items: flex-end;
+  justify-content: flex-end;
   margin: calc(var(--spacer) / 2) 0;
 }
 
@@ -20,4 +20,17 @@
 
 .modalHighlight {
   color: var(--brand-alert-red);
+}
+
+.modalContent {
+  padding-top: calc(var(--spacer) / 4);
+}
+
+.modalState {
+  display: flex;
+  column-gap: 0.5rem;
+  align-items: center;
+  width: 100%;
+  padding-bottom: calc(var(--spacer) / 4);
+  border-bottom: 1px solid var(--border-color);
 }

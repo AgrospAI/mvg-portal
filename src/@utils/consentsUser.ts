@@ -28,7 +28,7 @@ export async function getUserConsents(account: string): Promise<Consent[]> {
 export async function updateConsent(
   consentId: number,
   state: ConsentState
-): Promise<Consent> {
+): Promise<{ state: ConsentState }> {
   const url = `${process.env.NEXT_PUBLIC_CONSENT_SERVER}/api/consents/${consentId}/`
   return fetch(url, {
     method: 'PATCH',

@@ -1,19 +1,27 @@
-.status {
-  text-transform: uppercase;
-  color: var(--color-secondary);
-}
-
-.computeTableContainer {
-  display: flex;
-  align-items: center;
-}
-
 .refresh,
 .refresh:first-child {
   margin-bottom: calc(var(--spacer) / 2);
   margin-left: auto;
   margin-right: auto;
   display: block;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  width: fit-content;
+  height: 1.5rem;
+  column-gap: var(--spacer);
+  margin-left: auto;
+  margin-right: auto;
+  align-items: center;
+  justify-content: center;
+}
+
+.toggle {
+  margin-bottom: calc(var(--spacer) / 2);
+  justify-content: center;
+  align-self: flex-start;
 }
 
 .refresh svg {
@@ -23,4 +31,22 @@
   height: 1em;
   margin-right: calc(var(--spacer) / 6);
   margin-bottom: -0.1rem;
+}
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: calc(var(--spacer) / 2);
+  width: 100%;
+}
+
+.columnItem {
+  max-width: 100%;
+  margin: 0;
+  margin-right: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
 }

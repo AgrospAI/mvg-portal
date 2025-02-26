@@ -9,6 +9,50 @@ import Time from '@components/@shared/atoms/Time'
 import Tabs, { TabsItem } from '@components/@shared/atoms/Tabs'
 import { useState } from 'react'
 import { useUserConsents } from '@context/Profile/ConsentsProvider'
+import ConsentStateBadge from './StateBadge'
+import ConsentRowActions from './ConsentRowActions'
+import InputElement from '@components/@shared/FormInput/InputElement'
+
+const getTabs = (
+  columns,
+  isLoading,
+  outgoingConsents,
+  incomingConsents,
+  refetchConsents
+): TabsItem[] => {
+  return [
+    {
+      title: 'Outgoing',
+      content: (
+        <Table
+          columns={columns}
+          data={outgoingConsents}
+          sortField="row.created_at"
+          sortAsc={false}
+          isLoading={isLoading}
+          emptyMessage="No outgoing consents"
+          onChangePage={async () => await refetchConsents(true)}
+        />
+      ),
+      disabled: !outgoingConsents?.length
+    },
+    {
+      title: 'Incoming',
+      content: (
+        <Table
+          columns={columns}
+          data={incomingConsents}
+          sortField="row.created_at"
+          sortAsc={false}
+          isLoading={isLoading}
+          emptyMessage="No incoming consents"
+          onChangePage={async () => await refetchConsents(true)}
+        />
+      ),
+      disabled: !incomingConsents?.length
+    }
+  ]
+}
 
 export default function ConsentsTab({
   incomingConsents,
@@ -22,15 +66,8 @@ export default function ConsentsTab({
   isLoading?: boolean
 }) {
   const { address } = useAccount()
-  const { setSelected } = useUserConsents()
-
-  if (!address) {
-    return <div>Please connect your wallet.</div>
-  }
-
-  if (incomingConsents?.length === 0 && outgoingConsents?.length === 0) {
-    return <div>No consents</div>
-  }
+  const { setSelected, setInspect, isOnlyPending, setIsOnlyPending } =
+    useUserConsents()
 
   const columns: TableOceanColumn<Consent>[] = [
     {
@@ -41,90 +78,83 @@ export default function ConsentsTab({
       name: 'Reason',
       selector: (row) =>
         row.reason ? (
-          <Button
-            style="text"
-            size="small"
-            title="View reason"
-            onClick={() => {
-              setSelected(row)
-            }}
-          >
-            View
-          </Button>
+          <div className={styles.columnItem}>
+            <Button
+              style="text"
+              size="small"
+              title="View reason"
+              onClick={() => {
+                setSelected(row)
+                setInspect(true)
+              }}
+            >
+              View
+            </Button>
+          </div>
         ) : (
           <span>—</span>
         )
     },
     {
       name: 'State',
-      selector: (row) => <span>{row.state}</span>
+      selector: (row) => (
+        <div className={styles.columnItem}>
+          <ConsentStateBadge state={row.state} />
+        </div>
+      )
     },
     {
       name: 'Owner',
-      selector: (row) => <Publisher account={row.owner} showName={true} />
+      selector: (row) => (
+        <div className={styles.columnItem}>
+          <Publisher account={row.owner} showName={true} />
+        </div>
+      )
     },
     {
       name: 'Solicitor',
-      selector: (row) => <Publisher account={row.solicitor} showName={true} />
+      selector: (row) => (
+        <div className={styles.columnItem}>
+          <Publisher account={row.solicitor} showName={true} />
+        </div>
+      )
     },
     {
       name: 'Date Created',
-      selector: (row) => <Time date={row.created_at} relative />
+      selector: (row) => (
+        <div className={styles.columnItem}>
+          <Time date={`${row.created_at}`} relative isUnix />
+        </div>
+      )
     },
     {
       name: 'Actions',
       selector: (row) => (
-        <Button size="small" title="Actions">
-          ...
-        </Button>
+        <div className={styles.columnItem}>
+          <ConsentRowActions consent={row} />
+        </div>
       )
     }
   ]
-
-  const getTabs = (): TabsItem[] => {
-    return [
-      {
-        title: 'Outgoing',
-        content: (
-          <Table
-            columns={columns}
-            data={outgoingConsents}
-            defaultSortFieldId="row.created_at"
-            defaultSortAsc={false}
-            isLoading={isLoading}
-            emptyMessage="No outgoing consents"
-            onChangePage={async () => await refetchConsents(true)}
-          />
-        ),
-        disabled: !outgoingConsents?.length
-      },
-      {
-        title: 'Incoming',
-        content: (
-          <Table
-            columns={columns}
-            data={incomingConsents}
-            defaultSortFieldId="row.created_at"
-            defaultSortAsc={false}
-            isLoading={isLoading}
-            emptyMessage="No incoming consents"
-            onChangePage={async () => await refetchConsents(true)}
-          />
-        ),
-        disabled: !incomingConsents?.length
-      }
-    ]
-  }
-
-  const tabs = getTabs()
+  const tabs = getTabs(
+    columns,
+    isLoading,
+    outgoingConsents,
+    incomingConsents,
+    refetchConsents
+  )
   // Set to first enabled tabitem
   const [tabIndex, setTabIndex] = useState(
     tabs.findIndex((tab) => !tab.disabled)
   )
 
+  if (!address) {
+    return <div>Please connect your wallet.</div>
+  }
+
   return (
     <>
-      {(incomingConsents?.length || outgoingConsents?.length) && (
+      <div className={styles.buttons}>
         <Button
           style="text"
           size="small"
@@ -136,7 +166,16 @@ export default function ConsentsTab({
           <Refresh />
           Refresh
         </Button>
-      )}
+        <InputElement
+          type="checkbox"
+          options={['Only show pending']}
+          className={styles.toggle}
+          name={'Toggle show only pending consents'}
+          disabled={isLoading}
+          checked={isOnlyPending}
+          onChange={() => setIsOnlyPending(!isOnlyPending)}
+        />
+      </div>
 
       <Tabs
         items={tabs}

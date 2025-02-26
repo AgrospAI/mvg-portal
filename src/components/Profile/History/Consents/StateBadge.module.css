@@ -1,0 +1,19 @@
+.badge {
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: white;
+}
+
+.badge-pending {
+  background-color: var(--brand-alert-orange);
+}
+
+.badge-accepted {
+  background-color: var(--brand-alert-green);
+}
+
+.badge-rejected {
+  background-color: var(--brand-alert-red);
+}
