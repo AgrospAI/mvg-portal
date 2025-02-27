@@ -9,3 +9,7 @@
 .item {
   cursor: pointer;
 }
+
+.item:hover {
+  scale: 1.1;
+}

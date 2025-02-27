@@ -34,3 +34,25 @@
   padding-bottom: calc(var(--spacer) / 4);
   border-bottom: 1px solid var(--border-color);
 }
+
+.modalHistory {
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.5rem;
+  padding-top: calc(var(--spacer) / 4);
+  overflow-y: auto;
+  max-height: 200px;
+  width: fit-content;
+  margin-top: 0.5rem;
+  padding: 0 2rem;
+  /* Adjust the height as needed */
+}
+
+.modalHistoryItem {
+  display: flex;
+  flex-direction: row;
+  column-gap: 0.5rem;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.5rem;
+}

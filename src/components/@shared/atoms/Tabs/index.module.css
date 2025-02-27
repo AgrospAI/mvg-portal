@@ -58,6 +58,7 @@
 
 .tabContent {
   padding: calc(var(--spacer) / 2);
+  margin: 0 auto;
 }
 
 @media (min-width: 40rem) {

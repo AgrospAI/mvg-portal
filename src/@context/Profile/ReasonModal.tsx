@@ -2,84 +2,81 @@ import Modal from '@components/@shared/atoms/Modal'
 import React, { useEffect, useState } from 'react'
 import styles from './ReasonModal.module.css'
 import Button from '@components/@shared/atoms/Button'
-import Loader from '@components/@shared/atoms/Loader'
 import ConsentStateBadge from '@components/Profile/History/Consents/StateBadge'
 import axios from 'axios'
 import { getAssetsNames } from '@utils/aquarius'
 import { useMarketMetadata } from '@context/MarketMetadata'
+import Time from '@components/@shared/atoms/Time'
+import { useConsents } from './ConsentsProvider'
+import { ConsentState } from '@utils/consentsUser'
 
-interface Props {
-  consentPetition?: Consent
-  disabled: boolean
-  inspect: boolean
-  disableReasonInspect: () => void
-  onAcceptConfirm: () => void
-  onRejectConfirm: () => void
-}
-
-export default function ReasonModal({
-  consentPetition,
-  disabled,
-  inspect,
-  disableReasonInspect,
-  onAcceptConfirm,
-  onRejectConfirm
-}: Props) {
+export default function ReasonModal() {
   const { appConfig } = useMarketMetadata()
   const [assetTitle, setAssetTitle] = useState<string>()
+
+  const { selected, setSelected, updateSelected, isInspect, setIsInspect } =
+    useConsents()
 
   useEffect(() => {
     const source = axios.CancelToken.source()
 
     async function getAssetName() {
-      getAssetsNames([consentPetition.asset], source.token).then((title) =>
-        setAssetTitle(title[consentPetition.asset])
+      getAssetsNames([selected.asset], source.token).then((title) =>
+        setAssetTitle(title[selected.asset])
       )
     }
 
-    consentPetition?.asset && getAssetName()
+    selected?.asset && getAssetName()
 
     return () => {
       source.cancel()
     }
-  }, [inspect, appConfig.metadataCacheUri])
+  }, [isInspect, appConfig.metadataCacheUri])
 
   return (
     <Modal
       title={assetTitle}
-      onToggleModal={disableReasonInspect}
-      isOpen={inspect}
+      onToggleModal={() => setIsInspect(!isInspect)}
+      isOpen={isInspect}
       className={styles.modal}
     >
       <span className={styles.modalState}>
         Current state:{' '}
-        {consentPetition && <ConsentStateBadge state={consentPetition.state} />}
+        {selected && <ConsentStateBadge state={selected.state} />}
       </span>
       <div className={styles.modalContent}>
-        {consentPetition?.reason ?? 'No reason provided'}
+        {selected?.reason ?? 'No reason provided'}
+      </div>
+      <div className={styles.modalHistory}>
+        {selected?.history.map((history, index) => (
+          <span className={styles.modalHistoryItem} key={index}>
+            <Time date={history.updated_at} relative isUnix />{' '}
+            <ConsentStateBadge state={history.state} />
+          </span>
+        ))}
       </div>
       <div className={styles.modalActions}>
         <Button
           size="small"
           className={styles.modalRejectBtn}
           onClick={() => {
-            onRejectConfirm()
-            disableReasonInspect()
+            updateSelected(ConsentState.REJECTED)
+            setSelected(undefined)
+            setIsInspect(false)
           }}
-          disabled={disabled}
         >
-          {disabled ? <Loader message={`Loading...`} /> : `Reject`}
+          Reject
         </Button>
         <Button
           size="small"
           className={styles.modalConfirmBtn}
           onClick={() => {
-            onAcceptConfirm()
-            disableReasonInspect()
+            updateSelected(ConsentState.ACCEPTED)
+            setSelected(undefined)
+            setIsInspect(false)
           }}
-          disabled={disabled}
         >
-          {disabled ? <Loader message={`Loading...`} /> : `Accept`}
+          Accept
         </Button>
       </div>
     </Modal>

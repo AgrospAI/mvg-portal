@@ -333,6 +333,9 @@ export default function FormStartCompute({
           isLoading={isLoading}
         />
       )}
+      <ConsentsPetitionProvider>
+        <ConsentPetitionButton />
+      </ConsentsPetitionProvider>
       <PriceOutput
         hasPreviousOrder={hasPreviousOrder}
         assetTimeout={assetTimeout}
@@ -352,7 +355,6 @@ export default function FormStartCompute({
         validUntil={validUntil}
         totalPrices={totalPrices}
       />
-
       <ButtonBuy
         action="compute"
         disabled={

@@ -11,7 +11,8 @@ import { LoggerInstance } from '@oceanprotocol/lib'
 import { useAccount } from 'wagmi'
 import { useAutomation } from '../../../@context/Automation/AutomationProvider'
 import ConsentsTab from './Consents'
-import { useUserConsents } from '@context/Profile/ConsentsProvider'
+import { useUserConsents } from '@context/Profile/AccountConsentsProvider'
+import { useConsents } from '@context/Profile/ConsentsProvider'
 
 interface HistoryTab {
   title: string
@@ -86,13 +87,8 @@ export default function HistoryPage({
   const { address: accountId } = useAccount()
   const { autoWallet } = useAutomation()
   const { chainIds } = useUserPreferences()
-  const {
-    incoming: incomingConsents,
-    outgoing: outgoingConsents,
-    isLoading: isLoadingConsents,
-    refetch: refetchConsents,
-    setRefetch: setRefetchConsents
-  } = useUserConsents()
+  const { isLoading, isRefetch, setIsRefetch } = useUserConsents()
+  const { incoming, outgoing } = useConsents()
 
   const newCancelToken = useCancelToken()
 
@@ -176,11 +172,11 @@ export default function HistoryPage({
     isLoadingJobs,
     refetchJobs,
     setRefetchJobs,
-    incomingConsents,
-    outgoingConsents,
-    isLoadingConsents,
-    refetchConsents,
-    setRefetchConsents
+    incoming,
+    outgoing,
+    isLoading,
+    isRefetch,
+    setIsRefetch
   )
 
   return (

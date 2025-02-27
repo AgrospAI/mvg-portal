@@ -8,10 +8,11 @@ import Publisher from '@components/@shared/Publisher'
 import Time from '@components/@shared/atoms/Time'
 import Tabs, { TabsItem } from '@components/@shared/atoms/Tabs'
 import { useState } from 'react'
-import { useUserConsents } from '@context/Profile/ConsentsProvider'
+import { useUserConsents } from '@context/Profile/AccountConsentsProvider'
 import ConsentStateBadge from './StateBadge'
 import ConsentRowActions from './ConsentRowActions'
 import InputElement from '@components/@shared/FormInput/InputElement'
+import { useConsents } from '@context/Profile/ConsentsProvider'
 
 const getTabs = (
   columns,
@@ -25,7 +26,7 @@ const getTabs = (
       title: 'Outgoing',
       content: (
         <Table
-          columns={columns}
+          columns={columns.filter((col) => col.name !== 'Actions')}
           data={outgoingConsents}
           sortField="row.created_at"
           sortAsc={false}
@@ -66,34 +67,17 @@ export default function ConsentsTab({
   isLoading?: boolean
 }) {
   const { address } = useAccount()
-  const { setSelected, setInspect, isOnlyPending, setIsOnlyPending } =
-    useUserConsents()
+  const {
+    setSelected,
+    setIsInspect: setInspect,
+    isOnlyPending,
+    setIsOnlyPending
+  } = useConsents()
 
   const columns: TableOceanColumn<Consent>[] = [
     {
       name: 'Asset DID',
       selector: (row) => <AssetListTitle did={row.asset} />
-    },
-    {
-      name: 'Reason',
-      selector: (row) =>
-        row.reason ? (
-          <div className={styles.columnItem}>
-            <Button
-              style="text"
-              size="small"
-              title="View reason"
-              onClick={() => {
-                setSelected(row)
-                setInspect(true)
-              }}
-            >
-              View
-            </Button>
-          </div>
-        ) : (
-          <span>—</span>
-        )
     },
     {
       name: 'State',

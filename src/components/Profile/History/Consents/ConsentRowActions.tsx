@@ -3,31 +3,27 @@ import ThumbsUp from '@images/thumbsup.svg'
 import ThumbsDown from '@images/thumbsdown.svg'
 import Info from '@images/info.svg'
 import styles from './ConsentRowActions.module.css'
-import { useUserConsents } from '@context/Profile/ConsentsProvider'
+import { useConsents } from '@context/Profile/ConsentsProvider'
+import { ConsentState } from '@utils/consentsUser'
 
 export default function ConsentRowActions({ consent }: { consent: Consent }) {
-  const {
-    setSelected,
-    acceptSelectedConsent,
-    rejectSelectedConsent,
-    setInspect
-  } = useUserConsents()
+  const { setSelected, updateSelected, setIsInspect } = useConsents()
 
   const actions = [
     {
       icon: <ThumbsUp />,
       title: 'Accept',
-      action: acceptSelectedConsent
+      action: () => updateSelected(ConsentState.ACCEPTED)
     },
     {
       icon: <ThumbsDown />,
       title: 'Reject',
-      action: rejectSelectedConsent
+      action: () => updateSelected(ConsentState.REJECTED)
     },
     {
       icon: <Info />,
       title: 'Inspect',
-      action: () => setInspect(true)
+      action: () => setIsInspect(true)
     }
   ]
 
