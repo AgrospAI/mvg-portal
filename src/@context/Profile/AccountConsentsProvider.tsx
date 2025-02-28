@@ -10,6 +10,7 @@ import {
 } from 'react'
 import { useAccount } from 'wagmi'
 import ReasonModal from './ReasonModal'
+import ConsentsProvider from './ConsentsProvider'
 
 interface AccountConsentsProviderValue {
   incomingPending: number
@@ -78,8 +79,10 @@ function AccountConsentsProvider({ children }) {
         setIsRefetch
       }}
     >
-      {children}
-      <ReasonModal />
+      <ConsentsProvider>
+        {children}
+        <ReasonModal />
+      </ConsentsProvider>
     </AccountConsentContext.Provider>
   )
 }
