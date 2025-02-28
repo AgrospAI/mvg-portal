@@ -19,11 +19,12 @@ interface ConsentsProviderValue {
   incoming: Consent[]
   outgoing: Consent[]
   selected?: Consent
-  isLoading: boolean
   isInspect: boolean
+  isLoading: boolean
   isOnlyPending: boolean
   setSelected: (consent: Consent) => void
   setIsInspect: (value: boolean) => void
+  setIsLoading: (value: boolean) => void
   setIsOnlyPending: (value: boolean) => void
   updateSelected: (state: ConsentState) => void
 }
@@ -41,8 +42,8 @@ function ConsentsProvider({ children }: PropsWithChildren) {
   const { incomingPending, outgoingPending, isLoading, setIsLoading } =
     useUserConsents()
 
-  const [isInspect, setIsInspect] = useState(false)
   const [isOnlyPending, setIsOnlyPending] = useState(false)
+  const [isInspect, setIsInspect] = useState(false)
 
   const [incoming, setIncoming] = useState<Consent[]>([])
   const [outgoing, setOutgoing] = useState<Consent[]>([])
@@ -70,26 +71,21 @@ function ConsentsProvider({ children }: PropsWithChildren) {
     }
   }
 
-  const updatSelectedState = async (state: ConsentState) => {
+  const updateSelected = async (state: ConsentState) => {
     if (!selected) return
 
-    const { state: newState } = await updateConsent(selected.id, state)
+    setIsLoading(true)
 
-    setSelected((prev) => ({ ...prev, state: newState }))
-    // Also update it in the cache
-    if (selected.owner === address) {
-      setIncoming(
-        incoming.map((consent) =>
-          consent.id === selected.id ? { ...consent, state: newState } : consent
+    updateConsent(selected.id, state)
+      .then(({ state }) => {
+        setIncoming(
+          incoming.map((consent) =>
+            consent.id === selected.id ? { ...consent, state } : consent
+          )
         )
-      )
-    } else {
-      setOutgoing(
-        outgoing.map((consent) =>
-          consent.id === selected.id ? { ...consent, state: newState } : consent
-        )
-      )
-    }
+      })
+      .catch((error) => LoggerInstance.error(error.message))
+      .finally(() => setIsLoading(false))
   }
 
   useEffect(() => {
@@ -106,13 +102,14 @@ function ConsentsProvider({ children }: PropsWithChildren) {
         incoming: isOnlyPending ? filterPending(incoming) : incoming,
         outgoing: isOnlyPending ? filterPending(outgoing) : outgoing,
         selected,
-        isLoading,
         isInspect,
+        isLoading,
         isOnlyPending,
         setSelected,
         setIsInspect,
+        setIsLoading,
         setIsOnlyPending,
-        updateSelected: updatSelectedState
+        updateSelected
       }}
     >
       {children}

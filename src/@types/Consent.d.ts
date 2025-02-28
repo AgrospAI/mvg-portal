@@ -12,6 +12,10 @@ interface Consent {
   owner: string
   solicitor: string
   created_at: string
+}
+
+interface ConsentWithHistory {
+  consent: Consent
   history: ConsentHistory[]
 }
 

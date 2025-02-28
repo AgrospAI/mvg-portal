@@ -3,43 +3,45 @@ import React, { useEffect, useState } from 'react'
 import styles from './ReasonModal.module.css'
 import Button from '@components/@shared/atoms/Button'
 import ConsentStateBadge from '@components/Profile/History/Consents/StateBadge'
-import axios from 'axios'
-import { getAssetsNames } from '@utils/aquarius'
-import { useMarketMetadata } from '@context/MarketMetadata'
 import Time from '@components/@shared/atoms/Time'
 import { useConsents } from './ConsentsProvider'
-import { ConsentState } from '@utils/consentsUser'
+import { ConsentState, getConsentHistory } from '@utils/consentsUser'
+import AssetListTitle from '@components/@shared/AssetListTitle'
 
 export default function ReasonModal() {
-  const { appConfig } = useMarketMetadata()
-  const [assetTitle, setAssetTitle] = useState<string>()
+  const {
+    selected,
+    setSelected,
+    updateSelected,
+    isInspect,
+    setIsInspect,
+    setIsLoading
+  } = useConsents()
 
-  const { selected, setSelected, updateSelected, isInspect, setIsInspect } =
-    useConsents()
+  const [history, setHistory] = useState<ConsentHistory[]>()
 
   useEffect(() => {
-    const source = axios.CancelToken.source()
+    if (!selected || !isInspect) return
 
-    async function getAssetName() {
-      getAssetsNames([selected.asset], source.token).then((title) =>
-        setAssetTitle(title[selected.asset])
-      )
+    const fetchHistory = async (consent: Consent) => {
+      setIsLoading(true)
+
+      getConsentHistory(consent)
+        .then(setHistory)
+        .finally(() => setIsLoading(false))
     }
 
-    selected?.asset && getAssetName()
-
-    return () => {
-      source.cancel()
-    }
-  }, [isInspect, appConfig.metadataCacheUri])
+    fetchHistory(selected)
+  }, [selected])
 
   return (
     <Modal
-      title={assetTitle}
+      title={'ajsdksadkl'}
       onToggleModal={() => setIsInspect(!isInspect)}
       isOpen={isInspect}
       className={styles.modal}
     >
+      {selected && <AssetListTitle did={selected.asset} />}
       <span className={styles.modalState}>
         Current state:{' '}
         {selected && <ConsentStateBadge state={selected.state} />}
@@ -48,7 +50,7 @@ export default function ReasonModal() {
         {selected?.reason ?? 'No reason provided'}
       </div>
       <div className={styles.modalHistory}>
-        {selected?.history.map((history, index) => (
+        {history?.map((history, index) => (
           <span className={styles.modalHistoryItem} key={index}>
             <Time date={history.updated_at} relative isUnix />{' '}
             <ConsentStateBadge state={history.state} />

@@ -51,9 +51,7 @@ export default function PageProfile(): ReactElement {
     >
       <ProfileProvider accountId={finalAccountId} ownAccount={ownAccount}>
         <AccountConsentsProvider>
-          <ConsentsProvider>
-            <ProfilePage accountId={finalAccountId} />
-          </ConsentsProvider>
+          <ProfilePage accountId={finalAccountId} />
         </AccountConsentsProvider>
       </ProfileProvider>
     </Page>

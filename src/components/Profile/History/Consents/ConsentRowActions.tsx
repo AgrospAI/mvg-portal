@@ -6,8 +6,12 @@ import styles from './ConsentRowActions.module.css'
 import { useConsents } from '@context/Profile/ConsentsProvider'
 import { ConsentState } from '@utils/consentsUser'
 
-export default function ConsentRowActions({ consent }: { consent: Consent }) {
-  const { setSelected, updateSelected, setIsInspect } = useConsents()
+interface Props {
+  consent: Consent
+}
+
+export default function ConsentRowActions({ consent }: Props) {
+  const { updateSelected, setSelected, setIsInspect } = useConsents()
 
   const actions = [
     {

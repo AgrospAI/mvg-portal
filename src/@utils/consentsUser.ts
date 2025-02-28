@@ -45,3 +45,10 @@ export async function getUserConsentsAmount(
   const url = `${process.env.NEXT_PUBLIC_CONSENT_SERVER}/api/users/${account}`
   return fetchData(url)
 }
+
+export async function getConsentHistory(
+  consent: Consent
+): Promise<ConsentHistory[]> {
+  const url = `${process.env.NEXT_PUBLIC_CONSENT_SERVER}/api/consents/${consent.id}/history/`
+  return fetchData(url)
+}
