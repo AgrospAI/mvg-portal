@@ -36,18 +36,26 @@ export default function ReasonModal() {
 
   return (
     <Modal
-      title={'ajsdksadkl'}
+      title={''}
       onToggleModal={() => setIsInspect(!isInspect)}
       isOpen={isInspect}
       className={styles.modal}
     >
-      {selected && <AssetListTitle did={selected.asset} />}
-      <span className={styles.modalState}>
-        Current state:{' '}
-        {selected && <ConsentStateBadge state={selected.state} />}
-      </span>
+      <div className={styles.modalHeader}>
+        {selected && <AssetListTitle did={selected.asset} />}
+        <span className={styles.modalState}>
+          Current state:{' '}
+          {selected && <ConsentStateBadge state={selected.state} />}
+        </span>
+      </div>
       <div className={styles.modalContent}>
         {selected?.reason ?? 'No reason provided'}
+      </div>
+      <div className={styles.historyTitle}>
+        History{' '}
+        <span className={styles.count}>
+          {history?.length ?? 0} event{history?.length !== 1 && 's'}
+        </span>
       </div>
       <div className={styles.modalHistory}>
         {history?.map((history, index) => (

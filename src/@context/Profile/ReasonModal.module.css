@@ -2,6 +2,12 @@
   padding: calc(var(--spacer) / 2) var(--spacer);
 }
 
+.modalHeader {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
 .modalActions {
   display: flex;
   column-gap: 0.5rem;
@@ -41,11 +47,10 @@
   row-gap: 0.5rem;
   padding-top: calc(var(--spacer) / 4);
   overflow-y: auto;
-  max-height: 200px;
+  max-height: 100px;
   width: fit-content;
-  margin-top: 0.5rem;
-  padding: 0 2rem;
-  /* Adjust the height as needed */
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 .modalHistoryItem {
@@ -55,4 +60,13 @@
   align-items: center;
   border-bottom: 1px solid var(--border-color);
   padding-bottom: 0.5rem;
+}
+
+.historyTitle {
+  font-weight: bold;
+  padding-top: 0.5rem;
+}
+
+.count {
+  font-style: italic;
 }
