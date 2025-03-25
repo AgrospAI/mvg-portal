@@ -1,4 +1,4 @@
-import { router } from 'next/router'
+import { useRouter } from 'next/router'
 import { ReactElement } from 'react'
 import ConsentsManagementPage from '@components/Asset/ConsentsManagement'
 import AssetProvider from '@context/Asset'

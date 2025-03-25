@@ -333,9 +333,7 @@ export default function FormStartCompute({
           isLoading={isLoading}
         />
       )}
-      <ConsentsPetitionProvider>
-        <ConsentPetitionButton />
-      </ConsentsPetitionProvider>
+      <AssetConsents asset={asset} />
       <PriceOutput
         hasPreviousOrder={hasPreviousOrder}
         assetTimeout={assetTimeout}

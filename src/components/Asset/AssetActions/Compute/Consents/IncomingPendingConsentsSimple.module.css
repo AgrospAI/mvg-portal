@@ -1,0 +1,40 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.title {
+  padding-bottom: 2rem;
+}
+
+.noConsents {
+  padding-bottom: 1rem;
+  font-style: italic;
+}
+
+.consentList {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.consentList > .consentRow {
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid var(--border-color);
+  padding: 0.5rem;
+}
+
+.consentList > .consentRow:last-of-type {
+  border: none;
+}
+
+.action {
+  cursor: pointer;
+  margin: auto 0;
+}

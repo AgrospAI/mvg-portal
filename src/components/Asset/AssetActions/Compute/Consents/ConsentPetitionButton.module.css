@@ -4,6 +4,7 @@
   gap: calc(var(--spacer) / 4);
   width: 100%;
   align-items: center;
+  justify-content: center;
   padding-bottom: calc(var(--spacer) / 2);
 }
 

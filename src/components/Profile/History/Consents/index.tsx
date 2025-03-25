@@ -8,7 +8,6 @@ import Publisher from '@components/@shared/Publisher'
 import Time from '@components/@shared/atoms/Time'
 import Tabs, { TabsItem } from '@components/@shared/atoms/Tabs'
 import { useState } from 'react'
-import { useUserConsents } from '@context/Profile/AccountConsentsProvider'
 import ConsentStateBadge from './StateBadge'
 import ConsentRowActions from './ConsentRowActions'
 import InputElement from '@components/@shared/FormInput/InputElement'
@@ -67,12 +66,7 @@ export default function ConsentsTab({
   isLoading?: boolean
 }) {
   const { address } = useAccount()
-  const {
-    setSelected,
-    setIsInspect: setInspect,
-    isOnlyPending,
-    setIsOnlyPending
-  } = useConsents()
+  const { isOnlyPending, setIsOnlyPending } = useConsents()
 
   const columns: TableOceanColumn<Consent>[] = [
     {
