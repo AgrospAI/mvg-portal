@@ -21,7 +21,7 @@ export async function getUserOutgoingConsents(
 }
 
 export async function getUserConsents(account: string): Promise<Consent[]> {
-  const url = `${process.env.NEXT_PUBLIC_CONSENT_SERVER}/api/consents/?owner=${account}&solicitor=${account}`
+  const url = `${process.env.NEXT_PUBLIC_CONSENT_SERVER}/api/consents/?dataset=${account}&algorithm=${account}`
   return fetchData(url)
 }
 

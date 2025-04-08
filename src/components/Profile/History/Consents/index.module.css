@@ -13,6 +13,10 @@
 .toggle {
   margin: auto;
   align-items: center;
+  display: flex;
+  justify-content: baseline;
+  cursor: pointer;
+  color: var(--button-text-font-color);
 }
 
 .refresh svg {

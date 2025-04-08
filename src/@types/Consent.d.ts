@@ -4,13 +4,17 @@ enum ConsentState {
   REJECTED = 'Rejected'
 }
 
+interface Asset {
+  did: string
+  owner: string
+}
+
 interface Consent {
   id: number
   reason: string
   state: ConsentState
-  asset: string
-  owner: string
-  solicitor: string
+  dataset: Asset
+  algorithm: Asset
   created_at: string
 }
 
