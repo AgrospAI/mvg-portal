@@ -1,17 +1,16 @@
 import AssetListTitle from '@components/@shared/AssetListTitle'
+import Publisher from '@components/@shared/Publisher'
 import Button from '@components/@shared/atoms/Button'
 import Table, { TableOceanColumn } from '@components/@shared/atoms/Table'
-import Refresh from '@images/refresh.svg'
-import { useAccount } from 'wagmi'
-import styles from './index.module.css'
-import Publisher from '@components/@shared/Publisher'
-import Time from '@components/@shared/atoms/Time'
 import Tabs, { TabsItem } from '@components/@shared/atoms/Tabs'
-import { useState } from 'react'
-import ConsentStateBadge from './StateBadge'
-import ConsentRowActions from './ConsentRowActions'
-import InputElement from '@components/@shared/FormInput/InputElement'
+import Time from '@components/@shared/atoms/Time'
 import { useConsents } from '@context/Profile/ConsentsProvider'
+import Refresh from '@images/refresh.svg'
+import { useState } from 'react'
+import { useAccount } from 'wagmi'
+import ConsentRowActions from './ConsentRowActions'
+import ConsentStateBadge from './StateBadge'
+import styles from './index.module.css'
 
 const getTabs = (
   columns,
@@ -131,7 +130,7 @@ export default function ConsentsTab({
   }
 
   return (
-    <>
+    <div className={styles.container}>
       <div className={styles.buttons}>
         <Button
           style="text"
@@ -144,23 +143,23 @@ export default function ConsentsTab({
           <Refresh />
           Refresh
         </Button>
-        <InputElement
-          type="checkbox"
-          options={['Only show pending']}
-          className={styles.toggle}
-          name={'Toggle show only pending consents'}
-          disabled={isLoading}
-          checked={isOnlyPending}
-          onChange={() => setIsOnlyPending(!isOnlyPending)}
-        />
+
+        <label className={styles.toggle}>
+          <input
+            type="checkbox"
+            disabled={isLoading}
+            checked={isOnlyPending}
+            onChange={() => setIsOnlyPending(!isOnlyPending)}
+          />
+          Only show pending
+        </label>
       </div>
 
       <Tabs
         items={tabs}
-        className={styles.tabs}
         selectedIndex={tabIndex}
         onIndexSelected={setTabIndex}
       />
-    </>
+    </div>
   )
 }
