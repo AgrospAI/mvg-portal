@@ -1,12 +1,12 @@
-import Modal from '@components/@shared/atoms/Modal'
-import React, { useEffect, useState } from 'react'
-import styles from './ReasonModal.module.css'
-import Button from '@components/@shared/atoms/Button'
-import ConsentStateBadge from '@components/Profile/History/Consents/StateBadge'
-import Time from '@components/@shared/atoms/Time'
-import { useConsents } from './ConsentsProvider'
-import { ConsentState, getConsentHistory } from '@utils/consentsUser'
 import AssetListTitle from '@components/@shared/AssetListTitle'
+import Button from '@components/@shared/atoms/Button'
+import Modal from '@components/@shared/atoms/Modal'
+import Time from '@components/@shared/atoms/Time'
+import ConsentStateBadge from '@components/Profile/History/Consents/StateBadge'
+import { ConsentState, getConsentHistory } from '@utils/consentsUser'
+import { useEffect, useState } from 'react'
+import { useConsents } from './ConsentsProvider'
+import styles from './ReasonModal.module.css'
 
 export default function ReasonModal() {
   const {
@@ -32,7 +32,7 @@ export default function ReasonModal() {
     }
 
     fetchHistory(selected)
-  }, [selected])
+  }, [selected, isInspect, setIsLoading])
 
   return (
     <Modal
@@ -42,7 +42,7 @@ export default function ReasonModal() {
       className={styles.modal}
     >
       <div className={styles.modalHeader}>
-        {selected && <AssetListTitle did={selected.asset} />}
+        {selected && <AssetListTitle did={selected.dataset.did} />}
         <span className={styles.modalState}>
           Current state:{' '}
           {selected && <ConsentStateBadge state={selected.state} />}

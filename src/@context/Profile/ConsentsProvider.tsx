@@ -1,13 +1,14 @@
 import { LoggerInstance } from '@oceanprotocol/lib'
 import {
+  ConsentState,
   getUserIncomingConsents,
   getUserOutgoingConsents,
-  updateConsent,
-  ConsentState
+  updateConsent
 } from '@utils/consentsUser'
-import React, {
+import {
   createContext,
   PropsWithChildren,
+  useCallback,
   useContext,
   useEffect,
   useState
@@ -49,27 +50,30 @@ function ConsentsProvider({ children }: PropsWithChildren) {
   const [outgoing, setOutgoing] = useState<Consent[]>([])
   const [selected, setSelected] = useState<Consent>()
 
-  const fetchUserConsents = async (way: 'incoming' | 'outgoing') => {
-    if (!address) return
+  const fetchUserConsents = useCallback(
+    async (way: 'incoming' | 'outgoing') => {
+      if (!address) return
 
-    setIsLoading(true)
+      setIsLoading(true)
 
-    if (way === 'incoming') {
-      getUserIncomingConsents(address)
-        .then((data) => {
-          setIncoming(data)
-        })
-        .catch((error) => LoggerInstance.error(error.message))
-        .finally(() => setIsLoading(false))
-    } else {
-      getUserOutgoingConsents(address)
-        .then((data) => {
-          setOutgoing(data)
-        })
-        .catch((error) => LoggerInstance.error(error.message))
-        .finally(() => setIsLoading(false))
-    }
-  }
+      if (way === 'incoming') {
+        getUserIncomingConsents(address)
+          .then((data) => {
+            setIncoming(data)
+          })
+          .catch((error) => LoggerInstance.error(error.message))
+          .finally(() => setIsLoading(false))
+      } else {
+        getUserOutgoingConsents(address)
+          .then((data) => {
+            setOutgoing(data)
+          })
+          .catch((error) => LoggerInstance.error(error.message))
+          .finally(() => setIsLoading(false))
+      }
+    },
+    [address, setIsLoading]
+  )
 
   const updateSelected = async (state: ConsentState) => {
     if (!selected) return
@@ -90,11 +94,11 @@ function ConsentsProvider({ children }: PropsWithChildren) {
 
   useEffect(() => {
     fetchUserConsents('incoming')
-  }, [address, incomingPending])
+  }, [address, incomingPending, fetchUserConsents])
 
   useEffect(() => {
     fetchUserConsents('outgoing')
-  }, [address, outgoingPending])
+  }, [address, outgoingPending, fetchUserConsents])
 
   return (
     <ConsentsProviderContext.Provider
@@ -120,5 +124,5 @@ function ConsentsProvider({ children }: PropsWithChildren) {
 const useConsents = (): ConsentsProviderValue =>
   useContext(ConsentsProviderContext)
 
-export { useConsents, ConsentsProvider, ConsentsProviderContext }
+export { ConsentsProvider, ConsentsProviderContext, useConsents }
 export default ConsentsProvider

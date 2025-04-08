@@ -1,12 +1,11 @@
 import AssetListTitle from '@components/@shared/AssetListTitle'
-import Publisher from '@components/@shared/Publisher'
 import Button from '@components/@shared/atoms/Button'
 import Table, { TableOceanColumn } from '@components/@shared/atoms/Table'
 import Tabs, { TabsItem } from '@components/@shared/atoms/Tabs'
 import Time from '@components/@shared/atoms/Time'
 import { useConsents } from '@context/Profile/ConsentsProvider'
 import Refresh from '@images/refresh.svg'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useAccount } from 'wagmi'
 import ConsentRowActions from './ConsentRowActions'
 import ConsentStateBadge from './StateBadge'
@@ -24,7 +23,7 @@ const getTabs = (
       title: 'Outgoing',
       content: (
         <Table
-          columns={columns.filter((col) => col.name !== 'Actions')}
+          columns={columns}
           data={outgoingConsents}
           sortField="row.created_at"
           sortAsc={false}
@@ -53,24 +52,28 @@ const getTabs = (
   ]
 }
 
+interface ConsentsTabProps {
+  incomingConsents?: Consent[]
+  outgoingConsents?: Consent[]
+  refetchConsents?: (isRefetch: boolean) => void
+  isLoading?: boolean
+}
+
 export default function ConsentsTab({
   incomingConsents,
   outgoingConsents,
   refetchConsents,
   isLoading
-}: {
-  incomingConsents?: Consent[]
-  outgoingConsents?: Consent[]
-  refetchConsents?: any
-  isLoading?: boolean
-}) {
+}: ConsentsTabProps) {
   const { address } = useAccount()
   const { isOnlyPending, setIsOnlyPending } = useConsents()
 
+  const [actionsColumn, setActionsColumn] = useState<JSX.Element>(<></>)
+
   const columns: TableOceanColumn<Consent>[] = [
     {
-      name: 'Asset DID',
-      selector: (row) => <AssetListTitle did={row.asset} />
+      name: 'Dataset',
+      selector: (row) => <AssetListTitle did={row.dataset.did} />
     },
     {
       name: 'State',
@@ -81,18 +84,10 @@ export default function ConsentsTab({
       )
     },
     {
-      name: 'Owner',
+      name: 'Algorithm',
       selector: (row) => (
         <div className={styles.columnItem}>
-          <Publisher account={row.owner} showName={true} />
-        </div>
-      )
-    },
-    {
-      name: 'Solicitor',
-      selector: (row) => (
-        <div className={styles.columnItem}>
-          <Publisher account={row.solicitor} showName={true} />
+          <AssetListTitle did={row.algorithm.did} />
         </div>
       )
     },
@@ -106,11 +101,7 @@ export default function ConsentsTab({
     },
     {
       name: 'Actions',
-      selector: (row) => (
-        <div className={styles.columnItem}>
-          <ConsentRowActions consent={row} />
-        </div>
-      )
+      selector: (row) => <>{actionsColumn}</>
     }
   ]
   const tabs = getTabs(
@@ -120,10 +111,18 @@ export default function ConsentsTab({
     incomingConsents,
     refetchConsents
   )
-  // Set to first enabled tabitem
   const [tabIndex, setTabIndex] = useState(
     tabs.findIndex((tab) => !tab.disabled)
   )
+
+  useEffect(() => {
+    setActionsColumn(
+      <ConsentRowActions
+        consent={outgoingConsents[tabIndex]}
+        type={tabIndex === 0 ? 'outgoing' : 'incoming'}
+      />
+    )
+  }, [outgoingConsents, tabIndex])
 
   if (!address) {
     return <div>Please connect your wallet.</div>
