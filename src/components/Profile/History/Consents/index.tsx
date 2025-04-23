@@ -10,6 +10,7 @@ import { useAccount } from 'wagmi'
 import ConsentRowActions from './ConsentRowActions'
 import ConsentStateBadge from './StateBadge'
 import styles from './index.module.css'
+import { extractDidFromUrl } from '@utils/consentsUser'
 
 const getTabs = (
   columns,
@@ -73,21 +74,21 @@ export default function ConsentsTab({
   const columns: TableOceanColumn<Consent>[] = [
     {
       name: 'Dataset',
-      selector: (row) => <AssetListTitle did={row.dataset.did} />
+      selector: (row) => <AssetListTitle did={extractDidFromUrl(row.dataset)} />
     },
-    {
-      name: 'State',
-      selector: (row) => (
-        <div className={styles.columnItem}>
-          <ConsentStateBadge state={row.state} />
-        </div>
-      )
-    },
+    // {
+    //   name: 'State',
+    //   selector: (row) => (
+    //     <div className={styles.columnItem}>
+    //       <ConsentStateBadge state={row.state} />
+    //     </div>
+    //   )
+    // },
     {
       name: 'Algorithm',
       selector: (row) => (
         <div className={styles.columnItem}>
-          <AssetListTitle did={row.algorithm.did} />
+          <AssetListTitle did={extractDidFromUrl(row.algorithm)} />
         </div>
       )
     },
@@ -95,7 +96,7 @@ export default function ConsentsTab({
       name: 'Date Created',
       selector: (row) => (
         <div className={styles.columnItem}>
-          <Time date={`${row.created_at}`} relative isUnix />
+          <Time date={row.created_at} relative isUnix />
         </div>
       )
     },
@@ -111,9 +112,10 @@ export default function ConsentsTab({
     incomingConsents,
     refetchConsents
   )
-  const [tabIndex, setTabIndex] = useState(
-    tabs.findIndex((tab) => !tab.disabled)
-  )
+  const [tabIndex, setTabIndex] = useState(() => {
+    const index = tabs.findIndex((tab) => !tab.disabled)
+    return index !== -1 ? index : 0
+  })
 
   useEffect(() => {
     setActionsColumn(
@@ -136,7 +138,7 @@ export default function ConsentsTab({
           size="small"
           title="Refresh consents"
           disabled={isLoading}
-          onClick={async () => await refetchConsents(true)}
+          onClick={async () => refetchConsents(true)}
           className={styles.refresh}
         >
           <Refresh />

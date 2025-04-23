@@ -13,7 +13,7 @@ interface Action {
 }
 
 interface Props {
-  consent: Consent
+  consent: ListConsent
   type: 'outgoing' | 'incoming'
 }
 
@@ -25,8 +25,8 @@ export default function ConsentRowActions({ consent, type }: Props) {
   useEffect(() => {
     const getActions = (
       type: 'outgoing' | 'incoming',
-      updateSelected: (ConsentState) => void,
-      setIsInspect: (boolean) => void
+      updateSelected: (_: ConsentState) => void,
+      setIsInspect: (_: boolean) => void
     ): Action[] => {
       if (type === 'outgoing')
         return [

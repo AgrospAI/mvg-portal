@@ -1,4 +1,3 @@
-import React from 'react'
 import styles from './StateBadge.module.css'
 
 interface Props {

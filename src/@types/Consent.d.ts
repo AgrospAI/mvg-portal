@@ -4,32 +4,41 @@ enum ConsentState {
   REJECTED = 'Rejected'
 }
 
-interface Asset {
+interface ConsentsAsset {
   did: string
   owner: string
+  type: 'Algorithm' | 'Dataset'
+  pending_consents: number
+}
+
+interface SolicitorDetailed {
+  url: string
+  address: string
+}
+
+interface ListConsent {
+  url: string
+  reason: string
+  dataset: string
+  algorithm: string
+  solicitor: string
+  created_at: number
 }
 
 interface Consent {
   id: number
-  reason: string
-  state: ConsentState
-  dataset: Asset
-  algorithm: Asset
   created_at: string
-}
-
-interface ConsentWithHistory {
-  consent: Consent
-  history: ConsentHistory[]
-}
-
-interface ConsentHistory {
-  state: ConsentState
-  updated_at: string
+  dataset: string
+  algorithm: string
+  solicitor: SolicitorDetailed
+  reason: string
+  request: string
+  response: string | null
 }
 
 interface ConsentsUserData {
-  address: str
+  address: string
+  assets: string[]
   incoming_pending_consents: number
   outgoing_pending_consents: number
 }
