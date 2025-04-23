@@ -17,13 +17,13 @@ import { useAccount } from 'wagmi'
 import { useUserConsents } from './AccountConsentsProvider'
 
 interface ConsentsProviderValue {
-  incoming: Consent[]
-  outgoing: Consent[]
-  selected?: Consent
+  incoming: ListConsent[]
+  outgoing: ListConsent[]
+  selected: ListConsent | undefined
   isInspect: boolean
   isLoading: boolean
   isOnlyPending: boolean
-  setSelected: (consent: Consent) => void
+  setSelected: (consent: ListConsent) => void
   setIsInspect: (value: boolean) => void
   setIsLoading: (value: boolean) => void
   setIsOnlyPending: (value: boolean) => void
@@ -32,8 +32,8 @@ interface ConsentsProviderValue {
 
 const ConsentsProviderContext = createContext({} as ConsentsProviderValue)
 
-const filterState = (consents: Consent[], state: ConsentState) =>
-  consents.filter((consent) => consent.state === state)
+// const filterState = (consents: Consent[], state: ConsentState) =>
+//   consents.filter((consent) => consent.state === state)
 
 const filterPending = (consents: Consent[]) =>
   filterState(consents, ConsentState.PENDING)
@@ -46,9 +46,9 @@ function ConsentsProvider({ children }: PropsWithChildren) {
   const [isOnlyPending, setIsOnlyPending] = useState(false)
   const [isInspect, setIsInspect] = useState(false)
 
-  const [incoming, setIncoming] = useState<Consent[]>([])
-  const [outgoing, setOutgoing] = useState<Consent[]>([])
-  const [selected, setSelected] = useState<Consent>()
+  const [incoming, setIncoming] = useState<ListConsent[]>([])
+  const [outgoing, setOutgoing] = useState<ListConsent[]>([])
+  const [selected, setSelected] = useState<ListConsent>()
 
   const fetchUserConsents = useCallback(
     async (way: 'incoming' | 'outgoing') => {
@@ -56,21 +56,26 @@ function ConsentsProvider({ children }: PropsWithChildren) {
 
       setIsLoading(true)
 
-      if (way === 'incoming') {
-        getUserIncomingConsents(address)
+      const setIfOk = (
+        fetcher: () => Promise<ListConsent[]>,
+        setter: (data: ListConsent[]) => void
+      ) => {
+        fetcher()
           .then((data) => {
-            setIncoming(data)
+            if (data) {
+              setter(data)
+            }
           })
           .catch((error) => LoggerInstance.error(error.message))
-          .finally(() => setIsLoading(false))
-      } else {
-        getUserOutgoingConsents(address)
-          .then((data) => {
-            setOutgoing(data)
-          })
-          .catch((error) => LoggerInstance.error(error.message))
-          .finally(() => setIsLoading(false))
       }
+
+      if (way === 'incoming') {
+        setIfOk(() => getUserIncomingConsents(address), setIncoming)
+      } else {
+        setIfOk(() => getUserOutgoingConsents(address), setOutgoing)
+      }
+
+      setIsLoading(false)
     },
     [address, setIsLoading]
   )

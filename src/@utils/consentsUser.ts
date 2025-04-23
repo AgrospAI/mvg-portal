@@ -8,27 +8,30 @@ export enum ConsentState {
 
 export async function getUserIncomingConsents(
   account: string
-): Promise<Consent[]> {
+): Promise<ListConsent[]> {
   const url = `${process.env.NEXT_PUBLIC_CONSENT_SERVER}/api/users/${account}/incoming/`
-  return fetchData(url)
+  return fetchData(url).catch((error) => {
+    console.error('Error fetching incoming consents:', error)
+    return []
+  })
 }
 
 export async function getUserOutgoingConsents(
   account: string
-): Promise<Consent[]> {
+): Promise<ListConsent[]> {
   const url = `${process.env.NEXT_PUBLIC_CONSENT_SERVER}/api/users/${account}/outgoing/`
-  return fetchData(url)
-}
-
-export async function getUserConsents(account: string): Promise<Consent[]> {
-  const url = `${process.env.NEXT_PUBLIC_CONSENT_SERVER}/api/consents/?dataset=${account}&algorithm=${account}`
-  return fetchData(url)
+  return fetchData(url).catch((error) => {
+    console.error('Error fetching outgoing consents:', error)
+    return []
+  })
 }
 
 export async function updateConsent(
   consentId: number,
   state: ConsentState
 ): Promise<{ state: ConsentState }> {
+  // TODO: MAKE THIS WORK AGAIN
+
   const url = `${process.env.NEXT_PUBLIC_CONSENT_SERVER}/api/consents/${consentId}/`
   return fetch(url, {
     method: 'PATCH',
@@ -46,9 +49,15 @@ export async function getUserConsentsAmount(
   return fetchData(url)
 }
 
-export async function getConsentHistory(
-  consent: Consent
-): Promise<ConsentHistory[]> {
-  const url = `${process.env.NEXT_PUBLIC_CONSENT_SERVER}/api/consents/${consent.id}/history/`
+export function extractDidFromUrl(url: string): string | null {
+  const match = url.match(/did:[^/]+/)
+  return match ? match[0] : null
+}
+
+export function getAsset(url: string): Promise<ConsentsAsset | null> {
+  return fetchData(url)
+}
+
+export function getConsentDetailed(url: string): Promise<Consent> {
   return fetchData(url)
 }
