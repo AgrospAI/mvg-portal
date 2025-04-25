@@ -1,7 +1,8 @@
 enum ConsentState {
   PENDING = 'Pending',
   ACCEPTED = 'Accepted',
-  REJECTED = 'Rejected'
+  DENIED = 'Denied',
+  RESOLVED = 'Resolved'
 }
 
 interface ConsentsAsset {
@@ -22,7 +23,9 @@ interface ListConsent {
   dataset: string
   algorithm: string
   solicitor: string
+  status: ConsentState | null
   created_at: number
+  type?: 'outgoing' | 'incoming'
 }
 
 interface Consent {

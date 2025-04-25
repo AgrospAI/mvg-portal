@@ -14,6 +14,10 @@
   background-color: var(--brand-alert-green);
 }
 
-.badge-rejected {
+.badge-resolved {
+  background-color: var(--brand-alert-yellow);
+}
+
+.badge-denied {
   background-color: var(--brand-alert-red);
 }

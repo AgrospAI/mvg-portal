@@ -1,11 +1,11 @@
 import styles from './StateBadge.module.css'
 
 interface Props {
-  response?: string
+  status: ConsentState | null
 }
 
-export default function ConsentStateBadge({ response }: Props) {
-  const state = response ? 'Responded' : 'Pending'
+export default function ConsentStateBadge({ status }: Props) {
+  const state = status || 'Pending'
 
   return (
     <div

@@ -28,12 +28,12 @@ function getTabs(
   jobs: ComputeJobMetaData[],
   isLoadingJobs: boolean,
   refetchJobs: boolean,
-  setRefetchJobs: any,
-  incomingConsents: Consent[],
-  outgoingConsents: Consent[],
+  setRefetchJobs: (value: boolean) => void,
+  incomingConsents: ListConsent[],
+  outgoingConsents: ListConsent[],
   isLoadingConsents: boolean,
   refetchConsents: boolean,
-  setRefetchConsents: any
+  setRefetchConsents: (value: boolean) => void
 ): HistoryTab[] {
   const defaultTabs: HistoryTab[] = [
     {

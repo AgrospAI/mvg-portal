@@ -1,0 +1,9 @@
+.borderedElement {
+  border: 1px solid var(--color-agrospai-light);
+  border-radius: var(--border-radius);
+  padding: calc(var(--spacer) / 2) var(--spacer);
+}
+
+.legendTitle {
+  font-size: 1.2rem;
+}

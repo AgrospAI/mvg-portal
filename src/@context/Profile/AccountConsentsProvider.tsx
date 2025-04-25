@@ -1,4 +1,3 @@
-import { useCancelToken } from '@hooks/useCancelToken'
 import { LoggerInstance } from '@oceanprotocol/lib'
 import { getUserConsentsAmount } from '@utils/consentsUser'
 import {
@@ -9,7 +8,7 @@ import {
   useState
 } from 'react'
 import { useAccount } from 'wagmi'
-import ReasonModal from './ReasonModal'
+import ReasonModal from '../../components/Profile/History/Consents/Modal/ReasonModal'
 import ConsentsProvider from './ConsentsProvider'
 
 interface AccountConsentsProviderValue {
@@ -34,8 +33,6 @@ function AccountConsentsProvider({ children }) {
   const [isLoading, setIsLoading] = useState(false)
   const [isRefetch, setIsRefetch] = useState(false)
 
-  const newCancelToken = useCancelToken()
-
   // Periodic fetching of user consents amount
   const fetchUserConsentsAmount = useCallback(
     async (type: string) => {
@@ -51,7 +48,7 @@ function AccountConsentsProvider({ children }) {
         .catch((error) => LoggerInstance.error(error.message))
         .finally(() => setIsLoading(false))
     },
-    [address, newCancelToken, isRefetch]
+    [address]
   )
 
   useEffect(() => {
@@ -66,7 +63,7 @@ function AccountConsentsProvider({ children }) {
     return () => {
       clearInterval(consentsAmountInterval)
     }
-  }, [address])
+  }, [address, fetchUserConsentsAmount])
 
   return (
     <AccountConsentContext.Provider

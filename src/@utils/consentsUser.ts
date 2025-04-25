@@ -3,27 +3,36 @@ import { fetchData } from './fetch'
 export enum ConsentState {
   PENDING = 'Pending',
   ACCEPTED = 'Accepted',
-  REJECTED = 'Rejected'
+  DENIED = 'Denied',
+  RESOLVED = 'Resolved'
 }
 
 export async function getUserIncomingConsents(
   account: string
 ): Promise<ListConsent[]> {
   const url = `${process.env.NEXT_PUBLIC_CONSENT_SERVER}/api/users/${account}/incoming/`
-  return fetchData(url).catch((error) => {
-    console.error('Error fetching incoming consents:', error)
-    return []
-  })
+  return fetchData(url)
+    .then((data) =>
+      data.map((item: ListConsent) => ({ ...item, type: 'incoming' }))
+    )
+    .catch((error) => {
+      console.error('Error fetching incoming consents:', error)
+      return []
+    })
 }
 
 export async function getUserOutgoingConsents(
   account: string
 ): Promise<ListConsent[]> {
   const url = `${process.env.NEXT_PUBLIC_CONSENT_SERVER}/api/users/${account}/outgoing/`
-  return fetchData(url).catch((error) => {
-    console.error('Error fetching outgoing consents:', error)
-    return []
-  })
+  return fetchData(url)
+    .then((data) =>
+      data.map((item: ListConsent) => ({ ...item, type: 'outgoing' }))
+    )
+    .catch((error) => {
+      console.error('Error fetching outgoing consents:', error)
+      return []
+    })
 }
 
 export async function updateConsent(
