@@ -17,8 +17,14 @@ import Link from 'next/link'
 import ConsentRequest from '@components/Profile/History/Consents/ConsentRequest'
 
 export default function ReasonModal() {
-  const { selected, setSelected, updateSelected, isInspect, setIsInspect } =
-    useConsents()
+  const {
+    selected,
+    setSelected,
+    updateSelected,
+    isInspect,
+    isInteractiveInspect,
+    setIsInspect
+  } = useConsents()
 
   const [algorithmName, setAlgorithmName] = useState<string>()
   const [datasetName, setDatasetName] = useState<string>()
@@ -60,72 +66,108 @@ export default function ReasonModal() {
           className={styles.modal}
         >
           <div className={styles.modalHeader}>
-            {algorithm && (
-              <fieldset className={styles.borderedElement}>
-                <legend className={styles.legendTitle}>Algorithm</legend>
-                <h3 className={styles.title}>
-                  <Link href={`/asset/${algorithm.did}`}>{algorithmName}</Link>
-                </h3>
-                <span className={styles.algorithmPublisher}>
-                  by <Publisher account={algorithm.owner} showName={true} />
-                </span>
-              </fieldset>
-            )}
-            {dataset && (
-              <fieldset className={styles.borderedElement}>
-                <legend className={styles.legendTitle}>Dataset</legend>
-                <h3 className={styles.title}>
-                  <Link href={`/asset/${dataset.did}`}>{datasetName}</Link>
-                </h3>
-                <div className={styles.requestInfo}>
-                  <span className={styles.algorithmPublisher}>
-                    Solicitor:{' '}
-                    <Publisher account={selected.solicitor} showName={true} />
-                    <Time
-                      date={`${selected.created_at}`}
-                      relative
-                      isUnix={true}
-                    />
+            <div className={styles.horizontalContainer}>
+              {algorithm && (
+                <fieldset
+                  className={`${styles.borderedElement} ${styles.fullHeight}`}
+                >
+                  <legend className={styles.legendTitle}>1. Algorithm</legend>
+                  <h3 className={styles.title}>
+                    <Link href={`/asset/${algorithm.did}`}>
+                      {algorithmName}
+                    </Link>
+                  </h3>
+                  <span className={styles.publisher}>
+                    by <Publisher account={algorithm.owner} showName={true} />
                   </span>
-                  <fieldset className={styles.borderedElement}>
-                    <legend className={styles.legendTitle}>Request</legend>
-                    <div className={styles.reason}>
-                      {selected?.reason ?? 'No reason provided'}
-                    </div>
-                    <ConsentRequest values={consent.request} interactive />
-                  </fieldset>
+                </fieldset>
+              )}
+              {dataset && (
+                <fieldset className={styles.borderedElement}>
+                  <legend className={styles.legendTitle}>2. Dataset</legend>
+                  <h3 className={styles.title}>
+                    <Link href={`/asset/${dataset.did}`}>{datasetName}</Link>
+                  </h3>
+                  <span className={styles.publisher}>
+                    by <Publisher account={dataset.owner} showName={true} />
+                  </span>
+                </fieldset>
+              )}
+            </div>
+            <fieldset className={styles.borderedElement}>
+              <legend className={styles.legendTitle}>3. Request</legend>
+              <span className={styles.publisher}>
+                <Publisher account={selected.solicitor} showName={true} />,
+                <Time date={`${selected.created_at}`} relative isUnix={true} />
+              </span>
+              <div className={styles.requestInfo}>
+                <div className={styles.reason}>
+                  {selected.reason ?? 'No reason provided'}
+                </div>
+                <div className={styles.requestContainer}>
+                  <p>Requests for:</p>
+                  {consent && consent.request && (
+                    <ConsentRequest
+                      values={consent.request}
+                      dataset={{ ...dataset, name: datasetName }}
+                      algorithm={{ ...algorithm, name: algorithmName }}
+                      solicitor={consent.solicitor}
+                    />
+                  )}
+                </div>
+              </div>
+            </fieldset>
+            {isInteractiveInspect && (
+              <fieldset className={styles.borderedElement}>
+                <legend className={styles.legendTitle}>4. Response</legend>
+                <div className={styles.requestInfo}>
+                  <div className={styles.reason}>
+                    <input
+                      type="text"
+                      className={styles.responseTextbox}
+                      maxLength={255}
+                      placeholder="Reason of the response..."
+                    />
+                  </div>
+                  <div className={styles.requestContainer}>
+                    <p>Accepted requests:</p>
+                    {consent && consent.request && (
+                      <ConsentRequest
+                        values={consent.request}
+                        dataset={{ ...dataset, name: datasetName }}
+                        algorithm={{ ...algorithm, name: algorithmName }}
+                        solicitor={consent.solicitor}
+                        interactive
+                      />
+                    )}
+                  </div>
+                </div>
+                <div className={styles.modalActions}>
+                  <Button
+                    size="small"
+                    className={styles.modalRejectBtn}
+                    onClick={() => {
+                      updateSelected(ConsentState.REJECTED)
+                      setSelected(undefined)
+                      setIsInspect(false)
+                    }}
+                  >
+                    Reject
+                  </Button>
+                  <Button
+                    size="small"
+                    className={styles.modalConfirmBtn}
+                    onClick={() => {
+                      updateSelected(ConsentState.ACCEPTED)
+                      setSelected(undefined)
+                      setIsInspect(false)
+                    }}
+                  >
+                    Accept
+                  </Button>
                 </div>
               </fieldset>
             )}
-          </div>
-          {/* <span className={styles.modalState}>
-        Current state:{' '}
-        {selected && <ConsentStateBadge state={selected.state} />}
-        </span> */}
-
-          <div className={styles.modalActions}>
-            <Button
-              size="small"
-              className={styles.modalRejectBtn}
-              onClick={() => {
-                updateSelected(ConsentState.REJECTED)
-                setSelected(undefined)
-                setIsInspect(false)
-              }}
-            >
-              Reject
-            </Button>
-            <Button
-              size="small"
-              className={styles.modalConfirmBtn}
-              onClick={() => {
-                updateSelected(ConsentState.ACCEPTED)
-                setSelected(undefined)
-                setIsInspect(false)
-              }}
-            >
-              Accept
-            </Button>
           </div>
         </Modal>
       )}

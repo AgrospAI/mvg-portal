@@ -1,0 +1,36 @@
+.request {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  justify-items: center;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.interactive {
+  cursor: pointer;
+}
+
+.input {
+  accent-color: var(--color-agrospai-dark);
+}
+
+.input_interactive {
+  accent-color: var(--color-agrospai-light);
+}
+
+.request_list > li {
+  display: list-item;
+  margin-left: var(--spacer);
+  text-align: justify;
+}
+
+.request_list > li > span {
+  display: inline;
+  gap: 1em;
+}
+
+.request_list > li > span > div {
+  margin-right: 0;
+  vertical-align: bottom;
+}
