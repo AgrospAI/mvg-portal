@@ -3,22 +3,22 @@ import Button from '@components/@shared/atoms/Button'
 import Table, { TableOceanColumn } from '@components/@shared/atoms/Table'
 import Tabs, { TabsItem } from '@components/@shared/atoms/Tabs'
 import Time from '@components/@shared/atoms/Time'
+import Publisher from '@components/@shared/Publisher'
 import { useConsents } from '@context/Profile/ConsentsProvider'
 import Refresh from '@images/refresh.svg'
-import { useEffect, useState } from 'react'
+import { extractDidFromUrl } from '@utils/consentsUser'
+import { useState } from 'react'
 import { useAccount } from 'wagmi'
 import ConsentRowActions from './ConsentRowActions'
 import styles from './index.module.css'
-import { extractDidFromUrl } from '@utils/consentsUser'
-import Publisher from '@components/@shared/Publisher'
 import ConsentStateBadge from './StateBadge'
 
 const getTabs = (
-  columns,
-  isLoading,
-  outgoingConsents,
-  incomingConsents,
-  refetchConsents
+  columns: TableOceanColumn<ListConsent>[],
+  isLoading: boolean,
+  outgoingConsents: ListConsent[],
+  incomingConsents: ListConsent[],
+  refetchConsents: (value: boolean) => void
 ): TabsItem[] => {
   return [
     {
@@ -31,7 +31,7 @@ const getTabs = (
           sortAsc={false}
           isLoading={isLoading}
           emptyMessage="No outgoing consents"
-          onChangePage={async () => await refetchConsents(true)}
+          onChangePage={async () => refetchConsents(true)}
         />
       ),
       disabled: !outgoingConsents?.length
@@ -46,7 +46,7 @@ const getTabs = (
           sortAsc={false}
           isLoading={isLoading}
           emptyMessage="No incoming consents"
-          onChangePage={async () => await refetchConsents(true)}
+          onChangePage={async () => refetchConsents(true)}
         />
       ),
       disabled: !incomingConsents?.length
@@ -55,8 +55,8 @@ const getTabs = (
 }
 
 interface ConsentsTabProps {
-  incomingConsents?: Consent[]
-  outgoingConsents?: Consent[]
+  incomingConsents?: ListConsent[]
+  outgoingConsents?: ListConsent[]
   refetchConsents?: (isRefetch: boolean) => void
   isLoading?: boolean
 }
@@ -70,12 +70,10 @@ export default function ConsentsTab({
   const { address } = useAccount()
   const { isOnlyPending, setIsOnlyPending } = useConsents()
 
-  const [actionsColumn, setActionsColumn] = useState<JSX.Element>(<></>)
-
-  const columns: TableOceanColumn<Consent>[] = [
+  const columns: TableOceanColumn<ListConsent>[] = [
     {
       name: 'Date',
-      selector: (row) => <Time date={row.created_at} isUnix />
+      selector: (row) => <Time date={`${row.created_at}`} isUnix />
     },
     {
       name: 'Dataset',
@@ -97,13 +95,13 @@ export default function ConsentsTab({
       name: 'State',
       selector: (row) => (
         <div className={styles.columnItem}>
-          <ConsentStateBadge state={row.response} />
+          <ConsentStateBadge status={row.status} />
         </div>
       )
     },
     {
       name: 'Actions',
-      selector: (row) => <>{actionsColumn}</>
+      selector: (row) => <ConsentRowActions consent={row} />
     }
   ]
   const tabs = getTabs(
@@ -117,15 +115,6 @@ export default function ConsentsTab({
     const index = tabs.findIndex((tab) => !tab.disabled)
     return index !== -1 ? index : 0
   })
-
-  useEffect(() => {
-    setActionsColumn(
-      <ConsentRowActions
-        consent={outgoingConsents[tabIndex]}
-        type={tabIndex === 0 ? 'outgoing' : 'incoming'}
-      />
-    )
-  }, [outgoingConsents, tabIndex])
 
   if (!address) {
     return <div>Please connect your wallet.</div>
@@ -146,15 +135,18 @@ export default function ConsentsTab({
           Refresh
         </Button>
 
-        <label className={styles.toggle}>
+        <div className={styles.onlyPending}>
           <input
             type="checkbox"
             disabled={isLoading}
             checked={isOnlyPending}
             onChange={() => setIsOnlyPending(!isOnlyPending)}
+            id="onlyPending"
           />
-          Only show pending
-        </label>
+          <label className={styles.toggle} htmlFor="onlyPending">
+            Only show pending
+          </label>
+        </div>
       </div>
 
       <Tabs

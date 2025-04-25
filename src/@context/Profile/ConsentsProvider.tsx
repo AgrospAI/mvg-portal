@@ -2,8 +2,7 @@ import { LoggerInstance } from '@oceanprotocol/lib'
 import {
   ConsentState,
   getUserIncomingConsents,
-  getUserOutgoingConsents,
-  updateConsent
+  getUserOutgoingConsents
 } from '@utils/consentsUser'
 import {
   createContext,
@@ -34,12 +33,6 @@ interface ConsentsProviderValue {
 
 const ConsentsProviderContext = createContext({} as ConsentsProviderValue)
 
-// const filterState = (consents: Consent[], state: ConsentState) =>
-//   consents.filter((consent) => consent.state === state)
-
-// const filterPending = (consents: ListConsent[]) =>
-//   filterState(consents, ConsentState.PENDING)
-
 function ConsentsProvider({ children }: PropsWithChildren) {
   const { address } = useAccount()
   const { incomingPending, outgoingPending, isLoading, setIsLoading } =
@@ -64,18 +57,17 @@ function ConsentsProvider({ children }: PropsWithChildren) {
         setter: (data: ListConsent[]) => void
       ) => {
         fetcher()
-          .then((data) => {
-            if (data) {
-              setter(data)
-            }
-          })
+          .then(setter)
           .catch((error) => LoggerInstance.error(error.message))
       }
 
-      if (way === 'incoming') {
-        setIfOk(() => getUserIncomingConsents(address), setIncoming)
-      } else {
-        setIfOk(() => getUserOutgoingConsents(address), setOutgoing)
+      switch (way) {
+        case 'incoming':
+          setIfOk(() => getUserIncomingConsents(address), setIncoming)
+          break
+        case 'outgoing':
+          setIfOk(() => getUserOutgoingConsents(address), setOutgoing)
+          break
       }
 
       setIsLoading(false)
@@ -84,22 +76,6 @@ function ConsentsProvider({ children }: PropsWithChildren) {
   )
 
   const updateSelected = (state: ConsentState) => {}
-  // const updateSelected = async (state: ConsentState) => {
-  //   if (!selected) return
-
-  //   setIsLoading(true)
-
-  //   updateConsent(selected.id, state)
-  //     .then(({ state }) => {
-  //       setIncoming(
-  //         incoming.map((consent) =>
-  //           consent.id === selected.id ? { ...consent, state } : consent
-  //         )
-  //       )
-  //     })
-  //     .catch((error) => LoggerInstance.error(error.message))
-  //     .finally(() => setIsLoading(false))
-  // }
 
   useEffect(() => {
     fetchUserConsents('incoming')
@@ -112,8 +88,8 @@ function ConsentsProvider({ children }: PropsWithChildren) {
   return (
     <ConsentsProviderContext.Provider
       value={{
-        incoming: /* isOnlyPending ? filterPending(incoming) : */ incoming,
-        outgoing: /* isOnlyPending ? filterPending(outgoing) : */ outgoing,
+        incoming,
+        outgoing,
         selected,
         isInspect,
         isInteractiveInspect,

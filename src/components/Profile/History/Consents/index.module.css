@@ -44,3 +44,13 @@
   flex-direction: column;
   margin: 0 auto;
 }
+
+.onlyPending {
+  display: flex;
+  flex-direction: row;
+  cursor: pointer;
+}
+
+.onlyPending > input[type='checkbox'] {
+  cursor: pointer;
+}

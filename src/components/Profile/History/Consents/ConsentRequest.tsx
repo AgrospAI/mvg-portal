@@ -10,13 +10,6 @@ interface PossibleRequests {
   allow_network_access: boolean
 }
 
-const requests_simple = {
-  trusted_algorithm_publisher: 'Do you want to trust the publisher?',
-  trusted_algorithm: 'Do you want to trust the algorithm?',
-  trusted_credential_address: 'Trusted Credential Address',
-  allow_network_access: 'Do you want to allow network access?'
-}
-
 interface ExtendedAsset extends ConsentsAsset {
   name: string
 }
@@ -25,7 +18,6 @@ interface ConsentRequestProps {
   values: string
   dataset: ExtendedAsset
   algorithm: ExtendedAsset
-  solicitor: SolicitorDetailed
   interactive?: boolean
 }
 
@@ -33,10 +25,9 @@ function ConsentRequest({
   values,
   dataset,
   algorithm,
-  solicitor,
   interactive
 }: Readonly<ConsentRequestProps>) {
-  const [val, setVal] = useState(JSON.parse(values) as PossibleRequests)
+  const [val, setVal] = useState({} as PossibleRequests)
 
   const update = (key: keyof PossibleRequests) => {
     if (!interactive) return
@@ -48,7 +39,8 @@ function ConsentRequest({
 
   useEffect(() => {
     if (!interactive) return
-    for (const key in val) {
+    // If the consents are interactive, set them to false by default
+    for (const key in JSON.parse(values) as PossibleRequests) {
       setVal((prev) => ({
         ...prev,
         [key]: false
@@ -56,7 +48,7 @@ function ConsentRequest({
     }
   }, [])
 
-  function get_complete_request(key: keyof PossibleRequests) {
+  function getCompleteRequest(key: keyof PossibleRequests) {
     switch (key) {
       case 'trusted_algorithm_publisher':
         return (
@@ -87,6 +79,13 @@ function ConsentRequest({
     }
   }
 
+  const requestsSimple = {
+    trusted_algorithm_publisher: 'Do you want to trust the publisher?',
+    trusted_algorithm: 'Do you want to trust the algorithm usage?',
+    trusted_credential_address: 'Trusted Credential Address',
+    allow_network_access: 'Do you want to allow network access?'
+  }
+
   const active = Object.entries(val).filter((value) => value)
   return (
     <>
@@ -102,7 +101,7 @@ function ConsentRequest({
               onClick={() => update(key as keyof PossibleRequests)}
             />
             <label htmlFor={`${key}_i`} className={styles.interactive}>
-              {requests_simple[key]}
+              {requestsSimple[key]}
             </label>
           </div>
         ))
@@ -110,7 +109,7 @@ function ConsentRequest({
         <ul className={styles.request_list}>
           {active.map(([key, _]) => (
             <li key={key}>
-              {get_complete_request(key as keyof PossibleRequests)}
+              {getCompleteRequest(key as keyof PossibleRequests)}
             </li>
           ))}
         </ul>

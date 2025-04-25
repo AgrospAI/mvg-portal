@@ -2,28 +2,6 @@
   padding: calc(var(--spacer) / 2) var(--spacer);
 }
 
-.title {
-  margin: 0;
-}
-
-.legendTitle {
-  font-size: 1.2rem;
-  /* font-style: italic; */
-}
-
-.modalHeader {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.borderedElement {
-  /* border: 1px solid var(--border-color); */
-  border: 1px solid var(--color-agrospai-light);
-  border-radius: var(--border-radius);
-  padding: calc(var(--spacer) / 2) var(--spacer);
-}
-
 .publisher {
   display: flex;
   flex-direction: row;
@@ -49,14 +27,6 @@
   gap: 1rem;
 }
 
-.modalActions {
-  display: flex;
-  column-gap: 0.5rem;
-  align-items: flex-end;
-  justify-content: flex-end;
-  margin: calc(var(--spacer) / 2) 0;
-}
-
 .reason {
   word-wrap: break-word;
   overflow-y: scroll;
@@ -66,14 +36,6 @@
   padding: 0 calc(var(--spacer) / 2);
   text-align: justify;
   margin: calc(var(--spacer) / 2) 0;
-}
-
-.modalConfirmBtn {
-  background-color: var(--brand-alert-green);
-}
-
-.modalRejectBtn {
-  background-color: var(--brand-alert-red);
 }
 
 .requestContainer {
@@ -90,13 +52,18 @@
   padding: calc(var(--spacer) / 3);
   width: 100%;
   font-family: inherit;
+  border: none;
+}
+
+.responseTextbox:focus {
+  outline: none;
 }
 
 .horizontalContainer {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: start;
+  align-items: flex-start;
   gap: 0.5rem;
   height: fit-content;
 }
