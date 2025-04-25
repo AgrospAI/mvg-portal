@@ -1,8 +1,5 @@
 import { useConsents } from '@context/Profile/ConsentsProvider'
 import Info from '@images/info.svg'
-import ThumbsDown from '@images/thumbsdown.svg'
-import ThumbsUp from '@images/thumbsup.svg'
-import { ConsentState } from '@utils/consentsUser'
 import { useEffect, useState } from 'react'
 import styles from './ConsentRowActions.module.css'
 
@@ -18,46 +15,29 @@ interface Props {
 }
 
 export default function ConsentRowActions({ consent, type }: Props) {
-  const { updateSelected, setSelected, setIsInspect } = useConsents()
+  const { setSelected, setIsInspect, setIsInteractiveInspect } = useConsents()
 
   const [actions, setActions] = useState<Action[]>()
 
   useEffect(() => {
     const getActions = (
       type: 'outgoing' | 'incoming',
-      updateSelected: (_: ConsentState) => void,
       setIsInspect: (_: boolean) => void
     ): Action[] => {
-      if (type === 'outgoing')
-        return [
-          {
-            icon: <Info />,
-            title: 'Inspect',
-            action: () => setIsInspect(true)
-          }
-        ]
-
       return [
-        {
-          icon: <ThumbsUp />,
-          title: 'Accept',
-          action: () => updateSelected(ConsentState.ACCEPTED)
-        },
-        {
-          icon: <ThumbsDown />,
-          title: 'Reject',
-          action: () => updateSelected(ConsentState.REJECTED)
-        },
         {
           icon: <Info />,
           title: 'Inspect',
-          action: () => setIsInspect(true)
+          action: () => {
+            setIsInspect(true)
+            setIsInteractiveInspect(type !== 'outgoing')
+          }
         }
       ]
     }
 
-    setActions(getActions(type, updateSelected, setIsInspect))
-  }, [consent, type, updateSelected, setIsInspect])
+    setActions(getActions(type, setIsInspect))
+  }, [consent, type, setIsInspect])
 
   return (
     <div className={styles.actions}>

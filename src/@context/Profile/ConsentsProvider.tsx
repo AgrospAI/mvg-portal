@@ -21,10 +21,12 @@ interface ConsentsProviderValue {
   outgoing: ListConsent[]
   selected: ListConsent | undefined
   isInspect: boolean
+  isInteractiveInspect: boolean
   isLoading: boolean
   isOnlyPending: boolean
   setSelected: (consent: ListConsent) => void
   setIsInspect: (value: boolean) => void
+  setIsInteractiveInspect: (value: boolean) => void
   setIsLoading: (value: boolean) => void
   setIsOnlyPending: (value: boolean) => void
   updateSelected: (state: ConsentState) => void
@@ -35,8 +37,8 @@ const ConsentsProviderContext = createContext({} as ConsentsProviderValue)
 // const filterState = (consents: Consent[], state: ConsentState) =>
 //   consents.filter((consent) => consent.state === state)
 
-const filterPending = (consents: Consent[]) =>
-  filterState(consents, ConsentState.PENDING)
+// const filterPending = (consents: ListConsent[]) =>
+//   filterState(consents, ConsentState.PENDING)
 
 function ConsentsProvider({ children }: PropsWithChildren) {
   const { address } = useAccount()
@@ -45,6 +47,7 @@ function ConsentsProvider({ children }: PropsWithChildren) {
 
   const [isOnlyPending, setIsOnlyPending] = useState(false)
   const [isInspect, setIsInspect] = useState(false)
+  const [isInteractiveInspect, setIsInteractiveInspect] = useState(false)
 
   const [incoming, setIncoming] = useState<ListConsent[]>([])
   const [outgoing, setOutgoing] = useState<ListConsent[]>([])
@@ -80,22 +83,23 @@ function ConsentsProvider({ children }: PropsWithChildren) {
     [address, setIsLoading]
   )
 
-  const updateSelected = async (state: ConsentState) => {
-    if (!selected) return
+  const updateSelected = (state: ConsentState) => {}
+  // const updateSelected = async (state: ConsentState) => {
+  //   if (!selected) return
 
-    setIsLoading(true)
+  //   setIsLoading(true)
 
-    updateConsent(selected.id, state)
-      .then(({ state }) => {
-        setIncoming(
-          incoming.map((consent) =>
-            consent.id === selected.id ? { ...consent, state } : consent
-          )
-        )
-      })
-      .catch((error) => LoggerInstance.error(error.message))
-      .finally(() => setIsLoading(false))
-  }
+  //   updateConsent(selected.id, state)
+  //     .then(({ state }) => {
+  //       setIncoming(
+  //         incoming.map((consent) =>
+  //           consent.id === selected.id ? { ...consent, state } : consent
+  //         )
+  //       )
+  //     })
+  //     .catch((error) => LoggerInstance.error(error.message))
+  //     .finally(() => setIsLoading(false))
+  // }
 
   useEffect(() => {
     fetchUserConsents('incoming')
@@ -108,14 +112,16 @@ function ConsentsProvider({ children }: PropsWithChildren) {
   return (
     <ConsentsProviderContext.Provider
       value={{
-        incoming: isOnlyPending ? filterPending(incoming) : incoming,
-        outgoing: isOnlyPending ? filterPending(outgoing) : outgoing,
+        incoming: /* isOnlyPending ? filterPending(incoming) : */ incoming,
+        outgoing: /* isOnlyPending ? filterPending(outgoing) : */ outgoing,
         selected,
         isInspect,
+        isInteractiveInspect,
         isLoading,
         isOnlyPending,
         setSelected,
         setIsInspect,
+        setIsInteractiveInspect,
         setIsLoading,
         setIsOnlyPending,
         updateSelected

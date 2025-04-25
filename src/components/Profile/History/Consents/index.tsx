@@ -8,9 +8,10 @@ import Refresh from '@images/refresh.svg'
 import { useEffect, useState } from 'react'
 import { useAccount } from 'wagmi'
 import ConsentRowActions from './ConsentRowActions'
-import ConsentStateBadge from './StateBadge'
 import styles from './index.module.css'
 import { extractDidFromUrl } from '@utils/consentsUser'
+import Publisher from '@components/@shared/Publisher'
+import ConsentStateBadge from './StateBadge'
 
 const getTabs = (
   columns,
@@ -73,17 +74,13 @@ export default function ConsentsTab({
 
   const columns: TableOceanColumn<Consent>[] = [
     {
+      name: 'Date',
+      selector: (row) => <Time date={row.created_at} isUnix />
+    },
+    {
       name: 'Dataset',
       selector: (row) => <AssetListTitle did={extractDidFromUrl(row.dataset)} />
     },
-    // {
-    //   name: 'State',
-    //   selector: (row) => (
-    //     <div className={styles.columnItem}>
-    //       <ConsentStateBadge state={row.state} />
-    //     </div>
-    //   )
-    // },
     {
       name: 'Algorithm',
       selector: (row) => (
@@ -93,10 +90,14 @@ export default function ConsentsTab({
       )
     },
     {
-      name: 'Date Created',
+      name: 'Solicitor',
+      selector: (row) => <Publisher account={row.solicitor} showName />
+    },
+    {
+      name: 'State',
       selector: (row) => (
         <div className={styles.columnItem}>
-          <Time date={row.created_at} relative isUnix />
+          <ConsentStateBadge state={row.response} />
         </div>
       )
     },

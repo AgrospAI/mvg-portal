@@ -1,20 +1,20 @@
-import { Asset } from '@oceanprotocol/lib'
-import React, { useEffect, useState } from 'react'
-import styles from './IncomingPendingConsentsSimple.module.css'
-import { useConsents } from '@context/Profile/ConsentsProvider'
-import { ConsentState } from '@utils/consentsUser'
 import Publisher from '@components/@shared/Publisher'
-import Ellipsis from '@images/ellipsis.svg'
+import { useConsents } from '@context/Profile/ConsentsProvider'
 import Cog from '@images/cog.svg'
+import { Asset } from '@oceanprotocol/lib'
+import { ConsentState } from '@utils/consentsUser'
+import { useEffect, useState } from 'react'
+import styles from './IncomingPendingConsentsSimple.module.css'
 
 interface Props {
   asset: Asset
 }
 
 export default function IncomingPendingConsentsSimple({ asset }: Props) {
-  const { incoming, setSelected, setIsInspect } = useConsents()
+  const { incoming, setSelected, setIsInspect, setIsInteractiveInspect } =
+    useConsents()
 
-  const [incomingForAsset, setIncomingForAsset] = useState<Consent[]>()
+  const [incomingForAsset, setIncomingForAsset] = useState<ListConsent[]>()
 
   useEffect(() => {
     if (!asset || !incoming) return
@@ -40,6 +40,7 @@ export default function IncomingPendingConsentsSimple({ asset }: Props) {
                   className={styles.action}
                   onClick={() => {
                     setSelected(consent)
+                    setIsInteractiveInspect(true)
                     setIsInspect(true)
                   }}
                 >
