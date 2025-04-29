@@ -44,4 +44,5 @@ interface ConsentsUserData {
   assets: string[]
   incoming_pending_consents: number
   outgoing_pending_consents: number
+  solicited_pending_consents: number
 }
