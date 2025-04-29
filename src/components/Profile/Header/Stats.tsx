@@ -6,7 +6,8 @@ import { useUserConsents } from '@context/Profile/AccountConsentsProvider'
 
 export default function Stats(): ReactElement {
   const { assetsTotal, sales } = useProfile()
-  const { incomingPending, outgoingPending } = useUserConsents()
+  const { incomingPending, outgoingPending, solicitedPending } =
+    useUserConsents()
 
   return (
     <div className={styles.stats}>
@@ -22,6 +23,10 @@ export default function Stats(): ReactElement {
       <NumberUnit
         label="Outgoing Pending Consents"
         value={outgoingPending ?? -1}
+      />
+      <NumberUnit
+        label="Solicited Pending Consents"
+        value={solicitedPending ?? -1}
       />
     </div>
   )

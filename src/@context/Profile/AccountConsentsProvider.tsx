@@ -14,6 +14,7 @@ import ConsentsProvider from './ConsentsProvider'
 interface AccountConsentsProviderValue {
   incomingPending: number
   outgoingPending: number
+  solicitedPending: number
   isLoading: boolean
   isRefetch: boolean
   setIsLoading: (value: boolean) => void
@@ -29,6 +30,7 @@ function AccountConsentsProvider({ children }) {
 
   const [incomingPending, setIncomingPending] = useState(0)
   const [outgoingPending, setOutgoingPending] = useState(0)
+  const [solicitedPending, setSolicitedPending] = useState(0)
 
   const [isLoading, setIsLoading] = useState(false)
   const [isRefetch, setIsRefetch] = useState(false)
@@ -44,6 +46,7 @@ function AccountConsentsProvider({ children }) {
         .then((data) => {
           setIncomingPending(data.incoming_pending_consents)
           setOutgoingPending(data.outgoing_pending_consents)
+          setSolicitedPending(data.solicited_pending_consents)
         })
         .catch((error) => LoggerInstance.error(error.message))
         .finally(() => setIsLoading(false))
@@ -70,6 +73,7 @@ function AccountConsentsProvider({ children }) {
       value={{
         incomingPending,
         outgoingPending,
+        solicitedPending,
         isLoading,
         isRefetch,
         setIsLoading,
