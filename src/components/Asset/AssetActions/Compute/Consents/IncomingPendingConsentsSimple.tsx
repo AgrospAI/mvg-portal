@@ -2,7 +2,7 @@ import Publisher from '@components/@shared/Publisher'
 import { useConsents } from '@context/Profile/ConsentsProvider'
 import Cog from '@images/cog.svg'
 import { Asset } from '@oceanprotocol/lib'
-import { ConsentState } from '@utils/consentsUser'
+import { ConsentState, ListConsent } from '@utils/consentsUser'
 import { useEffect, useState } from 'react'
 import styles from './IncomingPendingConsentsSimple.module.css'
 
@@ -21,7 +21,7 @@ export default function IncomingPendingConsentsSimple({ asset }: Props) {
 
     const incomingForAsset = incoming.filter(
       (consent) =>
-        consent.state == ConsentState.PENDING && consent.asset === asset.id
+        consent.status === ConsentState.PENDING && consent.asset === asset.id
     )
 
     setIncomingForAsset(incomingForAsset)
@@ -40,7 +40,9 @@ export default function IncomingPendingConsentsSimple({ asset }: Props) {
                   className={styles.action}
                   onClick={() => {
                     setSelected(consent)
-                    setIsInteractiveInspect(true)
+                    setIsInteractiveInspect(
+                      consent.state === ConsentState.PENDING
+                    )
                     setIsInspect(true)
                   }}
                 >

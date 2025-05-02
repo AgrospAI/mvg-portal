@@ -1,17 +1,15 @@
 import Publisher from '@components/@shared/Publisher'
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import styles from './ConsentRequest.module.css'
-import Link from 'next/link'
 
-interface PossibleRequests {
+import { ExtendedAsset } from '@utils/consentsUser'
+
+export interface PossibleRequests {
   trusted_algorithm_publisher: boolean
   trusted_algorithm: boolean
   trusted_credential_address: boolean
   allow_network_access: boolean
-}
-
-interface ExtendedAsset extends ConsentsAsset {
-  name: string
 }
 
 interface ConsentRequestProps {
@@ -38,15 +36,14 @@ function ConsentRequest({
   }
 
   useEffect(() => {
-    if (!interactive) return
     // If the consents are interactive, set them to false by default
     for (const key in JSON.parse(values) as PossibleRequests) {
       setVal((prev) => ({
         ...prev,
-        [key]: false
+        [key]: !interactive
       }))
     }
-  }, [])
+  }, [interactive, values])
 
   function getCompleteRequest(key: keyof PossibleRequests) {
     switch (key) {
@@ -79,11 +76,17 @@ function ConsentRequest({
     }
   }
 
-  const requestsSimple = {
-    trusted_algorithm_publisher: 'Do you want to trust the publisher?',
-    trusted_algorithm: 'Do you want to trust the algorithm usage?',
-    trusted_credential_address: 'Trusted Credential Address',
-    allow_network_access: 'Do you want to allow network access?'
+  function getSimpleRequest(key: keyof PossibleRequests) {
+    switch (key) {
+      case 'trusted_algorithm_publisher':
+        return 'Do you want to trust the publisher?'
+      case 'trusted_algorithm':
+        return 'Do you want to trust the algorithm usage?'
+      case 'trusted_credential_address':
+        return 'Trusted Credential Address'
+      case 'allow_network_access':
+        return 'Do you want to allow network access?'
+    }
   }
 
   const active = Object.entries(val).filter((value) => value)
@@ -95,13 +98,13 @@ function ConsentRequest({
             <input
               className={`${styles.input_interactive} ${styles.interactive}`}
               id={`${key}_i`}
-              name={`${key}_i`}
+              name={key}
               type="checkbox"
-              checked={value}
+              defaultChecked={value}
               onClick={() => update(key as keyof PossibleRequests)}
             />
             <label htmlFor={`${key}_i`} className={styles.interactive}>
-              {requestsSimple[key]}
+              {getSimpleRequest(key as keyof PossibleRequests)}
             </label>
           </div>
         ))

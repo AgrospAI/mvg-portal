@@ -1,5 +1,10 @@
 import { useConsents } from '@context/Profile/ConsentsProvider'
 import Info from '@images/info.svg'
+import {
+  ConsentDirection,
+  ConsentState,
+  ListConsent
+} from '@utils/consentsUser'
 import styles from './ConsentRowActions.module.css'
 
 export default function ConsentRowActions({
@@ -16,9 +21,13 @@ export default function ConsentRowActions({
         aria-label="Inspect"
         title="Inspect"
         onClick={() => {
+          console.log(consent.status)
           setSelected(consent)
           setIsInspect(true)
-          setIsInteractiveInspect(consent.type !== 'outgoing')
+          setIsInteractiveInspect(
+            consent.type === ConsentDirection.INCOMING &&
+              consent.status === null
+          )
         }}
       >
         <Info />
