@@ -1,5 +1,5 @@
 import { createContext, PropsWithChildren, useContext, useState } from 'react'
-import ConsentPetitionModal from './ConsentPetitionModal'
+import ConsentPetitionModal from '../../components/Profile/History/Consents/Modal/ConsentPetitionModal'
 
 interface ConsentsPetitionProviderValue {
   isStartPetition: boolean

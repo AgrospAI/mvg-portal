@@ -1,8 +1,9 @@
 import { LoggerInstance } from '@oceanprotocol/lib'
 import {
+  ConsentDirection,
   ConsentState,
-  getUserIncomingConsents,
-  getUserOutgoingConsents
+  getUserConsents,
+  ListConsent
 } from '@utils/consentsUser'
 import {
   createContext,
@@ -18,6 +19,7 @@ import { useUserConsents } from './AccountConsentsProvider'
 interface ConsentsProviderValue {
   incoming: ListConsent[]
   outgoing: ListConsent[]
+  solicited: ListConsent[]
   selected: ListConsent | undefined
   isInspect: boolean
   isInteractiveInspect: boolean
@@ -29,14 +31,22 @@ interface ConsentsProviderValue {
   setIsLoading: (value: boolean) => void
   setIsOnlyPending: (value: boolean) => void
   updateSelected: (state: ConsentState) => void
+  refetchIncoming: () => void
+  refetchOutgoing: () => void
+  refetchSolicited: () => void
 }
 
 const ConsentsProviderContext = createContext({} as ConsentsProviderValue)
 
 function ConsentsProvider({ children }: PropsWithChildren) {
   const { address } = useAccount()
-  const { incomingPending, outgoingPending, isLoading, setIsLoading } =
-    useUserConsents()
+  const {
+    incomingPending,
+    outgoingPending,
+    solicitedPending,
+    isLoading,
+    setIsLoading
+  } = useUserConsents()
 
   const [isOnlyPending, setIsOnlyPending] = useState(false)
   const [isInspect, setIsInspect] = useState(false)
@@ -44,31 +54,33 @@ function ConsentsProvider({ children }: PropsWithChildren) {
 
   const [incoming, setIncoming] = useState<ListConsent[]>([])
   const [outgoing, setOutgoing] = useState<ListConsent[]>([])
+  const [solicited, setSolicited] = useState<ListConsent[]>([])
   const [selected, setSelected] = useState<ListConsent>()
 
+  const [refetchIncoming, setRefetchIncoming] = useState(true)
+  const [refetchOutgoing, setRefetchOutgoing] = useState(true)
+  const [refetchSolicited, setRefetchSolicited] = useState(true)
+
   const fetchUserConsents = useCallback(
-    async (way: 'incoming' | 'outgoing') => {
+    async (direction: ConsentDirection) => {
       if (!address) return
 
       setIsLoading(true)
 
-      const setIfOk = (
-        fetcher: () => Promise<ListConsent[]>,
-        setter: (data: ListConsent[]) => void
-      ) => {
-        fetcher()
-          .then(setter)
-          .catch((error) => LoggerInstance.error(error.message))
+      let setter = setIncoming
+
+      switch (direction) {
+        case ConsentDirection.SOLICITED:
+          setter = setSolicited
+          break
+        case ConsentDirection.OUTGOING:
+          setter = setOutgoing
+          break
       }
 
-      switch (way) {
-        case 'incoming':
-          setIfOk(() => getUserIncomingConsents(address), setIncoming)
-          break
-        case 'outgoing':
-          setIfOk(() => getUserOutgoingConsents(address), setOutgoing)
-          break
-      }
+      getUserConsents(address, direction)
+        .then(setter)
+        .catch((error) => LoggerInstance.error(error.message))
 
       setIsLoading(false)
     },
@@ -78,18 +90,32 @@ function ConsentsProvider({ children }: PropsWithChildren) {
   const updateSelected = (state: ConsentState) => {}
 
   useEffect(() => {
-    fetchUserConsents('incoming')
-  }, [address, incomingPending, fetchUserConsents])
+    if (refetchIncoming) {
+      fetchUserConsents(ConsentDirection.INCOMING)
+      setRefetchIncoming(false)
+    }
+  }, [address, solicitedPending, fetchUserConsents, refetchIncoming])
 
   useEffect(() => {
-    fetchUserConsents('outgoing')
-  }, [address, outgoingPending, fetchUserConsents])
+    if (refetchOutgoing) {
+      fetchUserConsents(ConsentDirection.OUTGOING)
+      setRefetchOutgoing(false)
+    }
+  }, [address, incomingPending, fetchUserConsents, refetchOutgoing])
+
+  useEffect(() => {
+    if (refetchSolicited) {
+      fetchUserConsents(ConsentDirection.SOLICITED)
+      setRefetchSolicited(false)
+    }
+  }, [address, outgoingPending, fetchUserConsents, refetchSolicited])
 
   return (
     <ConsentsProviderContext.Provider
       value={{
         incoming,
         outgoing,
+        solicited,
         selected,
         isInspect,
         isInteractiveInspect,
@@ -100,7 +126,10 @@ function ConsentsProvider({ children }: PropsWithChildren) {
         setIsInteractiveInspect,
         setIsLoading,
         setIsOnlyPending,
-        updateSelected
+        updateSelected,
+        refetchIncoming: () => setRefetchIncoming(true),
+        refetchOutgoing: () => setRefetchOutgoing(true),
+        refetchSolicited: () => setRefetchSolicited(true)
       }}
     >
       {children}

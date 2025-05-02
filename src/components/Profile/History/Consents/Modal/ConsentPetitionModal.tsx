@@ -1,6 +1,5 @@
 import Modal from '@components/@shared/atoms/Modal'
-import React from 'react'
-import { useConsentsPetition } from './ConsentsPetitionProvider'
+import { useConsentsPetition } from '@context/Profile/ConsentsPetitionProvider'
 
 export default function ConsentPetitionModal() {
   const { isStartPetition, setIsStartPetition } = useConsentsPetition()

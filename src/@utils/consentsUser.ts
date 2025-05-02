@@ -7,47 +7,112 @@ export enum ConsentState {
   RESOLVED = 'Resolved'
 }
 
-export async function getUserIncomingConsents(
-  account: string
+export enum ConsentDirection {
+  INCOMING,
+  OUTGOING,
+  SOLICITED
+}
+
+export interface ConsentsAsset {
+  did: string
+  owner: string
+  type: 'Algorithm' | 'Dataset'
+  pending_consents: number
+}
+
+export interface ExtendedAsset extends ConsentsAsset {
+  name: string
+}
+
+export interface SolicitorDetailed {
+  url: string
+  address: string
+}
+
+export interface ListConsent {
+  url: string
+  reason: string
+  dataset: string
+  algorithm: string
+  solicitor: string
+  request: string
+  status: ConsentState | null
+  created_at: number
+  type?: ConsentDirection
+}
+
+export interface Consent {
+  id: number
+  created_at: string
+  dataset: string
+  algorithm: string
+  solicitor: SolicitorDetailed
+  reason: string
+  request: string
+  response: string | null
+}
+
+export interface ConsentsUserData {
+  address: string
+  assets: string[]
+  incoming_pending_consents: number
+  outgoing_pending_consents: number
+  solicited_pending_consents: number
+}
+
+export interface ConsentResponse {
+  consent: string
+  status: ConsentState
+  reason: string
+  permitted: string
+  last_updated_at: number
+}
+
+async function fetchConsents(
+  url: string,
+  direction: ConsentDirection
 ): Promise<ListConsent[]> {
-  const url = `${process.env.NEXT_PUBLIC_CONSENT_SERVER}/api/users/${account}/incoming/`
   return fetchData(url)
     .then((data) =>
-      data.map((item: ListConsent) => ({ ...item, type: 'incoming' }))
+      data.map((item: ListConsent) => ({
+        ...item,
+        type: direction
+      }))
     )
     .catch((error) => {
-      console.error('Error fetching incoming consents:', error)
+      console.error('Error fetching consents:', error)
       return []
     })
 }
 
-export async function getUserOutgoingConsents(
-  account: string
+export async function getUserConsents(
+  address: string,
+  direction: ConsentDirection
 ): Promise<ListConsent[]> {
-  const url = `${process.env.NEXT_PUBLIC_CONSENT_SERVER}/api/users/${account}/outgoing/`
-  return fetchData(url)
-    .then((data) =>
-      data.map((item: ListConsent) => ({ ...item, type: 'outgoing' }))
-    )
-    .catch((error) => {
-      console.error('Error fetching outgoing consents:', error)
-      return []
-    })
+  const consentDirection = ConsentDirection[direction].toLowerCase()
+  return fetchConsents(
+    `${process.env.NEXT_PUBLIC_CONSENT_SERVER}/api/users/${address}/${consentDirection}/`,
+    direction
+  )
 }
 
 export async function updateConsent(
-  consentId: number,
-  state: ConsentState
-): Promise<{ state: ConsentState }> {
-  // TODO: MAKE THIS WORK AGAIN
+  baseUrl: string,
+  reason: string,
+  permitted: string
+): Promise<ListConsent> {
+  // Check this when deployed, may need to change URL to id's
+  const url = `${baseUrl}response/`
 
-  const url = `${process.env.NEXT_PUBLIC_CONSENT_SERVER}/api/consents/${consentId}/`
   return fetch(url, {
-    method: 'PATCH',
+    method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ state: state.charAt(0) })
+    body: JSON.stringify({
+      reason,
+      permitted
+    })
   }).then((response) => response.json())
 }
 
@@ -68,5 +133,9 @@ export function getAsset(url: string): Promise<ConsentsAsset | null> {
 }
 
 export function getConsentDetailed(url: string): Promise<Consent> {
+  return fetchData(url)
+}
+
+export function getConsentResponse(url: string): Promise<ConsentResponse> {
   return fetchData(url)
 }

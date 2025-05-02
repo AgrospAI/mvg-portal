@@ -31,6 +31,7 @@ function getTabs(
   setRefetchJobs: (value: boolean) => void,
   incomingConsents: ListConsent[],
   outgoingConsents: ListConsent[],
+  solicitedConsents: ListConsent[],
   isLoadingConsents: boolean,
   refetchConsents: boolean,
   setRefetchConsents: (value: boolean) => void
@@ -61,6 +62,7 @@ function getTabs(
       <ConsentsTab
         incomingConsents={incomingConsents}
         outgoingConsents={outgoingConsents}
+        solicitedConsents={solicitedConsents}
         isLoading={isLoadingConsents}
         refetchConsents={() => setRefetchConsents(!refetchConsents)}
       />
@@ -88,7 +90,7 @@ export default function HistoryPage({
   const { autoWallet } = useAutomation()
   const { chainIds } = useUserPreferences()
   const { isLoading, isRefetch, setIsRefetch } = useUserConsents()
-  const { incoming, outgoing } = useConsents()
+  const { incoming, outgoing, solicited } = useConsents()
 
   const newCancelToken = useCancelToken()
 
@@ -174,6 +176,7 @@ export default function HistoryPage({
     setRefetchJobs,
     incoming,
     outgoing,
+    solicited,
     isLoading,
     isRefetch,
     setIsRefetch

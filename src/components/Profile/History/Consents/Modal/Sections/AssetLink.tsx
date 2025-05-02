@@ -1,5 +1,5 @@
-import styles from './AssetLink.module.css'
 import Link from 'next/link'
+import styles from './AssetLink.module.css'
 
 interface AssetLinkProps {
   did: string

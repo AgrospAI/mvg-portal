@@ -32,8 +32,8 @@
   overflow-y: scroll;
   max-height: 10rem;
   border: 1px solid var(--border-color);
-  border-right: none;
   padding: 0 calc(var(--spacer) / 2);
+  border-radius: var(--border-radius);
   text-align: justify;
   margin: calc(var(--spacer) / 2) 0;
 }
@@ -68,6 +68,27 @@
   height: fit-content;
 }
 
+.horizontalContent {
+  max-height: 5rem;
+  overflow-y: scroll;
+}
+
 .fullHeight {
   height: 100%;
+}
+
+.modalActions {
+  display: flex;
+  column-gap: 0.5rem;
+  align-items: flex-end;
+  justify-content: flex-end;
+  margin: calc(var(--spacer) / 2) 0;
+}
+
+.confirm {
+  background-color: var(--brand-alert-green);
+}
+
+.reject {
+  background-color: var(--brand-alert-red);
 }

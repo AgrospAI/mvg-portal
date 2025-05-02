@@ -6,8 +6,8 @@ import Time from '@components/@shared/atoms/Time'
 import Publisher from '@components/@shared/Publisher'
 import { useConsents } from '@context/Profile/ConsentsProvider'
 import Refresh from '@images/refresh.svg'
-import { extractDidFromUrl } from '@utils/consentsUser'
-import { useState } from 'react'
+import { extractDidFromUrl, ListConsent } from '@utils/consentsUser'
+import { useCallback, useState } from 'react'
 import { useAccount } from 'wagmi'
 import ConsentRowActions from './ConsentRowActions'
 import styles from './index.module.css'
@@ -18,7 +18,8 @@ const getTabs = (
   isLoading: boolean,
   outgoingConsents: ListConsent[],
   incomingConsents: ListConsent[],
-  refetchConsents: (value: boolean) => void
+  solicitedConsents: ListConsent[],
+  onChangePage: (tabIndex: number) => void
 ): TabsItem[] => {
   return [
     {
@@ -31,7 +32,7 @@ const getTabs = (
           sortAsc={false}
           isLoading={isLoading}
           emptyMessage="No outgoing consents"
-          onChangePage={async () => refetchConsents(true)}
+          onChangePage={onChangePage}
         />
       ),
       disabled: !outgoingConsents?.length
@@ -46,10 +47,25 @@ const getTabs = (
           sortAsc={false}
           isLoading={isLoading}
           emptyMessage="No incoming consents"
-          onChangePage={async () => refetchConsents(true)}
+          onChangePage={onChangePage}
         />
       ),
       disabled: !incomingConsents?.length
+    },
+    {
+      title: 'Solicited',
+      content: (
+        <Table
+          columns={columns}
+          data={solicitedConsents}
+          sortField="row.created_at"
+          sortAsc={false}
+          isLoading={isLoading}
+          emptyMessage="No solicited consents"
+          onChangePage={onChangePage}
+        />
+      ),
+      disabled: !solicitedConsents?.length
     }
   ]
 }
@@ -57,6 +73,7 @@ const getTabs = (
 interface ConsentsTabProps {
   incomingConsents?: ListConsent[]
   outgoingConsents?: ListConsent[]
+  solicitedConsents?: ListConsent[]
   refetchConsents?: (isRefetch: boolean) => void
   isLoading?: boolean
 }
@@ -64,11 +81,18 @@ interface ConsentsTabProps {
 export default function ConsentsTab({
   incomingConsents,
   outgoingConsents,
+  solicitedConsents,
   refetchConsents,
   isLoading
 }: ConsentsTabProps) {
   const { address } = useAccount()
-  const { isOnlyPending, setIsOnlyPending } = useConsents()
+  const {
+    isOnlyPending,
+    setIsOnlyPending,
+    refetchIncoming,
+    refetchOutgoing,
+    refetchSolicited
+  } = useConsents()
 
   const columns: TableOceanColumn<ListConsent>[] = [
     {
@@ -104,12 +128,34 @@ export default function ConsentsTab({
       selector: (row) => <ConsentRowActions consent={row} />
     }
   ]
+
+  const onChangePage = useCallback(
+    (newTabIndex: number) => {
+      const refetch = (tabIndex: number) => {
+        switch (tabIndex) {
+          case 0:
+            refetchOutgoing()
+            break
+          case 1:
+            refetchIncoming()
+            break
+          case 2:
+            refetchSolicited()
+            break
+        }
+      }
+      refetch(newTabIndex)
+    },
+    [refetchIncoming, refetchOutgoing, refetchSolicited]
+  )
+
   const tabs = getTabs(
     columns,
     isLoading,
     outgoingConsents,
     incomingConsents,
-    refetchConsents
+    solicitedConsents,
+    onChangePage
   )
   const [tabIndex, setTabIndex] = useState(() => {
     const index = tabs.findIndex((tab) => !tab.disabled)
