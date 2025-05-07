@@ -17,8 +17,14 @@ interface AccountConsentsProviderValue {
   solicitedPending: number
   isLoading: boolean
   isRefetch: boolean
+  isIncomingRefetch: boolean
+  isOutgoingRefetch: boolean
+  isSolicitedRefetch: boolean
   setIsLoading: (value: boolean) => void
   setIsRefetch: (value: boolean) => void
+  setIsIncomingRefetch: (value: boolean) => void
+  setIsOutgoingRefetch: (value: boolean) => void
+  setIsSolicitedRefetch: (value: boolean) => void
 }
 
 const refreshInterval = 20000
@@ -33,7 +39,10 @@ function AccountConsentsProvider({ children }) {
   const [solicitedPending, setSolicitedPending] = useState(0)
 
   const [isLoading, setIsLoading] = useState(false)
-  const [isRefetch, setIsRefetch] = useState(false)
+  const [isRefetch, setIsRefetch] = useState(true)
+  const [isIncomingRefetch, setIsIncomingRefetch] = useState(false)
+  const [isOutgoingRefetch, setIsOutgoingRefetch] = useState(false)
+  const [isSolicitedRefetch, setIsSolicitedRefetch] = useState(false)
 
   // Periodic fetching of user consents amount
   const fetchUserConsentsAmount = useCallback(
@@ -44,6 +53,13 @@ function AccountConsentsProvider({ children }) {
 
       getUserConsentsAmount(address)
         .then((data) => {
+          if (data.incoming_pending_consents !== incomingPending)
+            setIsIncomingRefetch(true)
+          if (data.outgoing_pending_consents !== outgoingPending)
+            setIsOutgoingRefetch(true)
+          if (data.solicited_pending_consents !== solicitedPending)
+            setIsSolicitedRefetch(true)
+
           setIncomingPending(data.incoming_pending_consents)
           setOutgoingPending(data.outgoing_pending_consents)
           setSolicitedPending(data.solicited_pending_consents)
@@ -51,7 +67,7 @@ function AccountConsentsProvider({ children }) {
         .catch((error) => LoggerInstance.error(error.message))
         .finally(() => setIsLoading(false))
     },
-    [address]
+    [address, incomingPending, outgoingPending, solicitedPending]
   )
 
   useEffect(() => {
@@ -76,8 +92,14 @@ function AccountConsentsProvider({ children }) {
         solicitedPending,
         isLoading,
         isRefetch,
+        isIncomingRefetch,
+        isOutgoingRefetch,
+        isSolicitedRefetch,
         setIsLoading,
-        setIsRefetch
+        setIsRefetch,
+        setIsIncomingRefetch,
+        setIsOutgoingRefetch,
+        setIsSolicitedRefetch
       }}
     >
       <ConsentsProvider>

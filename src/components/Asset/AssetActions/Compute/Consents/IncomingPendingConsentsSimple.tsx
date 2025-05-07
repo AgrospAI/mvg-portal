@@ -1,4 +1,4 @@
-import Publisher from '@components/@shared/Publisher'
+import AssetLink from '@components/Profile/History/Consents/Modal/Sections/AssetLink'
 import { useConsents } from '@context/Profile/ConsentsProvider'
 import Cog from '@images/cog.svg'
 import { Asset } from '@oceanprotocol/lib'
@@ -21,40 +21,48 @@ export default function IncomingPendingConsentsSimple({ asset }: Props) {
 
     const incomingForAsset = incoming.filter(
       (consent) =>
-        consent.status === ConsentState.PENDING && consent.asset === asset.id
+        (consent.status === ConsentState.PENDING || consent.status === null) &&
+        consent.dataset.includes(asset.id)
     )
 
     setIncomingForAsset(incomingForAsset)
-  }, [incoming])
+  }, [asset, incoming])
 
   return (
-    <div className={styles.container}>
+    <>
       {incomingForAsset?.length ? (
-        <>
+        <div className={styles.section}>
           <div className={styles.title}>Incoming consents</div>
-          <div className={styles.consentList}>
-            {incomingForAsset?.map((consent, index) => (
-              <div key={index} className={styles.consentRow}>
-                <Publisher account={consent.solicitor} showName={true} />
-                <div
-                  className={styles.action}
-                  onClick={() => {
-                    setSelected(consent)
-                    setIsInteractiveInspect(
-                      consent.state === ConsentState.PENDING
-                    )
-                    setIsInspect(true)
-                  }}
-                >
-                  <Cog />
+          <div className={styles.container}>
+            <div className={styles.consentList}>
+              {incomingForAsset?.map((consent, index) => (
+                <div key={index} className={styles.consentRow}>
+                  <div className={styles.assetLinkContainer}>
+                    <AssetLink
+                      did={asset.id}
+                      name={asset.metadata.name}
+                      className={styles.assetLink}
+                    />
+                  </div>
+                  <Cog
+                    onClick={() => {
+                      setSelected(consent)
+                      setIsInteractiveInspect(
+                        consent.status === ConsentState.PENDING ||
+                          consent.status === null
+                      )
+                      setIsInspect(true)
+                    }}
+                    className={styles.action}
+                  />
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </>
+        </div>
       ) : (
         <div className={styles.noConsents}>No incoming consents</div>
       )}
-    </div>
+    </>
   )
 }

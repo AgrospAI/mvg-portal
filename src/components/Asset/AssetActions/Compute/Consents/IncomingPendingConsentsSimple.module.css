@@ -1,18 +1,27 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  row-gap: 0;
+  align-items: center;
+}
+
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 100%;
+  border: 0.065rem solid var(--color-secondary);
 }
 
 .title {
-  padding-bottom: 2rem;
+  padding-bottom: 0.5rem;
 }
 
 .noConsents {
   padding-bottom: 1rem;
   font-style: italic;
+  text-align: center;
 }
 
 .consentList {
@@ -24,10 +33,14 @@
 }
 
 .consentList > .consentRow {
+  position: relative;
   display: flex;
   flex-direction: row;
+  width: 100%;
+  padding: 0 0.5rem;
   border-bottom: 1px solid var(--border-color);
-  padding: 0.5rem;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .consentList > .consentRow:last-of-type {
@@ -36,5 +49,22 @@
 
 .action {
   cursor: pointer;
+}
+
+.assetLinkContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.assetLink {
+  display: flex;
+  align-items: center;
+  font-size: small;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   margin: auto 0;
+  padding: 0.5rem;
 }

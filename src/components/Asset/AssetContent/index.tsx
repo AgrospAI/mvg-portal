@@ -23,6 +23,8 @@ import ServiceCredentialVisualizer from '@components/@shared/ServiceCredentialVi
 import Web3Feedback from '@components/@shared/Web3Feedback'
 import { useAccount } from 'wagmi'
 import DDODownloadButton from '@components/@shared/DDODownloadButton'
+import ConsentsPetitionProvider from '@context/Profile/ConsentsPetitionProvider'
+import AccountConsentsProvider from '@context/Profile/AccountConsentsProvider'
 
 export default function AssetContent({
   asset
@@ -124,7 +126,11 @@ export default function AssetContent({
         </div>
 
         <div className={styles.actions}>
-          <AssetActions asset={asset} />
+          <AccountConsentsProvider>
+            <ConsentsPetitionProvider>
+              <AssetActions asset={asset} />
+            </ConsentsPetitionProvider>
+          </AccountConsentsProvider>
           {isOwner && isAssetNetwork && (
             <div className={styles.ownerActions}>
               <Button style="text" size="small" to={`/asset/${asset?.id}/edit`}>

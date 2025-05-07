@@ -15,6 +15,7 @@ import {
   getAsset,
   getConsentDetailed,
   getConsentResponse,
+  parsePossibleRequest,
   updateConsent
 } from '@utils/consentsUser'
 import axios from 'axios'
@@ -25,9 +26,11 @@ import ModalSection from './Sections/ModalSection'
 
 export default function ReasonModal() {
   const {
+    incoming,
     selected,
     isInspect,
     isInteractiveInspect,
+    setIncoming,
     setIsInspect,
     setSelected
   } = useConsents()
@@ -82,21 +85,18 @@ export default function ReasonModal() {
 
     let permitted: PossibleRequests | null = {} as PossibleRequests
     if (isAccepted) {
-      if (Array.from(formData.keys()).length === 0) {
-        permitted = null
-      } else {
-        for (const entry of formData) {
-          permitted[entry[0]] = 1
-        }
-      }
+      permitted = parsePossibleRequest(formData)
     } else {
       permitted = null
     }
 
     const permittedRequests = permitted ? JSON.stringify(permitted) : '0'
-    updateConsent(selected.url, reason, permittedRequests).then(
-      (data) => (selected.status = data.status)
-    )
+    updateConsent(selected.url, reason, permittedRequests).then((data) => {
+      selected.status = data.status
+      setIncoming(
+        incoming.map((inc) => (inc.url === selected.url ? selected : inc))
+      )
+    })
 
     setIsInspect(false)
     setSelected(null)
@@ -168,8 +168,11 @@ export default function ReasonModal() {
                       <p>Requests for:</p>
                       <ConsentRequest
                         values={consent.request}
-                        dataset={{ ...dataset, name: datasetName }}
-                        algorithm={{ ...algorithm, name: algorithmName }}
+                        datasetDid={dataset.did}
+                        datasetName={datasetName}
+                        algorithmDid={algorithm.did}
+                        algorithmName={algorithmName}
+                        algorithmOwnerAddress={algorithm.owner}
                       />
                     </>
                   ) : (
@@ -206,8 +209,11 @@ export default function ReasonModal() {
                         <p>Accepted requests:</p>
                         <ConsentRequest
                           values={consent.request}
-                          dataset={{ ...dataset, name: datasetName }}
-                          algorithm={{ ...algorithm, name: algorithmName }}
+                          datasetDid={dataset.did}
+                          datasetName={datasetName}
+                          algorithmDid={algorithm.did}
+                          algorithmName={algorithmName}
+                          algorithmOwnerAddress={algorithm.owner}
                           interactive
                         />
                       </>
@@ -254,8 +260,11 @@ export default function ReasonModal() {
                           <p>Accepted requests:</p>
                           <ConsentRequest
                             values={consentResponse.permitted}
-                            dataset={{ ...dataset, name: datasetName }}
-                            algorithm={{ ...algorithm, name: algorithmName }}
+                            datasetDid={dataset.did}
+                            datasetName={datasetName}
+                            algorithmDid={algorithm.did}
+                            algorithmName={algorithmName}
+                            algorithmOwnerAddress={algorithm.owner}
                           />
                         </>
                       ) : (

@@ -4,6 +4,7 @@ import Table, { TableOceanColumn } from '@components/@shared/atoms/Table'
 import Tabs, { TabsItem } from '@components/@shared/atoms/Tabs'
 import Time from '@components/@shared/atoms/Time'
 import Publisher from '@components/@shared/Publisher'
+import { useUserConsents } from '@context/Profile/AccountConsentsProvider'
 import { useConsents } from '@context/Profile/ConsentsProvider'
 import Refresh from '@images/refresh.svg'
 import { extractDidFromUrl, ListConsent } from '@utils/consentsUser'
@@ -19,7 +20,10 @@ const getTabs = (
   outgoingConsents: ListConsent[],
   incomingConsents: ListConsent[],
   solicitedConsents: ListConsent[],
-  onChangePage: (tabIndex: number) => void
+  onChangePage: (tabIndex: number) => void,
+  setIsRefetchIncoming: (value: boolean) => void,
+  setIsRefetchOutgoing: (value: boolean) => void,
+  setIsRefetchSolicited: (value: boolean) => void
 ): TabsItem[] => {
   return [
     {
@@ -32,7 +36,10 @@ const getTabs = (
           sortAsc={false}
           isLoading={isLoading}
           emptyMessage="No outgoing consents"
-          onChangePage={onChangePage}
+          onChangePage={(p) => {
+            onChangePage(p)
+            setIsRefetchIncoming(true)
+          }}
         />
       ),
       disabled: !outgoingConsents?.length
@@ -47,7 +54,10 @@ const getTabs = (
           sortAsc={false}
           isLoading={isLoading}
           emptyMessage="No incoming consents"
-          onChangePage={onChangePage}
+          onChangePage={(p) => {
+            onChangePage(p)
+            setIsRefetchOutgoing(true)
+          }}
         />
       ),
       disabled: !incomingConsents?.length
@@ -62,7 +72,10 @@ const getTabs = (
           sortAsc={false}
           isLoading={isLoading}
           emptyMessage="No solicited consents"
-          onChangePage={onChangePage}
+          onChangePage={(p) => {
+            onChangePage(p)
+            setIsRefetchSolicited(true)
+          }}
         />
       ),
       disabled: !solicitedConsents?.length
@@ -74,7 +87,7 @@ interface ConsentsTabProps {
   incomingConsents?: ListConsent[]
   outgoingConsents?: ListConsent[]
   solicitedConsents?: ListConsent[]
-  refetchConsents?: (isRefetch: boolean) => void
+  refetchConsents?: () => void
   isLoading?: boolean
 }
 
@@ -86,13 +99,9 @@ export default function ConsentsTab({
   isLoading
 }: ConsentsTabProps) {
   const { address } = useAccount()
-  const {
-    isOnlyPending,
-    setIsOnlyPending,
-    refetchIncoming,
-    refetchOutgoing,
-    refetchSolicited
-  } = useConsents()
+  const { isOnlyPending, setIsOnlyPending } = useConsents()
+  const { setIsIncomingRefetch, setIsOutgoingRefetch, setIsSolicitedRefetch } =
+    useUserConsents()
 
   const columns: TableOceanColumn<ListConsent>[] = [
     {
@@ -134,19 +143,19 @@ export default function ConsentsTab({
       const refetch = (tabIndex: number) => {
         switch (tabIndex) {
           case 0:
-            refetchOutgoing()
+            setIsOutgoingRefetch(true)
             break
           case 1:
-            refetchIncoming()
+            setIsIncomingRefetch(true)
             break
           case 2:
-            refetchSolicited()
+            setIsSolicitedRefetch(true)
             break
         }
       }
       refetch(newTabIndex)
     },
-    [refetchIncoming, refetchOutgoing, refetchSolicited]
+    [setIsIncomingRefetch, setIsOutgoingRefetch, setIsSolicitedRefetch]
   )
 
   const tabs = getTabs(
@@ -155,7 +164,10 @@ export default function ConsentsTab({
     outgoingConsents,
     incomingConsents,
     solicitedConsents,
-    onChangePage
+    onChangePage,
+    setIsIncomingRefetch,
+    setIsOutgoingRefetch,
+    setIsSolicitedRefetch
   )
   const [tabIndex, setTabIndex] = useState(() => {
     const index = tabs.findIndex((tab) => !tab.disabled)
@@ -174,7 +186,7 @@ export default function ConsentsTab({
           size="small"
           title="Refresh consents"
           disabled={isLoading}
-          onClick={async () => refetchConsents(true)}
+          onClick={refetchConsents}
           className={styles.refresh}
         >
           <Refresh />

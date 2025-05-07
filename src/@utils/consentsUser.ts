@@ -1,3 +1,4 @@
+import { PossibleRequests } from '@components/Profile/History/Consents/ConsentRequest'
 import { fetchData } from './fetch'
 
 export enum ConsentState {
@@ -50,6 +51,7 @@ export interface Consent {
   reason: string
   request: string
   response: string | null
+  status: ConsentState | null
 }
 
 export interface ConsentsUserData {
@@ -116,11 +118,46 @@ export async function updateConsent(
   }).then((response) => response.json())
 }
 
+export async function newConsent(
+  address: string,
+  datasetDid: string,
+  algorithmDid: string,
+  reason: string,
+  request: PossibleRequests
+): Promise<Consent> {
+  const url = `${process.env.NEXT_PUBLIC_CONSENT_SERVER}/api/consents/`
+  return fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      reason,
+      dataset: datasetDid,
+      algorithm: algorithmDid,
+      solicitor: address,
+      request: JSON.stringify(request)
+    })
+  }).then((response) => response.json())
+}
+
 export async function getUserConsentsAmount(
   account: string
 ): Promise<ConsentsUserData> {
   const url = `${process.env.NEXT_PUBLIC_CONSENT_SERVER}/api/users/${account}`
   return fetchData(url)
+}
+
+export async function deleteConsentResponse(
+  consent: ListConsent
+): Promise<void> {
+  const url = `${consent.url}delete-response/`
+  return fetch(url, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }).then()
 }
 
 export function extractDidFromUrl(url: string): string | null {
@@ -138,4 +175,18 @@ export function getConsentDetailed(url: string): Promise<Consent> {
 
 export function getConsentResponse(url: string): Promise<ConsentResponse> {
   return fetchData(url)
+}
+
+export function parsePossibleRequest(
+  formData: FormData
+): PossibleRequests | null {
+  const res: PossibleRequests = {} as PossibleRequests
+  if (Array.from(formData.keys()).length === 0) {
+    return null
+  } else {
+    for (const entry of formData) {
+      res[entry[0]] = entry[1] ? '1' : '0'
+    }
+  }
+  return res
 }
