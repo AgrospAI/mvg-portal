@@ -1,8 +1,9 @@
 import { useConsents } from '@context/Profile/ConsentsProvider'
+import Cross from '@images/cross.svg'
 import Info from '@images/info.svg'
 import {
   ConsentDirection,
-  ConsentState,
+  deleteConsentResponse,
   ListConsent
 } from '@utils/consentsUser'
 import styles from './ConsentRowActions.module.css'
@@ -12,7 +13,13 @@ export default function ConsentRowActions({
 }: {
   consent: ListConsent
 }) {
-  const { setSelected, setIsInspect, setIsInteractiveInspect } = useConsents()
+  const {
+    incoming,
+    setIncoming,
+    setSelected,
+    setIsInspect,
+    setIsInteractiveInspect
+  } = useConsents()
 
   return (
     <div className={styles.actions}>
@@ -21,7 +28,6 @@ export default function ConsentRowActions({
         aria-label="Inspect"
         title="Inspect"
         onClick={() => {
-          console.log(consent.status)
           setSelected(consent)
           setIsInspect(true)
           setIsInteractiveInspect(
@@ -32,6 +38,24 @@ export default function ConsentRowActions({
       >
         <Info />
       </div>
+      {consent.status && consent.type === ConsentDirection.INCOMING && (
+        <div
+          className={styles.item}
+          aria-label="Delete response"
+          title="Delete response"
+          onClick={() => {
+            deleteConsentResponse(consent).then(() => {
+              setIncoming(
+                incoming.map((inc) =>
+                  inc.url === consent.url ? { ...consent, status: null } : inc
+                )
+              )
+            })
+          }}
+        >
+          <Cross />
+        </div>
+      )}
     </div>
   )
 }

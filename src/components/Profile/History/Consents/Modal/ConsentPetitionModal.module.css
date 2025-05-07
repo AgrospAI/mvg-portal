@@ -1,0 +1,53 @@
+.selector {
+  background: none;
+  padding: calc(var(--spacer) / 4);
+  border-radius: var(--border-radius);
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  row-gap: calc(var(--spacer) / 3);
+}
+
+.algorithmContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.reasonTextbox {
+  padding: calc(var(--spacer) / 3);
+  width: 100%;
+  font-family: inherit;
+}
+
+.reasonTextbox:focus {
+  outline: none;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.submitButton {
+  background-color: var(--color-agrospai-dark);
+}
+
+.errorMessage {
+  display: flex;
+  flex-direction: row;
+  align-content: flex-start;
+  border: 1px solid var(--brand-alert-red);
+  border-radius: var(--border-radius);
+  background-color: pink;
+  margin-top: 5px;
+  padding: 0 5px;
+  column-gap: calc(var(--spacer) / 4);
+}
+
+.alert {
+  width: fit-content;
+}

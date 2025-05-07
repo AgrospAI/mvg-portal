@@ -1,18 +1,19 @@
-import { ReactElement, useCallback, useEffect, useState } from 'react'
-import Tabs from '@shared/atoms/Tabs'
-import PublishedList from './PublishedList'
-import Downloads from './Downloads'
-import ComputeJobs from './ComputeJobs'
-import styles from './index.module.css'
-import { getComputeJobs } from '@utils/compute'
+import { useUserConsents } from '@context/Profile/AccountConsentsProvider'
+import { useConsents } from '@context/Profile/ConsentsProvider'
 import { useUserPreferences } from '@context/UserPreferences'
 import { useCancelToken } from '@hooks/useCancelToken'
 import { LoggerInstance } from '@oceanprotocol/lib'
+import Tabs from '@shared/atoms/Tabs'
+import { getComputeJobs } from '@utils/compute'
+import { ListConsent } from '@utils/consentsUser'
+import { ReactElement, useCallback, useEffect, useState } from 'react'
 import { useAccount } from 'wagmi'
 import { useAutomation } from '../../../@context/Automation/AutomationProvider'
+import ComputeJobs from './ComputeJobs'
 import ConsentsTab from './Consents'
-import { useUserConsents } from '@context/Profile/AccountConsentsProvider'
-import { useConsents } from '@context/Profile/ConsentsProvider'
+import Downloads from './Downloads'
+import styles from './index.module.css'
+import PublishedList from './PublishedList'
 
 interface HistoryTab {
   title: string
@@ -33,8 +34,7 @@ function getTabs(
   outgoingConsents: ListConsent[],
   solicitedConsents: ListConsent[],
   isLoadingConsents: boolean,
-  refetchConsents: boolean,
-  setRefetchConsents: (value: boolean) => void
+  refetchConsents: () => void
 ): HistoryTab[] {
   const defaultTabs: HistoryTab[] = [
     {
@@ -64,7 +64,7 @@ function getTabs(
         outgoingConsents={outgoingConsents}
         solicitedConsents={solicitedConsents}
         isLoading={isLoadingConsents}
-        refetchConsents={() => setRefetchConsents(!refetchConsents)}
+        refetchConsents={refetchConsents}
       />
     )
   }
@@ -78,7 +78,8 @@ function getTabs(
 const tabsIndexList = {
   published: 0,
   downloads: 1,
-  computeJobs: 2
+  computeJobs: 2,
+  consents: 3
 }
 
 export default function HistoryPage({
@@ -89,7 +90,7 @@ export default function HistoryPage({
   const { address: accountId } = useAccount()
   const { autoWallet } = useAutomation()
   const { chainIds } = useUserPreferences()
-  const { isLoading, isRefetch, setIsRefetch } = useUserConsents()
+  const { isLoading, setIsRefetch } = useUserConsents()
   const { incoming, outgoing, solicited } = useConsents()
 
   const newCancelToken = useCancelToken()
@@ -178,8 +179,7 @@ export default function HistoryPage({
     outgoing,
     solicited,
     isLoading,
-    isRefetch,
-    setIsRefetch
+    () => setIsRefetch(true)
   )
 
   return (

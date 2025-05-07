@@ -25,15 +25,12 @@ interface ConsentsProviderValue {
   isInteractiveInspect: boolean
   isLoading: boolean
   isOnlyPending: boolean
+  setIncoming: (consents: ListConsent[]) => void
   setSelected: (consent: ListConsent) => void
   setIsInspect: (value: boolean) => void
   setIsInteractiveInspect: (value: boolean) => void
   setIsLoading: (value: boolean) => void
   setIsOnlyPending: (value: boolean) => void
-  updateSelected: (state: ConsentState) => void
-  refetchIncoming: () => void
-  refetchOutgoing: () => void
-  refetchSolicited: () => void
 }
 
 const ConsentsProviderContext = createContext({} as ConsentsProviderValue)
@@ -41,11 +38,16 @@ const ConsentsProviderContext = createContext({} as ConsentsProviderValue)
 function ConsentsProvider({ children }: PropsWithChildren) {
   const { address } = useAccount()
   const {
-    incomingPending,
-    outgoingPending,
-    solicitedPending,
     isLoading,
-    setIsLoading
+    setIsLoading,
+    isRefetch,
+    setIsRefetch,
+    isOutgoingRefetch,
+    setIsOutgoingRefetch,
+    isIncomingRefetch,
+    setIsIncomingRefetch,
+    isSolicitedRefetch,
+    setIsSolicitedRefetch
   } = useUserConsents()
 
   const [isOnlyPending, setIsOnlyPending] = useState(false)
@@ -56,10 +58,6 @@ function ConsentsProvider({ children }: PropsWithChildren) {
   const [outgoing, setOutgoing] = useState<ListConsent[]>([])
   const [solicited, setSolicited] = useState<ListConsent[]>([])
   const [selected, setSelected] = useState<ListConsent>()
-
-  const [refetchIncoming, setRefetchIncoming] = useState(true)
-  const [refetchOutgoing, setRefetchOutgoing] = useState(true)
-  const [refetchSolicited, setRefetchSolicited] = useState(true)
 
   const fetchUserConsents = useCallback(
     async (direction: ConsentDirection) => {
@@ -87,49 +85,77 @@ function ConsentsProvider({ children }: PropsWithChildren) {
     [address, setIsLoading]
   )
 
-  const updateSelected = (state: ConsentState) => {}
-
   useEffect(() => {
-    if (refetchIncoming) {
+    if (isIncomingRefetch || isRefetch) {
       fetchUserConsents(ConsentDirection.INCOMING)
-      setRefetchIncoming(false)
+      setIsIncomingRefetch(false)
+      setIsRefetch(false)
     }
-  }, [address, solicitedPending, fetchUserConsents, refetchIncoming])
+  }, [
+    address,
+    fetchUserConsents,
+    isIncomingRefetch,
+    isRefetch,
+    setIsIncomingRefetch,
+    setIsRefetch
+  ])
 
   useEffect(() => {
-    if (refetchOutgoing) {
+    if (isOutgoingRefetch || isRefetch) {
       fetchUserConsents(ConsentDirection.OUTGOING)
-      setRefetchOutgoing(false)
+      setIsOutgoingRefetch(false)
+      setIsRefetch(false)
     }
-  }, [address, incomingPending, fetchUserConsents, refetchOutgoing])
+  }, [
+    address,
+    fetchUserConsents,
+    isOutgoingRefetch,
+    isRefetch,
+    setIsOutgoingRefetch,
+    setIsRefetch
+  ])
 
   useEffect(() => {
-    if (refetchSolicited) {
+    if (isSolicitedRefetch || isRefetch) {
       fetchUserConsents(ConsentDirection.SOLICITED)
-      setRefetchSolicited(false)
+      setIsSolicitedRefetch(false)
+      setIsRefetch(false)
     }
-  }, [address, outgoingPending, fetchUserConsents, refetchSolicited])
+  }, [
+    address,
+    fetchUserConsents,
+    isRefetch,
+    isSolicitedRefetch,
+    setIsRefetch,
+    setIsSolicitedRefetch
+  ])
+
+  const isPending = (consent: ListConsent) => {
+    return consent.status == null || consent.status === ConsentState.PENDING
+  }
+
+  const filtered = (consents: ListConsent[]) => {
+    if (!isOnlyPending) return consents
+    return consents.filter(isPending)
+  }
 
   return (
     <ConsentsProviderContext.Provider
       value={{
-        incoming,
-        outgoing,
-        solicited,
+        incoming: filtered(incoming),
+        outgoing: filtered(outgoing),
+        solicited: filtered(solicited),
         selected,
         isInspect,
         isInteractiveInspect,
         isLoading,
         isOnlyPending,
+        setIncoming,
         setSelected,
         setIsInspect,
         setIsInteractiveInspect,
         setIsLoading,
-        setIsOnlyPending,
-        updateSelected,
-        refetchIncoming: () => setRefetchIncoming(true),
-        refetchOutgoing: () => setRefetchOutgoing(true),
-        refetchSolicited: () => setRefetchSolicited(true)
+        setIsOnlyPending
       }}
     >
       {children}

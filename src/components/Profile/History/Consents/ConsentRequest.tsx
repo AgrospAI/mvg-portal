@@ -3,8 +3,6 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import styles from './ConsentRequest.module.css'
 
-import { ExtendedAsset } from '@utils/consentsUser'
-
 export interface PossibleRequests {
   trusted_algorithm_publisher: boolean
   trusted_algorithm: boolean
@@ -14,16 +12,24 @@ export interface PossibleRequests {
 
 interface ConsentRequestProps {
   values: string
-  dataset: ExtendedAsset
-  algorithm: ExtendedAsset
+  datasetDid: string
+  datasetName: string
+  algorithmDid: string
+  algorithmName: string
+  algorithmOwnerAddress: string
   interactive?: boolean
+  showAll?: boolean
 }
 
 function ConsentRequest({
   values,
-  dataset,
-  algorithm,
-  interactive
+  datasetDid,
+  datasetName,
+  algorithmDid,
+  algorithmName,
+  algorithmOwnerAddress,
+  interactive,
+  showAll
 }: Readonly<ConsentRequestProps>) {
   const [val, setVal] = useState({} as PossibleRequests)
 
@@ -36,13 +42,20 @@ function ConsentRequest({
   }
 
   useEffect(() => {
-    // If the consents are interactive, set them to false by default
-    for (const key in JSON.parse(values) as PossibleRequests) {
-      setVal((prev) => ({
-        ...prev,
-        [key]: !interactive
-      }))
-    }
+    const parsedValues = values ? JSON.parse(values) : {}
+    const initialValues = Object.keys(parsedValues).length
+      ? parsedValues
+      : {
+          trusted_algorithm_publisher: false,
+          trusted_algorithm: false,
+          trusted_credential_address: false,
+          allow_network_access: false
+        }
+
+    setVal((prev) => ({
+      ...prev,
+      ...initialValues
+    }))
   }, [interactive, values])
 
   function getCompleteRequest(key: keyof PossibleRequests) {
@@ -50,18 +63,19 @@ function ConsentRequest({
       case 'trusted_algorithm_publisher':
         return (
           <span className={styles.requestListItem}>
-            To make <Publisher account={algorithm.owner} showName /> a trusted
-            service provider. This will allow all of their owned services to
-            work on <Link href={`/asset/${dataset.did}`}>{dataset.name}</Link>{' '}
-            without future manual approval.
+            To make <Publisher account={algorithmOwnerAddress} showName /> a
+            trusted service provider. This will allow all of their owned
+            services to work on{' '}
+            <Link href={`/asset/${datasetDid}`}>{datasetName}</Link> without
+            future manual approval.
           </span>
         )
       case 'trusted_algorithm':
         return (
           <span>
             To trust the access and usage of{' '}
-            <Link href={`/asset/${dataset.did}`}>{dataset.name}</Link> via{' '}
-            <Link href={`/asset/${algorithm.did}`}>{algorithm.name}</Link>.
+            <Link href={`/asset/${datasetDid}`}>{datasetName}</Link> via{' '}
+            <Link href={`/asset/${algorithmDid}`}>{algorithmName}</Link>.
           </span>
         )
       case 'trusted_credential_address':
@@ -70,7 +84,7 @@ function ConsentRequest({
         return (
           <span>
             To enable network access when using any service with data from{' '}
-            <Link href={`/asset/${dataset.did}`}>{dataset.name}</Link>.
+            <Link href={`/asset/${datasetDid}`}>{datasetName}</Link>.
           </span>
         )
     }
@@ -89,7 +103,9 @@ function ConsentRequest({
     }
   }
 
-  const active = Object.entries(val).filter((value) => value)
+  const active = showAll
+    ? Object.entries(val)
+    : Object.entries(val).filter((value) => value)
   return (
     <>
       {interactive ? (
