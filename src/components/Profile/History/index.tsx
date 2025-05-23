@@ -1,16 +1,13 @@
-import { useUserConsents } from '@context/Profile/AccountConsentsProvider'
-import { useConsents } from '@context/Profile/ConsentsProvider'
+import { useAutomation } from '@context/Automation/AutomationProvider'
 import { useUserPreferences } from '@context/UserPreferences'
 import { useCancelToken } from '@hooks/useCancelToken'
 import { LoggerInstance } from '@oceanprotocol/lib'
 import Tabs from '@shared/atoms/Tabs'
 import { getComputeJobs } from '@utils/compute'
-import { ListConsent } from '@utils/consentsUser'
-import { ReactElement, useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useAccount } from 'wagmi'
-import { useAutomation } from '../../../@context/Automation/AutomationProvider'
 import ComputeJobs from './ComputeJobs'
-import ConsentsTab from './Consents'
+import ConsentsFeed from './Consents/Feed/ConsentsFeed'
 import Downloads from './Downloads'
 import styles from './index.module.css'
 import PublishedList from './PublishedList'
@@ -29,12 +26,7 @@ function getTabs(
   jobs: ComputeJobMetaData[],
   isLoadingJobs: boolean,
   refetchJobs: boolean,
-  setRefetchJobs: (value: boolean) => void,
-  incomingConsents: ListConsent[],
-  outgoingConsents: ListConsent[],
-  solicitedConsents: ListConsent[],
-  isLoadingConsents: boolean,
-  refetchConsents: () => void
+  setRefetchJobs: (value: boolean) => void
 ): HistoryTab[] {
   const defaultTabs: HistoryTab[] = [
     {
@@ -58,15 +50,7 @@ function getTabs(
   }
   const consentsTab: HistoryTab = {
     title: 'Consents',
-    content: (
-      <ConsentsTab
-        incomingConsents={incomingConsents}
-        outgoingConsents={outgoingConsents}
-        solicitedConsents={solicitedConsents}
-        isLoading={isLoadingConsents}
-        refetchConsents={refetchConsents}
-      />
-    )
+    content: <ConsentsFeed />
   }
   if (accountId === userAccountId || accountId === autoWalletAccountId) {
     defaultTabs.push(computeTab, consentsTab)
@@ -82,16 +66,14 @@ const tabsIndexList = {
   consents: 3
 }
 
-export default function HistoryPage({
-  accountIdentifier
-}: {
+interface Props {
   accountIdentifier: string
-}): ReactElement {
+}
+
+export default function HistoryPage({ accountIdentifier }: Props) {
   const { address: accountId } = useAccount()
   const { autoWallet } = useAutomation()
   const { chainIds } = useUserPreferences()
-  const { isLoading, setIsRefetch } = useUserConsents()
-  const { incoming, outgoing, solicited } = useConsents()
 
   const newCancelToken = useCancelToken()
 
@@ -174,12 +156,7 @@ export default function HistoryPage({
     jobs,
     isLoadingJobs,
     refetchJobs,
-    setRefetchJobs,
-    incoming,
-    outgoing,
-    solicited,
-    isLoading,
-    () => setIsRefetch(true)
+    setRefetchJobs
   )
 
   return (

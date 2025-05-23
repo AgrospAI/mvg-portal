@@ -1,46 +1,27 @@
 import Button from '@components/@shared/atoms/Button'
-import { useConsentsPetition } from '@context/Profile/ConsentsPetitionProvider'
-import axios from 'axios'
-import { useEffect } from 'react'
 import styles from './ConsentPetitionButton.module.css'
-import { getAssetsNames } from '@utils/aquarius'
+import { useModal } from '@context/Modal'
+import ConsentPetitionModal from '@components/Profile/History/Consents/Modal/ConsentPetitionModal'
 
 interface Props {
   asset: AssetExtended
 }
 
 export default function ConsentPetitionButton({ asset }: Props) {
-  const { setIsStartPetition, setDataset } = useConsentsPetition()
-
-  // useEffect(() => {
-  //   if (!asset) return
-
-  //   const source = axios.CancelToken.source()
-
-  //   async function getAssetName(did: string) {
-  //     const title = await getAssetsNames([did], source.token)
-  //     return title[did]
-  //   }
-
-  //   getAssetName(asset.nft.address).then((data) => {})
-
-  //   return () => {
-  //     source.cancel()
-  //   }
-  // }, [asset])
+  const { setCurrentModal, openModal } = useModal()
 
   return (
     <div>
       <span className={styles.requestButtonContainer}>
-        Your algorithm is not listed?
+        Your {asset.metadata.algorithm ? 'dataset' : 'algorithm'} is not listed?
         <Button
           style="text"
           size="small"
-          title="Refresh consents"
+          title="Start consent petition"
           type="button"
           onClick={() => {
-            setIsStartPetition(true)
-            setDataset(asset)
+            setCurrentModal(<ConsentPetitionModal asset={asset} />)
+            openModal()
           }}
           className={styles.requestButton}
         >

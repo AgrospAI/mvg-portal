@@ -6,8 +6,7 @@ import ProfileProvider from '@context/Profile'
 import { useRouter } from 'next/router'
 import { useAccount } from 'wagmi'
 import { isAddress } from 'ethers/lib/utils'
-import { useAutomation } from '../../@context/Automation/AutomationProvider'
-import AccountConsentsProvider from '@context/Profile/AccountConsentsProvider'
+import { useAutomation } from '@context/Automation/AutomationProvider'
 
 export default function PageProfile(): ReactElement {
   const router = useRouter()
@@ -49,9 +48,7 @@ export default function PageProfile(): ReactElement {
       noPageHeader
     >
       <ProfileProvider accountId={finalAccountId} ownAccount={ownAccount}>
-        <AccountConsentsProvider>
-          <ProfilePage accountId={finalAccountId} />
-        </AccountConsentsProvider>
+        <ProfilePage accountId={finalAccountId} />
       </ProfileProvider>
     </Page>
   )

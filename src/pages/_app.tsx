@@ -14,6 +14,17 @@ import { ConnectKitProvider } from 'connectkit'
 import { connectKitTheme, wagmiClient } from '@utils/wallet'
 import AutomationProvider from '../@context/Automation/AutomationProvider'
 import { FilterProvider } from '@context/Filter'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import ModalProvider from '@context/Modal'
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 5,
+      gcTime: 20_000
+    }
+  }
+})
 
 function MyApp({ Component, pageProps }: AppProps): ReactElement {
   Decimal.set({ rounding: 1 })
@@ -32,9 +43,13 @@ function MyApp({ Component, pageProps }: AppProps): ReactElement {
                   <ConsentProvider>
                     <SearchBarStatusProvider>
                       <FilterProvider>
-                        <App>
-                          <Component {...pageProps} />
-                        </App>
+                        <QueryClientProvider client={queryClient}>
+                          <ModalProvider>
+                            <App>
+                              <Component {...pageProps} />
+                            </App>
+                          </ModalProvider>
+                        </QueryClientProvider>
                       </FilterProvider>
                     </SearchBarStatusProvider>
                   </ConsentProvider>
