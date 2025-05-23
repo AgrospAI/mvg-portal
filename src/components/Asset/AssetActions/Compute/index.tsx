@@ -64,6 +64,7 @@ import { parseConsumerParameterValues } from '../ConsumerParameters'
 import { useAutomation } from '../../../../@context/Automation/AutomationProvider'
 import { Signer } from 'ethers'
 import { useAccount } from 'wagmi'
+import AssetConsents from './Consents/AssetConsents'
 import { useMarketMetadata } from '@context/MarketMetadata'
 
 const refreshInterval = 10000 // 10 sec.
@@ -568,6 +569,7 @@ export default function Compute({
             algorithmDid={asset.id}
             asset={asset}
           />
+          <AssetConsents asset={asset} />
         </>
       ) : (
         <Formik

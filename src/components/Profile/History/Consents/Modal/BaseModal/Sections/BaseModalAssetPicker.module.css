@@ -7,7 +7,8 @@
 .container {
   display: flex;
   flex-direction: column;
-  row-gap: calc(var(--spacer) / 3);
+  row-gap: calc(var(--spacer) / 2);
+  width: 100%;
 }
 
 .algorithmContainer {
@@ -25,15 +26,6 @@
 
 .reasonTextbox:focus {
   outline: none;
-}
-
-.actions {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.submitButton {
-  background-color: var(--color-agrospai-dark);
 }
 
 .errorMessage {

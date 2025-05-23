@@ -1,9 +1,11 @@
-import AssetLink from '@components/Profile/History/Consents/Modal/Sections/AssetLink'
-import { useConsents } from '@context/Profile/ConsentsProvider'
+import AssetLink from '@components/Profile/History/Consents/Modal/BaseModal/Components/AssetLink'
+import InspectConsentModal from '@components/Profile/History/Consents/Modal/InspectConsentModal'
+import { useModal } from '@context/Modal'
+import { useUserIncomingConsents } from '@hooks/useUserConsents'
 import Cog from '@images/cog.svg'
 import { Asset } from '@oceanprotocol/lib'
-import { ConsentState, ListConsent } from '@utils/consentsUser'
-import { useEffect, useState } from 'react'
+import { Consent } from '@utils/consents/types'
+import { isPending } from '@utils/consents/utils'
 import styles from './IncomingPendingConsentsSimple.module.css'
 
 interface Props {
@@ -11,53 +13,38 @@ interface Props {
 }
 
 export default function IncomingPendingConsentsSimple({ asset }: Props) {
-  const { incoming, setSelected, setIsInspect, setIsInteractiveInspect } =
-    useConsents()
+  const { data: incoming } = useUserIncomingConsents()
+  const { setSelected, setIsInteractive, openModal, setCurrentModal } =
+    useModal()
 
-  const [incomingForAsset, setIncomingForAsset] = useState<ListConsent[]>()
-
-  useEffect(() => {
-    if (!asset || !incoming) return
-
-    const incomingForAsset = incoming.filter(
-      (consent) =>
-        (consent.status === ConsentState.PENDING || consent.status === null) &&
-        consent.dataset.includes(asset.id)
-    )
-
-    setIncomingForAsset(incomingForAsset)
-  }, [asset, incoming])
+  const incomingForAsset = incoming.filter(
+    (consent: Consent) =>
+      isPending(consent) && consent.dataset.includes(asset.id)
+  )
 
   return (
     <>
       {incomingForAsset?.length ? (
         <div className={styles.section}>
           <div className={styles.title}>Incoming consents</div>
-          <div className={styles.container}>
-            <div className={styles.consentList}>
-              {incomingForAsset?.map((consent, index) => (
-                <div key={index} className={styles.consentRow}>
-                  <div className={styles.assetLinkContainer}>
-                    <AssetLink
-                      did={asset.id}
-                      name={asset.metadata.name}
-                      className={styles.assetLink}
-                    />
-                  </div>
-                  <Cog
-                    onClick={() => {
-                      setSelected(consent)
-                      setIsInteractiveInspect(
-                        consent.status === ConsentState.PENDING ||
-                          consent.status === null
-                      )
-                      setIsInspect(true)
-                    }}
-                    className={styles.action}
-                  />
-                </div>
-              ))}
-            </div>
+          <div className={styles.consentList}>
+            {incomingForAsset?.map((consent, index) => (
+              <div key={index} className={styles.consentRow}>
+                <AssetLink
+                  did={consent.algorithm}
+                  className={styles.assetLink}
+                />
+                <Cog
+                  onClick={() => {
+                    setCurrentModal(<InspectConsentModal consent={consent} />)
+                    setSelected(consent)
+                    setIsInteractive(isPending(consent))
+                    openModal()
+                  }}
+                  className={styles.action}
+                />
+              </div>
+            ))}
           </div>
         </div>
       ) : (

@@ -1,5 +1,9 @@
 .badge {
   padding: 5px 10px;
+  width: 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 5px;
   font-size: 0.8rem;
   font-weight: 500;

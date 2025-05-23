@@ -1,0 +1,16 @@
+.publisher > div {
+  margin-right: 0;
+}
+
+.publisher {
+  display: flex;
+  flex-direction: row;
+  justify-items: center;
+  gap: 0.2rem;
+  margin: 0 calc(var(--spacer) / 4);
+}
+
+.title {
+  font-style: italic;
+  margin-bottom: 0.5rem;
+}
