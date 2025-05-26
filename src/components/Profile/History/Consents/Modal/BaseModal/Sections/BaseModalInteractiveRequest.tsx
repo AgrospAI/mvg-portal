@@ -4,6 +4,7 @@ import { ErrorMessage, Field, Form, Formik } from 'formik'
 import { useBaseModal } from '../BaseModal'
 import RequestsList from '../Components/RequestsList'
 import BaseModalActions from './BaseModalActions'
+import Info from '@images/info.svg'
 import styles from './BaseModalRequest.module.css'
 
 interface BaseModalInteractiveRequestProps {
@@ -25,7 +26,7 @@ function BaseModalInteractiveRequest({
       validate={(values) => {
         const errors: { reason?: string; permissions?: string } = {}
         if (!values.reason) {
-          errors.reason = 'Required'
+          errors.reason = 'Reason required'
         } else if (values.reason.length > 255) {
           errors.reason = 'Must be 255 characters or less'
         }
@@ -46,7 +47,14 @@ function BaseModalInteractiveRequest({
               placeholder="This is where your reasons go"
               class={styles.reasonTextbox}
             />
-            <ErrorMessage name="reason" component="div" />
+            <ErrorMessage name="reason" component="div">
+              {(msg) => (
+                <div className={styles.error}>
+                  <Info />
+                  {msg}
+                </div>
+              )}
+            </ErrorMessage>
             <RequestsList
               dataset={dataset}
               algorithm={algorithm}

@@ -12,5 +12,10 @@ export default function AssetConsents({ asset }: Props) {
   if (address === asset.nft.owner) {
     return <IncomingPendingConsentsSimple asset={asset} />
   }
+
+  if (asset.metadata.algorithm) {
+    return <></>
+  }
+
   return <ConsentPetitionButton asset={asset} />
 }
