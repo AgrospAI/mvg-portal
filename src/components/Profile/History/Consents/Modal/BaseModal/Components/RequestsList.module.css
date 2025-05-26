@@ -1,10 +1,10 @@
-.request_list > li {
+.requestList > li {
   display: list-item;
   margin-left: var(--spacer);
   text-align: justify;
 }
 
-.request_list > li > span {
+.requestList > li > span {
   display: inline;
   gap: 1em;
 }

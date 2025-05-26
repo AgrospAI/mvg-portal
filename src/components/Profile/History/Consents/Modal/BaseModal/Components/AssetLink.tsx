@@ -4,35 +4,32 @@ import { getAsset } from '@utils/aquarius'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import styles from './AssetLink.module.css'
+import { extractDidFromUrl } from '@utils/consents/utils'
+import { isValidDid } from '@utils/ddo'
 
 interface AssetLinkProps {
-  curr?: Asset
+  asset?: Asset
   did?: string
   className?: string
 }
 
-export default function AssetLink({ curr, did, className }: AssetLinkProps) {
+export default function AssetLink({ asset, did, className }: AssetLinkProps) {
   const newCancelToken = useCancelToken()
-  const [asset, setAsset] = useState<Asset>(curr)
+  const [curr, setCurr] = useState<Asset>(asset)
 
   useEffect(() => {
     let isMounted = true
-    async function fetchAsset() {
-      if (curr) {
-        setAsset(curr)
-      } else if (did) {
-        const fetchedAsset = await getAsset(did, newCancelToken())
-        console.log('fetchedAsset', fetchedAsset)
-        if (isMounted && fetchedAsset) setAsset(fetchedAsset)
-      } else {
-        throw new Error('No did or curr provided')
-      }
+
+    if (did) {
+      getAsset(extractDidFromUrl(did), newCancelToken()).then((fetched) => {
+        isMounted && setCurr(fetched)
+      })
     }
-    fetchAsset()
+
     return () => {
       isMounted = false
     }
-  }, [curr, did, newCancelToken])
+  }, [did, newCancelToken])
 
   return (
     <h3 className={className || styles.title}>
@@ -41,7 +38,7 @@ export default function AssetLink({ curr, did, className }: AssetLinkProps) {
         target="_blank"
         rel="noopener noreferrer"
       >
-        {asset?.nft?.name ?? 'Missing name'}
+        {curr?.nft?.name ?? 'Missing name'}
       </Link>
     </h3>
   )

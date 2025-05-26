@@ -18,8 +18,6 @@
 .consentList {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
   width: 100%;
   border: 1px solid var(--border-color);
   background-color: var(--background-highlight);
@@ -29,17 +27,25 @@
 .consentRow {
   display: flex;
   flex-direction: row;
-  justify-items: flex-end;
-  width: 100%;
   border-bottom: 1px solid var(--border-color);
+  padding: calc(var(--spacer) / 4);
 }
 
 .consentRow:last-of-type {
   border: none;
 }
 
+.actionContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  flex: 1;
+}
+
 .action {
   cursor: pointer;
+  margin: 0 calc(var(--spacer) / 2);
 }
 
 .assetLink {
@@ -50,5 +56,4 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  padding: 0.5rem;
 }

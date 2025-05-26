@@ -87,7 +87,7 @@ function RequestsList({
               type="checkbox"
               name={`permissions.${permission}`}
               value="on"
-              class={styles.input_interactive}
+              class={styles.inputInteractive}
             />
             {getCompleteRequest(permission as keyof PossibleRequests)}
           </label>
@@ -100,7 +100,7 @@ function RequestsList({
     return (
       <>
         <p>Requests for:</p>
-        <ul className={styles.request_list}>
+        <ul className={styles.requestList}>
           {requests.map(([key]) => (
             <li key={key}>
               {getCompleteRequest(key as keyof PossibleRequests) ??
@@ -116,7 +116,7 @@ function RequestsList({
     <>
       {requests.map(([key]) => (
         <div key={key} className={styles.request}>
-          <li>
+          <li className={styles.requestItem}>
             {getSimpleRequest(key as keyof PossibleRequests) ??
               `Unexpected key ${key}`}
           </li>

@@ -7,6 +7,7 @@ import { Asset } from '@oceanprotocol/lib'
 import { Consent } from '@utils/consents/types'
 import { isPending } from '@utils/consents/utils'
 import styles from './IncomingPendingConsentsSimple.module.css'
+import classNames from 'classnames/bind'
 
 interface Props {
   asset: Asset
@@ -34,15 +35,17 @@ export default function IncomingPendingConsentsSimple({ asset }: Props) {
                   did={consent.algorithm}
                   className={styles.assetLink}
                 />
-                <Cog
-                  onClick={() => {
-                    setCurrentModal(<InspectConsentModal consent={consent} />)
-                    setSelected(consent)
-                    setIsInteractive(isPending(consent))
-                    openModal()
-                  }}
-                  className={styles.action}
-                />
+                <div className={styles.actionContainer}>
+                  <Cog
+                    class={styles.action}
+                    onClick={() => {
+                      setCurrentModal(<InspectConsentModal consent={consent} />)
+                      setSelected(consent)
+                      setIsInteractive(isPending(consent))
+                      openModal()
+                    }}
+                  />
+                </div>
               </div>
             ))}
           </div>
