@@ -40,8 +40,13 @@ function RequestsList({
         case 'trusted_algorithm_publisher':
           return (
             <>
-              To make <Publisher account={algorithm.nft.owner} showName /> a
-              trusted service provider. This will allow all of their owned
+              To make{' '}
+              <Publisher
+                account={algorithm.nft.owner}
+                showName
+                className={styles.publisher}
+              />{' '}
+              a trusted service provider. This will allow all of their owned
               services to work on{' '}
               <Link href={`/asset/${dataset.id}`}>{dataset.nft.name}</Link>{' '}
               without future manual approval.
@@ -80,14 +85,20 @@ function RequestsList({
 
   if (isInteractive) {
     return (
-      <div role="group" aria-labelledby="requests-group">
+      <div
+        role="group"
+        aria-labelledby="requests-group"
+        className={styles.requestList}
+      >
         {requests.map(([permission]) => (
-          <label key={permission} className={styles.interactive}>
+          <label
+            key={permission}
+            className={`${styles.interactive} ${styles.requestItem}`}
+          >
             <Field
               type="checkbox"
               name={`permissions.${permission}`}
               value="on"
-              class={styles.inputInteractive}
             />
             {getCompleteRequest(permission as keyof PossibleRequests)}
           </label>

@@ -7,7 +7,6 @@ import { Asset } from '@oceanprotocol/lib'
 import { Consent } from '@utils/consents/types'
 import { isPending } from '@utils/consents/utils'
 import styles from './IncomingPendingConsentsSimple.module.css'
-import classNames from 'classnames/bind'
 
 interface Props {
   asset: Asset
