@@ -17,7 +17,7 @@ export interface ConsentResponse {
   consent: string
   status: ConsentState
   reason: string
-  permitted: string
+  permitted: PossibleRequests
   last_updated_at: number
 }
 

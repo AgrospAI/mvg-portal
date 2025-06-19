@@ -23,7 +23,6 @@ import ServiceCredentialVisualizer from '@components/@shared/ServiceCredentialVi
 import Web3Feedback from '@components/@shared/Web3Feedback'
 import { useAccount } from 'wagmi'
 import DDODownloadButton from '@components/@shared/DDODownloadButton'
-import AssetConsentsProvider from '@context/AssetConsents'
 
 export default function AssetContent({
   asset
