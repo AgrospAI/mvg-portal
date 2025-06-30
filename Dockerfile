@@ -3,30 +3,18 @@ FROM node:18-alpine AS base
 # Install dependencies only when needed
 FROM base AS deps
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
-RUN apk add --no-cache libc6-compat python3 make g++ git libc-dev && rm -rf /var/lib/apt/lists/*
+RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 # Install dependencies based on the preferred package manager
-COPY bun.lockb bun.lock package.json ./
-COPY scripts/ ./scripts/
-
-ENV HUSKY=0 \
-    npm_config_build_from_source=false \
-    npm_config_optional=false
-
-RUN npm install -g bun && \
-    bun pm cache clean && \
-    bun i;
+COPY package.json package-lock.json ./
+RUN npm ci --ignore-scripts
 
 # Rebuild the source code only when needed
 FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
-COPY --from=deps /usr/local/bin/bun /usr/local/bin/bun
-COPY --from=deps /usr/local/lib/node_modules/bun /usr/local/lib/node_modules/bun
-COPY --from=deps /usr/local/bin/node /usr/local/bin/node
-COPY --from=deps /usr/local/lib/node_modules /usr/local/lib/node_modules
-COPY . .
+COPY . /app
 
 # Next.js collects completely anonymous telemetry data about general usage.
 # Learn more here: https://nextjs.org/telemetry
@@ -36,8 +24,8 @@ ENV NEXT_TELEMETRY_DISABLED=1
 # If using npm comment out above and use below instead
 ENV BRANCH='udl'
 ENV COMMIT_REF=0.1
-RUN bun run postinstall
-RUN bun run build
+RUN npm run postinstall && \
+    npm run build
 
 # Production image, copy all the files and run next
 FROM base AS runner
