@@ -1,6 +1,6 @@
-child_process = require('child_process')
-fs = require('fs')
-path = require('path')
+const child_process = require('child_process')
+const fs = require('fs')
+const path = require('path')
 
 // Run the `write-repo-metadata` script and save output
 try {
