@@ -61,11 +61,14 @@ module.exports = (phase, { defaultConfig }) => {
           permanent: true
         }
       ]
-    }
+    },
 
     // Prefer loading of ES Modules over CommonJS
     // https://nextjs.org/blog/next-11-1#es-modules-support
     // experimental: { esmExternals: true }
+    experimental: {
+      serverActions: true
+    }
   }
 
   return nextConfig
