@@ -1,3 +1,4 @@
+'use server'
 import { CONSENTS_API } from './api'
 import {
   ConsentDirection,
