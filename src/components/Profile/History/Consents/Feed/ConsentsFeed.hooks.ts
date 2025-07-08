@@ -5,7 +5,7 @@ import {
 } from '@hooks/useUserConsents'
 import { useQueryClient } from '@tanstack/react-query'
 
-import { Consent } from '@utils/consents/ConsentApi'
+import { Consent } from '@utils/consents/types'
 import { isPending } from '@utils/consents/utils'
 import { useCallback, useState } from 'react'
 import { useAccount } from 'wagmi'
