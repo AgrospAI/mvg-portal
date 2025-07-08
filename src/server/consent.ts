@@ -1,13 +1,13 @@
 'use server'
-import { CONSENTS_API } from './api'
 import {
+  _Consent,
+  Consent,
   ConsentDirection,
   ConsentState,
-  Consent,
-  PossibleRequests,
-  _Consent,
-  ConsentsUserData
-} from './types'
+  ConsentsUserData,
+  PossibleRequests
+} from '@utils/consents/types'
+import { CONSENTS_API } from './api'
 
 export { ConsentDirection, ConsentState, type Consent }
 
@@ -23,13 +23,13 @@ export async function createConsent(
     dataset: datasetDid,
     algorithm: algorithmDid,
     solicitor: address,
-    request: JSON.stringify(request)
+    request
   }).then((data) => data.data)
 }
 
 export async function getUserConsents(
   address: string,
-  direction?: ConsentDirection
+  direction?: string
 ): Promise<Consent[]> {
   return CONSENTS_API.get(
     `/users/${address}/${direction?.toLowerCase() ?? ''}/`

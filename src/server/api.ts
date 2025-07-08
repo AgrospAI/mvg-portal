@@ -1,8 +1,11 @@
+'use server'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 
+const BASE_URL: string = process.env.NEXT_PUBLIC_CONSENT_SERVER
+
 export const CONSENTS_API = axios.create({
-  baseURL: `${process.env.NEXT_PUBLIC_CONSENT_SERVER}/api`,
+  baseURL: `${BASE_URL}/api`,
   headers: {
     'Content-Type': 'application/json'
   }

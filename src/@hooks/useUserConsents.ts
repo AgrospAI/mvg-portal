@@ -3,15 +3,10 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import {
   Consent,
   ConsentDirection,
-  createConsent,
-  getUserConsents,
-  getUserConsentsAmount
-} from '@utils/consents/ConsentApi'
-import {
-  createConsentResponse,
-  deleteConsentResponse
-} from '@utils/consents/ConsentResponseApi'
-import { ConsentState, PossibleRequests } from '@utils/consents/types'
+  ConsentState,
+  PossibleRequests
+} from '@utils/consents/types'
+import axios from 'axios'
 import { useAccount } from 'wagmi'
 
 function useUserConsents(direction: ConsentDirection, queryKey: string) {
@@ -19,7 +14,15 @@ function useUserConsents(direction: ConsentDirection, queryKey: string) {
 
   return useQuery({
     queryKey: [queryKey, address],
-    queryFn: () => getUserConsents(address, direction),
+    queryFn: () =>
+      axios
+        .get('/api/get-user-consents', {
+          params: {
+            address: `${address}`,
+            direction: `${direction}`
+          }
+        })
+        .then(({ data }) => data),
     placeholderData: (prev) => prev || [],
     enabled: !!address
   })
@@ -41,7 +44,10 @@ export function useUserConsentsAmount() {
   const { address } = useAccount()
   return useQuery({
     queryKey: ['profile-consents', address],
-    queryFn: () => getUserConsentsAmount(address),
+    queryFn: () =>
+      axios
+        .get('/api/get-user-consents-amount', { params: { address } })
+        .then(({ data }) => data),
     enabled: !!address
   })
 }
@@ -57,16 +63,22 @@ export function useCreateConsentResponse() {
   const { address } = useAccount()
 
   return useMutation({
-    mutationFn: ({
+    mutationFn: async ({
       consent,
       reason,
       permitted
     }: {
       consent: Consent
       reason: string
-      permitted: PossibleRequests | null
-    }) => createConsentResponse(consent, reason, permitted),
-
+      permitted?: PossibleRequests
+    }) =>
+      axios
+        .post('/api/create-consent-response', {
+          consentId: consent.id,
+          reason,
+          permitted
+        })
+        .then(({ data }) => data),
     onSuccess: (newConsent, { consent }) => {
       if (!address) return
 
@@ -91,7 +103,15 @@ export function useCreateAssetConsent() {
 
   return useMutation({
     mutationFn: ({ dataset, algorithm, request, reason }: CreateAssetConsent) =>
-      createConsent(address, dataset.id, algorithm.id, request, reason)
+      axios
+        .post('/api/create-consent', {
+          address,
+          datasetDid: dataset.id,
+          algorithmDid: algorithm.id,
+          request: JSON.stringify(request),
+          reason
+        })
+        .then(({ data }) => data)
   })
 }
 
@@ -101,8 +121,11 @@ export function useDeleteConsentResponse() {
 
   return useMutation({
     mutationFn: ({ consent }: { consent: Consent }) =>
-      deleteConsentResponse(consent),
-
+      axios
+        .delete('/api/delete-consent-response', {
+          data: { consentId: consent.id }
+        })
+        .then(({ data }) => data),
     onSuccess: (_, { consent }) => {
       if (!address) return
 
