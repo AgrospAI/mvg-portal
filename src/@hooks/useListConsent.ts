@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { getAsset } from '@utils/aquarius'
-import { Consent } from '@utils/consents/ConsentApi'
+import { Consent } from '@utils/consents/types'
 import { extractDidFromUrl } from '@utils/consents/utils'
 import axios from 'axios'
 
