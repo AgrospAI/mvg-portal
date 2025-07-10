@@ -6,6 +6,7 @@ import { useCancelToken } from '@hooks/useCancelToken'
 import { getAsset } from '@utils/aquarius'
 import { useAssets } from '@hooks/useAssets'
 import AssetPicker from '../Components/AssetPicker'
+import { useLoadingIndicator } from '@hooks/useLoadingIndicator'
 
 interface BaseModalAlgorithmPickerProps {
   address: string
@@ -26,10 +27,15 @@ function BaseModalAlgorithmPicker({
   const [written, setWritten] = useState<Asset>()
   const newCancelToken = useCancelToken()
 
+  const [isLoading, setIsLoading] = useState(false)
+
+  useLoadingIndicator(isLoading)
+
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     e.preventDefault()
 
     setError(undefined)
+    setIsLoading(true)
 
     if (e.target.value) {
       try {
@@ -43,32 +49,40 @@ function BaseModalAlgorithmPicker({
     } else {
       setSelected(undefined)
     }
+    setIsLoading(false)
   }
 
   const handleWrite = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault()
 
+    setIsLoading(true)
     const did = e.target.value.trim()
-    if (did) {
-      getAsset(did, newCancelToken())
-        .then((data) => {
-          if (!data) {
-            setWritten(undefined)
-            setError('Asset not found')
-          } else {
-            setWritten(data)
-            setError(undefined)
-          }
-        })
-        .catch((error) => {
-          console.log(error)
-          LoggerInstance.error(error)
-          setWritten(undefined)
-          setError(error.message)
-        })
-    } else {
+
+    if (!did) {
       setWritten(undefined)
+      setIsLoading(false)
+      return
     }
+
+    getAsset(did, newCancelToken())
+      .then((data) => {
+        if (!data) {
+          setWritten(undefined)
+          setSelected(undefined)
+          setError('Asset not found')
+        } else {
+          setWritten(data)
+          setSelected(data)
+          setError(undefined)
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+        LoggerInstance.error(error)
+        setWritten(undefined)
+        setError(error.message)
+      })
+      .finally(() => setIsLoading(false))
   }
 
   return (
