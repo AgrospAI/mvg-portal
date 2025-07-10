@@ -58,10 +58,14 @@ export function extractFormDetails(
   return { reason, request }
 }
 
-export function isIncoming(consent: Consent): boolean {
-  return consent.direction === ConsentDirection.INCOMING
-}
+const isDirection = (consent: Consent, direction: ConsentDirection) =>
+  consent.direction === direction
 
-export function isPending(consent: Consent): boolean {
-  return consent.status === ConsentState.PENDING
-}
+export const isIncoming = (consent: Consent) =>
+  isDirection(consent, ConsentDirection.INCOMING)
+
+export const isOutgoing = (consent: Consent) =>
+  isDirection(consent, ConsentDirection.OUTGOING)
+
+export const isPending = (consent: Consent) =>
+  consent.status === ConsentState.PENDING
