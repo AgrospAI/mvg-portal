@@ -67,5 +67,8 @@ export const isIncoming = (consent: Consent) =>
 export const isOutgoing = (consent: Consent) =>
   isDirection(consent, ConsentDirection.OUTGOING)
 
+export const isSolicited = (consent: Consent) =>
+  isDirection(consent, ConsentDirection.SOLICITED)
+
 export const isPending = (consent: Consent) =>
   consent.status === ConsentState.PENDING

@@ -18,6 +18,7 @@ import Script from 'next/script'
 import { plausibleDataDomain } from 'app.config'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import ModalProvider from '@context/Modal'
+import { QueryClientLoadingIndicator } from '@components/@shared/QueryClientLoadingIndicator'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -52,6 +53,7 @@ function MyApp({ Component, pageProps }: AppProps): ReactElement {
                     <SearchBarStatusProvider>
                       <FilterProvider>
                         <QueryClientProvider client={queryClient}>
+                          <QueryClientLoadingIndicator />
                           <ModalProvider>
                             <App>
                               <Component {...pageProps} />

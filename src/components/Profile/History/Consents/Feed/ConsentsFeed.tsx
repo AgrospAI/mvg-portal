@@ -6,7 +6,11 @@ import CachedAssetListTitle from '@components/@shared/CachedAssetListTitle'
 import Publisher from '@components/@shared/Publisher'
 import Refresh from '@images/refresh.svg'
 import { Consent, ConsentDirection } from '@utils/consents/types'
-import { extractDidFromUrl } from '@utils/consents/utils'
+import {
+  extractDidFromUrl,
+  isIncoming,
+  isOutgoing
+} from '@utils/consents/utils'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import ConsentRowActions from './Actions/ConsentRowActions'
 import { useConsentsFeed } from './ConsentsFeed.hooks'
@@ -91,7 +95,17 @@ const getColumns = (): TableOceanColumn<Consent>[] => {
     },
     {
       name: 'Actions',
-      selector: (row) => <ConsentRowActions consent={row} />
+      selector: (row) => (
+        <ConsentRowActions consent={row}>
+          <ConsentRowActions.Inspect />
+          <ConsentRowActions.DeleteConsent
+            condition={(consent) => isIncoming(consent) || isOutgoing(consent)}
+          />
+          <ConsentRowActions.DeleteConsentResponse
+            condition={(consent) => isIncoming(consent)}
+          />
+        </ConsentRowActions>
+      )
     }
   ]
 }
