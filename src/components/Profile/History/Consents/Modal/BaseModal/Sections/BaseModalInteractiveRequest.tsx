@@ -1,10 +1,10 @@
+import Info from '@images/info.svg'
 import { Asset } from '@oceanprotocol/lib'
 import { PossibleRequests } from '@utils/consents/types'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import { useBaseModal } from '../BaseModal'
 import RequestsList from '../Components/RequestsList'
 import BaseModalActions from './BaseModalActions'
-import Info from '@images/info.svg'
 import styles from './BaseModalRequest.module.css'
 
 interface BaseModalInteractiveRequestProps {
@@ -25,7 +25,7 @@ function BaseModalInteractiveRequest({
       initialValues={{ reason: '', permissions: {} }}
       validate={(values) => {
         const errors: { reason?: string; permissions?: string } = {}
-        if (!values.reason) {
+        if (!values.reason || values.reason.length === 0) {
           errors.reason = 'Reason required'
         } else if (values.reason.length > 255) {
           errors.reason = 'Must be 255 characters or less'

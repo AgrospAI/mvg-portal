@@ -1,12 +1,11 @@
-import { Asset, LoggerInstance } from '@oceanprotocol/lib'
-import styles from './BaseModalAssetPicker.module.css'
-import Eye from '@images/eye.svg'
-import { useState } from 'react'
-import { useCancelToken } from '@hooks/useCancelToken'
-import { getAsset } from '@utils/aquarius'
 import { useAssets } from '@hooks/useAssets'
+import { useCancelToken } from '@hooks/useCancelToken'
+import Eye from '@images/eye.svg'
+import { Asset, LoggerInstance } from '@oceanprotocol/lib'
+import { getAsset } from '@utils/aquarius'
+import { useState } from 'react'
 import AssetPicker from '../Components/AssetPicker'
-import { useLoadingIndicator } from '@hooks/useLoadingIndicator'
+import styles from './BaseModalAssetPicker.module.css'
 
 interface BaseModalAlgorithmPickerProps {
   address: string
@@ -27,15 +26,10 @@ function BaseModalAlgorithmPicker({
   const [written, setWritten] = useState<Asset>()
   const newCancelToken = useCancelToken()
 
-  const [isLoading, setIsLoading] = useState(false)
-
-  useLoadingIndicator(isLoading)
-
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     e.preventDefault()
 
     setError(undefined)
-    setIsLoading(true)
 
     if (e.target.value) {
       try {
@@ -49,18 +43,15 @@ function BaseModalAlgorithmPicker({
     } else {
       setSelected(undefined)
     }
-    setIsLoading(false)
   }
 
   const handleWrite = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault()
 
-    setIsLoading(true)
     const did = e.target.value.trim()
 
     if (!did) {
       setWritten(undefined)
-      setIsLoading(false)
       return
     }
 
@@ -82,7 +73,6 @@ function BaseModalAlgorithmPicker({
         setWritten(undefined)
         setError(error.message)
       })
-      .finally(() => setIsLoading(false))
   }
 
   return (

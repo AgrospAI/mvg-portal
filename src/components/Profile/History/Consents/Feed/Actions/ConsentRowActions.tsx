@@ -1,23 +1,48 @@
 import { Consent } from '@utils/consents/types'
-import { isIncoming, isOutgoing, isPending } from '@utils/consents/utils'
-import styles from './ConsentRowActions.module.css'
-import DeleteButton from './DeleteButton'
-import InspectButton from './InspectButton'
+import { ReactNode, createContext, useContext } from 'react'
+import DeleteConsent from './Buttons/DeleteConsent'
+import DeleteConsentResponse from './Buttons/DeleteConsentResponse'
+import InspectButton from './Buttons/InspectConsent'
 
-interface Props {
+interface ConsentRowActionsValue {
   consent: Consent
 }
 
-export default function ConsentRowActions({ consent }: Props) {
+const ConsentRowActionsContext = createContext({} as ConsentRowActionsValue)
+
+interface Props {
+  consent: Consent
+  children?: ReactNode
+}
+
+export default function ConsentRowActions({ consent, children }: Props) {
   return (
-    <div className={styles.actions}>
-      <InspectButton consent={consent} />
-      {!isPending(consent) && isIncoming(consent) && (
-        <DeleteButton consent={consent} />
-      )}
-      {isPending(consent) && isOutgoing(consent) && (
-        <DeleteButton consent={consent} />
-      )}
-    </div>
+    <ConsentRowActionsContext.Provider value={{ consent }}>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'flex-start',
+          alignItems: 'center',
+          columnGap: '0.5rem'
+        }}
+      >
+        {children}
+      </div>
+    </ConsentRowActionsContext.Provider>
   )
 }
+
+export const useConsentRowActions = () => {
+  const context = useContext(ConsentRowActionsContext)
+  if (!context) {
+    throw new Error(
+      'ConsentRowActions components must be used inside ConsentRowActions'
+    )
+  }
+  return context
+}
+
+ConsentRowActions.Inspect = InspectButton
+ConsentRowActions.DeleteConsent = DeleteConsent
+ConsentRowActions.DeleteConsentResponse = DeleteConsentResponse

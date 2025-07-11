@@ -43,5 +43,9 @@ export async function getUserConsents(
 export async function getUserConsentsAmount(
   address: string
 ): Promise<ConsentsUserData> {
-  return CONSENTS_API.get(`/users/${address}`).then((data) => data.data)
+  return CONSENTS_API.get(`/users/${address}/`).then((data) => data.data)
+}
+
+export async function deleteConsent(consentId: number): Promise<void> {
+  return CONSENTS_API.delete(`/consents/${consentId}/`)
 }
