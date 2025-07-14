@@ -1,8 +1,8 @@
-import { ConsentResponse, ConsentState } from '@utils/consents/types'
-import { useBaseModal } from '../BaseModal'
-import styles from './BaseModalResponse.module.css'
-import RequestsList from '../Components/RequestsList'
 import { Asset } from '@oceanprotocol/lib'
+import { ConsentResponse } from '@utils/consents/types'
+import { useBaseModal } from '../BaseModal'
+import RequestsList from '../Components/RequestsList'
+import styles from './BaseModalResponse.module.css'
 
 interface BaseModalResponseProps {
   response: ConsentResponse
@@ -23,7 +23,7 @@ function BaseModalResponse({
         Dataset owner response:
         <div className={styles.responseTextbox}>{response.reason}</div>
       </div>
-      {response.status !== ConsentState.DENIED && (
+      {response.status !== 'Denied' && (
         <>
           Grants consent to:
           {dataset && algorithm && (

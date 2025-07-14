@@ -7,7 +7,7 @@ import { getComputeJobs } from '@utils/compute'
 import { useCallback, useEffect, useState } from 'react'
 import { useAccount } from 'wagmi'
 import ComputeJobs from './ComputeJobs'
-import ConsentsFeed from './Consents/Feed/ConsentsFeed'
+import ConsentsContent from './Consents/ConsentsContent'
 import Downloads from './Downloads'
 import styles from './index.module.css'
 import PublishedList from './PublishedList'
@@ -50,7 +50,7 @@ function getTabs(
   }
   const consentsTab: HistoryTab = {
     title: 'Consents',
-    content: <ConsentsFeed />
+    content: <ConsentsContent />
   }
   if (accountId === userAccountId || accountId === autoWalletAccountId) {
     defaultTabs.push(computeTab, consentsTab)

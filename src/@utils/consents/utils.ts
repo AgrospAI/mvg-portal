@@ -1,9 +1,4 @@
-import {
-  Consent,
-  ConsentDirection,
-  ConsentState,
-  PossibleRequests
-} from './types'
+import { Consent, ConsentDirection, PossibleRequests } from './types'
 
 export function extractDidFromUrl(url: string): string | null {
   const match = url.match(/did:[^/]+/)
@@ -61,14 +56,11 @@ export function extractFormDetails(
 const isDirection = (consent: Consent, direction: ConsentDirection) =>
   consent.direction === direction
 
-export const isIncoming = (consent: Consent) =>
-  isDirection(consent, ConsentDirection.INCOMING)
+export const isIncoming = (consent: Consent) => isDirection(consent, 'Incoming')
 
-export const isOutgoing = (consent: Consent) =>
-  isDirection(consent, ConsentDirection.OUTGOING)
+export const isOutgoing = (consent: Consent) => isDirection(consent, 'Outgoing')
 
 export const isSolicited = (consent: Consent) =>
-  isDirection(consent, ConsentDirection.SOLICITED)
+  isDirection(consent, 'Solicited')
 
-export const isPending = (consent: Consent) =>
-  consent.status === ConsentState.PENDING
+export const isPending = (consent: Consent) => consent.status === 'Pending'

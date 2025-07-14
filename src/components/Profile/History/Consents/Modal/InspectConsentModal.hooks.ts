@@ -23,16 +23,9 @@ export const useInspectConsentModal = (consent: Consent) => {
       excludeFields: ['algorithm']
     })
 
-    createConsentResponse(
-      {
-        consent,
-        reason,
-        permitted
-      },
-      {
-        onSuccess: closeModal
-      }
-    )
+    createConsentResponse([consent.id, reason, permitted], {
+      onSuccess: closeModal
+    })
   }
 
   return {
