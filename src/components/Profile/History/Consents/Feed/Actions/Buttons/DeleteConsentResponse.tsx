@@ -7,7 +7,7 @@ interface Props {
 }
 
 function DeleteConsentResponse({ condition }: Props) {
-  const { mutate: deleteConsentResponse } = useDeleteConsent()
+  const { mutateAsync: deleteConsentResponse } = useDeleteConsent()
 
   return (
     <DeleteButton action={deleteConsentResponse} condition={condition}>

@@ -24,16 +24,15 @@ export function useUserConsentsAmount() {
   const { address } = useAccount()
   return useSuspenseQuery({
     queryKey: ['profile-consents', address],
-    queryFn: ({ signal }) => getUserConsents(address, signal)
+    queryFn: async ({ signal }) => getUserConsents(address, signal)
   })
 }
 
 function useUserConsents(direction: ConsentDirection, queryKey: string) {
   const { address } = useAccount()
-
   return useSuspenseQuery({
     queryKey: [queryKey, address],
-    queryFn: ({ signal }) =>
+    queryFn: async ({ signal }) =>
       getUserConsentsDirection(address, direction, signal)
   })
 }
@@ -60,11 +59,17 @@ export function useCreateConsentResponse() {
   const queryClient = useQueryClient()
   const { address } = useAccount()
 
+  type Variables = {
+    consentId: number
+    reason: string
+    permitted: PossibleRequests
+  }
+
   return useMutation({
-    mutationFn: async ([consentId, reason, permitted]: Parameters<
-      typeof createConsentResponse
-    >) => createConsentResponse(consentId, reason, permitted),
-    onSuccess: (newConsent, [consentId]) => {
+    mutationFn: async ({ consentId, reason, permitted }: Variables) =>
+      createConsentResponse(consentId, reason, permitted),
+
+    onSuccess: (newConsent, { consentId }) => {
       if (!address) return
 
       queryClient.setQueryData(
@@ -79,7 +84,7 @@ export function useCreateConsentResponse() {
 export function useCreateAssetConsent() {
   const { address } = useAccount()
 
-  interface Input {
+  type Variables = {
     datasetDid: string
     algorithmDid: string
     request: PossibleRequests
@@ -87,7 +92,12 @@ export function useCreateAssetConsent() {
   }
 
   return useMutation({
-    mutationFn: ({ datasetDid, algorithmDid, request, reason }: Input) =>
+    mutationFn: async ({
+      datasetDid,
+      algorithmDid,
+      request,
+      reason
+    }: Variables) =>
       createConsent(address, datasetDid, algorithmDid, request, reason)
   })
 }
@@ -96,9 +106,13 @@ export function useDeleteConsent() {
   const queryClient = useQueryClient()
   const { address } = useAccount()
 
+  type Variables = {
+    consent: Consent
+  }
+
   return useMutation({
-    mutationFn: ({ consent }: { consent: Consent }) =>
-      deleteConsent(consent.id),
+    mutationFn: async ({ consent }: Variables) => deleteConsent(consent.id),
+
     onSuccess: async (_, { consent }) => {
       if (!address) return
 
@@ -121,8 +135,7 @@ export function useDeleteConsent() {
 
       if (isPending(consent)) {
         await queryClient.invalidateQueries({
-          queryKey: ['profile-consents', address],
-          exact: true
+          queryKey: ['profile-consents', address]
         })
       }
     }
@@ -136,6 +149,7 @@ export function useDeleteConsentResponse() {
   return useMutation({
     mutationFn: ({ consent }: { consent: Consent }) =>
       deleteConsentResponse(consent.id),
+
     onSuccess: (_, { consent }) => {
       if (!address) return
 
