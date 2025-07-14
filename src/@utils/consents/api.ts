@@ -82,20 +82,15 @@ export const createConsent = async (
   datasetDid: string,
   algorithmDid: string,
   request: PossibleRequests,
-  reason?: string,
-  signal?: AbortSignal
+  reason?: string
 ): Promise<void> =>
-  API.post(
-    Routes.CREATE_CONSENT,
-    {
-      address,
-      datasetDid,
-      algorithmDid,
-      request,
-      reason
-    },
-    { signal }
-  )
+  API.post(Routes.CREATE_CONSENT, {
+    address,
+    datasetDid,
+    algorithmDid,
+    request,
+    reason
+  })
 
 export const deleteConsent = async (
   consentId: number,
@@ -106,19 +101,14 @@ export const deleteConsent = async (
 export const createConsentResponse = async (
   consentId: number,
   reason: string,
-  permitted: PossibleRequests,
-  signal?: AbortSignal
+  permitted: PossibleRequests
 ): Promise<ConsentResponse> => {
   return validate(
-    await API.post(
-      Routes.CREATE_CONSENT_RESPONSE,
-      {
-        consentId,
-        reason,
-        permitted
-      },
-      { signal }
-    ),
+    await API.post(Routes.CREATE_CONSENT_RESPONSE, {
+      consentId,
+      reason,
+      permitted
+    }),
     ConsentResponseSchema
   )
 }

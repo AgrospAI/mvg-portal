@@ -12,7 +12,7 @@ export const useInspectConsentModal = (consent: Consent) => {
   const { closeModal } = useModal()
   const [isAccepted, setIsAccepted] = useState(false)
 
-  const { mutate: createConsentResponse } = useCreateConsentResponse()
+  const { mutateAsync: createConsentResponse } = useCreateConsentResponse()
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -23,9 +23,12 @@ export const useInspectConsentModal = (consent: Consent) => {
       excludeFields: ['algorithm']
     })
 
-    createConsentResponse([consent.id, reason, permitted], {
-      onSuccess: closeModal
-    })
+    createConsentResponse(
+      { consentId: consent.id, reason, permitted },
+      {
+        onSuccess: closeModal
+      }
+    )
   }
 
   return {

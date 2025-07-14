@@ -15,7 +15,7 @@ export default function ConsentPetitionModal({
 }: ConsentPetitionModalProps) {
   const { address } = useAccount()
   const { closeModal } = useModal()
-  const { mutate: createConsent } = useCreateAssetConsent()
+  const { mutateAsync: createConsent } = useCreateAssetConsent()
   const [selected, setSelected] = useState<Asset>()
 
   return (
