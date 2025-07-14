@@ -52,24 +52,27 @@ const validate = <T>({ data }: AxiosResponse, schema: ZodType<T>): T => {
 
 export const getUserConsentsDirection = async (
   address: string,
-  direction: ConsentDirection
+  direction: ConsentDirection,
+  signal?: AbortSignal
 ): Promise<ConsentList> => {
   return validate(
     await API.get(Routes.GET_CONSENTS_AMOUNT_DIRECTION, {
       params: {
         address,
         direction
-      }
+      },
+      signal
     }),
     ConsentsListSchema
   )
 }
 
 export const getUserConsents = async (
-  address: string
+  address: string,
+  signal?: AbortSignal
 ): Promise<UserConsentsData> => {
   return validate(
-    await API.get(Routes.GET_CONSENTS_AMOUNT, { params: { address } }),
+    await API.get(Routes.GET_CONSENTS_AMOUNT, { params: { address }, signal }),
     UserConsentsDataSchema
   )
 }
@@ -79,35 +82,52 @@ export const createConsent = async (
   datasetDid: string,
   algorithmDid: string,
   request: PossibleRequests,
-  reason?: string
+  reason?: string,
+  signal?: AbortSignal
 ): Promise<void> =>
-  API.post(Routes.CREATE_CONSENT, {
-    address,
-    datasetDid,
-    algorithmDid,
-    request,
-    reason
-  })
+  API.post(
+    Routes.CREATE_CONSENT,
+    {
+      address,
+      datasetDid,
+      algorithmDid,
+      request,
+      reason
+    },
+    { signal }
+  )
 
-export const deleteConsent = async (consentId: number): Promise<void> =>
-  API.delete(Routes.DELETE_CONSENT, { data: { consentId } })
+export const deleteConsent = async (
+  consentId: number,
+  signal?: AbortSignal
+): Promise<void> =>
+  API.delete(Routes.DELETE_CONSENT, { data: { consentId }, signal })
 
 export const createConsentResponse = async (
   consentId: number,
   reason: string,
-  permitted: PossibleRequests
+  permitted: PossibleRequests,
+  signal?: AbortSignal
 ): Promise<ConsentResponse> => {
   return validate(
-    await API.post(Routes.CREATE_CONSENT_RESPONSE, {
-      consentId,
-      reason,
-      permitted
-    }),
+    await API.post(
+      Routes.CREATE_CONSENT_RESPONSE,
+      {
+        consentId,
+        reason,
+        permitted
+      },
+      { signal }
+    ),
     ConsentResponseSchema
   )
 }
 
-export const deleteConsentResponse = async (consentId: number): Promise<void> =>
+export const deleteConsentResponse = async (
+  consentId: number,
+  signal?: AbortSignal
+): Promise<void> =>
   API.delete(Routes.DELETE_CONSENT_RESPONSE, {
-    data: { consentId }
+    data: { consentId },
+    signal
   })

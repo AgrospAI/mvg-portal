@@ -24,7 +24,7 @@ export function useUserConsentsAmount() {
   const { address } = useAccount()
   return useSuspenseQuery({
     queryKey: ['profile-consents', address],
-    queryFn: () => getUserConsents(address)
+    queryFn: ({ signal }) => getUserConsents(address, signal)
   })
 }
 
@@ -33,7 +33,8 @@ function useUserConsents(direction: ConsentDirection, queryKey: string) {
 
   return useSuspenseQuery({
     queryKey: [queryKey, address],
-    queryFn: () => getUserConsentsDirection(address, direction)
+    queryFn: ({ signal }) =>
+      getUserConsentsDirection(address, direction, signal)
   })
 }
 
