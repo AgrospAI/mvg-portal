@@ -10,7 +10,7 @@ import styles from './BaseModalRequest.module.css'
 interface BaseModalInteractiveRequestProps {
   dataset: Asset
   algorithm: Asset
-  handleSubmit: (reason: string, requests: PossibleRequests) => void
+  handleSubmit: (reason: string, request: PossibleRequests) => void
 }
 
 function BaseModalInteractiveRequest({

@@ -1,10 +1,10 @@
 import { useModal } from '@context/Modal'
 import { useCreateAssetConsent } from '@hooks/useUserConsents'
 import { Asset } from '@oceanprotocol/lib'
+import { PossibleRequests } from '@utils/consents/types'
 import { useState } from 'react'
 import { useAccount } from 'wagmi'
 import BaseModal from './BaseModal/BaseModal'
-import { PossibleRequests } from '@utils/consents/types'
 
 interface ConsentPetitionModalProps {
   asset: Asset
@@ -15,7 +15,7 @@ export default function ConsentPetitionModal({
 }: ConsentPetitionModalProps) {
   const { address } = useAccount()
   const { closeModal } = useModal()
-  const createConsentMutation = useCreateAssetConsent()
+  const { mutate: createConsent } = useCreateAssetConsent()
   const [selected, setSelected] = useState<Asset>()
 
   return (
@@ -33,12 +33,12 @@ export default function ConsentPetitionModal({
           <BaseModal.InteractiveRequest
             algorithm={selected}
             dataset={asset}
-            handleSubmit={(reason: string, requests: PossibleRequests) => {
-              createConsentMutation.mutate(
+            handleSubmit={(reason: string, request: PossibleRequests) => {
+              createConsent(
                 {
-                  dataset: asset,
-                  algorithm: selected,
-                  request: requests,
+                  datasetDid: asset.id,
+                  algorithmDid: selected.id,
+                  request,
                   reason
                 },
                 {

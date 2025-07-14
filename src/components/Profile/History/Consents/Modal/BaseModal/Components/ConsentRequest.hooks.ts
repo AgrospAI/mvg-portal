@@ -1,23 +1,24 @@
 import { PossibleRequests } from '@utils/consents/types'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-export const useConsentRequest = (interactive: boolean, values: string) => {
-  const parsedValues: Partial<PossibleRequests> = useMemo(() => {
-    return values ? JSON.parse(values) : {}
-  }, [values])
+export const useConsentRequest = (
+  interactive: boolean,
+  values: PossibleRequests
+) => {
+  // const parsedValues = useMemo(() => values, [values])
 
   // Create all keys from parsedValues, defaulting to false
   const allNegative = useMemo(() => {
     return Object.fromEntries(
-      Object.keys(parsedValues).map((key) => [key, false])
+      Object.keys(values).map((key) => [key, false])
     ) as Partial<PossibleRequests>
-  }, [parsedValues])
+  }, [values])
 
   const [val, setVal] = useState<Partial<PossibleRequests>>(() =>
-    Object.keys(parsedValues).length > 0
+    Object.keys(values).length > 0
       ? interactive
         ? allNegative
-        : parsedValues
+        : values
       : allNegative
   )
 
@@ -33,9 +34,8 @@ export const useConsentRequest = (interactive: boolean, values: string) => {
   )
 
   useEffect(() => {
-    const parsed: Partial<PossibleRequests> = values ? JSON.parse(values) : {}
     const updated: Partial<PossibleRequests> =
-      Object.keys(parsed).length > 0 ? parsed : allNegative
+      Object.keys(values).length > 0 ? values : allNegative
 
     setVal(interactive ? allNegative : updated)
   }, [allNegative, interactive, values])

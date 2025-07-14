@@ -21,7 +21,7 @@ function BaseModalRequest({
 }: BaseModalRequestProps) {
   useBaseModal()
 
-  const permissions = JSON.parse(consent?.request) ?? {}
+  const permissions = consent.request ?? {}
 
   if (isLoading) {
     return <p>Loading...</p>

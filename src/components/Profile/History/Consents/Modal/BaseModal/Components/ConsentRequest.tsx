@@ -3,7 +3,7 @@ import { useConsentRequest } from './ConsentRequest.hooks'
 import styles from './ConsentRequest.module.css'
 
 interface ConsentRequestProps {
-  values: string
+  values: PossibleRequests
   interactive?: boolean
   showAll?: boolean
 }

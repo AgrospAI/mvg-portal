@@ -5,7 +5,7 @@ import Time from '@components/@shared/atoms/Time'
 import CachedAssetListTitle from '@components/@shared/CachedAssetListTitle'
 import Publisher from '@components/@shared/Publisher'
 import Refresh from '@images/refresh.svg'
-import { Consent, ConsentDirection } from '@utils/consents/types'
+import { Consent, ConsentDirections } from '@utils/consents/types'
 import {
   extractDidFromUrl,
   isIncoming,
@@ -27,21 +27,21 @@ const getTabs = (
   solicitedConsents: Consent[]
 ): TabsItem[] => {
   const tabData = {
-    [ConsentDirection.INCOMING]: {
+    Incoming: {
       data: incomingConsents,
       isLoading: isLoadingIncoming
     },
-    [ConsentDirection.OUTGOING]: {
+    Outgoing: {
       data: outgoingConsents,
       isLoading: isLoadingOutgoing
     },
-    [ConsentDirection.SOLICITED]: {
+    Solicited: {
       data: solicitedConsents,
       isLoading: isLoadingSolicited
     }
   }
 
-  return Object.values(ConsentDirection).map((consentDirection) => {
+  return ConsentDirections.map((consentDirection) => {
     const { data, isLoading } = tabData[consentDirection]
     return {
       title: consentDirection.toString(),
@@ -102,7 +102,7 @@ const getColumns = (): TableOceanColumn<Consent>[] => {
             condition={(consent) => isIncoming(consent) || isOutgoing(consent)}
           />
           <ConsentRowActions.DeleteConsentResponse
-            condition={(consent) => isIncoming(consent)}
+            condition={(consent) => consent.response && isIncoming(consent)}
           />
         </ConsentRowActions>
       )

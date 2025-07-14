@@ -1,3 +1,6 @@
+import * as z from 'zod'
+import * as schemas from './schemas'
+
 export interface Paginated<T> {
   count: number
   next: URL | null
@@ -5,58 +8,13 @@ export interface Paginated<T> {
   results: Array<T>
 }
 
-export interface ConsentsUserData {
-  address: string
-  assets: string[]
-  incoming_pending_consents: number
-  outgoing_pending_consents: number
-  solicited_pending_consents: number
-}
-
-export interface ConsentResponse {
-  consent: string
-  status: ConsentState
-  reason: string
-  permitted: PossibleRequests
-  last_updated_at: number
-}
-
-export enum ConsentState {
-  PENDING = 'Pending',
-  ACCEPTED = 'Accepted',
-  DENIED = 'Denied',
-  RESOLVED = 'Resolved'
-}
-
-export enum ConsentDirection {
-  INCOMING = 'Incoming',
-  OUTGOING = 'Outgoing',
-  SOLICITED = 'Solicited'
-}
-
-export interface _Consent {
-  id: number
-  url: string
-  dataset: string
-  algorithm: string
-  solicitor: {
-    url: string
-    address: string
-  }
-  request: string
-  reason: string
-  created_at: number
-  response: ConsentResponse | null
-  status: ConsentState
-}
-
-export interface Consent extends _Consent {
-  direction: ConsentDirection
-}
-
-export interface PossibleRequests {
-  trusted_algorithm_publisher?: boolean
-  trusted_algorithm?: boolean
-  trusted_credential_address?: boolean
-  allow_network_access?: boolean
-}
+export type UserConsentsData = z.infer<typeof schemas.UserConsentsDataSchema>
+export type ConsentState = z.infer<typeof schemas.ConsentStatusSchema>
+export const ConsentStates: ConsentState[] = schemas.ConsentStatusSchema.options
+export type ConsentDirection = z.infer<typeof schemas.ConsentDirectionSchema>
+export const ConsentDirections: ConsentDirection[] =
+  schemas.ConsentDirectionSchema.options
+export type ConsentResponse = z.infer<typeof schemas.ConsentResponseSchema>
+export type PossibleRequests = z.infer<typeof schemas.PossibleRequestsSchema>
+export type Consent = z.infer<typeof schemas.ConsentSchema>
+export type ConsentList = z.infer<typeof schemas.ConsentsListSchema>
