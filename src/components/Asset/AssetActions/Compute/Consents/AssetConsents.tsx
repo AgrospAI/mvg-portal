@@ -1,5 +1,4 @@
-import Loader from '@components/@shared/atoms/Loader'
-import { Suspense } from 'react'
+import QueryBoundary from '@components/@shared/QueryBoundary'
 import { useAccount } from 'wagmi'
 import ConsentPetitionButton from './ConsentPetitionButton'
 import IncomingPendingConsentsSimple from './IncomingPendingConsentsSimple'
@@ -13,9 +12,9 @@ export default function AssetConsents({ asset }: Props) {
 
   if (address === asset.nft.owner) {
     return (
-      <Suspense fallback={<Loader />}>
+      <QueryBoundary text="Loading incoming consents">
         <IncomingPendingConsentsSimple asset={asset} />
-      </Suspense>
+      </QueryBoundary>
     )
   }
 
@@ -23,5 +22,9 @@ export default function AssetConsents({ asset }: Props) {
     return <></>
   }
 
-  return <ConsentPetitionButton asset={asset} />
+  return (
+    <QueryBoundary text="Checking connectivity">
+      <ConsentPetitionButton asset={asset} />
+    </QueryBoundary>
+  )
 }

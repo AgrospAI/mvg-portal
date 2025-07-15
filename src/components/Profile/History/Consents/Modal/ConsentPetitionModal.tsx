@@ -1,5 +1,5 @@
 import { useModal } from '@context/Modal'
-import { useCreateAssetConsent } from '@hooks/useUserConsents'
+import { useCreateAssetConsent, useHealthcheck } from '@hooks/useUserConsents'
 import { Asset } from '@oceanprotocol/lib'
 import { PossibleRequests } from '@utils/consents/types'
 import { useState } from 'react'
@@ -13,6 +13,7 @@ interface ConsentPetitionModalProps {
 export default function ConsentPetitionModal({
   asset
 }: ConsentPetitionModalProps) {
+  useHealthcheck()
   const { address } = useAccount()
   const { closeModal } = useModal()
   const { mutateAsync: createConsent } = useCreateAssetConsent()

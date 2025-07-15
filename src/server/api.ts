@@ -17,11 +17,14 @@ CONSENTS_API.interceptors.response.use(
       console.error('API Error:', error.response.data)
     } else if (error.request) {
       console.error('No response from server')
+      error.message = 'No response from server'
     } else {
       console.error('Error setting up request:', error.message)
     }
 
-    return error
     return Promise.reject(error)
   }
 )
+
+export const getHealth = async (): Promise<void> =>
+  await CONSENTS_API.get('health')

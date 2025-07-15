@@ -1,6 +1,5 @@
 import axios, { AxiosResponse } from 'axios'
 
-import { toast } from 'react-toastify'
 import { ZodType } from 'zod'
 import { ConsentsApiRoutes as Routes } from './routes'
 import {
@@ -21,61 +20,44 @@ const API = axios.create({
   timeout: 2000
 })
 
-API.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    const status = error?.response?.status
-    const message =
-      error?.response?.data?.message || 'An unexpected error occurred'
-
-    if (status >= 400) {
-      toast.error(`Error ${status}: ${message}`)
-    } else {
-      toast.error('Network or server error')
-    }
-
-    return Promise.reject(error)
-  }
-)
-
 const validate = <T>({ data }: AxiosResponse, schema: ZodType<T>): T => {
   const result = schema.safeParse(data)
 
   if (!result.success) {
-    toast.error('Invalid response data')
     console.error('Error validating', result.error)
-    throw new Error('Validation failed', result.error)
+    throw new Error('Invalid response data from API', { cause: result.error })
   }
 
   return result.data
 }
 
+// HoF to ease the validation writing
+const validateWithSchema =
+  <T>(schema: ZodType<T>) =>
+  (response: AxiosResponse) =>
+    validate<T>(response, schema)
+
 export const getUserConsentsDirection = async (
   address: string,
   direction: ConsentDirection,
   signal?: AbortSignal
-): Promise<ConsentList> => {
-  return validate(
-    await API.get(Routes.GET_CONSENTS_AMOUNT_DIRECTION, {
-      params: {
-        address,
-        direction
-      },
-      signal
-    }),
-    ConsentsListSchema
-  )
-}
+): Promise<ConsentList> =>
+  API.get(Routes.GET_CONSENTS_AMOUNT_DIRECTION, {
+    params: {
+      address,
+      direction
+    },
+    signal
+  }).then(validateWithSchema(ConsentsListSchema))
 
 export const getUserConsents = async (
   address: string,
   signal?: AbortSignal
-): Promise<UserConsentsData> => {
-  return validate(
-    await API.get(Routes.GET_CONSENTS_AMOUNT, { params: { address }, signal }),
-    UserConsentsDataSchema
-  )
-}
+): Promise<UserConsentsData> =>
+  API.get(Routes.GET_CONSENTS_AMOUNT, {
+    params: { address },
+    signal
+  }).then(validateWithSchema(UserConsentsDataSchema))
 
 export const createConsent = async (
   address: string,
@@ -102,16 +84,12 @@ export const createConsentResponse = async (
   consentId: number,
   reason: string,
   permitted: PossibleRequests
-): Promise<ConsentResponse> => {
-  return validate(
-    await API.post(Routes.CREATE_CONSENT_RESPONSE, {
-      consentId,
-      reason,
-      permitted
-    }),
-    ConsentResponseSchema
-  )
-}
+): Promise<ConsentResponse> =>
+  API.post(Routes.CREATE_CONSENT_RESPONSE, {
+    consentId,
+    reason,
+    permitted
+  }).then(validateWithSchema(ConsentResponseSchema))
 
 export const deleteConsentResponse = async (
   consentId: number,
@@ -121,3 +99,6 @@ export const deleteConsentResponse = async (
     data: { consentId },
     signal
   })
+
+export const getHealth = async (): Promise<boolean> =>
+  API.get(Routes.HEALTHCHECK)
