@@ -1,4 +1,5 @@
 export const enum ConsentsApiRoutes {
+  HEALTHCHECK = 'get-health',
   CREATE_CONSENT = 'create-consent',
   GET_CONSENTS_AMOUNT = 'get-user-consents-amount',
   GET_CONSENTS_AMOUNT_DIRECTION = 'get-user-consents',

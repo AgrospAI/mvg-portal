@@ -8,6 +8,7 @@ import {
   createConsentResponse,
   deleteConsent,
   deleteConsentResponse,
+  getHealth,
   getUserConsents,
   getUserConsentsDirection
 } from '@utils/consents/api'
@@ -20,7 +21,7 @@ import {
 import { isOutgoing, isPending, isSolicited } from '@utils/consents/utils'
 import { useAccount } from 'wagmi'
 
-export function useUserConsentsAmount() {
+export const useUserConsentsAmount = () => {
   const { address } = useAccount()
   return useSuspenseQuery({
     queryKey: ['profile-consents', address],
@@ -28,7 +29,7 @@ export function useUserConsentsAmount() {
   })
 }
 
-function useUserConsents(direction: ConsentDirection, queryKey: string) {
+const useUserConsents = (direction: ConsentDirection, queryKey: string) => {
   const { address } = useAccount()
   return useSuspenseQuery({
     queryKey: [queryKey, address],
@@ -55,7 +56,7 @@ const updateStatus = (
   status: ConsentState = 'Pending'
 ) => data.map((c) => (c.id === id ? { ...c, status } : c))
 
-export function useCreateConsentResponse() {
+export const useCreateConsentResponse = () => {
   const queryClient = useQueryClient()
   const { address } = useAccount()
 
@@ -81,7 +82,7 @@ export function useCreateConsentResponse() {
   })
 }
 
-export function useCreateAssetConsent() {
+export const useCreateAssetConsent = () => {
   const { address } = useAccount()
 
   type Variables = {
@@ -102,7 +103,7 @@ export function useCreateAssetConsent() {
   })
 }
 
-export function useDeleteConsent() {
+export const useDeleteConsent = () => {
   const queryClient = useQueryClient()
   const { address } = useAccount()
 
@@ -142,7 +143,7 @@ export function useDeleteConsent() {
   })
 }
 
-export function useDeleteConsentResponse() {
+export const useDeleteConsentResponse = () => {
   const queryClient = useQueryClient()
   const { address } = useAccount()
 
@@ -160,3 +161,10 @@ export function useDeleteConsentResponse() {
     }
   })
 }
+
+export const useHealthcheck = () =>
+  useSuspenseQuery({
+    queryKey: ['health'],
+    queryFn: getHealth,
+    staleTime: 0
+  })

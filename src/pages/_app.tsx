@@ -1,30 +1,32 @@
-import { ReactElement } from 'react'
-import type { AppProps } from 'next/app'
-import { UserPreferencesProvider } from '@context/UserPreferences'
-import UrqlProvider from '@context/UrqlProvider'
-import ConsentProvider from '@context/CookieConsent'
-import { SearchBarStatusProvider } from '@context/SearchBarStatus'
-import App from '../../src/components/App'
-import '@oceanprotocol/typographies/css/ocean-typo.css'
-import '../stylesGlobal/styles.css'
-import Decimal from 'decimal.js'
-import MarketMetadataProvider from '@context/MarketMetadata'
-import { WagmiConfig } from 'wagmi'
-import { ConnectKitProvider } from 'connectkit'
-import { connectKitTheme, wagmiClient } from '@utils/wallet'
-import AutomationProvider from '../@context/Automation/AutomationProvider'
-import { FilterProvider } from '@context/Filter'
-import Script from 'next/script'
-import { plausibleDataDomain } from 'app.config'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import ModalProvider from '@context/Modal'
 import { QueryClientLoadingIndicator } from '@components/@shared/QueryClientLoadingIndicator'
+import ConsentProvider from '@context/CookieConsent'
+import { FilterProvider } from '@context/Filter'
+import MarketMetadataProvider from '@context/MarketMetadata'
+import ModalProvider from '@context/Modal'
+import { SearchBarStatusProvider } from '@context/SearchBarStatus'
+import UrqlProvider from '@context/UrqlProvider'
+import { UserPreferencesProvider } from '@context/UserPreferences'
+import '@oceanprotocol/typographies/css/ocean-typo.css'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { connectKitTheme, wagmiClient } from '@utils/wallet'
+import { plausibleDataDomain } from 'app.config'
+import { ConnectKitProvider } from 'connectkit'
+import Decimal from 'decimal.js'
+import type { AppProps } from 'next/app'
+import Script from 'next/script'
+import { ReactElement } from 'react'
+import { WagmiConfig } from 'wagmi'
+import App from '../../src/components/App'
+import AutomationProvider from '../@context/Automation/AutomationProvider'
+import '../stylesGlobal/styles.css'
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      retry: 5,
-      gcTime: 20_000
+      gcTime: 20_000,
+      staleTime: 1000 * 60,
+      retry: 1,
+      retryDelay: 1000
     }
   }
 })
