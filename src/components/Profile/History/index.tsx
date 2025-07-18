@@ -4,6 +4,8 @@ import { useCancelToken } from '@hooks/useCancelToken'
 import { LoggerInstance } from '@oceanprotocol/lib'
 import Tabs from '@shared/atoms/Tabs'
 import { getComputeJobs } from '@utils/compute'
+import { useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/router'
 import { useCallback, useEffect, useState } from 'react'
 import { useAccount } from 'wagmi'
 import ComputeJobs from './ComputeJobs'
@@ -71,6 +73,7 @@ interface Props {
 }
 
 export default function HistoryPage({ accountIdentifier }: Props) {
+  const router = useRouter()
   const { address: accountId } = useAccount()
   const { autoWallet } = useAutomation()
   const { chainIds } = useUserPreferences()
@@ -81,7 +84,24 @@ export default function HistoryPage({ accountIdentifier }: Props) {
   const [isLoadingJobs, setIsLoadingJobs] = useState(false)
   const [jobs, setJobs] = useState<ComputeJobMetaData[]>([])
 
-  const [tabIndex, setTabIndex] = useState<number>()
+  const searchParams = useSearchParams()
+
+  const getDefaultIndex = useCallback((): number => {
+    const url = new URL(location.href)
+    const defaultTabString = url.searchParams.get('defaultTab')
+    const defaultTabIndex = tabsIndexList?.[defaultTabString]
+
+    if (!defaultTabIndex) return 0
+    if (
+      defaultTabIndex === tabsIndexList.computeJobs &&
+      accountId !== accountIdentifier
+    )
+      return 0
+
+    return defaultTabIndex
+  }, [accountId, accountIdentifier])
+
+  const tabIndex = searchParams.get('tab') ?? getDefaultIndex()
 
   const fetchJobs = useCallback(
     async (type: string) => {
@@ -130,25 +150,6 @@ export default function HistoryPage({ accountIdentifier }: Props) {
     }
   }, [accountId, refetchJobs, fetchJobs])
 
-  const getDefaultIndex = useCallback((): number => {
-    const url = new URL(location.href)
-    const defaultTabString = url.searchParams.get('defaultTab')
-    const defaultTabIndex = tabsIndexList?.[defaultTabString]
-
-    if (!defaultTabIndex) return 0
-    if (
-      defaultTabIndex === tabsIndexList.computeJobs &&
-      accountId !== accountIdentifier
-    )
-      return 0
-
-    return defaultTabIndex
-  }, [accountId, accountIdentifier])
-
-  useEffect(() => {
-    setTabIndex(getDefaultIndex())
-  }, [getDefaultIndex])
-
   const tabs = getTabs(
     accountIdentifier,
     accountId,
@@ -159,12 +160,25 @@ export default function HistoryPage({ accountIdentifier }: Props) {
     setRefetchJobs
   )
 
+  const updateTab = useCallback(
+    (newTab: number) => {
+      const params = new URLSearchParams(window.location.search)
+      params.set('tab', newTab.toString())
+      router.push(
+        `${window.location.pathname}?${params.toString()}`,
+        undefined,
+        { shallow: true }
+      )
+    },
+    [router]
+  )
+
   return (
     <Tabs
       items={tabs}
       className={styles.tabs}
-      selectedIndex={tabIndex || 0}
-      onIndexSelected={setTabIndex}
+      selectedIndex={Number(tabIndex) || 0}
+      onIndexSelected={updateTab}
     />
   )
 }
