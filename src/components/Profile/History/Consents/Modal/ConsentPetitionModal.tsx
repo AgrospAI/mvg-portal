@@ -1,55 +1,63 @@
-import { useModal } from '@context/Modal'
+import Loader from '@components/@shared/atoms/Loader'
+import { useModalContext } from '@components/@shared/Modal'
 import { useCreateAssetConsent, useHealthcheck } from '@hooks/useUserConsents'
 import { Asset } from '@oceanprotocol/lib'
 import { PossibleRequests } from '@utils/consents/types'
-import { useState } from 'react'
-import { useAccount } from 'wagmi'
-import BaseModal from './BaseModal/BaseModal'
+import { Suspense, useCallback, useState } from 'react'
+import AssetInput from './Components/AssetInput'
+import RequestsList from './Components/RequestsList'
+import Sections from './Components/Sections'
 
-interface ConsentPetitionModalProps {
+interface Props {
   asset: Asset
 }
 
-export default function ConsentPetitionModal({
-  asset
-}: ConsentPetitionModalProps) {
+function ConsentPetitionModal({ asset }: Props) {
   useHealthcheck()
-  const { address } = useAccount()
-  const { closeModal } = useModal()
+  const { closeModal } = useModalContext()
   const { mutateAsync: createConsent } = useCreateAssetConsent()
   const [selected, setSelected] = useState<Asset>()
 
+  const handleSubmit = useCallback(
+    (reason: string, request: PossibleRequests) => {
+      const consent = {
+        datasetDid: asset.id,
+        algorithmDid: selected.id,
+        request,
+        reason
+      }
+
+      createConsent(consent, {
+        onSuccess: closeModal
+      })
+    },
+    [asset.id, closeModal, createConsent, selected?.id]
+  )
+
   return (
-    <BaseModal title="Make petition">
-      <BaseModal.Section title="1. Algorithm">
-        <BaseModal.AssetPicker
-          address={address}
-          asset={asset}
-          selected={selected}
-          setSelected={setSelected}
-        />
-      </BaseModal.Section>
-      {selected && (
-        <BaseModal.Section title="2. Requests">
-          <BaseModal.InteractiveRequest
-            algorithm={selected}
-            dataset={asset}
-            handleSubmit={(reason: string, request: PossibleRequests) => {
-              createConsent(
-                {
-                  datasetDid: asset.id,
-                  algorithmDid: selected.id,
-                  request,
-                  reason
-                },
-                {
-                  onSuccess: closeModal
-                }
-              )
-            }}
+    <Suspense fallback={<Loader />}>
+      <Sections>
+        <Sections.Section>
+          <Sections.SectionTitle>1. Algorithm</Sections.SectionTitle>
+          <AssetInput
+            asset={asset}
+            selected={selected}
+            setSelected={setSelected}
           />
-        </BaseModal.Section>
-      )}
-    </BaseModal>
+        </Sections.Section>
+        {selected && (
+          <Sections.Section>
+            <Sections.SectionTitle>2. Requests</Sections.SectionTitle>
+            <RequestsList
+              dataset={asset}
+              algorithm={selected}
+              handleSubmit={handleSubmit}
+            />
+          </Sections.Section>
+        )}
+      </Sections>
+    </Suspense>
   )
 }
+
+export default ConsentPetitionModal

@@ -1,11 +1,10 @@
 import { useCancelToken } from '@hooks/useCancelToken'
 import { Asset } from '@oceanprotocol/lib'
 import { getAsset } from '@utils/aquarius'
+import { extractDidFromUrl } from '@utils/consents/utils'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import styles from './AssetLink.module.css'
-import { extractDidFromUrl } from '@utils/consents/utils'
-import { isValidDid } from '@utils/ddo'
+import styles from './index.module.css'
 
 interface AssetLinkProps {
   asset?: Asset

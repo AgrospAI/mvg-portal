@@ -23,7 +23,8 @@ export const ConsentStatusSchema = z.enum([
 export const ConsentDirectionSchema = z.enum([
   'Incoming',
   'Outgoing',
-  'Solicited'
+  'Solicited',
+  '-'
 ])
 
 export const PossibleRequestsSchema = z.object({
@@ -34,11 +35,11 @@ export const PossibleRequestsSchema = z.object({
 })
 
 export const ConsentResponseSchema = z.object({
-  consent: z.string(),
+  consent: z.url(),
   status: ConsentStatusSchema,
   reason: z.string().optional().nullable(),
   permitted: PossibleRequestsSchema.optional().nullable(),
-  last_updated_at: z.coerce.number()
+  last_updated_at: z.coerce.number().optional().nullable()
 })
 
 export const ConsentSchema = z.object({

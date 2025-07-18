@@ -2,24 +2,17 @@ import Info from '@images/info.svg'
 import { Asset } from '@oceanprotocol/lib'
 import { PossibleRequests } from '@utils/consents/types'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
-import { useBaseModal } from '../BaseModal'
-import RequestsList from '../Components/RequestsList'
-import BaseModalActions from './BaseModalActions'
-import styles from './BaseModalRequest.module.css'
+import Actions from '../Actions'
+import Requests from '../Requests'
+import styles from './index.module.css'
 
-interface BaseModalInteractiveRequestProps {
+interface RequestsListProps {
   dataset: Asset
   algorithm: Asset
   handleSubmit: (reason: string, request: PossibleRequests) => void
 }
 
-function BaseModalInteractiveRequest({
-  dataset,
-  algorithm,
-  handleSubmit
-}: BaseModalInteractiveRequestProps) {
-  useBaseModal()
-
+function RequestsList({ dataset, algorithm, handleSubmit }: RequestsListProps) {
   return (
     <Formik
       initialValues={{ reason: '', permissions: {} }}
@@ -40,7 +33,7 @@ function BaseModalInteractiveRequest({
     >
       {({ isSubmitting, isValid }) => (
         <Form className={styles.form}>
-          <div className={styles.requestInfo}>
+          <div className={styles.requestsListInfo}>
             <Field
               type="text"
               name="reason"
@@ -55,15 +48,8 @@ function BaseModalInteractiveRequest({
                 </div>
               )}
             </ErrorMessage>
-            <RequestsList
-              dataset={dataset}
-              algorithm={algorithm}
-              isInteractive
-            />
-            <BaseModalActions
-              acceptText="Submit"
-              isLoading={!isValid || isSubmitting}
-            />
+            <Requests dataset={dataset} algorithm={algorithm} isInteractive />
+            <Actions acceptText="Submit" isLoading={!isValid || isSubmitting} />
           </div>
         </Form>
       )}
@@ -71,4 +57,4 @@ function BaseModalInteractiveRequest({
   )
 }
 
-export default BaseModalInteractiveRequest
+export default RequestsList

@@ -15,7 +15,6 @@ import {
 import {
   Consent,
   ConsentDirection,
-  ConsentState,
   PossibleRequests
 } from '@utils/consents/types'
 import { isOutgoing, isPending, isSolicited } from '@utils/consents/utils'
@@ -50,33 +49,40 @@ export const useUserSolicitedConsents = () => {
   return useUserConsents('Solicited', 'user-solicited-consents')
 }
 
-const updateStatus = (
-  id: number,
-  data: Consent[],
-  status: ConsentState = 'Pending'
-) => data.map((c) => (c.id === id ? { ...c, status } : c))
-
 export const useCreateConsentResponse = () => {
   const queryClient = useQueryClient()
   const { address } = useAccount()
 
-  type Variables = {
+  interface Mutation {
     consentId: number
     reason: string
     permitted: PossibleRequests
   }
 
   return useMutation({
-    mutationFn: async ({ consentId, reason, permitted }: Variables) =>
+    mutationFn: async ({ consentId, reason, permitted }: Mutation) =>
       createConsentResponse(consentId, reason, permitted),
 
-    onSuccess: (newConsent, { consentId }) => {
-      if (!address) return
-
+    onSuccess: (newConsent, { consentId, reason, permitted }) => {
       queryClient.setQueryData(
         ['user-incoming-consents', address],
-        (oldData: Consent[]) =>
-          updateStatus(consentId, oldData, newConsent.status)
+        (oldData: Consent[] = []) => {
+          return oldData.map((consent) => {
+            if (consent.id !== consentId) return consent
+
+            return {
+              ...consent,
+              status: newConsent.status,
+              response: {
+                consent: newConsent.url,
+                status: newConsent.status,
+                reason,
+                permitted,
+                last_updated_at: 0
+              }
+            }
+          })
+        }
       )
     }
   })
@@ -85,7 +91,7 @@ export const useCreateConsentResponse = () => {
 export const useCreateAssetConsent = () => {
   const { address } = useAccount()
 
-  type Variables = {
+  interface Mutation {
     datasetDid: string
     algorithmDid: string
     request: PossibleRequests
@@ -98,7 +104,7 @@ export const useCreateAssetConsent = () => {
       algorithmDid,
       request,
       reason
-    }: Variables) =>
+    }: Mutation) =>
       createConsent(address, datasetDid, algorithmDid, request, reason)
   })
 }
@@ -107,12 +113,12 @@ export const useDeleteConsent = () => {
   const queryClient = useQueryClient()
   const { address } = useAccount()
 
-  type Variables = {
+  interface Mutation {
     consent: Consent
   }
 
   return useMutation({
-    mutationFn: async ({ consent }: Variables) => deleteConsent(consent.id),
+    mutationFn: async ({ consent }: Mutation) => deleteConsent(consent.id),
 
     onSuccess: async (_, { consent }) => {
       if (!address) return
@@ -147,16 +153,28 @@ export const useDeleteConsentResponse = () => {
   const queryClient = useQueryClient()
   const { address } = useAccount()
 
+  interface Mutation {
+    consentId: number
+  }
+
   return useMutation({
-    mutationFn: ({ consent }: { consent: Consent }) =>
-      deleteConsentResponse(consent.id),
+    mutationFn: async ({ consentId }: Mutation) =>
+      deleteConsentResponse(consentId),
 
-    onSuccess: (_, { consent }) => {
-      if (!address) return
-
+    onSuccess: (_data, { consentId }) => {
       queryClient.setQueryData(
         ['user-incoming-consents', address],
-        (oldData: Consent[]) => updateStatus(consent.id, oldData)
+        (oldData: Consent[] = []) => {
+          return oldData.map((consent) => {
+            if (consent.id !== consentId) return consent
+
+            return {
+              ...consent,
+              status: 'Pending',
+              response: null
+            }
+          })
+        }
       )
     }
   })

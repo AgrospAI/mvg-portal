@@ -1,11 +1,13 @@
-import AssetLink from '@components/Profile/History/Consents/Modal/BaseModal/Components/AssetLink'
-import InspectConsentModal from '@components/Profile/History/Consents/Modal/InspectConsentModal'
-import { useModal } from '@context/Modal'
+import Loader from '@components/@shared/atoms/Loader'
+import Modal from '@components/@shared/Modal'
+import AssetLink from '@components/Profile/History/Consents/Modal/Components/AssetLink'
+import InspectConsentsModal from '@components/Profile/History/Consents/Modal/InspectConsentsModal'
 import { useUserIncomingConsents } from '@hooks/useUserConsents'
 import Cog from '@images/cog.svg'
 import { Asset } from '@oceanprotocol/lib'
 import { Consent } from '@utils/consents/types'
 import { isPending } from '@utils/consents/utils'
+import { Suspense } from 'react'
 import styles from './IncomingPendingConsentsSimple.module.css'
 
 interface Props {
@@ -14,8 +16,6 @@ interface Props {
 
 export default function IncomingPendingConsentsSimple({ asset }: Props) {
   const { data: incoming } = useUserIncomingConsents()
-  const { setSelected, setIsInteractive, openModal, setCurrentModal } =
-    useModal()
 
   const incomingForAsset = incoming.filter(
     (consent: Consent) =>
@@ -34,17 +34,18 @@ export default function IncomingPendingConsentsSimple({ asset }: Props) {
                   did={consent.algorithm}
                   className={styles.assetLink}
                 />
-                <div className={styles.actionContainer}>
-                  <Cog
-                    class={styles.action}
-                    onClick={() => {
-                      setCurrentModal(<InspectConsentModal consent={consent} />)
-                      setSelected(consent)
-                      setIsInteractive(isPending(consent))
-                      openModal()
-                    }}
-                  />
-                </div>
+                <Modal>
+                  <Modal.Trigger>
+                    <div className={styles.actionContainer}>
+                      <Cog class={styles.action} />
+                    </div>
+                  </Modal.Trigger>
+                  <Modal.Content>
+                    <Suspense fallback={<Loader />}>
+                      <InspectConsentsModal consent={consent} />
+                    </Suspense>
+                  </Modal.Content>
+                </Modal>
               </div>
             ))}
           </div>

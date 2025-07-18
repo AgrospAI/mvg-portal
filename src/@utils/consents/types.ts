@@ -13,7 +13,7 @@ export type ConsentState = z.infer<typeof schemas.ConsentStatusSchema>
 export const ConsentStates: ConsentState[] = schemas.ConsentStatusSchema.options
 export type ConsentDirection = z.infer<typeof schemas.ConsentDirectionSchema>
 export const ConsentDirections: ConsentDirection[] =
-  schemas.ConsentDirectionSchema.options
+  schemas.ConsentDirectionSchema.options.filter((dir) => dir !== '-')
 export type ConsentResponse = z.infer<typeof schemas.ConsentResponseSchema>
 export type PossibleRequests = z.infer<typeof schemas.PossibleRequestsSchema>
 export type Consent = z.infer<typeof schemas.ConsentSchema>

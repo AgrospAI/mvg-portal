@@ -1,0 +1,16 @@
+.reason {
+  word-wrap: break-word;
+  overflow-y: scroll;
+  max-height: 10rem;
+  border: 1px solid var(--border-color);
+  padding: 0 calc(var(--spacer) / 2);
+  padding-bottom: 0.5rem;
+  border-radius: var(--border-radius);
+  text-align: justify;
+  font-style: italic;
+}
+
+.reasonTitle {
+  font-style: normal;
+  margin: 0;
+}

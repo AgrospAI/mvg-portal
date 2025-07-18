@@ -4,22 +4,18 @@ import Eye from '@images/eye.svg'
 import { Asset, LoggerInstance } from '@oceanprotocol/lib'
 import { getAsset } from '@utils/aquarius'
 import { useState } from 'react'
-import AssetPicker from '../Components/AssetPicker'
-import styles from './BaseModalAssetPicker.module.css'
+import { useAccount } from 'wagmi'
+import styles from './index.module.css'
+import AssetPicker from '../AssetPicker'
 
-interface BaseModalAlgorithmPickerProps {
-  address: string
+interface AssetInputProps {
   asset: Asset
   selected: Asset
   setSelected: (selected: Asset) => void
 }
 
-function BaseModalAlgorithmPicker({
-  address,
-  asset,
-  selected,
-  setSelected
-}: BaseModalAlgorithmPickerProps) {
+function AssetInput({ asset, selected, setSelected }: AssetInputProps) {
+  const { address } = useAccount()
   const assetType = asset?.metadata.algorithm ? 'dataset' : 'algorithm'
   const assets = useAssets(address, assetType)
   const [error, setError] = useState('')
@@ -108,4 +104,4 @@ function BaseModalAlgorithmPicker({
   )
 }
 
-export default BaseModalAlgorithmPicker
+export default AssetInput

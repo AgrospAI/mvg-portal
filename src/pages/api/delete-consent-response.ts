@@ -16,7 +16,7 @@ export default async function handler(
   try {
     const { consentId } = req.body
     await deleteConsentResponse(consentId)
-    res.status(200)
+    res.status(200).json({})
   } catch (err) {
     console.error(err)
     res.status(500).json({ message: 'Internal Server Error' })
