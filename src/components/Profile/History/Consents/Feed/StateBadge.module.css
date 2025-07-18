@@ -1,13 +1,12 @@
 .badge {
-  padding: 5px 10px;
-  width: 5rem;
+  padding: 0.25rem 0.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 5px;
   font-size: 0.8rem;
-  font-weight: 500;
   color: white;
+  font-weight: 700;
 }
 
 .badge-pending {
@@ -16,6 +15,7 @@
 
 .badge-accepted {
   background-color: var(--brand-alert-green);
+  color: black;
 }
 
 .badge-resolved {

@@ -26,6 +26,16 @@
   margin: calc(var(--spacer) / 2) 0;
 }
 
+.reasonTextbox {
+  padding: calc(var(--spacer) / 3);
+  width: 100%;
+  font-family: inherit;
+}
+
+.reasonTextbox:focus {
+  outline: none;
+}
+
 .requestContainer {
   display: flex;
   flex-direction: column;
@@ -50,4 +60,18 @@
 .request_list > li > span > div {
   margin-right: 0;
   vertical-align: bottom;
+}
+
+.error {
+  display: flex;
+  column-gap: calc(var(--spacer) / 4);
+  background-color: pink;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--brand-alert-red);
+  padding: calc(var(--spacer) / 4);
+}
+
+.error > svg {
+  padding: 0;
+  margin: 0;
 }

@@ -1,32 +1,29 @@
-import { useModal } from '@context/Modal'
+import Loader from '@components/@shared/atoms/Loader'
+import Modal from '@components/@shared/Modal'
 import Info from '@images/info.svg'
-import { isIncoming, isPending } from '@utils/consents/utils'
-import { useCallback } from 'react'
-import InspectConsentModal from '../../../Modal/InspectConsentModal'
-import { useConsentRowActions } from '../ConsentRowActions'
+import { Consent } from '@utils/consents/types'
+import { Suspense } from 'react'
+import InspectConsentsModal from '../../../Modal/InspectConsentsModal'
 import styles from './Buttons.module.css'
 
-function InspectConsent() {
-  const { consent } = useConsentRowActions()
-  const { setSelected, setIsInteractive, openModal, setCurrentModal } =
-    useModal()
+interface InspectConsentProps {
+  consent: Consent
+}
 
-  const inspect = useCallback(() => {
-    setCurrentModal(<InspectConsentModal consent={consent} />)
-    setSelected(consent)
-    setIsInteractive(isPending(consent) && isIncoming(consent))
-    openModal()
-  }, [consent, openModal, setCurrentModal, setIsInteractive, setSelected])
-
+function InspectConsent({ consent }: InspectConsentProps) {
   return (
-    <div
-      className={styles.item}
-      aria-label="Inspect"
-      title="Inspect"
-      onClick={inspect}
-    >
-      <Info />
-    </div>
+    <Modal>
+      <Modal.Trigger>
+        <span className={styles.item} title="Inspect" aria-label="Inspect">
+          <Info />
+        </span>
+      </Modal.Trigger>
+      <Modal.Content title="Inspect petition">
+        <Suspense fallback={<Loader />}>
+          <InspectConsentsModal consent={consent} />
+        </Suspense>
+      </Modal.Content>
+    </Modal>
   )
 }
 

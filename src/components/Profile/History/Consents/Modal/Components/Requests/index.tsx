@@ -4,23 +4,23 @@ import { PossibleRequests } from '@utils/consents/types'
 import { Field } from 'formik'
 import Link from 'next/link'
 import { useCallback } from 'react'
-import styles from './RequestsList.module.css'
+import styles from './index.module.css'
 
-interface RequestsListProps {
+interface RequestsProps {
   permissions?: PossibleRequests
-  dataset?: Asset
-  algorithm?: Asset
+  dataset: Asset
+  algorithm: Asset
   isInteractive?: boolean
   showFull?: boolean
 }
 
-function RequestsList({
+function Requests({
   permissions,
   dataset,
   algorithm,
   isInteractive,
   showFull
-}: RequestsListProps) {
+}: RequestsProps) {
   const getSimpleRequest = useCallback((key: keyof PossibleRequests) => {
     switch (key) {
       case 'trusted_algorithm_publisher':
@@ -97,8 +97,9 @@ function RequestsList({
           >
             <Field
               type="checkbox"
-              name={`permissions.${permission}`}
+              name={`permitted.${permission}`}
               value="on"
+              className={styles.margined}
             />
             {getCompleteRequest(permission as keyof PossibleRequests)}
           </label>
@@ -109,32 +110,33 @@ function RequestsList({
 
   if (showFull) {
     return (
-      <>
-        <p>Requests for:</p>
-        <ul className={styles.request_list}>
+      <div className={styles.requestContainer}>
+        <ul className={styles.requestList}>
           {requests.map(([key]) => (
-            <li key={key}>
+            <li key={key} className={styles.requestItem}>
               {getCompleteRequest(key as keyof PossibleRequests) ??
                 `Unexpected key ${key}`}
             </li>
           ))}
         </ul>
-      </>
+      </div>
     )
   }
 
   return (
     <>
-      {requests.map(([key]) => (
-        <div key={key} className={styles.request}>
-          <li>
-            {getSimpleRequest(key as keyof PossibleRequests) ??
-              `Unexpected key ${key}`}
-          </li>
-        </div>
-      ))}
+      {requests
+        .filter((req) => req)
+        .map(([key]) => (
+          <div key={key} className={styles.request}>
+            <li className={styles.requestItem}>
+              {getSimpleRequest(key as keyof PossibleRequests) ??
+                `Unexpected key ${key}`}
+            </li>
+          </div>
+        ))}
     </>
   )
 }
 
-export default RequestsList
+export default Requests

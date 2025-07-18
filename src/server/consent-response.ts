@@ -1,4 +1,6 @@
 'use server'
+import { validateWithSchema } from '@utils/consents/api'
+import { ConsentSchema } from '@utils/consents/schemas'
 import { Consent, PossibleRequests } from '@utils/consents/types'
 import { CONSENTS_API } from './api'
 
@@ -13,8 +15,8 @@ export async function createConsentResponse(
 
   return CONSENTS_API.post(`/consents/${consentId}/response/`, {
     reason,
-    permitted: isPermitted ? permitted : '0'
-  }).then((response) => response.data)
+    permitted: isPermitted ? JSON.stringify(permitted) : '0'
+  }).then(validateWithSchema(ConsentSchema))
 }
 
 export async function deleteConsentResponse(consentId: string): Promise<void> {

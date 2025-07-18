@@ -1,0 +1,201 @@
+import Loader from '@components/@shared/atoms/Loader'
+import { useModalContext } from '@components/@shared/Modal'
+import { useCreateConsentResponse } from '@hooks/useUserConsents'
+import Info from '@images/info.svg'
+import { Asset } from '@oceanprotocol/lib'
+import { Consent, ConsentState, PossibleRequests } from '@utils/consents/types'
+import { ErrorMessage, Field, Form, Formik } from 'formik'
+import { PropsWithChildren, Suspense, useState } from 'react'
+import ConsentStateBadge from '../../../Feed/StateBadge'
+import Actions from '../Actions'
+import Reason from '../Reason'
+import Requests from '../Requests'
+import styles from './index.module.css'
+
+function ConsentResponse({ children }: PropsWithChildren) {
+  return <Suspense fallback={<Loader />}>{children}</Suspense>
+}
+
+interface StatusProps {
+  status: ConsentState
+}
+function Status({ status }: StatusProps) {
+  return (
+    <span className={styles.container}>
+      Resolution <ConsentStateBadge status={status} />
+    </span>
+  )
+}
+
+interface InteractiveRequestFormProps {
+  dataset: Asset
+  algorithm: Asset
+  handleSubmit: (reason: string, request: PossibleRequests) => void
+}
+function InteractiveRequestForm({
+  dataset,
+  algorithm,
+  handleSubmit
+}: InteractiveRequestFormProps) {
+  return (
+    <Formik
+      initialValues={{ reason: '', permissions: {} }}
+      validate={(values) => {
+        const errors: { reason?: string; permissions?: string } = {}
+        if (!values.reason || values.reason.length === 0) {
+          errors.reason = 'Reason required'
+        } else if (values.reason.length > 255) {
+          errors.reason = 'Must be 255 characters or less'
+        }
+        return errors
+      }}
+      onSubmit={(values, { setSubmitting }) => {
+        console.log('Submitting', values)
+        handleSubmit(values.reason, values.permissions)
+        setSubmitting(false)
+      }}
+    >
+      {({ isSubmitting, isValid }) => (
+        <Form className={styles.form}>
+          <div className={styles.requestInfo}>
+            <Field
+              type="text"
+              name="reason"
+              placeholder="This is where your reasons go"
+              class={styles.reasonTextbox}
+            />
+            <ErrorMessage name="reason" component="div">
+              {(msg) => (
+                <div className={styles.error}>
+                  <Info />
+                  {msg}
+                </div>
+              )}
+            </ErrorMessage>
+            <span>Requests for:</span>
+            <Requests dataset={dataset} algorithm={algorithm} isInteractive />
+            <Actions acceptText="Submit" isLoading={!isValid || isSubmitting} />
+          </div>
+        </Form>
+      )}
+    </Formik>
+  )
+}
+
+interface InteractiveResponseFormProps {
+  consent: Consent
+  dataset: Asset
+  algorithm: Asset
+}
+function InteractiveResponseForm({
+  consent,
+  dataset,
+  algorithm
+}: InteractiveResponseFormProps) {
+  const { closeModal } = useModalContext()
+  const [isTriedSubmitted, setIsTriedSubmitted] = useState(false)
+  const { mutate: createConsentResponse } = useCreateConsentResponse()
+  return (
+    <Formik
+      validateOnChange={isTriedSubmitted}
+      validateOnBlur={isTriedSubmitted}
+      initialValues={{ reason: '', permitted: {} as PossibleRequests }}
+      validate={({ reason }) => {
+        const errors: { reason?: string; permitted?: string } = {}
+        if (!reason) {
+          errors.reason = 'Required'
+        }
+        setIsTriedSubmitted(true)
+        return errors
+      }}
+      onSubmit={({ reason, permitted }, { setSubmitting }) => {
+        createConsentResponse(
+          {
+            consentId: consent.id,
+            reason,
+            permitted
+          },
+          {
+            onSuccess: () => {
+              closeModal()
+              setSubmitting(false)
+            }
+          }
+        )
+      }}
+    >
+      {({ isValid, isSubmitting, setFieldValue, submitForm }) => (
+        <Form>
+          <div className={styles.requestInfo}>
+            <div className={styles.requestContainer}>
+              <Reason text={'Reason'}>
+                <Field
+                  id="reason"
+                  name="reason"
+                  placeholder="Reason of the response"
+                  className={styles.responseTextbox}
+                />
+              </Reason>
+              <ErrorMessage name="reason" component="div">
+                {(msg) => (
+                  <div className={styles.error}>
+                    <Info className={styles.errorIcon} />
+                    {msg}
+                  </div>
+                )}
+              </ErrorMessage>
+              Permissions:
+              <Requests
+                dataset={dataset}
+                algorithm={algorithm}
+                permissions={consent.request}
+                isInteractive
+              />
+              <Actions
+                acceptText="Submit"
+                rejectText="Reject All"
+                handleReject={() =>
+                  setFieldValue('permitted', {}).then(submitForm)
+                }
+                isLoading={isSubmitting || !isValid}
+              />
+            </div>
+          </div>
+        </Form>
+      )}
+    </Formik>
+  )
+}
+
+interface ResponsePermissionsProps {
+  permitted: PossibleRequests
+  dataset: Asset
+  algorithm: Asset
+  showFull?: boolean
+}
+function ResponsePermissions({
+  permitted,
+  dataset,
+  algorithm,
+  showFull
+}: ResponsePermissionsProps) {
+  return (
+    <div className={styles.requestInfo}>
+      <div className={styles.requestContainer}>
+        <Requests
+          permissions={permitted}
+          dataset={dataset}
+          algorithm={algorithm}
+          showFull={showFull}
+        />
+      </div>
+    </div>
+  )
+}
+
+ConsentResponse.Status = Status
+ConsentResponse.InteractiveResponseForm = InteractiveResponseForm
+ConsentResponse.InteractiveRequestForm = InteractiveRequestForm
+ConsentResponse.ResponsePermissions = ResponsePermissions
+
+export default ConsentResponse

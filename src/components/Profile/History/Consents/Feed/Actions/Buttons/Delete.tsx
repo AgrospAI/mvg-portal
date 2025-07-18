@@ -4,22 +4,19 @@ import { useConsentRowActions } from '../ConsentRowActions'
 import styles from './Buttons.module.css'
 
 interface DeleteButtonProps {
-  action: ({ consent }: { consent: Consent }) => void
-  condition: (consent: Consent) => boolean
+  action: (consent: Consent) => void
   children: string
 }
 
-function DeleteButton({ action, condition, children }: DeleteButtonProps) {
+function DeleteButton({ action, children }: DeleteButtonProps) {
   const { consent } = useConsentRowActions()
-
-  if (!condition(consent)) return <></>
 
   return (
     <div
       className={styles.item}
       aria-label={`Delete ${children.toLowerCase()}`}
       title={`Delete ${children.toLowerCase()}`}
-      onClick={() => action({ consent })}
+      onClick={() => action(consent)}
     >
       <Cross />
     </div>

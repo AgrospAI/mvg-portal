@@ -3,14 +3,14 @@ import axios, { AxiosResponse } from 'axios'
 import { ZodType } from 'zod'
 import { ConsentsApiRoutes as Routes } from './routes'
 import {
-  ConsentResponseSchema,
+  ConsentSchema,
   ConsentsListSchema,
   UserConsentsDataSchema
 } from './schemas'
 import {
+  Consent,
   ConsentDirection,
   ConsentList,
-  ConsentResponse,
   PossibleRequests,
   UserConsentsData
 } from './types'
@@ -32,7 +32,7 @@ const validate = <T>({ data }: AxiosResponse, schema: ZodType<T>): T => {
 }
 
 // HoF to ease the validation writing
-const validateWithSchema =
+export const validateWithSchema =
   <T>(schema: ZodType<T>) =>
   (response: AxiosResponse) =>
     validate<T>(response, schema)
@@ -84,20 +84,16 @@ export const createConsentResponse = async (
   consentId: number,
   reason: string,
   permitted: PossibleRequests
-): Promise<ConsentResponse> =>
+): Promise<Consent> =>
   API.post(Routes.CREATE_CONSENT_RESPONSE, {
     consentId,
     reason,
     permitted
-  }).then(validateWithSchema(ConsentResponseSchema))
+  }).then(validateWithSchema(ConsentSchema))
 
-export const deleteConsentResponse = async (
-  consentId: number,
-  signal?: AbortSignal
-): Promise<void> =>
-  API.delete(Routes.DELETE_CONSENT_RESPONSE, {
-    data: { consentId },
-    signal
+export const deleteConsentResponse = async (consentId: number): Promise<void> =>
+  await API.delete(Routes.DELETE_CONSENT_RESPONSE, {
+    data: { consentId }
   })
 
 export const getHealth = async (): Promise<boolean> =>

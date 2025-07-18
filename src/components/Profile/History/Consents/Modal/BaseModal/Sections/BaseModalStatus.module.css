@@ -1,5 +1,0 @@
-.container {
-  display: flex;
-  column-gap: calc(var(--spacer) / 2);
-  align-items: center;
-}

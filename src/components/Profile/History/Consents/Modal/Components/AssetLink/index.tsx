@@ -3,7 +3,7 @@ import { Asset } from '@oceanprotocol/lib'
 import { getAsset } from '@utils/aquarius'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import styles from './AssetLink.module.css'
+import styles from './index.module.css'
 
 interface AssetLinkProps {
   curr?: Asset

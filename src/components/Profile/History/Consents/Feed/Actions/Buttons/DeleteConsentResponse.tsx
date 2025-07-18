@@ -1,16 +1,11 @@
-import { useDeleteConsent } from '@hooks/useUserConsents'
+import { useDeleteConsentResponse } from '@hooks/useUserConsents'
 import DeleteButton from './Delete'
-import { Consent } from '@utils/consents/types'
 
-interface Props {
-  condition: (consent: Consent) => boolean
-}
-
-function DeleteConsentResponse({ condition }: Props) {
-  const { mutateAsync: deleteConsentResponse } = useDeleteConsent()
+function DeleteConsentResponse() {
+  const { mutateAsync: deleteConsentResponse } = useDeleteConsentResponse()
 
   return (
-    <DeleteButton action={deleteConsentResponse} condition={condition}>
+    <DeleteButton action={({ id }) => deleteConsentResponse({ consentId: id })}>
       consent response
     </DeleteButton>
   )

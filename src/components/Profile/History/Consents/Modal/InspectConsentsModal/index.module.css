@@ -5,3 +5,9 @@
   border-radius: var(--border-radius);
   background-color: var(--color-agrospai-light);
 }
+
+.row {
+  display: flex;
+  flex-direction: row;
+  gap: calc(var(--spacer) / 4);
+}
