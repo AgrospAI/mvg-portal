@@ -1,5 +1,6 @@
 import Loader from '@components/@shared/atoms/Loader'
 import Modal from '@components/@shared/Modal'
+import { useCurrentConsent } from '@hooks/useCurrentConsent'
 import Info from '@images/info.svg'
 import { Consent } from '@utils/consents/types'
 import { Suspense } from 'react'
@@ -11,9 +12,11 @@ interface InspectConsentProps {
 }
 
 function InspectConsent({ consent }: InspectConsentProps) {
+  const { setCurrentConsent } = useCurrentConsent()
+
   return (
     <Modal>
-      <Modal.Trigger>
+      <Modal.Trigger onClick={() => setCurrentConsent(consent)}>
         <span className={styles.item} title="Inspect" aria-label="Inspect">
           <Info />
         </span>

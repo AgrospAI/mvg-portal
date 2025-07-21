@@ -1,5 +1,5 @@
+import { useCurrentConsent } from '@hooks/useCurrentConsent'
 import { useListConsent } from '@hooks/useListConsent'
-import { Consent } from '@utils/consents/types'
 import { isPending } from '@utils/consents/utils'
 import { useAccount } from 'wagmi'
 import ConsentResponse from '../Components/ConsentResponse'
@@ -10,12 +10,10 @@ import Sections from '../Components/Sections'
 import Solicitor from '../Components/Solicitor'
 import styles from './index.module.css'
 
-interface InspectConsentsModalProps {
-  consent: Consent
-}
-
-function InspectConsentsModal({ consent }: InspectConsentsModalProps) {
+function InspectConsentsModal() {
   const { address } = useAccount()
+  const { currentConsent: consent } = useCurrentConsent()
+
   const {
     datasetQuery: { data: dataset },
     algorithmQuery: { data: algorithm }

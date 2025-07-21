@@ -19,6 +19,7 @@ import {
   UserConsentsData
 } from '@utils/consents/types'
 import { isOutgoing, isPending, isSolicited } from '@utils/consents/utils'
+import { useEffect } from 'react'
 import { useAccount } from 'wagmi'
 
 export const useUserConsentsAmount = () => {
@@ -31,11 +32,46 @@ export const useUserConsentsAmount = () => {
 
 const useUserConsents = (direction: ConsentDirection, queryKey: string) => {
   const { address } = useAccount()
-  return useSuspenseQuery({
+  const queryClient = useQueryClient()
+  const query = useSuspenseQuery({
     queryKey: [queryKey, address],
     queryFn: async ({ signal }) =>
       getUserConsentsDirection(address, direction, signal)
   })
+
+  // Check if the fetched data differs from the stored pendings, if so, refetch user stats
+  useEffect(() => {
+    const amounts = (queryClient.getQueryData(['profile-consents', address]) ??
+      {}) as UserConsentsData
+
+    let hasChanged = false
+
+    switch (direction) {
+      case 'Incoming':
+        hasChanged =
+          amounts.incoming_pending_consents !==
+          query.data.filter(isPending).length
+        break
+      case 'Outgoing':
+        hasChanged =
+          amounts.outgoing_pending_consents !==
+          query.data.filter(isPending).length
+        break
+      case 'Solicited':
+        hasChanged =
+          amounts.solicited_pending_consents !==
+          query.data.filter(isPending).length
+        break
+    }
+
+    if (hasChanged) {
+      queryClient.invalidateQueries({
+        queryKey: ['profile-consents', address]
+      })
+    }
+  }, [address, direction, query.data, queryClient])
+
+  return query
 }
 
 export const useUserIncomingConsents = () => {

@@ -27,7 +27,10 @@ export function useListConsent(consent: Consent) {
       const { CancelToken } = axios
       const source = CancelToken.source()
 
-      const promise = getAsset(extractDidFromUrl(consent.dataset), source.token)
+      const promise = getAsset(
+        extractDidFromUrl(consent.algorithm),
+        source.token
+      )
 
       signal?.addEventListener('abort', () => {
         source.cancel('Query was cancelled')

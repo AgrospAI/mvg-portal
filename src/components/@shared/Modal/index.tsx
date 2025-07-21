@@ -1,9 +1,11 @@
+import { updateQueryParameters } from '@utils/searchParams'
+import { useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/router'
 import {
   createContext,
   PropsWithChildren,
   useCallback,
-  useContext,
-  useState
+  useContext
 } from 'react'
 import QueryBoundary from '../QueryBoundary'
 import Modal from '../atoms/Modal'
@@ -23,10 +25,19 @@ const useModalContext = () => {
 }
 
 function ModalProvider({ children }: PropsWithChildren) {
-  const [isOpen, setIsOpen] = useState(false)
+  const searchParams = useSearchParams()
+  const router = useRouter()
 
-  const openModal = useCallback(() => setIsOpen(true), [])
-  const closeModal = useCallback(() => setIsOpen(false), [])
+  const isOpen = searchParams.get('isOpen') === 'true' || false
+
+  const openModal = useCallback(
+    () => updateQueryParameters(router, 'isOpen', true),
+    [router]
+  )
+  const closeModal = useCallback(
+    () => updateQueryParameters(router, 'isOpen', null),
+    [router]
+  )
 
   return (
     <ModalContext.Provider
@@ -58,9 +69,21 @@ function ModalContent({
   )
 }
 
-function ModalTrigger({ children }: PropsWithChildren) {
+function ModalTrigger({
+  onClick,
+  children
+}: PropsWithChildren<{ onClick?: () => void }>) {
   const { openModal } = useModalContext()
-  return <span onClick={openModal}>{children}</span>
+  return (
+    <span
+      onClick={() => {
+        openModal()
+        onClick && onClick()
+      }}
+    >
+      {children}
+    </span>
+  )
 }
 
 function _Modal({ children }: PropsWithChildren) {
