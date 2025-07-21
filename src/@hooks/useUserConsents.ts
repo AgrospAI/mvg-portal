@@ -15,7 +15,8 @@ import {
 import {
   Consent,
   ConsentDirection,
-  PossibleRequests
+  PossibleRequests,
+  UserConsentsData
 } from '@utils/consents/types'
 import { isOutgoing, isPending, isSolicited } from '@utils/consents/utils'
 import { useAccount } from 'wagmi'
@@ -64,6 +65,7 @@ export const useCreateConsentResponse = () => {
       createConsentResponse(consentId, reason, permitted),
 
     onSuccess: (newConsent, { consentId, reason, permitted }) => {
+      // Update the list of incoming consents
       queryClient.setQueryData(
         ['user-incoming-consents', address],
         (oldData: Consent[] = []) => {
@@ -83,6 +85,15 @@ export const useCreateConsentResponse = () => {
             }
           })
         }
+      )
+
+      // Decrease the amount of pending consents
+      queryClient.setQueryData(
+        ['profile-consents', address],
+        (oldData: UserConsentsData) => ({
+          ...oldData,
+          incoming_pending_consents: oldData.incoming_pending_consents - 1
+        })
       )
     }
   })
@@ -138,12 +149,18 @@ export const useDeleteConsent = () => {
           (oldData: Consent[] = []) =>
             oldData.filter((c) => c.id !== consent.id)
         )
-      }
 
-      if (isPending(consent)) {
-        await queryClient.invalidateQueries({
-          queryKey: ['profile-consents', address]
-        })
+        if (isPending(consent)) {
+          // Decrease the amount of pending consents
+          queryClient.setQueryData(
+            ['profile-consents', address],
+            (oldData: UserConsentsData) => ({
+              ...oldData,
+              outgoing_pending_consents: oldData.outgoing_pending_consents - 1,
+              solicited_pending_consents: oldData.solicited_pending_consents - 1
+            })
+          )
+        }
       }
     }
   })
@@ -162,6 +179,7 @@ export const useDeleteConsentResponse = () => {
       deleteConsentResponse(consentId),
 
     onSuccess: (_data, { consentId }) => {
+      // Set the consent back to "no-response" state
       queryClient.setQueryData(
         ['user-incoming-consents', address],
         (oldData: Consent[] = []) => {
@@ -175,6 +193,15 @@ export const useDeleteConsentResponse = () => {
             }
           })
         }
+      )
+
+      // Increase the amount of pending consents
+      queryClient.setQueryData(
+        ['profile-consents', address],
+        (oldData: UserConsentsData) => ({
+          ...oldData,
+          incoming_pending_consents: oldData.incoming_pending_consents + 1
+        })
       )
     }
   })
