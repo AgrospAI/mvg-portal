@@ -7,9 +7,10 @@ import styles from './index.module.css'
 
 interface CachedAssetListTitleProps {
   did: string
+  className?: string
 }
 
-function CachedAssetListTitle({ did }: CachedAssetListTitleProps) {
+function CachedAssetListTitle({ did, className }: CachedAssetListTitleProps) {
   const getAssetName = useCallback((did: string) => {
     const getAssetName = async (did: string): Promise<string> => {
       const source = axios.CancelToken.source()
@@ -28,7 +29,7 @@ function CachedAssetListTitle({ did }: CachedAssetListTitleProps) {
   if (isLoading) return <>Loading...</>
 
   return (
-    <h3 className={styles.title}>
+    <h3 className={`${styles.title} ${className}`}>
       <Link href={`/asset/${did}`}>{assetName}</Link>
     </h3>
   )

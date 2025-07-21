@@ -73,20 +73,32 @@ const getColumns = (): TableOceanColumn<Consent>[] => {
     {
       name: 'Dataset',
       selector: (row) => (
-        <CachedAssetListTitle did={extractDidFromUrl(row.dataset)} />
+        <CachedAssetListTitle
+          did={extractDidFromUrl(row.dataset)}
+          className={styles.centered}
+        />
       )
     },
     {
       name: 'Algorithm',
       selector: (row) => (
         <div className={styles.columnItem}>
-          <CachedAssetListTitle did={extractDidFromUrl(row.algorithm)} />
+          <CachedAssetListTitle
+            did={extractDidFromUrl(row.algorithm)}
+            className={styles.centered}
+          />
         </div>
       )
     },
     {
       name: 'Solicitor',
-      selector: (row) => <Publisher account={row.solicitor.address} showName />
+      selector: (row) => (
+        <Publisher
+          account={row.solicitor.address}
+          showName
+          className={styles.centered}
+        />
+      )
     },
     {
       name: 'State',

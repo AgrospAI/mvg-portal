@@ -12,6 +12,7 @@ interface RequestsProps {
   algorithm: Asset
   isInteractive?: boolean
   showFull?: boolean
+  requestsName?: string
 }
 
 function Requests({
@@ -19,7 +20,8 @@ function Requests({
   dataset,
   algorithm,
   isInteractive,
-  showFull
+  showFull,
+  requestsName = 'permitted'
 }: RequestsProps) {
   const getSimpleRequest = useCallback((key: keyof PossibleRequests) => {
     switch (key) {
@@ -97,7 +99,7 @@ function Requests({
           >
             <Field
               type="checkbox"
-              name={`permitted.${permission}`}
+              name={`${requestsName}.${permission}`}
               value="on"
               className={styles.margined}
             />

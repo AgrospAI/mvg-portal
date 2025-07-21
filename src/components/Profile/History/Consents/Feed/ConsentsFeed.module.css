@@ -54,3 +54,8 @@
 .onlyPending > input[type='checkbox'] {
   cursor: pointer;
 }
+
+.centered {
+  display: flex;
+  margin: 0 auto;
+}
