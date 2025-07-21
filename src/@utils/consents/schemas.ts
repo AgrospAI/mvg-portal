@@ -9,8 +9,7 @@ export const UserConsentsDataSchema = z.object({
   address: z.string(),
   assets: z.url().array(),
   incoming_pending_consents: z.coerce.number(),
-  outgoing_pending_consents: z.coerce.number(),
-  solicited_pending_consents: z.coerce.number()
+  outgoing_pending_consents: z.coerce.number()
 })
 
 export const ConsentStatusSchema = z.enum([
@@ -20,12 +19,7 @@ export const ConsentStatusSchema = z.enum([
   'Resolved'
 ])
 
-export const ConsentDirectionSchema = z.enum([
-  'Incoming',
-  'Outgoing',
-  'Solicited',
-  '-'
-])
+export const ConsentDirectionSchema = z.enum(['Incoming', 'Outgoing', '-'])
 
 export const PossibleRequestsSchema = z.object({
   trusted_algorithm_publisher: z.boolean().optional().nullable(),

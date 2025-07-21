@@ -18,7 +18,7 @@ import {
   PossibleRequests,
   UserConsentsData
 } from '@utils/consents/types'
-import { isOutgoing, isPending, isSolicited } from '@utils/consents/utils'
+import { isPending } from '@utils/consents/utils'
 import { useEffect } from 'react'
 import { useAccount } from 'wagmi'
 
@@ -57,11 +57,6 @@ const useUserConsents = (direction: ConsentDirection, queryKey: string) => {
           amounts.outgoing_pending_consents !==
           query.data.filter(isPending).length
         break
-      case 'Solicited':
-        hasChanged =
-          amounts.solicited_pending_consents !==
-          query.data.filter(isPending).length
-        break
     }
 
     if (hasChanged) {
@@ -80,10 +75,6 @@ export const useUserIncomingConsents = () => {
 
 export const useUserOutgoingConsents = () => {
   return useUserConsents('Outgoing', 'user-outgoing-consents')
-}
-
-export const useUserSolicitedConsents = () => {
-  return useUserConsents('Solicited', 'user-solicited-consents')
 }
 
 export const useCreateConsentResponse = () => {
@@ -176,27 +167,15 @@ export const useDeleteConsent = () => {
         (oldData: Consent[] = []) => oldData.filter((c) => c.id !== consent.id)
       )
 
-      if (isOutgoing(consent) || isSolicited(consent)) {
-        const other = isOutgoing(consent) ? 'solicited' : 'outgoing'
-        const direction = `user-${other}-consents`
-
+      if (isPending(consent)) {
+        // Decrease the amount of pending consents
         queryClient.setQueryData(
-          [direction, address],
-          (oldData: Consent[] = []) =>
-            oldData.filter((c) => c.id !== consent.id)
+          ['profile-consents', address],
+          (oldData: UserConsentsData) => ({
+            ...oldData,
+            outgoing_pending_consents: oldData.outgoing_pending_consents - 1
+          })
         )
-
-        if (isPending(consent)) {
-          // Decrease the amount of pending consents
-          queryClient.setQueryData(
-            ['profile-consents', address],
-            (oldData: UserConsentsData) => ({
-              ...oldData,
-              outgoing_pending_consents: oldData.outgoing_pending_consents - 1,
-              solicited_pending_consents: oldData.solicited_pending_consents - 1
-            })
-          )
-        }
       }
     }
   })
