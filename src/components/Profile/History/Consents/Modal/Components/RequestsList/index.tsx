@@ -48,7 +48,12 @@ function RequestsList({ dataset, algorithm, handleSubmit }: RequestsListProps) {
                 </div>
               )}
             </ErrorMessage>
-            <Requests dataset={dataset} algorithm={algorithm} isInteractive />
+            <Requests
+              dataset={dataset}
+              algorithm={algorithm}
+              isInteractive
+              requestsName={'permissions'}
+            />
             <Actions acceptText="Submit" isLoading={!isValid || isSubmitting} />
           </div>
         </Form>
