@@ -23,7 +23,7 @@ function InspectConsent({ consent }: InspectConsentProps) {
       </Modal.Trigger>
       <Modal.Content title="Inspect petition">
         <Suspense fallback={<Loader />}>
-          <InspectConsentsModal consent={consent} />
+          <InspectConsentsModal />
         </Suspense>
       </Modal.Content>
     </Modal>
