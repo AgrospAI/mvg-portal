@@ -27,8 +27,6 @@ function ConsentPetitionModal({ asset }: Props) {
         reason
       }
 
-      console.log(consent)
-
       createConsent(consent, {
         onSuccess: closeModal
       })
