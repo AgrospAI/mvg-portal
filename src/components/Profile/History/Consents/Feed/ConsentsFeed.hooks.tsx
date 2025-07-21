@@ -123,7 +123,23 @@ export const useConsentsFeed = () => {
 
   const searchParams = useSearchParams()
   const isOnlyPending = searchParams.get('isOnlyPending') === 'true'
-  const tabIndex = Number(searchParams.get('consentTab'))
+
+  const getDefaultIndex = useCallback(() => {
+    let tabIndex = 0
+
+    if (incoming.length) tabIndex = 0
+    else if (outgoing.length) tabIndex = 1
+    else if (solicited.length) tabIndex = 2
+
+    const params = new URLSearchParams(window.location.search)
+    params.set('consentTab', tabIndex.toString())
+    router.push(`${window.location.pathname}?${params.toString()}`, undefined, {
+      shallow: true
+    })
+
+    return tabIndex
+  }, [incoming, outgoing, solicited, router])
+  const tabIndex = Number(searchParams.get('consentTab') ?? getDefaultIndex())
 
   const filterPending = (consents: Consent[]) => consents.filter(isPending)
 
@@ -160,7 +176,7 @@ export const useConsentsFeed = () => {
       updateQueryParameters(router, 'consentTab', value),
     isOnlyPending,
     setIsOnlyPending: (value: boolean) =>
-      updateQueryParameters(router, 'isOnlyPending', value),
+      updateQueryParameters(router, 'isOnlyPending', value || null),
     refreshConsents
   }
 }
