@@ -42,7 +42,7 @@ export default function IncomingPendingConsentsSimple({ asset }: Props) {
                   </Modal.Trigger>
                   <Modal.Content>
                     <Suspense fallback={<Loader />}>
-                      <InspectConsentsModal consent={consent} />
+                      <InspectConsentsModal />
                     </Suspense>
                   </Modal.Content>
                 </Modal>
