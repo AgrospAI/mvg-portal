@@ -5,8 +5,7 @@ import CachedAssetListTitle from '@components/@shared/CachedAssetListTitle'
 import Publisher from '@components/@shared/Publisher'
 import {
   useUserIncomingConsents,
-  useUserOutgoingConsents,
-  useUserSolicitedConsents
+  useUserOutgoingConsents
 } from '@hooks/useUserConsents'
 import { useQueryClient } from '@tanstack/react-query'
 
@@ -29,8 +28,7 @@ import ConsentStateBadge from './StateBadge'
 const getTabs = (
   columns: TableOceanColumn<Consent>[],
   incomingConsents: Consent[],
-  outgoingConsents: Consent[],
-  solicitedConsents: Consent[]
+  outgoingConsents: Consent[]
 ): TabsItem[] => {
   const tabData = {
     Incoming: {
@@ -38,9 +36,6 @@ const getTabs = (
     },
     Outgoing: {
       data: outgoingConsents
-    },
-    Solicited: {
-      data: solicitedConsents
     }
   }
 
@@ -131,7 +126,6 @@ export const useConsentsFeed = () => {
 
   const { data: incoming } = useUserIncomingConsents()
   const { data: outgoing } = useUserOutgoingConsents()
-  const { data: solicited } = useUserSolicitedConsents()
 
   const searchParams = useSearchParams()
   const isOnlyPending = searchParams.get('isOnlyPending') === 'true'
@@ -141,7 +135,6 @@ export const useConsentsFeed = () => {
 
     if (incoming.length) tabIndex = 0
     else if (outgoing.length) tabIndex = 1
-    else if (solicited.length) tabIndex = 2
 
     const params = new URLSearchParams(window.location.search)
     params.set('consentTab', tabIndex.toString())
@@ -150,19 +143,15 @@ export const useConsentsFeed = () => {
     })
 
     return tabIndex
-  }, [incoming, outgoing, solicited, router])
+  }, [incoming, outgoing, router])
   const tabIndex = Number(searchParams.get('consentTab') ?? getDefaultIndex())
 
   const filterPending = (consents: Consent[]) => consents.filter(isPending)
 
   const queryClient = useQueryClient()
   const refreshConsents = useCallback(() => {
-    ;[
-      ['user-incoming-consents'],
-      ['user-outgoing-consents'],
-      ['user-solicited-consents']
-    ].forEach((queryKey) =>
-      queryClient.invalidateQueries({ queryKey, exact: false })
+    ;[['user-incoming-consents'], ['user-outgoing-consents']].forEach(
+      (queryKey) => queryClient.invalidateQueries({ queryKey, exact: false })
     )
   }, [queryClient])
 
@@ -170,14 +159,9 @@ export const useConsentsFeed = () => {
   const tabs = useMemo(
     () =>
       isOnlyPending
-        ? getTabs(
-            columns,
-            filterPending(incoming),
-            filterPending(outgoing),
-            filterPending(solicited)
-          )
-        : getTabs(columns, incoming, outgoing, solicited),
-    [columns, incoming, outgoing, solicited, isOnlyPending]
+        ? getTabs(columns, filterPending(incoming), filterPending(outgoing))
+        : getTabs(columns, incoming, outgoing),
+    [columns, incoming, outgoing, isOnlyPending]
   )
 
   return {
