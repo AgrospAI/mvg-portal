@@ -1,11 +1,11 @@
 import { useCurrentConsent } from '@hooks/useCurrentConsent'
 import { useListConsent } from '@hooks/useListConsent'
-import { isPending } from '@utils/consents/utils'
+import { isIncoming, isPending } from '@utils/consents/utils'
 import { useAccount } from 'wagmi'
 import ConsentResponse from '../Components/ConsentResponse'
 import DetailedAsset from '../Components/DetailedAsset'
 import Reason from '../Components/Reason'
-import Requests from '../Components/Requests'
+import { FullRequests } from '../Components/Requests'
 import Sections from '../Components/Sections'
 import Solicitor from '../Components/Solicitor'
 import styles from './index.module.css'
@@ -44,7 +44,6 @@ function InspectConsentsModal() {
                 permitted={consent.response?.permitted}
                 dataset={dataset}
                 algorithm={algorithm}
-                showFull
               />
             </>
           ) : (
@@ -60,7 +59,9 @@ function InspectConsentsModal() {
       <Sections.Section>
         <Sections.SectionTitle>Assets</Sections.SectionTitle>
         <DetailedAsset>
-          <DetailedAsset.Title>Your dataset</DetailedAsset.Title>
+          <DetailedAsset.Title>
+            {isIncoming(consent) ? <>Your dataset</> : <>Their dataset</>}
+          </DetailedAsset.Title>
           <DetailedAsset.AssetInfo asset={dataset} />
         </DetailedAsset>
         <hr className={styles.separator} />
@@ -77,11 +78,10 @@ function InspectConsentsModal() {
         />
         <Reason>{consent.reason}</Reason>
         <span>Requests for:</span>
-        <Requests
-          permissions={consent.request}
+        <FullRequests
+          requests={consent.request}
           dataset={dataset}
           algorithm={algorithm}
-          showFull
         />
       </Sections.Section>
       {isShowResponse && (
