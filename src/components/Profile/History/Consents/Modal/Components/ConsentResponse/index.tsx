@@ -9,7 +9,7 @@ import { PropsWithChildren, Suspense, useState } from 'react'
 import ConsentStateBadge from '../../../Feed/StateBadge'
 import Actions from '../Actions'
 import Reason from '../Reason'
-import Requests from '../Requests'
+import { FullRequests, InteractiveRequests } from '../Requests'
 import styles from './index.module.css'
 
 function ConsentResponse({ children }: PropsWithChildren) {
@@ -72,8 +72,13 @@ function InteractiveRequestForm({
                 </div>
               )}
             </ErrorMessage>
-            <span>Requests for:</span>
-            <Requests dataset={dataset} algorithm={algorithm} isInteractive />
+            <InteractiveRequests
+              dataset={dataset}
+              algorithm={algorithm}
+              fieldName="permissions"
+            >
+              <span>Requests for:</span>
+            </InteractiveRequests>
             <Actions acceptText="Submit" isLoading={!isValid || isSubmitting} />
           </div>
         </Form>
@@ -144,13 +149,13 @@ function InteractiveResponseForm({
                   </div>
                 )}
               </ErrorMessage>
-              Permissions:
-              <Requests
+              <InteractiveRequests
                 dataset={dataset}
                 algorithm={algorithm}
-                permissions={consent.request}
-                isInteractive
-              />
+                requests={consent.request}
+              >
+                Permissions:
+              </InteractiveRequests>
               <Actions
                 acceptText="Submit"
                 rejectText="Reject All"
@@ -171,22 +176,19 @@ interface ResponsePermissionsProps {
   permitted: PossibleRequests
   dataset: Asset
   algorithm: Asset
-  showFull?: boolean
 }
 function ResponsePermissions({
   permitted,
   dataset,
-  algorithm,
-  showFull
+  algorithm
 }: ResponsePermissionsProps) {
   return (
     <div className={styles.requestInfo}>
       <div className={styles.requestContainer}>
-        <Requests
-          permissions={permitted}
+        <FullRequests
           dataset={dataset}
           algorithm={algorithm}
-          showFull={showFull}
+          requests={permitted}
         />
       </div>
     </div>

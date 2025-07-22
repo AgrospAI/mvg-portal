@@ -3,8 +3,8 @@ import { Asset } from '@oceanprotocol/lib'
 import { PossibleRequests } from '@utils/consents/types'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import Actions from '../Actions'
-import Requests from '../Requests'
 import styles from './index.module.css'
+import { InteractiveRequests } from '../Requests/InteractiveRequests'
 
 interface RequestsListProps {
   dataset: Asset
@@ -48,12 +48,13 @@ function RequestsList({ dataset, algorithm, handleSubmit }: RequestsListProps) {
                 </div>
               )}
             </ErrorMessage>
-            <Requests
+            <InteractiveRequests
               dataset={dataset}
               algorithm={algorithm}
-              isInteractive
-              requestsName={'permissions'}
-            />
+              fieldName="permissions"
+            >
+              Request for:
+            </InteractiveRequests>
             <Actions acceptText="Submit" isLoading={!isValid || isSubmitting} />
           </div>
         </Form>

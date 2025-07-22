@@ -28,15 +28,6 @@
   margin: 0;
 }
 
-.request {
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
-  justify-items: center;
-  -webkit-user-select: none;
-  user-select: none;
-}
-
 .interactive {
   column-gap: calc(var(--spacer));
   cursor: pointer;
