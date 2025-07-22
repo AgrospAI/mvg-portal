@@ -1,7 +1,6 @@
 .requestContainer {
   display: flex;
   flex-direction: column;
-  gap: 0rem;
 }
 
 .requestContainer > p {
@@ -25,4 +24,9 @@
   display: inline;
   gap: 1em;
   margin: 0;
+}
+
+.title {
+  font-weight: 600;
+  font-size: 1em;
 }

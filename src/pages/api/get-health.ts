@@ -11,7 +11,7 @@ export default async function handler(
     return res.status(405).json({ message: 'Method Not Allowed' })
   }
 
-  getHealth()
+  await getHealth()
     .then(() => res.status(200).json({ message: 'Healthy' }))
     .catch(() => res.status(500).json({ message: 'Not healthy' }))
 }

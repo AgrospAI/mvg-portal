@@ -21,8 +21,8 @@ export const FullRequests = ({
   const values = Object.entries(requests)
   return (
     <div className={styles.requestContainer}>
+      {children ? <p className={styles.title}>{children}</p> : <></>}
       <ul className={styles.requestList}>
-        {children}
         {values.map(([key]) => (
           <li key={key} className={styles.requestItem}>
             {getCompleteRequest(key as keyof PossibleRequests)}
