@@ -1,0 +1,12 @@
+.responseTextbox {
+  width: 100%;
+  font-family: inherit;
+  border: none;
+  resize: none;
+  overflow: hidden;
+  line-height: 1.5;
+}
+
+.responseTextbox:focus {
+  outline: none;
+}

@@ -38,14 +38,13 @@ function InspectConsentsModal() {
           </Reason>
           {consent.response &&
           Object.values(consent.response?.permitted).some((value) => value) ? (
-            <>
+            <ConsentResponse.ResponsePermissions
+              permitted={consent.response?.permitted}
+              dataset={dataset}
+              algorithm={algorithm}
+            >
               Grants permission to:
-              <ConsentResponse.ResponsePermissions
-                permitted={consent.response?.permitted}
-                dataset={dataset}
-                algorithm={algorithm}
-              />
-            </>
+            </ConsentResponse.ResponsePermissions>
           ) : (
             <> </>
           )}
@@ -77,12 +76,13 @@ function InspectConsentsModal() {
           createdAt={consent.created_at}
         />
         <Reason>{consent.reason}</Reason>
-        <span>Requests for:</span>
         <FullRequests
           requests={consent.request}
           dataset={dataset}
           algorithm={algorithm}
-        />
+        >
+          <span>Requests for:</span>
+        </FullRequests>
       </Sections.Section>
       {isShowResponse && (
         <Sections.Section>

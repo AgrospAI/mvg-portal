@@ -43,7 +43,6 @@ export const InteractiveRequests = ({
         >
           <Field
             type="checkbox"
-            value="on"
             name={`${fieldName}.${permission}`}
             className={styles.margined}
           />

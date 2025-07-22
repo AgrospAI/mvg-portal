@@ -19,20 +19,10 @@
   overflow-y: scroll;
   max-height: 10rem;
   border: 1px solid var(--border-color);
-  padding: 0 calc(var(--spacer) / 2) Ø;
+  padding: 0 calc(var(--spacer) / 2);
   border-radius: var(--border-radius);
   text-align: justify;
   margin: calc(var(--spacer) / 2) 0;
-}
-
-.responseTextbox {
-  width: 100%;
-  font-family: inherit;
-  border: none;
-}
-
-.responseTextbox:focus {
-  outline: none;
 }
 
 .error {

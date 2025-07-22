@@ -1,10 +1,13 @@
 import Info from '@images/info.svg'
 import { Asset } from '@oceanprotocol/lib'
 import { PossibleRequests } from '@utils/consents/types'
-import { ErrorMessage, Field, Form, Formik } from 'formik'
+import { cleanRequests } from '@utils/consents/utils'
+import { ErrorMessage, Form, Formik } from 'formik'
 import Actions from '../Actions'
-import styles from './index.module.css'
+import { AutoResize } from '../ConsentResponse/AutoResize'
+import Reason from '../Reason'
 import { InteractiveRequests } from '../Requests/InteractiveRequests'
+import styles from './index.module.css'
 
 interface RequestsListProps {
   dataset: Asset
@@ -16,6 +19,9 @@ function RequestsList({ dataset, algorithm, handleSubmit }: RequestsListProps) {
   return (
     <Formik
       initialValues={{ reason: '', permissions: {} }}
+      validateOnBlur={false}
+      validateOnChange={false}
+      validateOnMount={false}
       validate={(values) => {
         const errors: { reason?: string; permissions?: string } = {}
         if (!values.reason || values.reason.length === 0) {
@@ -25,21 +31,22 @@ function RequestsList({ dataset, algorithm, handleSubmit }: RequestsListProps) {
         }
         return errors
       }}
-      onSubmit={(values, { setSubmitting }) => {
-        console.log('Submitting', values)
-        handleSubmit(values.reason, values.permissions)
+      onSubmit={({ reason, permissions }, { setSubmitting }) => {
+        console.log('Submitting', reason, permissions)
+
+        handleSubmit(reason, cleanRequests(permissions))
         setSubmitting(false)
       }}
     >
       {({ isSubmitting, isValid }) => (
         <Form className={styles.form}>
           <div className={styles.requestsListInfo}>
-            <Field
-              type="text"
-              name="reason"
-              placeholder="This is where your reasons go"
-              class={styles.reasonTextbox}
-            />
+            <Reason text={'Reason'}>
+              <AutoResize
+                name="reason"
+                placeholder="This is where your reasons go"
+              />
+            </Reason>
             <ErrorMessage name="reason" component="div">
               {(msg) => (
                 <div className={styles.error}>

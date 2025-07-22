@@ -61,3 +61,6 @@ export const isIncoming = (consent: Consent) => isDirection(consent, 'Incoming')
 export const isOutgoing = (consent: Consent) => isDirection(consent, 'Outgoing')
 
 export const isPending = (consent: Consent) => consent.status === 'Pending'
+
+export const cleanRequests = (requests: PossibleRequests): PossibleRequests =>
+  Object.fromEntries(Object.entries(requests).filter(([, value]) => value))

@@ -4,12 +4,14 @@ import { useCreateConsentResponse } from '@hooks/useUserConsents'
 import Info from '@images/info.svg'
 import { Asset } from '@oceanprotocol/lib'
 import { Consent, ConsentState, PossibleRequests } from '@utils/consents/types'
-import { ErrorMessage, Field, Form, Formik } from 'formik'
-import { PropsWithChildren, Suspense, useState } from 'react'
+import { ErrorMessage, Form, Formik } from 'formik'
+import { PropsWithChildren, ReactNode, Suspense, useState } from 'react'
+import { cleanRequests } from '../../../../../../../@utils/consents/utils'
 import ConsentStateBadge from '../../../Feed/StateBadge'
 import Actions from '../Actions'
 import Reason from '../Reason'
 import { FullRequests, InteractiveRequests } from '../Requests'
+import { AutoResize } from './AutoResize'
 import styles from './index.module.css'
 
 function ConsentResponse({ children }: PropsWithChildren) {
@@ -51,18 +53,16 @@ function InteractiveRequestForm({
       }}
       onSubmit={(values, { setSubmitting }) => {
         console.log('Submitting', values)
-        handleSubmit(values.reason, values.permissions)
+        handleSubmit(values.reason, cleanRequests(values.permissions))
         setSubmitting(false)
       }}
     >
       {({ isSubmitting, isValid }) => (
         <Form className={styles.form}>
           <div className={styles.requestInfo}>
-            <Field
-              type="text"
+            <AutoResize
               name="reason"
               placeholder="This is where your reasons go"
-              class={styles.reasonTextbox}
             />
             <ErrorMessage name="reason" component="div">
               {(msg) => (
@@ -118,7 +118,7 @@ function InteractiveResponseForm({
           {
             consentId: consent.id,
             reason,
-            permitted
+            permitted: cleanRequests(permitted)
           },
           {
             onSuccess: () => {
@@ -134,11 +134,9 @@ function InteractiveResponseForm({
           <div className={styles.requestInfo}>
             <div className={styles.requestContainer}>
               <Reason text={'Reason'}>
-                <Field
-                  id="reason"
+                <AutoResize
                   name="reason"
                   placeholder="Reason of the response"
-                  className={styles.responseTextbox}
                 />
               </Reason>
               <ErrorMessage name="reason" component="div">
@@ -176,11 +174,13 @@ interface ResponsePermissionsProps {
   permitted: PossibleRequests
   dataset: Asset
   algorithm: Asset
+  children?: ReactNode
 }
 function ResponsePermissions({
   permitted,
   dataset,
-  algorithm
+  algorithm,
+  children
 }: ResponsePermissionsProps) {
   return (
     <div className={styles.requestInfo}>
@@ -189,7 +189,9 @@ function ResponsePermissions({
           dataset={dataset}
           algorithm={algorithm}
           requests={permitted}
-        />
+        >
+          {children}
+        </FullRequests>
       </div>
     </div>
   )
