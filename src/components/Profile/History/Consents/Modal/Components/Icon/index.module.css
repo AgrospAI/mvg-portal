@@ -1,0 +1,26 @@
+.lightIcon {
+  background: var(--brand-grey-dimmed);
+  fill: var(--brand-grey-light);
+  stroke: var(--brand-grey-light);
+}
+
+.darkIcon {
+  background: var(--brand-grey);
+  fill: var(--brand-grey-lighter);
+  stroke: var(--brand-grey-lighter);
+}
+
+.icon {
+  border-radius: 100%;
+  padding: calc(var(--spacer) / 3);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.icon > svg {
+  width: 1rem;
+  height: 1rem;
+}

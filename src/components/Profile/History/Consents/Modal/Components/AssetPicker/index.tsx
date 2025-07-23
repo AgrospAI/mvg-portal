@@ -1,7 +1,7 @@
-import { UseQueryResult } from '@tanstack/react-query'
+import { UseSuspenseQueryResult } from '@tanstack/react-query'
 
 interface AssetPickerProps {
-  assets: UseQueryResult<PagedAssets, Error>
+  assets: UseSuspenseQueryResult<PagedAssets, Error>
   isWritten: boolean
   className: string
   handleSelectChange: (event: React.ChangeEvent<HTMLSelectElement>) => void
@@ -13,9 +13,6 @@ function AssetPicker({
   className,
   handleSelectChange
 }: AssetPickerProps) {
-  if (assets.isLoading) return <span>Loading ...</span>
-  if (assets.isError) return <span>Error fetching data</span>
-
   return (
     <select
       name="algorithm"

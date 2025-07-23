@@ -22,9 +22,9 @@ export default function ConsentRowActions({ consent, children }: Props) {
         style={{
           display: 'flex',
           flexDirection: 'row',
-          justifyContent: 'flex-start',
+          justifyContent: 'space-between',
           alignItems: 'center',
-          columnGap: '0.5rem'
+          gap: 'calc(var(--spacer) / 2)'
         }}
       >
         {children}

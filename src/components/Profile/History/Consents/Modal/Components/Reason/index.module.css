@@ -2,12 +2,13 @@
   word-wrap: break-word;
   overflow-y: scroll;
   max-height: 10rem;
-  border: 1px solid var(--border-color);
-  padding: 0 calc(var(--spacer) / 2);
-  padding-bottom: 0.5rem;
+  background-color: var(--brand-grey-lighter);
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  padding: calc(var(--spacer) / 4) calc(var(--spacer) / 2);
   border-radius: var(--border-radius);
   text-align: justify;
   font-style: italic;
+  font-weight: 600;
 }
 
 .reasonTitle {

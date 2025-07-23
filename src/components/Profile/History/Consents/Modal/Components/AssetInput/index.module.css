@@ -1,7 +1,15 @@
 .selector {
-  background: none;
-  padding: calc(var(--spacer) / 4);
+  background: var(--brand-grey-lighter);
+  padding: calc(var(--spacer) / 3);
+  border: none;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
   border-radius: var(--border-radius);
+  display: flex;
+  width: 100%;
+}
+
+.selector:focus ~ selected {
+  outline: 1px solid var(--brand-grey-light);
 }
 
 .container {
@@ -19,27 +27,46 @@
 }
 
 .reasonTextbox {
+  background: var(--brand-grey-lighter);
+  border-radius: var(--border-radius);
+  border: none;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
   padding: calc(var(--spacer) / 3);
   width: 100%;
   font-family: inherit;
 }
 
 .reasonTextbox:focus {
-  outline: none;
+  outline: 1px solid var(--brand-grey-light);
+}
+
+.feedback {
+  display: flex;
+  align-items: center;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  margin-top: 1rem;
+  padding: calc(var(--spacer) / 4);
+  width: 100%;
+  border-radius: var(--border-radius);
+  gap: calc(var(--spacer) / 2);
+  color: var(--brand-grey-dimmed);
+  font-weight: 600;
+}
+
+.feedback > svg {
+  margin: 0;
 }
 
 .errorMessage {
-  display: flex;
-  flex-direction: row;
-  align-content: flex-start;
-  border: 1px solid var(--brand-alert-red);
-  border-radius: var(--border-radius);
-  background-color: pink;
-  margin-top: 5px;
-  padding: 0 5px;
-  column-gap: calc(var(--spacer) / 4);
+  background-color: var(--brand-alert-red);
 }
 
-.alert {
-  width: fit-content;
+.successMessage {
+  background-color: var(--brand-alert-green);
+  fill: var(--brand-grey-dimmed);
+  overflow: hidden;
+}
+
+.successMessage code {
+  color: var(--brand-grey-dimmed);
 }

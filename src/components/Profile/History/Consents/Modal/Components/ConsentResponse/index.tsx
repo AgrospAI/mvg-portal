@@ -4,12 +4,12 @@ import { useCreateConsentResponse } from '@hooks/useUserConsents'
 import Info from '@images/info.svg'
 import { Asset } from '@oceanprotocol/lib'
 import { Consent, ConsentState, PossibleRequests } from '@utils/consents/types'
+import { cleanRequests } from '@utils/consents/utils'
 import { ErrorMessage, Form, Formik } from 'formik'
 import { PropsWithChildren, ReactNode, Suspense, useState } from 'react'
-import { cleanRequests } from '../../../../../../../@utils/consents/utils'
+import { toast } from 'react-toastify'
 import ConsentStateBadge from '../../../Feed/StateBadge'
 import Actions from '../Actions'
-import Reason from '../Reason'
 import { FullRequests, InteractiveRequests } from '../Requests'
 import { AutoResize } from './AutoResize'
 import styles from './index.module.css'
@@ -22,11 +22,7 @@ interface StatusProps {
   status: ConsentState
 }
 function Status({ status }: StatusProps) {
-  return (
-    <span className={styles.container}>
-      Resolution <ConsentStateBadge status={status} />
-    </span>
-  )
+  return <ConsentStateBadge status={status} />
 }
 
 interface InteractiveRequestFormProps {
@@ -124,6 +120,7 @@ function InteractiveResponseForm({
             onSuccess: () => {
               closeModal()
               setSubmitting(false)
+              toast.success('Consent responded successfully')
             }
           }
         )
@@ -133,12 +130,7 @@ function InteractiveResponseForm({
         <Form>
           <div className={styles.requestInfo}>
             <div className={styles.requestContainer}>
-              <Reason text={'Reason'}>
-                <AutoResize
-                  name="reason"
-                  placeholder="Reason of the response"
-                />
-              </Reason>
+              <AutoResize name="reason" placeholder="Reason of the response" />
               <ErrorMessage name="reason" component="div">
                 {(msg) => (
                   <div className={styles.error}>

@@ -3,14 +3,23 @@
 }
 
 .publisher {
-  display: flex;
-  flex-direction: row;
-  justify-items: center;
+  display: inline-flex;
   gap: 0.2rem;
-  margin: 0 calc(var(--spacer) / 4);
 }
 
 .title {
   font-style: italic;
   margin-bottom: 0.5rem;
+}
+
+.assetInfoContainer {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--spacer) / 2);
+}
+
+.assetName {
+  margin: 0;
+  color: black;
+  font-weight: light;
 }

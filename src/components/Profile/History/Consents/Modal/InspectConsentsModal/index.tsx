@@ -1,6 +1,9 @@
 import { useCurrentConsent } from '@hooks/useCurrentConsent'
 import { useListConsent } from '@hooks/useListConsent'
-import { isIncoming, isPending } from '@utils/consents/utils'
+import IconCompute from '@images/compute.svg'
+import IconLock from '@images/lock.svg'
+import IconTransaction from '@images/transaction.svg'
+import { isPending } from '@utils/consents/utils'
 import { useAccount } from 'wagmi'
 import ConsentResponse from '../Components/ConsentResponse'
 import DetailedAsset from '../Components/DetailedAsset'
@@ -33,9 +36,7 @@ function InspectConsentsModal() {
         />
       ) : (
         <>
-          <Reason text={'Dataset owner response'}>
-            {consent.response?.reason}
-          </Reason>
+          <Reason>{consent.response?.reason}</Reason>
           {consent.response &&
           Object.values(consent.response?.permitted).some((value) => value) ? (
             <ConsentResponse.ResponsePermissions
@@ -55,46 +56,49 @@ function InspectConsentsModal() {
 
   return (
     <Sections>
-      <Sections.Section>
-        <Sections.SectionTitle>Assets</Sections.SectionTitle>
+      <Sections.Section
+        icon={<IconCompute></IconCompute>}
+        title="Assets"
+        description="Assets involved in this consent, your dataset and the requested algorithm"
+      >
         <DetailedAsset>
-          <DetailedAsset.Title>
-            {isIncoming(consent) ? <>Your dataset</> : <>Their dataset</>}
-          </DetailedAsset.Title>
           <DetailedAsset.AssetInfo asset={dataset} />
         </DetailedAsset>
-        <hr className={styles.separator} />
         <DetailedAsset>
-          <DetailedAsset.Title>Requesting algorithm</DetailedAsset.Title>
           <DetailedAsset.AssetInfo asset={algorithm} />
         </DetailedAsset>
       </Sections.Section>
-      <Sections.Section>
-        <Sections.SectionTitle>Requests</Sections.SectionTitle>
-        <Solicitor
-          address={consent.solicitor.address}
-          createdAt={consent.created_at}
-        />
-        <Reason>{consent.reason}</Reason>
-        <FullRequests
-          requests={consent.request}
-          dataset={dataset}
-          algorithm={algorithm}
-        >
-          <span>Requests for:</span>
-        </FullRequests>
+      <Sections.Section
+        icon={<IconTransaction></IconTransaction>}
+        title="Requests"
+        description="Requests made by the solicitor"
+      >
+        <Sections.Column className={styles.customGap}>
+          <Solicitor
+            address={consent.solicitor.address}
+            createdAt={consent.created_at}
+          />
+          <Reason>{consent.reason}</Reason>
+          <FullRequests
+            requests={consent.request}
+            dataset={dataset}
+            algorithm={algorithm}
+          >
+            <span>Requests for:</span>
+          </FullRequests>
+        </Sections.Column>
       </Sections.Section>
       {isShowResponse && (
-        <Sections.Section>
-          <Sections.SectionTitle>
-            <span className={styles.row}>
-              Response{' '}
-              {!isInteractive && (
-                <ConsentResponse.Status status={consent.status} />
-              )}
-            </span>
-          </Sections.SectionTitle>
-          {renderResponse}
+        <Sections.Section
+          title="Response"
+          icon={<IconLock></IconLock>}
+          description={
+            !isInteractive && <ConsentResponse.Status status={consent.status} />
+          }
+        >
+          <Sections.Column className={styles.customGap}>
+            {renderResponse}
+          </Sections.Column>
         </Sections.Section>
       )}
     </Sections>

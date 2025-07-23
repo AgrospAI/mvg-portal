@@ -1,16 +1,15 @@
 import { useUserPreferences } from '@context/UserPreferences'
+import { useSuspenseQuery } from '@tanstack/react-query'
 import {
   generateBaseQuery,
   getFilterTerm,
   queryMetadata
 } from '@utils/aquarius'
-import { useState } from 'react'
 import {
   SortDirectionOptions,
   SortTermOptions
 } from 'src/@types/aquarius/SearchQuery'
 import { useCancelToken } from './useCancelToken'
-import { useQuery } from '@tanstack/react-query'
 
 export const useAssets = (address: string, type: 'algorithm' | 'dataset') => {
   const { chainIds } = useUserPreferences()
@@ -38,7 +37,7 @@ export const useAssets = (address: string, type: 'algorithm' | 'dataset') => {
 
   const query = generateBaseQuery(baseQueryParams)
 
-  return useQuery({
+  return useSuspenseQuery({
     queryKey: [type, address],
     queryFn: async () => await queryMetadata(query, newCancelToken())
   })

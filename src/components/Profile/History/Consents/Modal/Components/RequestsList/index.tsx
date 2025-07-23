@@ -3,9 +3,9 @@ import { Asset } from '@oceanprotocol/lib'
 import { PossibleRequests } from '@utils/consents/types'
 import { cleanRequests } from '@utils/consents/utils'
 import { ErrorMessage, Form, Formik } from 'formik'
+import { ReactNode } from 'react'
 import Actions from '../Actions'
 import { AutoResize } from '../ConsentResponse/AutoResize'
-import Reason from '../Reason'
 import { InteractiveRequests } from '../Requests/InteractiveRequests'
 import styles from './index.module.css'
 
@@ -40,30 +40,26 @@ function RequestsList({ dataset, algorithm, handleSubmit }: RequestsListProps) {
     >
       {({ isSubmitting, isValid }) => (
         <Form className={styles.form}>
-          <div className={styles.requestsListInfo}>
-            <Reason text={'Reason'}>
-              <AutoResize
-                name="reason"
-                placeholder="This is where your reasons go"
-              />
-            </Reason>
-            <ErrorMessage name="reason" component="div">
-              {(msg) => (
-                <div className={styles.error}>
-                  <Info />
-                  {msg}
-                </div>
-              )}
-            </ErrorMessage>
-            <InteractiveRequests
-              dataset={dataset}
-              algorithm={algorithm}
-              fieldName="permissions"
-            >
-              Request for:
-            </InteractiveRequests>
-            <Actions acceptText="Submit" isLoading={!isValid || isSubmitting} />
-          </div>
+          <AutoResize
+            name="reason"
+            placeholder="This is where your reasons go"
+          />
+          <ErrorMessage name="reason" component="div">
+            {(msg: ReactNode) => (
+              <div className={styles.error}>
+                <Info />
+                {msg}
+              </div>
+            )}
+          </ErrorMessage>
+          <InteractiveRequests
+            dataset={dataset}
+            algorithm={algorithm}
+            fieldName="permissions"
+          >
+            Request for:
+          </InteractiveRequests>
+          <Actions acceptText="Submit" isLoading={!isValid || isSubmitting} />
         </Form>
       )}
     </Formik>

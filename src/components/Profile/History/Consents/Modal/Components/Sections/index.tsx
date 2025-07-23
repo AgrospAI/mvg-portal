@@ -1,19 +1,45 @@
-import { PropsWithChildren } from 'react'
+import { PropsWithChildren, ReactNode } from 'react'
+import { Icon } from '../Icon'
 import styles from './index.module.css'
 
 function Sections({ children }: PropsWithChildren) {
   return <div className={styles.sections}>{children}</div>
 }
 
-function Section({ children }: PropsWithChildren) {
-  return <fieldset className={styles.section}>{children}</fieldset>
+function Section({
+  icon,
+  title,
+  description,
+  children
+}: PropsWithChildren<{
+  icon?: ReactNode
+  title?: string
+  description?: ReactNode
+}>) {
+  return (
+    <section className={styles.section}>
+      {title && (
+        <span className={styles.sectionHeader}>
+          {icon && <Icon isDark={false}>{icon}</Icon>}
+          <span className={styles.sectionHeaderText}>
+            <span className={styles.title}>{title}</span>
+            <span className={styles.description}>{description}</span>
+          </span>
+        </span>
+      )}
+      <div className={styles.sectionContent}>{children}</div>
+    </section>
+  )
 }
 
-function SectionTitle({ children }: PropsWithChildren) {
-  return <legend className={styles.title}>{children}</legend>
-}
+const Column = ({
+  className,
+  children
+}: PropsWithChildren<{ className?: string }>) => (
+  <div className={`${styles.column} ${className}`}>{children}</div>
+)
 
 Sections.Section = Section
-Sections.SectionTitle = SectionTitle
+Sections.Column = Column
 
 export default Sections

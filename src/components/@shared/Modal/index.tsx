@@ -9,6 +9,7 @@ import {
 } from 'react'
 import QueryBoundary from '../QueryBoundary'
 import Modal from '../atoms/Modal'
+import styles from './index.module.css'
 
 interface ModalContextValue {
   isOpen: boolean
@@ -52,20 +53,29 @@ function ModalProvider({ children }: PropsWithChildren) {
   )
 }
 
-function ModalContent({
-  title,
-  children
-}: PropsWithChildren<{
-  title?: string
-}>) {
+function ModalContent({ children }: PropsWithChildren) {
   const { isOpen, closeModal } = useModalContext()
 
   if (!isOpen) return null
 
   return (
-    <Modal title={title} onToggleModal={closeModal} isOpen={isOpen}>
-      <QueryBoundary>{children}</QueryBoundary>
-    </Modal>
+    <QueryBoundary>
+      <Modal
+        title={''}
+        isOpen={isOpen}
+        onToggleModal={closeModal}
+        onRequestClose={closeModal}
+        shouldCloseOnOverlayClick={true}
+        className={styles.modal}
+        style={{
+          overlay: {
+            backgroundColor: 'transparent'
+          }
+        }}
+      >
+        {children}
+      </Modal>
+    </QueryBoundary>
   )
 }
 
