@@ -2,6 +2,7 @@
   line-height: var(--line-height);
   margin: 0;
   display: inline;
+  overflow: ellipsis;
 }
 
 .title a {

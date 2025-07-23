@@ -9,7 +9,7 @@ import {
 } from '@hooks/useUserConsents'
 import { useQueryClient } from '@tanstack/react-query'
 
-import { Consent, ConsentDirections } from '@utils/consents/types'
+import { Consent, ConsentDirections, ConsentState } from '@utils/consents/types'
 import {
   extractDidFromUrl,
   isIncoming,
@@ -24,12 +24,38 @@ import { useAccount } from 'wagmi'
 import ConsentRowActions from './Actions/ConsentRowActions'
 import styles from './ConsentsFeed.module.css'
 import ConsentStateBadge from './StateBadge'
+import { consentsTableStyles } from './ConsentsFeedStyles'
 
 const getTabs = (
   columns: TableOceanColumn<Consent>[],
   incomingConsents: Consent[],
   outgoingConsents: Consent[]
 ): TabsItem[] => {
+  // For some reason, the sortField is not working with the `created_at` field, so we sort it manually by
+  // the `created_at` field in descending order and their state
+  const sortByPriority = (consents: Consent[]) =>
+    consents.sort((a, b) => {
+      const statusPriority = (status: ConsentState) => {
+        switch (status) {
+          case 'Pending':
+            return 0
+          case 'Resolved':
+            return 1
+          case 'Accepted':
+            return 2
+          default:
+            return 3
+        }
+      }
+
+      const statusDiff = statusPriority(a.status) - statusPriority(b.status)
+      if (statusDiff !== 0) return statusDiff
+
+      return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    })
+
+  ;[incomingConsents, outgoingConsents].forEach(sortByPriority)
+
   const tabData = {
     Incoming: {
       data: incomingConsents
@@ -48,10 +74,9 @@ const getTabs = (
           key={consentDirection}
           columns={columns}
           data={data}
-          sortField="row.created_at"
-          sortAsc={false}
-          isLoading={false}
           emptyMessage={`No ${consentDirection.toLowerCase()} consents`}
+          customStyles={consentsTableStyles}
+          highlightOnHover
         />
       ),
       disabled: !data.length
@@ -63,7 +88,8 @@ const getColumns = (): TableOceanColumn<Consent>[] => {
   return [
     {
       name: 'Date',
-      selector: (row) => <Time date={`${row.created_at}`} isUnix />
+      selector: (row) => <Time date={`${row.created_at}`} isUnix />,
+      grow: 0
     },
     {
       name: 'Dataset',
@@ -72,7 +98,8 @@ const getColumns = (): TableOceanColumn<Consent>[] => {
           did={extractDidFromUrl(row.dataset)}
           className={styles.centered}
         />
-      )
+      ),
+      grow: 1
     },
     {
       name: 'Algorithm',
@@ -83,7 +110,8 @@ const getColumns = (): TableOceanColumn<Consent>[] => {
             className={styles.centered}
           />
         </div>
-      )
+      ),
+      grow: 1
     },
     {
       name: 'Solicitor',
@@ -93,7 +121,8 @@ const getColumns = (): TableOceanColumn<Consent>[] => {
           showName
           className={styles.centered}
         />
-      )
+      ),
+      grow: 0
     },
     {
       name: 'State',
@@ -101,7 +130,8 @@ const getColumns = (): TableOceanColumn<Consent>[] => {
         <div className={styles.columnItem}>
           <ConsentStateBadge status={row.status} />
         </div>
-      )
+      ),
+      grow: -1
     },
     {
       name: 'Actions',
@@ -115,7 +145,8 @@ const getColumns = (): TableOceanColumn<Consent>[] => {
             <></>
           )}
         </ConsentRowActions>
-      )
+      ),
+      grow: 1
     }
   ]
 }

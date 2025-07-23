@@ -2,7 +2,6 @@ import { QueryClientLoadingIndicator } from '@components/@shared/QueryClientLoad
 import ConsentProvider from '@context/CookieConsent'
 import { FilterProvider } from '@context/Filter'
 import MarketMetadataProvider from '@context/MarketMetadata'
-import ModalProvider from '@context/Modal'
 import { SearchBarStatusProvider } from '@context/SearchBarStatus'
 import UrqlProvider from '@context/UrqlProvider'
 import { UserPreferencesProvider } from '@context/UserPreferences'
@@ -56,11 +55,9 @@ function MyApp({ Component, pageProps }: AppProps): ReactElement {
                       <FilterProvider>
                         <QueryClientProvider client={queryClient}>
                           <QueryClientLoadingIndicator />
-                          <ModalProvider>
-                            <App>
-                              <Component {...pageProps} />
-                            </App>
-                          </ModalProvider>
+                          <App>
+                            <Component {...pageProps} />
+                          </App>
                         </QueryClientProvider>
                       </FilterProvider>
                     </SearchBarStatusProvider>

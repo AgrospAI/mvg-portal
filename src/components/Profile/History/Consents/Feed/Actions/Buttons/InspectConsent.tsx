@@ -17,11 +17,15 @@ function InspectConsent({ consent }: InspectConsentProps) {
   return (
     <Modal>
       <Modal.Trigger onClick={() => setCurrentConsent(consent)}>
-        <span className={styles.item} title="Inspect" aria-label="Inspect">
-          <Info />
-        </span>
+        <button
+          className={styles.button}
+          title="Inspect"
+          aria-label="Inspect Consent"
+        >
+          Inspect <Info />
+        </button>
       </Modal.Trigger>
-      <Modal.Content title="Inspect petition">
+      <Modal.Content>
         <Suspense fallback={<Loader />}>
           <InspectConsentsModal />
         </Suspense>

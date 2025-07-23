@@ -1,12 +1,14 @@
 import { useAssets } from '@hooks/useAssets'
 import { useCancelToken } from '@hooks/useCancelToken'
 import Eye from '@images/eye.svg'
+import Info from '@images/info.svg'
 import { Asset, LoggerInstance } from '@oceanprotocol/lib'
 import { getAsset } from '@utils/aquarius'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useDebounce } from 'use-debounce'
 import { useAccount } from 'wagmi'
-import styles from './index.module.css'
 import AssetPicker from '../AssetPicker'
+import styles from './index.module.css'
 
 interface AssetInputProps {
   asset: Asset
@@ -16,67 +18,76 @@ interface AssetInputProps {
 
 function AssetInput({ asset, selected, setSelected }: AssetInputProps) {
   const { address } = useAccount()
-  const assetType = asset?.metadata.algorithm ? 'dataset' : 'algorithm'
+  const assetType = asset?.metadata?.algorithm ? 'dataset' : 'algorithm'
   const assets = useAssets(address, assetType)
-  const [error, setError] = useState('')
+
+  const [inputValue, setInputValue] = useState('')
+  const [debouncedValue] = useDebounce(inputValue, 500)
+
+  const [error, setError] = useState<string | undefined>()
   const [written, setWritten] = useState<Asset>()
   const newCancelToken = useCancelToken()
 
-  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    e.preventDefault()
-
-    setError(undefined)
-
-    if (e.target.value) {
-      try {
-        setSelected(
-          assets.data.results.filter((data) => data.id === e.target.value)[0]
-        )
-      } catch (error) {
-        LoggerInstance.error(error)
-        setSelected(undefined)
+  useEffect(() => {
+    const checkAsset = async () => {
+      if (!debouncedValue) {
+        setError(undefined)
+        setWritten(undefined)
+        return
       }
-    } else {
-      setSelected(undefined)
-    }
-  }
 
-  const handleWrite = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault()
+      try {
+        const fetchedAsset = await getAsset(
+          debouncedValue.trim(),
+          newCancelToken()
+        )
 
-    const did = e.target.value.trim()
-
-    if (!did) {
-      setWritten(undefined)
-      return
-    }
-
-    getAsset(did, newCancelToken())
-      .then((data) => {
-        if (!data) {
+        if (!fetchedAsset) {
           setWritten(undefined)
           setSelected(undefined)
           setError('Asset not found')
         } else {
-          setWritten(data)
-          setSelected(data)
+          setWritten(fetchedAsset)
+          setSelected(fetchedAsset)
           setError(undefined)
         }
-      })
-      .catch((error) => {
-        console.log(error)
-        LoggerInstance.error(error)
+      } catch (err) {
+        LoggerInstance.error(err)
         setWritten(undefined)
-        setError(error.message)
-      })
+        setSelected(undefined)
+        setError((err as Error).message)
+      }
+    }
+
+    checkAsset()
+  }, [debouncedValue, newCancelToken, setSelected])
+
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    e.preventDefault()
+    setError(undefined)
+
+    const id = e.target.value
+    if (!id) {
+      setSelected(undefined)
+      return
+    }
+
+    try {
+      const found = assets.data.results.find((data) => data.id === id)
+      setSelected(found)
+    } catch (err) {
+      LoggerInstance.error(err)
+      setSelected(undefined)
+    }
+  }
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault()
+    setInputValue(e.target.value)
   }
 
   return (
     <div className={styles.container}>
-      <span>
-        What {asset?.metadata.algorithm ? 'dataset' : 'algorithm'} do you want
-        to access this asset with?
-      </span>
       <div className={styles.algorithmContainer}>
         <AssetPicker
           assets={assets}
@@ -88,15 +99,22 @@ function AssetInput({ asset, selected, setSelected }: AssetInputProps) {
         <input
           className={styles.reasonTextbox}
           name="algorithm-did"
-          placeholder="did:op:6f3a2e2e63d603ecd37409b593960ae56404a4fe81c162292cc32f29e1f20db9"
+          placeholder="did:op:..."
           disabled={!!selected}
-          onChange={handleWrite}
+          onChange={handleInputChange}
+          value={inputValue}
           maxLength={100}
         />
         {error && (
-          <span className={styles.errorMessage}>
-            <Eye className={styles.alert} />
+          <span className={`${styles.feedback} ${styles.errorMessage}`}>
+            <Eye />
             {error}
+          </span>
+        )}
+        {written && !error && (
+          <span className={`${styles.feedback} ${styles.successMessage}`}>
+            <Info />
+            <code>{written.nft.name}</code>
           </span>
         )}
       </div>

@@ -1,5 +1,8 @@
 .responseTextbox {
   width: 100%;
+  padding: calc(var(--spacer) / 4);
+  border-radius: var(--border-radius);
+  background-color: var(--brand-grey-lighter);
   font-family: inherit;
   border: none;
   resize: none;
@@ -8,5 +11,5 @@
 }
 
 .responseTextbox:focus {
-  outline: none;
+  outline: 1px solid var(--brand-grey-light);
 }

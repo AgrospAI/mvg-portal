@@ -1,9 +1,12 @@
 import Loader from '@components/@shared/atoms/Loader'
 import { useModalContext } from '@components/@shared/Modal'
 import { useCreateAssetConsent, useHealthcheck } from '@hooks/useUserConsents'
+import IconAlgorithm from '@images/algorithm.svg'
+import IconTransaction from '@images/transaction.svg'
 import { Asset } from '@oceanprotocol/lib'
 import { PossibleRequests } from '@utils/consents/types'
 import { Suspense, useCallback, useState } from 'react'
+import { toast } from 'react-toastify'
 import AssetInput from './Components/AssetInput'
 import RequestsList from './Components/RequestsList'
 import Sections from './Components/Sections'
@@ -28,7 +31,10 @@ function ConsentPetitionModal({ asset }: Props) {
       }
 
       createConsent(consent, {
-        onSuccess: closeModal
+        onSuccess: () => {
+          closeModal()
+          toast.success('Consent petition created successfully')
+        }
       })
     },
     [asset.id, closeModal, createConsent, selected?.id]
@@ -37,8 +43,11 @@ function ConsentPetitionModal({ asset }: Props) {
   return (
     <Suspense fallback={<Loader />}>
       <Sections>
-        <Sections.Section>
-          <Sections.SectionTitle>1. Algorithm</Sections.SectionTitle>
+        <Sections.Section
+          title="Algorithm"
+          description="What algorithm do you want to access this asset with?"
+          icon={<IconAlgorithm></IconAlgorithm>}
+        >
           <AssetInput
             asset={asset}
             selected={selected}
@@ -46,8 +55,11 @@ function ConsentPetitionModal({ asset }: Props) {
           />
         </Sections.Section>
         {selected && (
-          <Sections.Section>
-            <Sections.SectionTitle>2. Requests</Sections.SectionTitle>
+          <Sections.Section
+            title="Requests"
+            description="Ask for what you need and provide a short reason"
+            icon={<IconTransaction></IconTransaction>}
+          >
             <RequestsList
               dataset={asset}
               algorithm={selected}

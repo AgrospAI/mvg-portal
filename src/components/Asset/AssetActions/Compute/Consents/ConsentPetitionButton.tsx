@@ -3,6 +3,7 @@ import Modal from '@components/@shared/Modal'
 import ConsentPetitionModal from '@components/Profile/History/Consents/Modal/ConsentPetitionModal'
 import { useHealthcheck } from '@hooks/useUserConsents'
 import styles from './ConsentPetitionButton.module.css'
+import { useAccount } from 'wagmi'
 
 interface ConsentPetitionButtonProps {
   asset: AssetExtended
@@ -13,9 +14,15 @@ export default function ConsentPetitionButton({
 }: ConsentPetitionButtonProps) {
   useHealthcheck()
 
+  const { address } = useAccount()
+
+  if (!address) {
+    return <></>
+  }
+
   return (
     <span className={styles.requestButtonContainer}>
-      Your {asset.metadata.algorithm ? 'dataset' : 'algorithm'} is not listed
+      Your algorithm is not listed
       <Modal>
         <Modal.Trigger>
           <Button
@@ -28,7 +35,7 @@ export default function ConsentPetitionButton({
             Make petition
           </Button>
         </Modal.Trigger>
-        <Modal.Content title="Make Petition">
+        <Modal.Content>
           <ConsentPetitionModal asset={asset} />
         </Modal.Content>
       </Modal>

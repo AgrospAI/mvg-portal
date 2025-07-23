@@ -1,5 +1,5 @@
 import { useField } from 'formik'
-import { useEffect, useRef } from 'react'
+import { useLayoutEffect, useRef } from 'react'
 import styles from './AutoResize.module.css'
 
 interface AutoResizeProps {
@@ -15,7 +15,7 @@ export const AutoResize = ({
   const [field] = useField(name)
   const textareaRef = useRef(null)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const textarea = textareaRef.current
     if (textarea) {
       textarea.style.height = 'auto' // Reset height
