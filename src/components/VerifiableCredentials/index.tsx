@@ -1,5 +1,5 @@
 import ExcludingAccordion from '@context/ExcludingAccordion'
-import { Suspense, useEffect, useRef } from 'react'
+import { Suspense, useRef } from 'react'
 import styles from './index.module.css'
 import { VerifiableCredential } from './VertifiableCredential'
 
@@ -43,7 +43,9 @@ export const VerifiableCredentials = ({
                 </h4>
               </ExcludingAccordion.Trigger>
               <ExcludingAccordion.Content index={index}>
-                <VerifiableCredential url={credential} />
+                <div className={styles.content}>
+                  <VerifiableCredential url={credential} />
+                </div>
               </ExcludingAccordion.Content>
             </section>
           ))}
