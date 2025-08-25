@@ -51,6 +51,8 @@ See https://github.com/oceanprotocol/market/issues/1143 */
 .name {
   font-size: var(--font-size-h3);
   margin-bottom: calc(var(--spacer) / 8);
+  display: flex;
+  column-gap: calc(var(--spacer) / 8);
 }
 
 .accountId {
