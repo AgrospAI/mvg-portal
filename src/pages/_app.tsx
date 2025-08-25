@@ -21,7 +21,6 @@ import '../stylesGlobal/styles.css'
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      gcTime: 20_000,
       staleTime: 1000 * 60,
       retry: 1,
       retryDelay: 1000
