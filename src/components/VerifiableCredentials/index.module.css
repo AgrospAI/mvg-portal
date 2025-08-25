@@ -13,3 +13,7 @@
 .credentialTitle {
   margin: 0;
 }
+
+.content {
+  overflow-x: scroll;
+}
