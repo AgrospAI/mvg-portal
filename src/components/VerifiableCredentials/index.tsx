@@ -4,7 +4,7 @@ import styles from './index.module.css'
 import { VerifiableCredential } from './VertifiableCredential'
 
 interface VerifiableCredentialsProps {
-  children: string[]
+  credentials: string[]
 }
 
 /**
@@ -14,7 +14,7 @@ interface VerifiableCredentialsProps {
  * @returns {JSX.Element}
  */
 export const VerifiableCredentials = ({
-  children
+  credentials
 }: Readonly<VerifiableCredentialsProps>): JSX.Element => {
   const refs = useRef<(HTMLElement | null)[]>([])
 
@@ -31,7 +31,7 @@ export const VerifiableCredentials = ({
     <Suspense fallback="Loading">
       <ExcludingAccordion>
         <div className={styles.verifiableCredentials}>
-          {children.map((credential, index) => (
+          {credentials.map((credential, index) => (
             <section key={credential} className={styles.verifiableCredentials}>
               <ExcludingAccordion.Trigger
                 ref={(el) => (refs.current[index] = el)}

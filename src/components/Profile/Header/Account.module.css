@@ -80,3 +80,8 @@ See https://github.com/oceanprotocol/market/issues/1143 */
 .explorer svg:last-child {
   margin-left: calc(var(--spacer) / 12);
 }
+
+.retryButton {
+  width: 1rem;
+  height: 1rem;
+}

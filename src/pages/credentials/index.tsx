@@ -17,7 +17,9 @@ function CredentialsPage() {
 
   return (
     <Page uri={router.asPath} title={`${name} - Verifiable Credentials`}>
-      <VerifiableCredentials>{credentials.data}</VerifiableCredentials>
+      <VerifiableCredentials
+        credentials={credentials.data.map(({ credentialUrl }) => credentialUrl)}
+      />
     </Page>
   )
 }
