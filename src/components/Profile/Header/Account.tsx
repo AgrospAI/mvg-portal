@@ -1,3 +1,5 @@
+import Loader from '@components/@shared/atoms/Loader'
+import Refresh from '@images/refresh.svg'
 import { useUserPreferences } from '@context/UserPreferences'
 import { useAddressConfig } from '@hooks/useAddressConfig'
 import Jellyfish from '@oceanprotocol/art/creatures/jellyfish/jellyfish-grid.svg'
@@ -5,13 +7,15 @@ import Avatar from '@shared/atoms/Avatar'
 import Copy from '@shared/atoms/Copy'
 import ExplorerLink from '@shared/ExplorerLink'
 import NetworkName from '@shared/NetworkName'
+import { QueryErrorResetBoundary } from '@tanstack/react-query'
 import { accountTruncate } from '@utils/wallet'
-import { ReactElement } from 'react'
+import { ReactElement, Suspense } from 'react'
+import { ErrorBoundary } from 'react-error-boundary'
+import { Address } from 'wagmi'
 import { useAutomation } from '../../../@context/Automation/AutomationProvider'
 import Transaction from '../../../@images/transaction.svg'
 import styles from './Account.module.css'
 import { VerifiableCredential } from './VerifiableCredential'
-import { Address } from 'wagmi'
 
 export default function Account({
   accountId
@@ -33,7 +37,25 @@ export default function Account({
     return (
       <h3 className={styles.name}>
         {verifiedAddresses?.[getAddressKey()] || accountTruncate(accountId)}{' '}
-        <VerifiableCredential address={accountId as Address} />
+        <QueryErrorResetBoundary>
+          {({ reset }) => (
+            <ErrorBoundary
+              onReset={reset}
+              fallbackRender={({ resetErrorBoundary }) => (
+                <div
+                  onClick={resetErrorBoundary}
+                  className={styles.retryButton}
+                >
+                  <Refresh />
+                </div>
+              )}
+            >
+              <Suspense fallback={<Loader />}>
+                <VerifiableCredential address={accountId as Address} />
+              </Suspense>
+            </ErrorBoundary>
+          )}
+        </QueryErrorResetBoundary>
         {autoWalletAddress === accountId && (
           <span className={styles.automation} title="Automation">
             <Transaction />
