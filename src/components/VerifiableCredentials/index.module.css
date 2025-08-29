@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--spacer);
+  margin-top: calc(var(--spacer) / 4);
 }
 
 .trigger {
@@ -10,8 +11,19 @@
   align-items: center;
 }
 
+.credentialTitle:hover,
+.credentialTitle:focus {
+  cursor: pointer;
+  text-decoration: underline;
+  outline: none;
+}
+
 .credentialTitle {
   margin: 0;
+  padding: 0;
+  background: none;
+  border: none;
+  font-size: large;
 }
 
 .content {
