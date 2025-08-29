@@ -2,6 +2,7 @@ import ExcludingAccordion from '@context/ExcludingAccordion'
 import { ReactNode, Suspense, useRef } from 'react'
 import styles from './index.module.css'
 import { VerifiableCredential } from './VertifiableCredential'
+import { VerifiableCredentialsInfo } from './VerifiableCredentialsInfo'
 
 interface VerifiableCredentialsProps {
   credentials: string[]
@@ -36,27 +37,35 @@ export const VerifiableCredentials = ({
       <Suspense fallback="Loading">
         <ExcludingAccordion>
           <div className={styles.verifiableCredentials}>
-            {credentials.map((credential, index) => (
-              <section
-                key={credential}
-                className={styles.verifiableCredentials}
-              >
-                <ExcludingAccordion.Trigger
-                  ref={(el) => (refs.current[index] = el)}
-                  index={index}
-                  openCallback={() => openCallback(index)}
-                >
-                  <button className={styles.credentialTitle}>
-                    Verifiable credential Nº{index + 1}
-                  </button>
-                </ExcludingAccordion.Trigger>
-                <ExcludingAccordion.Content index={index}>
-                  <div className={styles.content}>
-                    <VerifiableCredential url={credential} />
-                  </div>
-                </ExcludingAccordion.Content>
-              </section>
-            ))}
+            {credentials.length ? (
+              <>
+                {credentials.map((credential, index) => (
+                  <section
+                    key={credential}
+                    className={styles.verifiableCredentials}
+                  >
+                    <ExcludingAccordion.Trigger
+                      ref={(el) => (refs.current[index] = el)}
+                      index={index}
+                      openCallback={() => openCallback(index)}
+                    >
+                      <button className={styles.credentialTitle}>
+                        Verifiable credential Nº{index + 1}
+                      </button>
+                    </ExcludingAccordion.Trigger>
+                    <ExcludingAccordion.Content index={index}>
+                      <div className={styles.content}>
+                        <VerifiableCredential url={credential} />
+                      </div>
+                    </ExcludingAccordion.Content>
+                  </section>
+                ))}
+              </>
+            ) : (
+              <VerifiableCredentialsInfo variant="info">
+                No verifiable credentials found.
+              </VerifiableCredentialsInfo>
+            )}
           </div>
         </ExcludingAccordion>
       </Suspense>

@@ -1,5 +1,6 @@
 import { useVerifiableCredential } from '@hooks/useVerifiableCredential'
 import styles from './index.module.css'
+import { VerifiableCredentialsInfo } from '../VerifiableCredentialsInfo'
 
 interface VerifiableCredentialProps {
   url: string
@@ -17,7 +18,21 @@ interface VerifiableCredentialProps {
 export const VerifiableCredential = ({
   url
 }: Readonly<VerifiableCredentialProps>): JSX.Element => {
-  const { data } = useVerifiableCredential(url)
+  const { data, error } = useVerifiableCredential(url)
+
+  if (!url)
+    return (
+      <VerifiableCredentialsInfo variant="info">
+        Missing verifiable credentials URL.
+      </VerifiableCredentialsInfo>
+    )
+
+  if (error)
+    return (
+      <VerifiableCredentialsInfo variant="warn">
+        Error fetching the provided URL: {url}. {String(error)}
+      </VerifiableCredentialsInfo>
+    )
 
   return (
     <code>
