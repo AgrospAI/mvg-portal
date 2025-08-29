@@ -1,5 +1,5 @@
 'use server'
-import { RedisClientType } from '@redis/client'
+import { RedisClientOptions, RedisClientType } from '@redis/client'
 import { PontusVerifiableCredentialArraySchema } from '@utils/verifiableCredentials/schemas'
 import { PontusVerifiableCredentialArray } from '@utils/verifiableCredentials/types'
 import { injectable } from 'inversify'
@@ -37,22 +37,24 @@ export class RedisCredentialsService implements ICredentialsService {
       password
     )
 
+    const config: RedisClientOptions = { url }
+
     if (username) {
-      this.client = createClient({
-        url,
-        username,
-        password
-      })
-    } else {
-      this.client = createClient({
-        url
-      })
+      config.username = username
+      config.password = password
     }
 
-    this.client.on('error', (err) => console.error('Redis Client Error', err))
+    this.client = createClient(config as unknown)
+
+    this.client.on('error', (err) => {
+      console.error('Redis Client Error', err)
+      this.client = null
+      throw new RedisCredentialsServiceError(err)
+    })
     this.client.connect().catch((err) => {
       console.error('Redis connection error:', err)
-      throw new Error(err)
+      this.client = null
+      throw new RedisCredentialsServiceError(err)
     })
 
     return this.client
@@ -70,24 +72,35 @@ export class RedisCredentialsService implements ICredentialsService {
 
     return this.getClient()
       .then((client) =>
-        client.hGetAll(address).then((data) => {
-          const result = PontusVerifiableCredentialArraySchema.safeParse([data])
-          if (result.success) {
-            return result.data
-          }
-          console.error(
-            '[RedisCredentialsService] Schema validation failed:',
-            result.error
-          )
-          return []
-        })
+        client
+          .hGetAll(address)
+          .then((data) => {
+            const result = PontusVerifiableCredentialArraySchema.safeParse([
+              data
+            ])
+            if (result.success) {
+              return result.data
+            }
+            console.error(
+              '[RedisCredentialsService] Schema validation failed:',
+              result.error
+            )
+            return []
+          })
+          .catch((error) => {
+            console.error(
+              '[RedisCredentialsService] Failed to retrieve address credentials',
+              error
+            )
+            return []
+          })
       )
-      .catch((err) => {
+      .catch((error) => {
         console.error(
-          '[RedisCredentialsService] Error while fetching credentials',
-          err
+          '[RedisCredentialsService] Error retrieving redis credentials instance',
+          error
         )
-        throw new RedisCredentialsServiceError(err)
+        return []
       })
   }
 }

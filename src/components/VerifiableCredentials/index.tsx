@@ -47,7 +47,7 @@ export const VerifiableCredentials = ({
                   openCallback={() => openCallback(index)}
                 >
                   <button className={styles.credentialTitle}>
-                    Verifiable credential Nº{index}
+                    Verifiable credential Nº{index + 1}
                   </button>
                 </ExcludingAccordion.Trigger>
                 <ExcludingAccordion.Content index={index}>
