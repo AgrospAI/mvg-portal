@@ -4,8 +4,10 @@
   column-gap: var(--spacer);
 }
 
+.trigger:focus,
 .trigger:hover {
   cursor: pointer;
+  text-decoration: underline;
 }
 
 .openCaret {

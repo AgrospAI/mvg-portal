@@ -1,6 +1,6 @@
 import { useExcludingAccordion } from '@context/ExcludingAccordion'
 import Caret from '@images/caret.svg'
-import { forwardRef, useRef, type ReactNode } from 'react'
+import { forwardRef, type ReactNode } from 'react'
 import styles from './index.module.css'
 
 interface ExcludingAccordionTriggerProps {
