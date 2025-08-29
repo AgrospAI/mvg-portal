@@ -75,6 +75,8 @@ export class RedisCredentialsService implements ICredentialsService {
         client
           .hGetAll(address)
           .then((data) => {
+            if (!Object.keys(data).length) return []
+
             const result = PontusVerifiableCredentialArraySchema.safeParse([
               data
             ])

@@ -18,7 +18,10 @@ function CredentialsWithAddress({ address }: { address: Address }) {
   const name = addressConfig.getVerifiedAddressName(address)
 
   return (
-    <Page uri={`/X/${address}`} title={`${name} - Verifiable Credentials`}>
+    <Page
+      uri={`/credentials/${address}`}
+      title={`${name} - Verifiable Credentials`}
+    >
       <VerifiableCredentials credentials={getUrls(credentials)} />
     </Page>
   )

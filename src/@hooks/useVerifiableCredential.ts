@@ -4,20 +4,17 @@ import { useCallback } from 'react'
 
 export const useVerifiableCredential = (url: string) => {
   const fetchCredential = useCallback(
-    async (): Promise<string> =>
-      axios
-        .get(url)
-        .then(({ data }) => data)
-        .catch(() => 'None'),
+    async (): Promise<string> => axios.get(url).then(({ data }) => data),
     [url]
   )
 
-  const { data } = useSuspenseQuery({
+  const { data, error } = useSuspenseQuery({
     queryKey: ['credentials', url],
     queryFn: fetchCredential
   })
 
   return {
-    data
+    data,
+    error
   }
 }

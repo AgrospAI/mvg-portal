@@ -4,8 +4,8 @@ export const PontusVerifiableCredentialSchema = z
   .object({
     'Participant (Gaia-X Loire)': z.string(),
     'Public Address': z.string(),
-    Status: z.string(),
-    'Gaia-X Participant 22.10 Credential': z.url()
+    Status: z.string().optional(),
+    'Gaia-X Participant 22.10 Credential': z.url().optional()
   })
   .transform((object) => ({
     participant: object['Participant (Gaia-X Loire)'],
