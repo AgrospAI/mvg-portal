@@ -1,6 +1,8 @@
 import { useVerifiableCredential } from '@hooks/useVerifiableCredential'
 import styles from './index.module.css'
+import 'react18-json-view/src/style.css'
 import { VerifiableCredentialsInfo } from '../VerifiableCredentialsInfo'
+import JsonView from 'react18-json-view'
 
 interface VerifiableCredentialProps {
   url: string
@@ -36,7 +38,7 @@ export const VerifiableCredential = ({
 
   return (
     <code>
-      <pre className={styles.contents}>{JSON.stringify(data, null, 2)}</pre>
+      <JsonView src={data} className={styles.contents} />
     </code>
   )
 }
