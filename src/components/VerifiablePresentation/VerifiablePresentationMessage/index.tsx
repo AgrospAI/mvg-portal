@@ -1,3 +1,4 @@
+import { useVerifiablePresentationContext } from '@context/VerifiablePresentation'
 import Info from '@images/info.svg'
 import Cross from '@images/x-cross.svg'
 import classNames from 'classnames/bind'
@@ -7,15 +8,17 @@ import styles from './index.module.css'
 const cx = classNames.bind(styles)
 
 type Variants = 'info' | 'warn'
-interface VerifiableCredentialsInfoProps {
+interface VerifiablePresentationMessageProps {
   variant: Variants
   children?: ReactNode
 }
 
-export const VerifiableCredentialsInfo = ({
+export const VerifiablePresentationMessage = ({
   variant,
   children
-}: Readonly<VerifiableCredentialsInfoProps>) => {
+}: Readonly<VerifiablePresentationMessageProps>) => {
+  useVerifiablePresentationContext()
+
   const styleClasses = cx({
     base: true,
     info: variant === 'info',
