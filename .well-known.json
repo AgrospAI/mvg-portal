@@ -1,0 +1,39 @@
+{
+  "0xD999bAaE98AC5246568FD726be8832c49626867D": [
+    "https://compliance.agrospai.udl.cat/.well-known/UdL.vp.json"
+  ],
+  "0xDf7a37EA1f42588Ea219Ec19328757F67BaBCeCD": [
+    "https://compliance.agrospai.udl.cat/.well-known/CEP.vp.json"
+  ],
+  "0x179De85793A690308719AF9CD7D2F9BE0Db5ee90": [
+    "https://compliance.agrospai.udl.cat/.well-known/FruitsPonent.vp.json"
+  ],
+  "0xE8E3570Ad8CBa8f4a6c78E981F9be8d2A2954344": [
+    "https://compliance.agrospai.udl.cat/.well-known/FruitsAlfarras.vp.json"
+  ],
+  "0x9A5F6f589171d55216cb1278Faf2701cfC4ab1F2": [
+    "https://compliance.agrospai.udl.cat/.well-known/UCO.vp.json"
+  ],
+  "0x55A569079E3Ee9C1f13A7B29d77bD08025f884e6": [
+    "https://www.delta-dao.com/.well-known/2210_gx_participant.json"
+  ],
+  "0x86cDDD03fDb7E4f62a4A31DA7483d370C03e96C8": [
+    "https://compliance.agrospai.udl.cat/.well-known/Tragsa.vp.json"
+  ],
+  "": ["https://compliance.agrospai.udl.cat/.well-known/ADVC.vp.json"],
+  "0x2912106B140669e5038A0cf768a4BDB202D67604": [
+    "https://compliance.agrospai.udl.cat/.well-known/Leitat.vp.json"
+  ],
+  "0xe5AfCf1BF4FfCa6c1f19463605578e8146CdF4b1": [
+    "https://compliance.agrospai.udl.cat/.well-known/UBC.vp.json"
+  ],
+  "0xFB6aaD927d026Ec21Ef8f699450Ed2ee416570a1": [
+    "https: //compliance.agrospai.udl.cat/.well-known/BEEGroup-CIMNE.vp.json"
+  ],
+  "0xb993dfC7cAf2477770e60E1Ae6188F6147BDA92d": [
+    "https://compliance.agrospai.udl.cat/.well-known/Zertifier.vp.json"
+  ],
+  "0x9187df88f374a2c7e2b062a9d2ecc0b3e33852b8": [
+    "https://compliance.agrospai.udl.cat/.well-known/ITI.vp.json"
+  ]
+}
