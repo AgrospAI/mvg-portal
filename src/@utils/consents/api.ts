@@ -42,9 +42,8 @@ export const getUserConsentsDirection = async (
   direction: ConsentDirection,
   signal?: AbortSignal
 ): Promise<ConsentList> =>
-  API.get(Routes.GET_CONSENTS_AMOUNT_DIRECTION, {
+  API.get(Routes.UserConsents(address), {
     params: {
-      address,
       direction
     },
     signal
@@ -54,8 +53,7 @@ export const getUserConsents = async (
   address: string,
   signal?: AbortSignal
 ): Promise<UserConsentsData> =>
-  API.get(Routes.GET_CONSENTS_AMOUNT, {
-    params: { address },
+  API.get(Routes.UserConsentsAmount(address), {
     signal
   }).then(validateWithSchema(UserConsentsDataSchema))
 
@@ -66,8 +64,7 @@ export const createConsent = async (
   request: PossibleRequests,
   reason?: string
 ): Promise<void> =>
-  API.post(Routes.CREATE_CONSENT, {
-    address,
+  API.post(Routes.UserConsents(address), {
     datasetDid,
     algorithmDid,
     request,
@@ -78,23 +75,22 @@ export const deleteConsent = async (
   consentId: number,
   signal?: AbortSignal
 ): Promise<void> =>
-  API.delete(Routes.DELETE_CONSENT, { data: { consentId }, signal })
+  API.delete(Routes.Consents(String(consentId)), {
+    signal
+  })
 
 export const createConsentResponse = async (
   consentId: number,
   reason: string,
   permitted: PossibleRequests
 ): Promise<Consent> =>
-  API.post(Routes.CREATE_CONSENT_RESPONSE, {
-    consentId,
+  API.post(Routes.ConsentsResponse(String(consentId)), {
     reason,
     permitted
   }).then(validateWithSchema(ConsentSchema))
 
 export const deleteConsentResponse = async (consentId: number): Promise<void> =>
-  await API.delete(Routes.DELETE_CONSENT_RESPONSE, {
-    data: { consentId }
-  })
+  await API.delete(Routes.ConsentsResponse(String(consentId)))
 
 export const getHealth = async (): Promise<boolean> =>
-  API.get(Routes.HEALTHCHECK)
+  API.get(Routes.ConsentsHealth)
