@@ -1,0 +1,30 @@
+.actions {
+  display: flex;
+  column-gap: 0.5rem;
+  align-items: flex-end;
+  justify-content: flex-end;
+  margin: calc(var(--spacer) / 2) 0;
+}
+
+.action {
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.confirm {
+  background-color: var(--color-agrospai-dark);
+  color: var(--color-agrospai-light);
+}
+
+.confirm:hover {
+  background-color: var(--color-agrospai-light);
+  color: var(--color-agrospai-dark);
+}
+
+.reject {
+  background-color: var(--brand-alert-red);
+}
+
+.reject:hover {
+  background-color: var(--brand-alert-yellow);
+  color: var(--brand-alert-orange);
+}

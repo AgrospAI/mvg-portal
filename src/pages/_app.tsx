@@ -1,3 +1,4 @@
+import { QueryClientLoadingIndicator } from '@components/@shared/QueryClientLoadingIndicator'
 import ConsentProvider from '@context/CookieConsent'
 import { FilterProvider } from '@context/Filter'
 import MarketMetadataProvider from '@context/MarketMetadata'
@@ -21,12 +22,14 @@ import '../stylesGlobal/styles.css'
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
+      gcTime: 20_000,
       staleTime: 1000 * 60,
-      retry: 0
-      // retryDelay: 1000
+      retry: 1,
+      retryDelay: 1000
     }
   }
 })
+
 function MyApp({ Component, pageProps }: AppProps): ReactElement {
   Decimal.set({ rounding: 1 })
 
@@ -51,9 +54,12 @@ function MyApp({ Component, pageProps }: AppProps): ReactElement {
                     <SearchBarStatusProvider>
                       <FilterProvider>
                         <QueryClientProvider client={queryClient}>
-                          <App>
-                            <Component {...pageProps} />
-                          </App>
+                          <QueryClientLoadingIndicator />
+                          <QueryClientProvider client={queryClient}>
+                            <App>
+                              <Component {...pageProps} />
+                            </App>
+                          </QueryClientProvider>
                         </QueryClientProvider>
                       </FilterProvider>
                     </SearchBarStatusProvider>

@@ -21,6 +21,7 @@ import { ComputeDatasetForm } from './_constants'
 import { useAutomation } from '../../../../@context/Automation/AutomationProvider'
 import TermsAndConditionsCheckbox from '../TermsAndConditionsCheckbox'
 import { useMarketMetadata } from '@context/MarketMetadata'
+import AssetConsents from './Consents/AssetConsents'
 
 export default function FormStartCompute({
   algorithms,
@@ -333,6 +334,7 @@ export default function FormStartCompute({
           isLoading={isLoading}
         />
       )}
+      <AssetConsents asset={asset} />
       <PriceOutput
         hasPreviousOrder={hasPreviousOrder}
         assetTimeout={assetTimeout}
@@ -352,7 +354,6 @@ export default function FormStartCompute({
         validUntil={validUntil}
         totalPrices={totalPrices}
       />
-
       <ButtonBuy
         action="compute"
         disabled={

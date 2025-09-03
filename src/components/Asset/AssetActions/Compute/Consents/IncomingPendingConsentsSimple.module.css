@@ -1,0 +1,59 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  row-gap: 0;
+  align-items: center;
+}
+
+.title {
+  margin-bottom: calc(var(--spacer) / 2);
+}
+
+.noConsents {
+  padding-bottom: 1rem;
+  font-style: italic;
+  text-align: center;
+}
+
+.consentList {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border: 1px solid var(--border-color);
+  background-color: var(--background-highlight);
+  margin-bottom: var(--spacer);
+}
+
+.consentRow {
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid var(--border-color);
+  padding: calc(var(--spacer) / 4);
+}
+
+.consentRow:last-of-type {
+  border: none;
+}
+
+.actionContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  flex: 1;
+}
+
+.action {
+  cursor: pointer;
+  margin: 0 calc(var(--spacer) / 2);
+}
+
+.assetLink {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  font-size: small;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

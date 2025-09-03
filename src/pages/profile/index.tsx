@@ -6,7 +6,7 @@ import ProfileProvider from '@context/Profile'
 import { useRouter } from 'next/router'
 import { useAccount } from 'wagmi'
 import { isAddress } from 'ethers/lib/utils'
-import { useAutomation } from '../../@context/Automation/AutomationProvider'
+import { useAutomation } from '@context/Automation/AutomationProvider'
 
 export default function PageProfile(): ReactElement {
   const router = useRouter()

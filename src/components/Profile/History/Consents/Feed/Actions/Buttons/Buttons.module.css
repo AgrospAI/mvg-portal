@@ -1,0 +1,26 @@
+.item {
+  cursor: pointer;
+}
+
+.item:hover {
+  scale: 1.1;
+}
+
+.button {
+  display: flex;
+  border: 1px solid var(--button-border-color);
+  border-radius: var(--border-radius);
+  fill: var(--brand-grey-lighter);
+  background-color: var(--brand-grey-light);
+  align-items: center;
+  justify-items: center;
+  padding: calc(var(--spacer) / 4) calc(var(--spacer) / 1.5);
+  gap: calc(var(--spacer) / 4);
+  color: var(--brand-grey-lighter);
+  font-weight: 500;
+}
+
+.button:hover {
+  cursor: pointer;
+  background-color: var(--brand-grey);
+}

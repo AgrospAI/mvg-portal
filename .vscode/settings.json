@@ -13,5 +13,8 @@
   "search.exclude": {
     "**/.next": true,
     "**/out": true
+  },
+  "[css]": {
+    "editor.defaultFormatter": "vscode.css-language-features"
   }
 }

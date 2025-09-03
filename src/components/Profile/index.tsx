@@ -1,6 +1,6 @@
 import { ReactElement } from 'react'
-import HistoryPage from './History'
 import AccountHeader from './Header'
+import HistoryPage from './History'
 
 export default function AccountPage({
   accountId
