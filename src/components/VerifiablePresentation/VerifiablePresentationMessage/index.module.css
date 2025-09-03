@@ -11,7 +11,7 @@
   border-style: solid;
 }
 
-.base > svg {
+.base svg {
   margin: 0;
 }
 
@@ -23,4 +23,9 @@
 .info {
   border-color: var(--brand-alert-yellow);
   background-color: rgb(from var(--brand-alert-yellow) r g b / 0.3);
+}
+
+.contents {
+  flex: 1;
+  padding-right: var(--spacer);
 }

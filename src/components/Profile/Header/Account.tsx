@@ -1,7 +1,11 @@
 import Loader from '@components/@shared/atoms/Loader'
-import Refresh from '@images/refresh.svg'
+import { VerifiablePresentationCard } from '@components/VerifiablePresentation/VerifiablePresentationCard'
+import { useAutomation } from '@context/Automation/AutomationProvider'
 import { useUserPreferences } from '@context/UserPreferences'
+import VerifiablePresentationProvider from '@context/VerifiablePresentation'
 import { useAddressConfig } from '@hooks/useAddressConfig'
+import Refresh from '@images/refresh.svg'
+import Transaction from '@images/transaction.svg'
 import Jellyfish from '@oceanprotocol/art/creatures/jellyfish/jellyfish-grid.svg'
 import Avatar from '@shared/atoms/Avatar'
 import Copy from '@shared/atoms/Copy'
@@ -12,8 +16,6 @@ import { accountTruncate } from '@utils/wallet'
 import { ReactElement, Suspense } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { Address } from 'wagmi'
-import { useAutomation } from '../../../@context/Automation/AutomationProvider'
-import Transaction from '../../../@images/transaction.svg'
 import styles from './Account.module.css'
 import { VerifiableCredential } from './VerifiableCredential'
 
@@ -95,6 +97,26 @@ export default function Account({
             ))}
         </p>
       </div>
+      <QueryErrorResetBoundary>
+        {({ reset }) => (
+          <ErrorBoundary
+            onReset={reset}
+            fallbackRender={({ resetErrorBoundary }) => (
+              <div onClick={resetErrorBoundary} className={styles.retryButton}>
+                <Refresh />
+              </div>
+            )}
+          >
+            <div className={styles.card}>
+              <Suspense fallback={<Loader />}>
+                <VerifiablePresentationProvider address={accountId as Address}>
+                  <VerifiablePresentationCard />
+                </VerifiablePresentationProvider>
+              </Suspense>
+            </div>
+          </ErrorBoundary>
+        )}
+      </QueryErrorResetBoundary>
     </div>
   )
 }

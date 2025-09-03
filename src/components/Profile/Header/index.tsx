@@ -1,9 +1,12 @@
 import { ReactElement } from 'react'
-import Stats from './Stats'
+import { useAutomation } from '../../../@context/Automation/AutomationProvider'
+import Button from '../../@shared/atoms/Button'
 import Account from './Account'
 import styles from './index.module.css'
-import Button from '../../@shared/atoms/Button'
-import { useAutomation } from '../../../@context/Automation/AutomationProvider'
+import Stats from './Stats'
+import { QueryErrorResetBoundary } from '@tanstack/react-query'
+import { ErrorBoundary } from 'react-error-boundary'
+import Refresh from '@images/refresh.svg'
 
 export default function AccountHeader({
   accountId
@@ -14,7 +17,7 @@ export default function AccountHeader({
 
   return (
     <div className={styles.grid}>
-      <div>
+      <div className={styles.header}>
         <Account accountId={accountId} />
         <Stats />
       </div>

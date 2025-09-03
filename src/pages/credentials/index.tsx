@@ -3,9 +3,11 @@ import Page from '@components/@shared/Page'
 import { VerifiablePresentationAccordion } from '@components/VerifiablePresentation/VerifiablePresentationAccordion'
 import { VerifiablePresentationMessage } from '@components/VerifiablePresentation/VerifiablePresentationMessage'
 import VerifiablePresentationProvider from '@context/VerifiablePresentation'
+import { QueryErrorResetBoundary } from '@tanstack/react-query'
 import { isAddress } from 'ethers/lib/utils.js'
 import { useRouter } from 'next/router'
 import { Suspense } from 'react'
+import { ErrorBoundary } from 'react-error-boundary'
 import { Address, useAccount } from 'wagmi'
 
 function CredentialsPage() {
@@ -35,11 +37,21 @@ function CredentialsPage() {
           your account.
         </VerifiablePresentationMessage>
       )}
-      <Suspense fallback={<Loader />}>
-        <VerifiablePresentationProvider address={address}>
-          <VerifiablePresentationAccordion />
-        </VerifiablePresentationProvider>
-      </Suspense>
+
+      <QueryErrorResetBoundary>
+        {({ reset }) => (
+          <ErrorBoundary
+            onReset={reset}
+            fallback={<p>There was an error fetching the VPs</p>}
+          >
+            <Suspense fallback={<Loader />}>
+              <VerifiablePresentationProvider address={address}>
+                <VerifiablePresentationAccordion />
+              </VerifiablePresentationProvider>
+            </Suspense>
+          </ErrorBoundary>
+        )}
+      </QueryErrorResetBoundary>
     </Page>
   )
 }
