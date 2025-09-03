@@ -34,8 +34,11 @@ export const VerifiablePresentationCard = ({
     'gx:LegalParticipant'
   )
   if (!verifiableCredentials || !verifiableCredentials[0]) {
-    // TODO
-    return <>Empty</>
+    return (
+      <VerifiablePresentationMessage variant="warn">
+        Could not find representative information in Verifiable Presentation
+      </VerifiablePresentationMessage>
+    )
   }
 
   const verifiableCredential = verifiableCredentials[0]
