@@ -1,3 +1,4 @@
+import QueryBoundary from '@components/@shared/QueryBoundary'
 import { Consent } from '@utils/consents/types'
 import { ReactNode, createContext, useContext } from 'react'
 import DeleteConsent from './Buttons/DeleteConsent'
@@ -27,7 +28,7 @@ export default function ConsentRowActions({ consent, children }: Props) {
           gap: 'calc(var(--spacer) / 2)'
         }}
       >
-        {children}
+        <QueryBoundary>{children}</QueryBoundary>
       </div>
     </ConsentRowActionsContext.Provider>
   )

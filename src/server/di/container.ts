@@ -1,6 +1,6 @@
 'use server'
-import dotenv from 'dotenv'
 
+import dotenv from 'dotenv'
 import { Container } from 'inversify'
 import IConsentsService from '../consents/consents'
 import IConsentResponseService from '../consents/consents-response'
