@@ -10,9 +10,5 @@ interface VerifiablePresentationProperties {
 export const VerifiablePresentation = ({
   verifiablePresentation
 }: Readonly<VerifiablePresentationProperties>): JSX.Element => {
-  return (
-    <code>
-      <JsonView src={verifiablePresentation} className={styles.contents} />
-    </code>
-  )
+  return <JsonView src={verifiablePresentation} className={styles.contents} />
 }

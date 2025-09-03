@@ -1,7 +1,10 @@
 .account {
-  text-align: center;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  gap: calc(var(--spacer) / 2);
+  text-align: center;
+  align-items: center;
+  justify-content: center;
 }
 
 .automation svg {
@@ -19,7 +22,7 @@
   margin: 0;
 }
 
-@media (min-width: 40rem) {
+@media (min-width: 60rem) {
   .account {
     text-align: left;
     display: grid;
@@ -53,7 +56,6 @@ See https://github.com/oceanprotocol/market/issues/1143 */
 .name {
   font-size: var(--font-size-h3);
   margin-bottom: calc(var(--spacer) / 8);
-  display: flex;
   column-gap: calc(var(--spacer) / 8);
 }
 
@@ -88,8 +90,10 @@ See https://github.com/oceanprotocol/market/issues/1143 */
   height: 1rem;
 }
 
-.card {
-  position: absolute;
-  right: var(--spacer);
-  top: var(--spacer);
+@media (min-width: 40rem) {
+  .card {
+    position: absolute;
+    right: var(--spacer);
+    top: var(--spacer);
+  }
 }

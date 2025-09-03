@@ -1,6 +1,5 @@
 import * as z from 'zod'
 import * as schemas from './schemas'
-import { GaiaXCredentialSubjectDiscriminatedUnionSchema } from './schemas'
 
 export type GaiaXVerifiableCredential = z.infer<
   typeof schemas.GaiaXVerifiableCredentialSchema
