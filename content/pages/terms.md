@@ -5,8 +5,6 @@ description: Thanks for using our product and services.
 
 # AgrospAI DATA PORTAL - TERMS AND CONDITIONS
 
-# AgrospAI DATA PORTAL - TERMS AND CONDITIONS
-
 UdL (as defined below) provides a technical infrastructure for a digital portal enabling access to Data (as defined below). Based on these terms and conditions, a customer (as defined below) and UdL enter into an agreement which governs the customer’s access to and use of the data portal (as defined below) and takes effect on the date of UdL’s acceptance of such customer’s offer.
 
 ### Table of contents
@@ -56,7 +54,6 @@ Capitalised terms shall have the meaning given to them in this Agreement; and:
 
 **“Service Lifecycle Management”** means a mechanism to change the visibility of any Service Offering from the Data Portal depending on the Lifecycle State.
 
-**"Service"** means all websites, software and services offered and operated by UdL in connection with the provision of the Data Portal from time to time.
 **"Service"** means all websites, software and services offered and operated by UdL in connection with the provision of the Data Portal from time to time.
 
 **“Terms”** means these terms and conditions.

@@ -38,8 +38,8 @@ For detailed information about the processing operations, lawfulness, purposes, 
 **Exoscale and OVH Cloud**  
 The portal demonstrator and the UdL compute provider are hosted and managed by UdL on its premises. However, when using our portal demonstrator functionalities, your IP address is processed by the Pontus-X ecosystem backend components, which are managed by deltaDAO AG and hosted on
 
-- **Exoscale** servers located in Frankfurt, Germany. Akenes SAE (hereafter Exoscale) is headquartered in Boulevard de Grancy 19A, 1006 – Lausanne, Switzerland.
-- **OVH Cloud** servers located in Germany, France and Poland. OVH GmbH is headquartered in Oskar-Jäger-Str. 173/K6, 50825 Cologne.
+- **Exoscale** servers located in Frankfurt, **Germany**. Akenes SAE (hereafter Exoscale) is headquartered in Boulevard de Grancy 19A, 1006 – Lausanne, Switzerland.
+- **OVH Cloud** servers located in **Germany, France and Poland**. OVH GmbH is headquartered in Oskar-Jäger-Str. 173/K6, 50825 Cologne, **Germany**.
 
 deltaDAO cooperation with Exoscale and OVH GmbH is based on a Data Processing Agreement (DPA).
 
@@ -53,14 +53,6 @@ When you contact us via e-mail, our (mail) service provider Microsoft Corporatio
 
 - Here you can find Microsoft&#39;s current [**DPA including SCC** &#8599;](https://www.microsoft.com/licensing/docs/view/Microsoft-Products-and-Services-Data-Protection-Addendum-DPA).
 - Here you can find Microsoft&#39;s [**privacy policy** &#8599;](https://privacy.microsoft.com/de-de/privacystatement).
-
-Further information about the **purpose, legal basis, and retention period** can be found in chapter 4.
-
-**Reown and Coinbase Global**  
-Reown, Inc. (WalletConnect protocol) and Coinbase Global, Inc. (WalletLink protocol) process IP addresses for protecting your security by assessing the legitimacy of the Data Space’s domain and providing warnings about detected issues. Reown, Inc. and Coinbase Global, Inc. are located in the US. There is no adequacy decision for the USA from the European Commission.
-
-- Here you can find Reown&#39;s [**privacy policy** &#8599;](https://reown.com/privacy-policy).
-- Here you can find Coinbase Global&#39;s [**privacy policy** &#8599;](https://www.coinbase.com/legal/privacy).
 
 Further information about the **purpose, legal basis, and retention period** can be found in chapter 4.
 
@@ -138,24 +130,6 @@ Umami does not collect any personally identifiable information and anonymizes al
 
 **Right to object:** You have the right to object to the processing of your personal data (see also chapter 8.6).
 
-**4.5 Recognize malicious traffic**  
-When visiting and using our portal demonstrator, your IP address is processed by Reown, Inc. and Coinbase Global, Inc. (see also chapter 3).
-
-**Purpose:**  
-Your IP address is transmitted to Reown and Coinbase servers and used for protecting your security by assessing the legitimacy of the Data Space’s domain and providing warnings about detected issues, e.g., if an address is flagged as malicious.
-
-**Legal basis:**  
-The legal basis for this processing is our legitimate interest, according to Art. 6(1)(f) GDPR.
-
-**Legitimate interests:**  
-Our legitimate interest is to protect your security.
-
-**Retention period:**  
-Reown retains IP addresses for the minimum time necessary to process the transaction. They are erased automatically, usually within a few minutes. Coinbase retains your personal data for as long as needed to provide their service.
-
-**Right to object:**  
-You have the right to object to the processing of your personal data (see also chapter 8.6).
-
 ## 5. Automated decision making including profiling according to Article 13(2)(f) GDPR
 
 Automated decision making including profiling does not take place.
@@ -164,9 +138,11 @@ Automated decision making including profiling does not take place.
 
 **6.1 Cookies**
 
-A cookie is a small file that stores information in your browser. Your web browser downloads it on the first visit to a website. The next time you open this website with the same device, the cookie and the information stored in it are either sent back to the website that created it (first-party cookie) or sent to another website it belongs to (third-party cookie). This enables the website to detect that you have opened it previously with this browser and, in some cases, to vary the displayed content. Some cookies are necessary for making websites work, and others are used for enhancing your experience on the visited website. Cookies can also be used for marketing and analytics purposes. Web storage (local storage and session storage) has similar functionality to cookies.
+A cookie is a small file that stores information on your device. Your web browser downloads it on the first visit to a website. The next time you open this website with the same device, the cookie and the information stored in it are either sent back to the website that created it (first-party cookie) or sent to another website it belongs to (third-party cookie). This enables the website to detect that you have opened it previously with this browser and, in some cases, to vary the displayed content.
 
-Our portal demonstrator uses cookies and your web storage to remember your page preferences, enable functionalities and to enhance your user experience. You have the option of disabling cookies and deleting cookies and web storage from your computer's hard disk at any time in your browser settings.
+Web storage (local storage and session storage) has similar functionality to cookies.
+
+On our portal demonstrator we are using local storage enabling you to use our portal demonstrator features. You can find more information about our use of cookie and web storage in our [**Cookie Policy**](/cookies/en).
 
 **6.2 Analytics**
 

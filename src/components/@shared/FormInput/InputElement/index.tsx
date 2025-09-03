@@ -84,8 +84,14 @@ const InputElement = forwardRef(
         const sortedOptions =
           !sortOptions && sortOptions === false
             ? options
-            : (options as string[]).sort((a: any, b: any) =>
-                a.label ? a.label.localeCompare(b.label) : a.localeCompare(b)
+            : (options as string[] | InputProps[]).sort(
+                (a: string | InputProps, b: string | InputProps) => {
+                  const aString =
+                    typeof a !== 'string' ? (a.label as string) : (a as string)
+                  const bString =
+                    typeof b !== 'string' ? (b.label as string) : (b as string)
+                  return aString.localeCompare(bString)
+                }
               )
         return (
           <select
@@ -96,21 +102,23 @@ const InputElement = forwardRef(
           >
             {field !== undefined && field.value === '' && <option value="" />}
             {sortedOptions &&
-              (sortedOptions as any[]).map((option, index: number) => {
-                return option.label ? (
-                  <option key={index} value={option.value}>
-                    {option.label}
-                  </option>
-                ) : (
-                  <option key={index} value={option}>
-                    <Option
-                      option={option}
-                      prefix={prefixes?.[index]}
-                      postfix={postfixes?.[index]}
-                    />
-                  </option>
-                )
-              })}
+              (sortedOptions as string[] | InputProps[]).map(
+                (option: string | InputProps, index: number) => {
+                  return typeof option !== 'string' ? (
+                    <option key={index} value={option.value}>
+                      {option.label}
+                    </option>
+                  ) : (
+                    <option key={index} value={option}>
+                      <Option
+                        option={option}
+                        prefix={prefixes?.[index]}
+                        postfix={postfixes?.[index]}
+                      />
+                    </option>
+                  )
+                }
+              )}
           </select>
         )
       }

@@ -74,10 +74,10 @@
           "isLive": true
         },
         {
-          "name": "Airbus",
-          "link": "https://airbus.pontus-x.eu/",
-          "description": "For those who make this world a safer place. We pioneer defense and space for their mission success.",
-          "image": "airbus-logo.webp",
+          "name": "CIRP",
+          "link": "https://cirp-cooperative-work.pontus-x.eu",
+          "description": "The CIRP dataspace supports an integrated research environment designed to facilitate coordinated experimental activities within the CIRP STC-C community.",
+          "image": "cirp.webp",
           "category": "manufacturing",
           "isLive": true
         },
@@ -95,6 +95,22 @@
           "description": "Agri-food Data Space Demonstrator for Sovereign Data-Sharing and Artificial Intelligence Services.",
           "image": "agrospai-logo.webp",
           "category": "agriculture",
+          "isLive": true
+        },
+        {
+          "name": "Clio-X",
+          "link": "https://www.cliox.org/",
+          "description": "ClioX is a new kind of privacy-first platform—built by and for researchers, archivists, and cultural institutions.",
+          "image": "cliox.webp",
+          "category": "Research",
+          "isLive": true
+        },
+        {
+          "name": "Open Dataspace Lab",
+          "link": "https://www.opendataspacelab.eu/",
+          "description": "Open Dataspace Lab connects supply and demand for all types of data and AI algorithms.",
+          "image": "odl-logo.webp",
+          "category": "general",
           "isLive": true
         },
         {
@@ -146,26 +162,10 @@
           "isLive": true
         },
         {
-          "name": "Open Dataspace Lab",
-          "link": "https://www.opendataspacelab.eu/",
-          "description": "Open Dataspace Lab connects supply and demand for all types of data and AI algorithms.",
-          "image": "odl-logo.webp",
-          "category": "general",
-          "isLive": true
-        },
-        {
           "name": "Car Repair 4.0",
           "link": "https://portal.autowerkstatt40.org/",
           "description": "Car Repair 4.0 develops a hub infrastructure that connects car workshops to Gaia-X ecosystems and enables AI-supported fault tracking.",
           "image": "carrepair40.webp",
-          "category": "AI",
-          "isLive": true
-        },
-        {
-          "name": "Service-Meister",
-          "link": "https://servicemeister.pontus-x.eu/",
-          "description": "An AI-based Service Ecosystem for Technical Service in the Age of Industry 4.0.",
-          "image": "service-meister-logo.webp",
           "category": "AI",
           "isLive": true
         }
@@ -189,7 +189,10 @@
       ]
     }
   ],
-  "announcement": "",
+  "announcement": {
+    "text": "",
+    "state": ""
+  },
   "devPreviewAnnouncement": "You are visiting the SITE-TITLE-PLACEHOLDER Developer Preview. Please note that some functionalities are in beta and may not work as expected. Visit the [SITE-TITLE-PLACEHOLDER portal](SITE-LINK-PLACEHOLDER) instead.",
   "warning": {
     "ctd": "Please note that Compute-to-Data is still in alpha phase."

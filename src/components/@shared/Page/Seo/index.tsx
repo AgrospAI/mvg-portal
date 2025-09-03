@@ -34,9 +34,10 @@ export default function Seo({
 
       <title>{pageTitle}</title>
 
-      {isBrowser && window?.location?.hostname !== 'portal.pontus-x.eu' && (
-        <meta name="robots" content="noindex,nofollow" />
-      )}
+      {isBrowser &&
+        window?.location?.hostname !== 'portal.agrospai.udl.cat' && (
+          <meta name="robots" content="noindex,nofollow" />
+        )}
 
       <link rel="canonical" href={canonical} />
       <link rel="icon" href="/favicon.ico" sizes="any" />
@@ -64,10 +65,6 @@ export default function Seo({
       />
 
       <meta property="og:site_name" content={siteContent?.siteTitle} />
-      {isBrowser && window?.location?.hostname === 'portal.pontus-x.eu' && (
-        <meta name="twitter:creator" content="@deltaDAO" />
-      )}
-      <meta name="twitter:card" content="summary_large_image" />
 
       {datasetSchema && (
         <script type="application/ld+json" id="datasetSchema">
@@ -76,8 +73,8 @@ export default function Seo({
       )}
       <script
         defer
-        data-domain="portal.pontus-x.eu"
-        src="https://plausible.io/js/script.js"
+        src="https://umami.agrospai.udl.cat/umami"
+        data-website-id="dd68db0f-4cc5-4114-b3b2-9d9621a7ce27"
       ></script>
     </Head>
   )

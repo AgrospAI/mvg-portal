@@ -41,6 +41,9 @@ export default function Links(): ReactElement {
           <Button to="https://www.udl.cat/ca/en/legal" className={styles.link}>
             Privacy
           </Button>
+          <Button to="/cookies/en" className={styles.link}>
+            Cookie Policy
+          </Button>
           {appConfig.privacyPreferenceCenter === 'true' && (
             <Button
               className={styles.link}
