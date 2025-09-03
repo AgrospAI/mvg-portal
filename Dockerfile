@@ -32,7 +32,6 @@ ENV NEXT_TELEMETRY_DISABLED 1
 # If using npm comment out above and use below instead
 ENV BRANCH 'udl'
 ENV COMMIT_REF 0.1
-
 RUN npm run postinstall
 RUN npm run build
 

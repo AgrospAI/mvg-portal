@@ -38,8 +38,8 @@ For detailed information about the processing operations, lawfulness, purposes, 
 **Exoscale and OVH Cloud**  
 The portal demonstrator and the UdL compute provider are hosted and managed by UdL on its premises. However, when using our portal demonstrator functionalities, your IP address is processed by the Pontus-X ecosystem backend components, which are managed by deltaDAO AG and hosted on
 
-- **Exoscale** servers located in Frankfurt, Germany. Akenes SAE (hereafter Exoscale) is headquartered in Boulevard de Grancy 19A, 1006 – Lausanne, Switzerland.
-- **OVH Cloud** servers located in Germany, France and Poland. OVH GmbH is headquartered in Oskar-Jäger-Str. 173/K6, 50825 Cologne.
+- **Exoscale** servers located in Frankfurt, **Germany**. Akenes SAE (hereafter Exoscale) is headquartered in Boulevard de Grancy 19A, 1006 – Lausanne, Switzerland.
+- **OVH Cloud** servers located in **Germany, France and Poland**. OVH GmbH is headquartered in Oskar-Jäger-Str. 173/K6, 50825 Cologne, **Germany**.
 
 deltaDAO cooperation with Exoscale and OVH GmbH is based on a Data Processing Agreement (DPA).
 
@@ -53,14 +53,6 @@ When you contact us via e-mail, our (mail) service provider Microsoft Corporatio
 
 - Here you can find Microsoft&#39;s current [**DPA including SCC** &#8599;](https://www.microsoft.com/licensing/docs/view/Microsoft-Products-and-Services-Data-Protection-Addendum-DPA).
 - Here you can find Microsoft&#39;s [**privacy policy** &#8599;](https://privacy.microsoft.com/de-de/privacystatement).
-
-Further information about the **purpose, legal basis, and retention period** can be found in chapter 4.
-
-**Reown and Coinbase Global**  
-Reown, Inc. (WalletConnect protocol) and Coinbase Global, Inc. (WalletLink protocol) process IP addresses for protecting your security by assessing the legitimacy of the Data Space’s domain and providing warnings about detected issues. Reown, Inc. and Coinbase Global, Inc. are located in the US. There is no adequacy decision for the USA from the European Commission.
-
-- Here you can find Reown&#39;s [**privacy policy** &#8599;](https://reown.com/privacy-policy).
-- Here you can find Coinbase Global&#39;s [**privacy policy** &#8599;](https://www.coinbase.com/legal/privacy).
 
 Further information about the **purpose, legal basis, and retention period** can be found in chapter 4.
 
@@ -137,24 +129,6 @@ Our legitimate interest is to gain insights to improve existing and future featu
 Umami does not collect any personally identifiable information and anonymizes all data collected. Users cannot be identified and are never tracked across websites.
 
 **Right to object:** You have the right to object to the processing of your personal data (see also chapter 8.6).
-
-**4.5 Recognize malicious traffic**  
-When visiting and using our portal demonstrator, your IP address is processed by Reown, Inc. and Coinbase Global, Inc. (see also chapter 3).
-
-**Purpose:**  
-Your IP address is transmitted to Reown and Coinbase servers and used for protecting your security by assessing the legitimacy of the Data Space’s domain and providing warnings about detected issues, e.g., if an address is flagged as malicious.
-
-**Legal basis:**  
-The legal basis for this processing is our legitimate interest, according to Art. 6(1)(f) GDPR.
-
-**Legitimate interests:**  
-Our legitimate interest is to protect your security.
-
-**Retention period:**  
-Reown retains IP addresses for the minimum time necessary to process the transaction. They are erased automatically, usually within a few minutes. Coinbase retains your personal data for as long as needed to provide their service.
-
-**Right to object:**  
-You have the right to object to the processing of your personal data (see also chapter 8.6).
 
 ## 5. Automated decision making including profiling according to Article 13(2)(f) GDPR
 
