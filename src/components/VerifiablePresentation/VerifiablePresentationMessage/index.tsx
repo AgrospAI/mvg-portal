@@ -28,7 +28,7 @@ export const VerifiablePresentationMessage = ({
   return (
     <div className={styleClasses}>
       {variant === 'info' ? <Info /> : <Cross />}
-      {children}
+      <div className={styles.contents}>{children}</div>
     </div>
   )
 }

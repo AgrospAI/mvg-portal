@@ -1,5 +1,7 @@
 .account {
   text-align: center;
+  display: flex;
+  flex-direction: row;
 }
 
 .automation svg {
@@ -84,4 +86,10 @@ See https://github.com/oceanprotocol/market/issues/1143 */
 .retryButton {
   width: 1rem;
   height: 1rem;
+}
+
+.card {
+  position: absolute;
+  right: var(--spacer);
+  top: var(--spacer);
 }

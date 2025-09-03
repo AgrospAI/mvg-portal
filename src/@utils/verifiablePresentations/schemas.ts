@@ -1,5 +1,11 @@
 import * as z from 'zod'
 
+export const GaiaXCredentialType = z.enum([
+  'gx:legalRegistrationNumber',
+  'gx:LegalParticipant',
+  'gx:GaiaXTermsAndConditions'
+])
+
 const GaiaXCredentialSubjectLegalParticipantSchema = z.object({
   id: z.string(),
   type: z.literal('gx:LegalParticipant'),
