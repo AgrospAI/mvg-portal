@@ -1,6 +1,5 @@
 'use server'
 
-import dotenv from 'dotenv'
 import { Container } from 'inversify'
 import IConsentsService from '../consents/consents'
 import IConsentResponseService from '../consents/consents-response'
@@ -10,9 +9,15 @@ import { ConsentResponseService } from '../consents/impl/consent-response'
 import { ConsentsHealthService } from '../consents/impl/health'
 import ICredentialsService from '../credentials/credentials'
 import { RedisCredentialsService } from '../credentials/impl/redis-credentials'
-dotenv.config()
+import IEnvironmentService from '../env/env'
+import { EnvironmentService } from '../env/impl/env'
 
 const container = new Container()
+
+container
+  .bind<IEnvironmentService>('Env')
+  .to(EnvironmentService)
+  .inSingletonScope()
 
 container
   .bind<ICredentialsService>('Credentials')

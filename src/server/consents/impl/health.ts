@@ -1,7 +1,9 @@
+'use server'
 import axios, { Axios } from 'axios'
-import { env } from 'next-runtime-env'
-import IConsentsHealthService from '../health'
 import { injectable } from 'inversify'
+import IConsentsHealthService from '../health'
+import { container } from '@/server/di/container'
+import IEnvironmentService from '@/server/env/env'
 
 @injectable()
 export class ConsentsHealthService implements IConsentsHealthService {
@@ -10,12 +12,9 @@ export class ConsentsHealthService implements IConsentsHealthService {
   private getClient(): Axios {
     if (this.client) return this.client
 
-    const apiUrl = env('CONSENTS_API_URL')
-    if (!apiUrl)
-      throw new Error('Missing environment variable CONSENTS_API_URL')
-
+    const environment = container.get<IEnvironmentService>('Env')
     this.client = axios.create({
-      baseURL: apiUrl,
+      baseURL: environment.get('CONSENTS_API_URL'),
       headers: {
         'Content-Type': 'application/json'
       }
