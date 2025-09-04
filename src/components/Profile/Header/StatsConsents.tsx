@@ -13,11 +13,11 @@ function StatsConsents() {
     <>
       <NumberUnit
         label="Incoming Pending Consents"
-        value={incomingPendingConsents}
+        value={incomingPendingConsents ?? 0}
       />
       <NumberUnit
         label="Outgoing Pending Consents"
-        value={outgoingPendingConsents}
+        value={outgoingPendingConsents ?? 0}
       />
     </>
   )

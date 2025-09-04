@@ -55,7 +55,12 @@ export const getUserConsents = async (
 ): Promise<UserConsentsData> =>
   API.get(Routes.UserConsentsAmount(address), {
     signal
-  }).then(validateWithSchema(UserConsentsDataSchema))
+  }).then((result) => {
+    if (result.data) {
+      return validateWithSchema(UserConsentsDataSchema)(result)
+    }
+    return {} as UserConsentsData
+  })
 
 export const createConsent = async (
   address: string,

@@ -11,6 +11,16 @@ import axios, { Axios } from 'axios'
 import { injectable } from 'inversify'
 import IConsentsService from '../consents'
 
+const missingCallback = <T>(error: any, defaultValue: T) => {
+  if (error.response.status === 404) return defaultValue
+  console.error('Error fetching user consents', error)
+  throw error
+}
+
+const defaultMissingCallback = <T>(defaultValue: T) => {
+  return (error) => missingCallback(error, defaultValue)
+}
+
 @injectable()
 export class ConsentsService implements IConsentsService {
   private client: Axios | undefined
@@ -53,12 +63,16 @@ export class ConsentsService implements IConsentsService {
     return this.getClient()
       .get(`/users/${address}/${direction?.toLowerCase() ?? ''}/`)
       .then(({ data }) => data)
+      .catch(defaultMissingCallback([]))
   }
 
-  getAddressConsentsAmount(address: string): Promise<UserConsentsData> {
+  getAddressConsentsAmount(
+    address: string
+  ): Promise<UserConsentsData | undefined> {
     return this.getClient()
       .get(`/users/${address}/`)
       .then((data) => data.data)
+      .catch(defaultMissingCallback(undefined))
   }
 
   deleteConsent(consentId: string): Promise<void> {
