@@ -1,4 +1,6 @@
 'use server'
+import { container } from '@/server/di/container'
+import IEnvironmentService from '@/server/env/env'
 import { RedisClientOptions, RedisClientType } from '@redis/client'
 import { PontusVerifiableCredentialArraySchema } from '@utils/verifiableCredentials/schemas'
 import { PontusVerifiableCredentialArray } from '@utils/verifiableCredentials/types'
@@ -6,7 +8,6 @@ import { injectable } from 'inversify'
 import { createClient } from 'redis'
 import { Address } from 'wagmi'
 import ICredentialsService from '../credentials'
-import { env } from 'next-runtime-env'
 
 class RedisCredentialsServiceError extends Error {}
 
@@ -17,29 +18,33 @@ export class RedisCredentialsService implements ICredentialsService {
   private async getClient(): Promise<RedisClientType> {
     if (this.client) return this.client
 
-    const url = env('CREDENTIALS_REDIS_URL')
-    const username = env('CREDENTIALS_REDIS_USERNAME')
-    const password = env('CREDENTIALS_REDIS_PASSWORD')
+    const environment = container.get<IEnvironmentService>('Env')
+    const env = environment.getMultiple([
+      'CREDENTIALS_REDIS_URL',
+      'CREDENTIALS_REDIS_USERNAME',
+      'CREDENTIALS_REDIS_PASSWORD'
+    ])
 
-    if (!url) throw new RedisCredentialsServiceError('Missing URL')
-    if ((username && !password) || (password && !username)) {
+    if (!env.CREDENTIALS_REDIS_URL) {
+      throw new RedisCredentialsServiceError('Missing URL')
+    }
+    if (!!env.CREDENTIALS_REDIS_USERNAME !== !!env.CREDENTIALS_REDIS_PASSWORD) {
       throw new RedisCredentialsServiceError(
-        'Config "username" and "password" must be both undefined or set'
+        'Config "CREDENTIALS_REDIS_USERNAME" and "CREDENTIALS_REDIS_PASSWORD" must be both undefined or set'
       )
     }
 
     console.log(
-      '[RedisCredentialsService]: Connecting to url %s as %s with pwd %s',
-      url,
-      username,
-      password
+      '[RedisCredentialsService]: Connecting to url %s as %s',
+      env.CREDENTIALS_REDIS_URL,
+      env.CREDENTIALS_REDIS_USERNAME
     )
 
-    const config: RedisClientOptions = { url }
+    const config: RedisClientOptions = { url: env.CREDENTIALS_REDIS_URL }
 
-    if (username) {
-      config.username = username
-      config.password = password
+    if (env.CREDENTIALS_REDIS_USERNAME) {
+      config.username = env.CREDENTIALS_REDIS_USERNAME
+      config.password = env.CREDENTIALS_REDIS_PASSWORD
     }
 
     this.client = createClient(config as unknown)

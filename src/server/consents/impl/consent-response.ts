@@ -1,10 +1,11 @@
 'use server'
+import { container } from '@/server/di/container'
+import IEnvironmentService from '@/server/env/env'
 import { validateWithSchema } from '@utils/consents/api'
 import { ConsentSchema } from '@utils/consents/schemas'
 import { Consent, PossibleRequests } from '@utils/consents/types'
 import axios, { Axios } from 'axios'
 import { injectable } from 'inversify'
-import { env } from 'next-runtime-env'
 import IConsentResponseService from '../consents-response'
 
 @injectable()
@@ -14,12 +15,9 @@ export class ConsentResponseService implements IConsentResponseService {
   private getClient(): Axios {
     if (this.client) return this.client
 
-    const apiUrl = env('CONSENTS_API_URL')
-    if (!apiUrl)
-      throw new Error('Missing environment variable CONSENTS_API_URL')
-
+    const environment = container.get<IEnvironmentService>('Env')
     this.client = axios.create({
-      baseURL: apiUrl,
+      baseURL: environment.get('CONSENTS_API_URL'),
       headers: {
         'Content-Type': 'application/json'
       }
