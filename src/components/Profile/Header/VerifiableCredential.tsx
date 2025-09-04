@@ -3,13 +3,16 @@ import PatchCheck from '@images/patch_check.svg'
 import Link from 'next/link'
 import { Address } from 'wagmi'
 import styles from './VerifiableCredential.module.css'
+import { ReactNode } from 'react'
 
 interface VerifiableCredentialProps {
   address: Address
+  children?: ReactNode
 }
 
 export const VerifiableCredential = ({
-  address
+  address,
+  children
 }: Readonly<VerifiableCredentialProps>) => {
   const { data: credentials } = useVerifiableCredentials(address)
 
@@ -17,7 +20,7 @@ export const VerifiableCredential = ({
 
   return (
     <Link className={styles.icon} href={`/credentials/${address}`}>
-      <PatchCheck />
+      {children || <PatchCheck />}
     </Link>
   )
 }
