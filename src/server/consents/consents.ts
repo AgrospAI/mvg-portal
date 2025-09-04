@@ -18,7 +18,9 @@ interface IConsentsService {
     address: string,
     direction?: ConsentDirection
   ): Promise<Array<Consent>>
-  getAddressConsentsAmount(address: string): Promise<UserConsentsData>
+  getAddressConsentsAmount(
+    address: string
+  ): Promise<UserConsentsData | undefined>
   deleteConsent(consentId: string): Promise<void>
 }
 
