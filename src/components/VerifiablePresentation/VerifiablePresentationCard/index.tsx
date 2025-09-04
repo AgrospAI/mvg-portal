@@ -1,17 +1,20 @@
+import Time from '@components/@shared/atoms/Time'
+import { VerifiableCredential } from '@components/Profile/Header/VerifiableCredential'
 import { useVerifiablePresentationContext } from '@context/VerifiablePresentation'
 import External from '@images/external.svg'
-import PatchCheck from '@images/patch_check.svg'
-import Link from 'next/link'
-import styles from './index.module.css'
-import Time from '@components/@shared/atoms/Time'
 import { filterVerifiableCredentialType } from '@utils/verifiablePresentations/utils'
+import Link from 'next/link'
+import { Address } from 'wagmi'
 import { VerifiablePresentationMessage } from '../VerifiablePresentationMessage'
+import styles from './index.module.css'
 
 interface VerifiablePresentationCardProperties {
+  address: Address
   className?: string
 }
 
 export const VerifiablePresentationCard = ({
+  address,
   className
 }: VerifiablePresentationCardProperties) => {
   const { verifiablePresentations } = useVerifiablePresentationContext()
@@ -46,18 +49,25 @@ export const VerifiablePresentationCard = ({
 
   return (
     <section className={`${className} ${styles.container}`}>
-      <span
-        className={styles.title}
-        data-full={verifiableCredential.credentialSubject['gx:legalName']}
-      >
-        {verifiableCredential.credentialSubject['gx:legalName']}
-      </span>
+      <VerifiableCredential address={address}>
+        <span
+          className={styles.title}
+          data-full={verifiableCredential.credentialSubject['gx:legalName']}
+        >
+          {verifiableCredential.credentialSubject['gx:legalName']}
+        </span>
+      </VerifiableCredential>
+
       <span className={styles.description}>
         {legalAddress?.['gx:streetAddress']}, {legalAddress?.['gx:postalCode']},{' '}
         {legalAddress?.['gx:locality']},{' '}
         {legalAddress?.['gx:countrySubdivisionCode']}
       </span>
-      <Link href={verifiableCredential.id} className={styles.link}>
+      <Link
+        href={verifiableCredential.credentialSubject.id}
+        target="_blank"
+        className={styles.link}
+      >
         {verifiableCredential.credentialSubject.id}
         <External />
       </Link>
@@ -67,7 +77,7 @@ export const VerifiablePresentationCard = ({
           date={verifiableCredential.issuanceDate}
           className={styles.date}
         />
-        <PatchCheck />
+        <VerifiableCredential address={address} />
       </span>
     </section>
   )

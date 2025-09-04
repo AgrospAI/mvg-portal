@@ -110,7 +110,7 @@ export default function Account({
             <div className={styles.card}>
               <Suspense fallback={<Loader />}>
                 <VerifiablePresentationProvider address={accountId as Address}>
-                  <VerifiablePresentationCard />
+                  <VerifiablePresentationCard address={accountId as Address} />
                 </VerifiablePresentationProvider>
               </Suspense>
             </div>
