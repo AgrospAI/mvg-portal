@@ -39,7 +39,7 @@ export default function IncomingPendingConsentsSimple({ asset }: Props) {
                     <Cog class={styles.action} />
                   </div>
                 </Modal.Trigger>
-                <Modal.Content name={consent.nft.address}>
+                <Modal.Content name={asset.nft.address}>
                   <Suspense fallback={<Loader />}>
                     <InspectConsentsModal />
                   </Suspense>
