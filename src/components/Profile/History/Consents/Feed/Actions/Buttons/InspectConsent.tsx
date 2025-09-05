@@ -15,8 +15,11 @@ function InspectConsent({ consent }: InspectConsentProps) {
   const { setCurrentConsent } = useCurrentConsent()
 
   return (
-    <Modal>
-      <Modal.Trigger onClick={() => setCurrentConsent(consent)}>
+    <>
+      <Modal.Trigger
+        name={String(consent.id)}
+        onClick={() => setCurrentConsent(consent)}
+      >
         <button
           className={styles.button}
           title="Inspect"
@@ -25,12 +28,12 @@ function InspectConsent({ consent }: InspectConsentProps) {
           Inspect <Info />
         </button>
       </Modal.Trigger>
-      <Modal.Content>
+      <Modal.Content name={String(consent.id)}>
         <Suspense fallback={<Loader />}>
           <InspectConsentsModal />
         </Suspense>
       </Modal.Content>
-    </Modal>
+    </>
   )
 }
 
