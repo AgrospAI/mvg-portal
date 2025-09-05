@@ -1,0 +1,29 @@
+.confirmationModal {
+  width: 400px;
+}
+
+.confirmationModal > button {
+  display: none;
+}
+
+.confirmationModalContent {
+  display: flex;
+  justify-content: space-between;
+}
+
+.actions {
+  display: flex;
+  gap: var(--spacer);
+  align-items: center;
+  justify-content: center;
+}
+
+.cancelButton {
+  background-color: var(--color-agrospai-light);
+  color: var(--color-grey-600);
+}
+
+.deleteButton {
+  background-color: var(--brand-alert-red);
+  color: var(--brand-grey-dimmed);
+}
