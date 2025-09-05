@@ -19,9 +19,9 @@ export default async function handler(
 
   switch (req.method) {
     case 'DELETE': {
-      return await consentsService
+      return consentsService
         .deleteConsent(id)
-        .then((result) => res.status(200).json(result))
+        .then(() => res.status(200).json({ message: 'Deleted' }))
         .catch((error) => {
           console.error(error)
           return res.status(500).json({ error })
