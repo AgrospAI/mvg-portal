@@ -1,6 +1,5 @@
 .reason {
   word-wrap: break-word;
-  overflow-y: scroll;
   max-height: 10rem;
   background-color: var(--brand-grey-lighter);
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
