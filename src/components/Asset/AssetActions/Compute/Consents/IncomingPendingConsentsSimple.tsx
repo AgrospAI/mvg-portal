@@ -34,18 +34,16 @@ export default function IncomingPendingConsentsSimple({ asset }: Props) {
                   did={consent.algorithm}
                   className={styles.assetLink}
                 />
-                <Modal>
-                  <Modal.Trigger>
-                    <div className={styles.actionContainer}>
-                      <Cog class={styles.action} />
-                    </div>
-                  </Modal.Trigger>
-                  <Modal.Content>
-                    <Suspense fallback={<Loader />}>
-                      <InspectConsentsModal />
-                    </Suspense>
-                  </Modal.Content>
-                </Modal>
+                <Modal.Trigger name={asset.nft.address}>
+                  <div className={styles.actionContainer}>
+                    <Cog class={styles.action} />
+                  </div>
+                </Modal.Trigger>
+                <Modal.Content name={consent.nft.address}>
+                  <Suspense fallback={<Loader />}>
+                    <InspectConsentsModal />
+                  </Suspense>
+                </Modal.Content>
               </div>
             ))}
           </div>

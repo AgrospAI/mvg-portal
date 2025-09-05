@@ -12,8 +12,8 @@ import Modal from '../atoms/Modal'
 import styles from './index.module.css'
 
 interface ModalContextValue {
-  isOpen: boolean
-  openModal: () => void
+  openName: string
+  openModal: (name: string) => void
   closeModal: () => void
 }
 
@@ -29,21 +29,21 @@ function ModalProvider({ children }: PropsWithChildren) {
   const searchParams = useSearchParams()
   const router = useRouter()
 
-  const isOpen = searchParams.get('isOpen') === 'true' || false
+  const openName = searchParams.get('openName') ?? null
 
   const openModal = useCallback(
-    () => updateQueryParameters(router, 'isOpen', true),
+    (name: string) => updateQueryParameters(router, 'openName', name),
     [router]
   )
   const closeModal = useCallback(
-    () => updateQueryParameters(router, 'isOpen', null),
+    () => updateQueryParameters(router, 'openName', null),
     [router]
   )
 
   return (
     <ModalContext.Provider
       value={{
-        isOpen,
+        openName,
         openModal,
         closeModal
       }}
@@ -53,41 +53,49 @@ function ModalProvider({ children }: PropsWithChildren) {
   )
 }
 
-function ModalContent({ children }: PropsWithChildren) {
-  const { isOpen, closeModal } = useModalContext()
-
-  if (!isOpen) return null
+function ModalContent({
+  name,
+  children
+}: PropsWithChildren<{
+  name: string
+}>) {
+  const { openName, closeModal } = useModalContext()
 
   return (
     <QueryBoundary>
-      <Modal
-        title={''}
-        isOpen={isOpen}
-        onToggleModal={closeModal}
-        onRequestClose={closeModal}
-        shouldCloseOnOverlayClick={true}
-        className={styles.modal}
-        style={{
-          overlay: {
-            backgroundColor: 'transparent'
-          }
-        }}
-      >
-        {children}
-      </Modal>
+      {openName === name ? (
+        <Modal
+          title={''}
+          isOpen={!!openName}
+          onToggleModal={closeModal}
+          onRequestClose={closeModal}
+          shouldCloseOnOverlayClick={true}
+          className={styles.modal}
+          style={{
+            overlay: {
+              backgroundColor: 'transparent'
+            }
+          }}
+        >
+          {children}
+        </Modal>
+      ) : (
+        <></>
+      )}
     </QueryBoundary>
   )
 }
 
 function ModalTrigger({
+  name,
   onClick,
   children
-}: PropsWithChildren<{ onClick?: () => void }>) {
+}: PropsWithChildren<{ name: string; onClick?: () => void }>) {
   const { openModal } = useModalContext()
   return (
     <span
       onClick={() => {
-        openModal()
+        openModal(name)
         onClick && onClick()
       }}
     >

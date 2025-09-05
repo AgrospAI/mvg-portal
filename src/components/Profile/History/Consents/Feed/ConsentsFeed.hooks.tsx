@@ -23,8 +23,8 @@ import { useCallback, useMemo } from 'react'
 import { useAccount } from 'wagmi'
 import ConsentRowActions from './Actions/ConsentRowActions'
 import styles from './ConsentsFeed.module.css'
-import ConsentStateBadge from './StateBadge'
 import { consentsTableStyles } from './ConsentsFeedStyles'
+import ConsentStateBadge from './StateBadge'
 
 const getTabs = (
   columns: TableOceanColumn<Consent>[],
