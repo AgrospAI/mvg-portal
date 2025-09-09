@@ -27,8 +27,8 @@ const GaiaXCredentialSubjectLegalRegistrationNumberSchema = z.object({
   '@context': z.url(),
   type: z.literal('gx:legalRegistrationNumber'),
   id: z.url(),
-  'gx:leiCode': z.string().optional(),
-  'gx:leiCode-countryCode': z.string().optional()
+  'gx:vatID': z.string(),
+  'gx:vatID-countryCode': z.string()
 })
 
 const GaiaXCredentialSubjectTermsAndConditionsSchema = z.object({

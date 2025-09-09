@@ -50,3 +50,19 @@ export const ConsentSchema = z.object({
   direction: ConsentDirectionSchema
 })
 export const ConsentsListSchema = z.array(ConsentSchema)
+
+export const NonceSchema = z.object({
+  address: z.string(),
+  chainId: z.coerce.string(),
+  nonce: z.string(),
+  issuedAt: z.iso.datetime({ offset: true }),
+  expirationTime: z.iso.datetime({ offset: true }),
+  message: z.string()
+})
+
+export const NonceResponseSchema = z.object({
+  access: z.string(),
+  walletAddress: z.string(),
+  chainId: z.coerce.number(),
+  expires_in: z.coerce.number().optional()
+})

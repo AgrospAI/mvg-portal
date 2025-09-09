@@ -20,11 +20,18 @@ export default async function handler(
   switch (req.method) {
     case 'DELETE': {
       return consentsService
-        .deleteConsent(id)
+        .deleteConsent(id, req.headers.authorization)
         .then(() => res.status(200).json({ message: 'Deleted' }))
         .catch((error) => {
           console.error(error)
-          return res.status(500).json({ error })
+
+          // Use backend status if available
+          const status = error.response?.status || 500
+          const data = error.response?.data || {
+            message: 'Error deleting consent'
+          }
+
+          return res.status(status).json(data)
         })
     }
     default:

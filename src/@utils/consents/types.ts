@@ -1,5 +1,6 @@
 import * as z from 'zod'
 import * as schemas from './schemas'
+import { NonceResponseSchema } from './schemas'
 
 export interface Paginated<T> {
   count: number
@@ -18,3 +19,5 @@ export type ConsentResponse = z.infer<typeof schemas.ConsentResponseSchema>
 export type PossibleRequests = z.infer<typeof schemas.PossibleRequestsSchema>
 export type Consent = z.infer<typeof schemas.ConsentSchema>
 export type ConsentList = z.infer<typeof schemas.ConsentsListSchema>
+export type Nonce = z.infer<typeof schemas.NonceSchema>
+export type NonceResponse = z.infer<typeof schemas.NonceResponseSchema>

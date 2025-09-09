@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios'
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
 
 import { ZodType } from 'zod'
 import { ConsentsApiRoutes as Routes } from './routes'
@@ -11,14 +11,63 @@ import {
   Consent,
   ConsentDirection,
   ConsentList,
+  NonceResponse,
   PossibleRequests,
   UserConsentsData
 } from './types'
 
-const API = axios.create({
+export const API = axios.create({
   baseURL: '/api',
-  timeout: 2000
+  timeout: 2000,
+  headers: {
+    'Content-Type': 'application/json'
+  }
 })
+
+API.interceptors.request.use((config) => {
+  const token = localStorage.getItem('Consents-JWT')
+  const requireAuth = ['post', 'put', 'patch', 'delete']
+
+  if (
+    token &&
+    config.method &&
+    requireAuth.includes(config.method.toLowerCase())
+  ) {
+    config.headers.Authorization = `Bearer ${token}`
+  }
+  return config
+})
+
+let tokenRefresher: (() => Promise<string>) | null = null
+export const setTokenRefresher = (fn: () => Promise<string>) => {
+  tokenRefresher = fn
+}
+
+API.interceptors.response.use(
+  (response) => response,
+  async (error: AxiosError) => {
+    const originalRequest = error.config as AxiosRequestConfig & {
+      _retry: boolean
+    }
+
+    if (
+      error.response?.status === 401 &&
+      !originalRequest._retry &&
+      tokenRefresher
+    ) {
+      originalRequest._retry = true
+
+      const token = await tokenRefresher()
+      if (!originalRequest.headers) originalRequest.headers = {}
+      originalRequest.headers.Authorization = `Bearer ${token}`
+
+      const retryRequest = { ...originalRequest, withCredentials: true }
+      return API(retryRequest)
+    }
+
+    return Promise.reject(error)
+  }
+)
 
 const validate = <T>({ data }: AxiosResponse, schema: ZodType<T>): T => {
   const result = schema.safeParse(data)
@@ -64,12 +113,15 @@ export const getUserConsents = async (
 
 export const createConsent = async (
   address: string,
+  chainId: number,
   datasetDid: string,
   algorithmDid: string,
   request: PossibleRequests,
   reason?: string
 ): Promise<void> =>
   API.post(Routes.UserConsents(address), {
+    chainId,
+    address,
     datasetDid,
     algorithmDid,
     request,

@@ -8,11 +8,11 @@ import {
 
 interface IConsentsService {
   createConsent(
-    address: string,
     datasetDid: string,
     algorithmDid: string,
     request: PossibleRequests,
-    reason?: string
+    reason?: string,
+    token?: string
   ): Promise<Consent>
   getAddressConsents(
     address: string,
@@ -21,7 +21,7 @@ interface IConsentsService {
   getAddressConsentsAmount(
     address: string
   ): Promise<UserConsentsData | undefined>
-  deleteConsent(consentId: string): Promise<void>
+  deleteConsent(consentId: string, token?: string): Promise<void>
 }
 
 export default IConsentsService

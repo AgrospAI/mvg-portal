@@ -41,7 +41,7 @@
   z-index: 100;
   box-shadow: var(--box-template-box-shadow);
   width: max-content;
-  max-width: 300px; /* optional limit */
+  max-width: 300px;
 }
 
 .description {
@@ -49,7 +49,6 @@
   color: var(--color-secondary);
   font-size: var(--font-size-small);
   overflow-wrap: break-word;
-  margin-top: calc(var(--spacer) / 4);
 }
 
 .link {
@@ -70,7 +69,6 @@
   gap: calc(var(--spacer) / 4);
   font-size: var(--font-size-small);
   color: var(--color-secondary);
-  margin: 0;
 }
 
 @media (min-width: 60rem) {
@@ -92,4 +90,10 @@
 .verification > svg {
   width: var(--font-size-small);
   height: var(--font-size-small);
+}
+
+.descriptions {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
 }

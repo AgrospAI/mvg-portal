@@ -11,6 +11,8 @@ import ICredentialsService from '../credentials/credentials'
 import { RedisCredentialsService } from '../credentials/impl/redis-credentials'
 import IEnvironmentService from '../env/env'
 import { EnvironmentService } from '../env/impl/env'
+import IAuthenticationService from '../auth/authentication'
+import { AuthenticationService } from '../auth/impl/authentication'
 
 const container = new Container()
 
@@ -38,5 +40,10 @@ container
   .bind<IConsentResponseService>('ConsentResponse')
   .to(ConsentResponseService)
   .inSingletonScope()
+
+container
+  .bind<IAuthenticationService>('Authentication')
+  .to(AuthenticationService)
+  .inRequestScope()
 
 export { container }

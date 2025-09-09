@@ -1,40 +1,28 @@
 'use server'
+import IAuthenticationService from '@/server/auth/authentication'
 import { container } from '@/server/di/container'
-import IEnvironmentService from '@/server/env/env'
 import { validateWithSchema } from '@utils/consents/api'
 import { ConsentSchema } from '@utils/consents/schemas'
 import { Consent, PossibleRequests } from '@utils/consents/types'
-import axios, { Axios } from 'axios'
 import { injectable } from 'inversify'
 import IConsentResponseService from '../consents-response'
 
 @injectable()
 export class ConsentResponseService implements IConsentResponseService {
-  private client: Axios | undefined
+  getClient = (token?: string) =>
+    container.get<IAuthenticationService>('Authentication').getClient(token)
 
-  private getClient(): Axios {
-    if (this.client) return this.client
-
-    const environment = container.get<IEnvironmentService>('Env')
-    this.client = axios.create({
-      baseURL: environment.get('CONSENTS_API_URL'),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-    return this.client
-  }
-
-  createConsentResponse(
+  async createConsentResponse(
     consentId: string,
     reason: string,
-    permitted?: PossibleRequests
+    permitted?: PossibleRequests,
+    token?: string
   ): Promise<Consent> {
     console.log(permitted)
     const isPermitted =
       permitted && Object.values(permitted).some((value) => Boolean(value))
 
-    return this.getClient()
+    return this.getClient(token)
       .post(`/consents/${consentId}/response/`, {
         reason,
         permitted: isPermitted ? JSON.stringify(permitted) : '0'
@@ -42,7 +30,12 @@ export class ConsentResponseService implements IConsentResponseService {
       .then(validateWithSchema(ConsentSchema))
   }
 
-  async deleteConsentResponse(consentId: string): Promise<void> {
-    return this.getClient().delete(`/consents/${consentId}/delete-response/`)
+  async deleteConsentResponse(
+    consentId: string,
+    token?: string
+  ): Promise<void> {
+    return this.getClient(token).delete(
+      `/consents/${consentId}/delete-response/`
+    )
   }
 }
