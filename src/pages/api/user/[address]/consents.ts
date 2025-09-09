@@ -18,25 +18,45 @@ export default async function handler(
     return res.status(400).json({ error: 'Missing address' })
   }
 
-  const catchCallback = (error: any) => {
-    console.error(error)
-    return res.status(500).json({ error })
-  }
-
   switch (req.method) {
     case 'GET': {
       const { direction } = req.query
       return await consentsService
         .getAddressConsents(address, direction as ConsentDirection)
         .then((result) => res.status(200).json(result))
-        .catch(catchCallback)
+        .catch((error) => {
+          console.error(error)
+
+          const status = error.response?.status || 500
+          const data = error.response?.data || {
+            message: 'Error getting user consents'
+          }
+
+          return res.status(status).json(data)
+        })
     }
     case 'POST': {
       const { datasetDid, algorithmDid, request, reason } = req.body
+
       return await consentsService
-        .createConsent(address, datasetDid, algorithmDid, request, reason)
+        .createConsent(
+          datasetDid,
+          algorithmDid,
+          request,
+          reason,
+          req.headers.authorization
+        )
         .then((result) => res.status(201).json(result))
-        .catch(catchCallback)
+        .catch((error) => {
+          console.error(error)
+
+          const status = error.response?.status || 500
+          const data = error.response?.data || {
+            message: 'Error creating consent'
+          }
+
+          return res.status(status).json(data)
+        })
     }
     default:
       return res.status(405).json({ message: 'Method Not Allowed' })

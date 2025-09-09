@@ -10,6 +10,7 @@ import { toast } from 'react-toastify'
 import AssetInput from './Components/AssetInput'
 import RequestsList from './Components/RequestsList'
 import Sections from './Components/Sections'
+import { useNetwork } from 'wagmi'
 
 interface Props {
   asset: Asset
@@ -17,6 +18,7 @@ interface Props {
 
 function ConsentPetitionModal({ asset }: Props) {
   useHealthcheck()
+  const { chain } = useNetwork()
   const { closeModal } = useModalContext()
   const { mutateAsync: createConsent } = useCreateAssetConsent()
   const [selected, setSelected] = useState<Asset>()
@@ -24,6 +26,7 @@ function ConsentPetitionModal({ asset }: Props) {
   const handleSubmit = useCallback(
     (reason: string, request: PossibleRequests) => {
       const consent = {
+        chainId: chain.id,
         datasetDid: asset.id,
         algorithmDid: selected.id,
         request,

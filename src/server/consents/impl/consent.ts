@@ -1,15 +1,14 @@
 'use server'
+import IAuthenticationService from '@/server/auth/authentication'
+import IConsentsService from '@/server/consents/consents'
 import { container } from '@/server/di/container'
-import IEnvironmentService from '@/server/env/env'
 import {
   Consent,
   ConsentDirection,
   PossibleRequests,
   UserConsentsData
 } from '@utils/consents/types'
-import axios, { Axios } from 'axios'
 import { injectable } from 'inversify'
-import IConsentsService from '../consents'
 
 const missingCallback = <T>(error: any, defaultValue: T) => {
   if (error.response.status === 404) return defaultValue
@@ -23,40 +22,27 @@ const defaultMissingCallback = <T>(defaultValue: T) => {
 
 @injectable()
 export class ConsentsService implements IConsentsService {
-  private client: Axios | undefined
+  getClient = (token?: string) =>
+    container.get<IAuthenticationService>('Authentication').getClient(token)
 
-  private getClient(): Axios {
-    if (this.client) return this.client
-
-    const environment = container.get<IEnvironmentService>('Env')
-    this.client = axios.create({
-      baseURL: environment.get('CONSENTS_API_URL'),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-    return this.client
-  }
-
-  createConsent(
-    address: string,
+  async createConsent(
     datasetDid: string,
     algorithmDid: string,
     request: PossibleRequests,
-    reason?: string
+    reason?: string,
+    token?: string
   ): Promise<Consent> {
-    return this.getClient()
+    return this.getClient(token)
       .post('/consents/', {
         reason,
         dataset: datasetDid,
         algorithm: algorithmDid,
-        solicitor: address,
         request: JSON.stringify(request)
       })
       .then((data) => data.data)
   }
 
-  getAddressConsents(
+  async getAddressConsents(
     address: string,
     direction?: ConsentDirection
   ): Promise<Array<Consent>> {
@@ -66,7 +52,7 @@ export class ConsentsService implements IConsentsService {
       .catch(defaultMissingCallback([]))
   }
 
-  getAddressConsentsAmount(
+  async getAddressConsentsAmount(
     address: string
   ): Promise<UserConsentsData | undefined> {
     return this.getClient()
@@ -75,7 +61,7 @@ export class ConsentsService implements IConsentsService {
       .catch(defaultMissingCallback(undefined))
   }
 
-  deleteConsent(consentId: string): Promise<void> {
-    return this.getClient().delete(`/consents/${consentId}/`)
+  async deleteConsent(consentId: string, token?: string): Promise<void> {
+    return this.getClient(token).delete(`/consents/${consentId}/`)
   }
 }

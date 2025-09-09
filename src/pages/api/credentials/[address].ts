@@ -1,4 +1,3 @@
-// pages/api/credentials/[address].ts
 import type { NextApiRequest, NextApiResponse } from 'next'
 import ICredentialsService from 'src/server/credentials/credentials'
 import { container } from 'src/server/di/container'

@@ -6,10 +6,11 @@ interface IConsentResponseService {
   createConsentResponse(
     consentId: string,
     reason: string,
-    permitted?: PossibleRequests
+    permitted?: PossibleRequests,
+    token?: string
   ): Promise<Consent>
 
-  deleteConsentResponse(consentId: string): Promise<void>
+  deleteConsentResponse(consentId: string, token?: string): Promise<void>
 }
 
 export default IConsentResponseService

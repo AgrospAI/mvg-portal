@@ -47,6 +47,9 @@ export const VerifiablePresentationCard = ({
   const verifiableCredential = verifiableCredentials[0]
   const legalAddress = verifiableCredential.credentialSubject['gx:legalAddress']
 
+  const legalRegistrationNumberVerifiableCredential =
+    filterVerifiableCredentialType(data[0], 'gx:legalRegistrationNumber')[0]
+
   return (
     <section className={`${className} ${styles.container}`}>
       <VerifiableCredential address={address}>
@@ -58,11 +61,26 @@ export const VerifiablePresentationCard = ({
         </span>
       </VerifiableCredential>
 
-      <span className={styles.description}>
-        {legalAddress?.['gx:streetAddress']}, {legalAddress?.['gx:postalCode']},{' '}
-        {legalAddress?.['gx:locality']},{' '}
-        {legalAddress?.['gx:countrySubdivisionCode']}
-      </span>
+      <div className={styles.descriptions}>
+        <span className={styles.description}>
+          {legalAddress?.['gx:streetAddress']},{' '}
+          {legalAddress?.['gx:postalCode']}, {legalAddress?.['gx:locality']},{' '}
+          {
+            legalRegistrationNumberVerifiableCredential.credentialSubject[
+              'gx:vatID-countryCode'
+            ]
+          }
+        </span>
+
+        <span className={styles.description}>
+          {
+            legalRegistrationNumberVerifiableCredential.credentialSubject[
+              'gx:vatID'
+            ]
+          }
+        </span>
+      </div>
+
       <Link
         href={verifiableCredential.credentialSubject.id}
         target="_blank"

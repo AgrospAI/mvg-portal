@@ -18,24 +18,37 @@ export default async function handler(
     return res.status(400).json({ error: 'Missing ID' })
   }
 
-  const catchCallback = (error: any) => {
-    console.error(error)
-    return res.status(500).json({ error })
-  }
-
   switch (req.method) {
     case 'POST': {
       const { reason, permitted } = req.body
       return consentResponseService
-        .createConsentResponse(id, reason, permitted)
+        .createConsentResponse(id, reason, permitted, req.headers.authorization)
         .then((results) => res.status(201).json(results))
-        .catch(catchCallback)
+        .catch((error) => {
+          console.error(error)
+
+          const status = error.response?.status || 500
+          const data = error.response?.data || {
+            message: 'Error responding consent'
+          }
+
+          return res.status(status).json(data)
+        })
     }
     case 'DELETE': {
       return consentResponseService
-        .deleteConsentResponse(id)
+        .deleteConsentResponse(id, req.headers.authorization)
         .then(() => res.status(200).json({}))
-        .catch(catchCallback)
+        .catch((error) => {
+          console.error(error)
+
+          const status = error.response?.status || 500
+          const data = error.response?.data || {
+            message: 'Error deleting consent'
+          }
+
+          return res.status(status).json(data)
+        })
     }
     default:
       return res.status(405).json({ message: 'Method Not Allowed' })

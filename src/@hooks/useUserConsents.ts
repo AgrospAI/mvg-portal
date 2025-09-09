@@ -21,6 +21,7 @@ import {
 import { isPending } from '@utils/consents/utils'
 import { useEffect } from 'react'
 import { useAccount } from 'wagmi'
+import { useUserConsentsToken } from './useUserConsentsToken'
 
 export const useUserConsentsAmount = () => {
   const { address } = useAccount()
@@ -80,6 +81,7 @@ export const useUserOutgoingConsents = () => {
 export const useCreateConsentResponse = () => {
   const queryClient = useQueryClient()
   const { address } = useAccount()
+  useUserConsentsToken()
 
   interface Mutation {
     consentId: number
@@ -128,8 +130,10 @@ export const useCreateConsentResponse = () => {
 
 export const useCreateAssetConsent = () => {
   const { address } = useAccount()
+  useUserConsentsToken()
 
   interface Mutation {
+    chainId: number
     datasetDid: string
     algorithmDid: string
     request: PossibleRequests
@@ -138,18 +142,20 @@ export const useCreateAssetConsent = () => {
 
   return useMutation({
     mutationFn: async ({
+      chainId,
       datasetDid,
       algorithmDid,
       request,
       reason
     }: Mutation) =>
-      createConsent(address, datasetDid, algorithmDid, request, reason)
+      createConsent(address, chainId, datasetDid, algorithmDid, request, reason)
   })
 }
 
 export const useDeleteConsent = () => {
   const queryClient = useQueryClient()
   const { address } = useAccount()
+  useUserConsentsToken()
 
   interface Mutation {
     consent: Consent
@@ -184,6 +190,7 @@ export const useDeleteConsent = () => {
 export const useDeleteConsentResponse = () => {
   const queryClient = useQueryClient()
   const { address } = useAccount()
+  useUserConsentsToken()
 
   interface Mutation {
     consentId: number
