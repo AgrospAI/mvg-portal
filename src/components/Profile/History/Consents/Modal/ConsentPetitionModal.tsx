@@ -40,7 +40,7 @@ function ConsentPetitionModal({ asset }: Props) {
         }
       })
     },
-    [asset.id, closeModal, createConsent, selected?.id]
+    [asset.id, chain.id, closeModal, createConsent, selected]
   )
 
   return (
@@ -49,7 +49,7 @@ function ConsentPetitionModal({ asset }: Props) {
         <Sections.Section
           title="Algorithm"
           description="What algorithm do you want to access this asset with?"
-          icon={<IconAlgorithm></IconAlgorithm>}
+          icon={<IconAlgorithm />}
         >
           <AssetInput
             asset={asset}
@@ -61,7 +61,7 @@ function ConsentPetitionModal({ asset }: Props) {
           <Sections.Section
             title="Requests"
             description="Ask for what you need and provide a short reason"
-            icon={<IconTransaction></IconTransaction>}
+            icon={<IconTransaction />}
           >
             <RequestsList
               dataset={asset}

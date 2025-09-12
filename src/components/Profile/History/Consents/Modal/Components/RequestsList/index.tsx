@@ -20,7 +20,7 @@ function RequestsList({ dataset, algorithm, handleSubmit }: RequestsListProps) {
     <Formik
       initialValues={{ reason: '', permissions: {} }}
       validateOnBlur={false}
-      validateOnChange={false}
+      validateOnChange={true}
       validateOnMount={false}
       validate={(values) => {
         const errors: { reason?: string; permissions?: string } = {}
