@@ -1,7 +1,5 @@
-import { UseSuspenseQueryResult } from '@tanstack/react-query'
-
 interface AssetPickerProps {
-  assets: UseSuspenseQueryResult<PagedAssets, Error>
+  assets: PagedAssets
   isWritten: boolean
   className: string
   handleSelectChange: (event: React.ChangeEvent<HTMLSelectElement>) => void
@@ -21,10 +19,10 @@ function AssetPicker({
       className={className}
       disabled={!!isWritten}
     >
-      {assets.data?.results ? (
+      {assets.results ? (
         <>
           <option value="">--Please choose one of your assets--</option>
-          {assets.data.results.map((item) => (
+          {assets.results.map((item) => (
             <option key={item.id} value={item.id}>
               {item.metadata.name}
             </option>
