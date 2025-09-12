@@ -19,7 +19,7 @@ interface AssetInputProps {
 function AssetInput({ asset, selected, setSelected }: AssetInputProps) {
   const { address } = useAccount()
   const assetType = asset?.metadata?.algorithm ? 'dataset' : 'algorithm'
-  const assets = useAssets(address, assetType)
+  const { data: assets } = useAssets(address, assetType, asset.chainId)
 
   const [inputValue, setInputValue] = useState('')
   const [debouncedValue] = useDebounce(inputValue, 500)
@@ -72,13 +72,8 @@ function AssetInput({ asset, selected, setSelected }: AssetInputProps) {
       return
     }
 
-    try {
-      const found = assets.data.results.find((data) => data.id === id)
-      setSelected(found)
-    } catch (err) {
-      LoggerInstance.error(err)
-      setSelected(undefined)
-    }
+    const found = assets.results.find((data) => data.id === id)
+    setSelected(found)
   }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

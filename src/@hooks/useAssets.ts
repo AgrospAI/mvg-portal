@@ -1,4 +1,3 @@
-import { useUserPreferences } from '@context/UserPreferences'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import {
   generateBaseQuery,
@@ -11,8 +10,11 @@ import {
 } from 'src/@types/aquarius/SearchQuery'
 import { useCancelToken } from './useCancelToken'
 
-export const useAssets = (address: string, type: 'algorithm' | 'dataset') => {
-  const { chainIds } = useUserPreferences()
+export const useAssets = (
+  address: string,
+  type: 'algorithm' | 'dataset',
+  chainId: number
+) => {
   const newCancelToken = useCancelToken()
 
   const filters = [] as FilterTerm[]
@@ -22,7 +24,7 @@ export const useAssets = (address: string, type: 'algorithm' | 'dataset') => {
   filters.push(getFilterTerm('nft.owner', address.toLowerCase()))
 
   const baseQueryParams = {
-    chainIds,
+    chainIds: [chainId],
     filters,
     sortOptions: {
       sortBy: SortTermOptions.Created,
