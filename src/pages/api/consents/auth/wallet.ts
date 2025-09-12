@@ -26,7 +26,7 @@ export default async function handler(
       }
 
       return await authenticationService
-        .nonce(address, chainId)
+        .nonce(address, chainId, req.headers.referer)
         .then((nonce) => res.status(200).json(nonce))
         .catch((error) => {
           console.error(error)

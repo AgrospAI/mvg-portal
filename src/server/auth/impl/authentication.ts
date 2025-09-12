@@ -15,7 +15,10 @@ export class AuthenticationService implements IAuthenticationService {
 
     const environment = container.get<IEnvironmentService>('Env')
     this.client = axios.create({
-      baseURL: environment.get('CONSENTS_API_URL')
+      baseURL: environment.get('CONSENTS_API_URL'),
+      headers: {
+        'Content-Type': 'application/json'
+      }
     })
 
     return this.client
@@ -27,18 +30,24 @@ export class AuthenticationService implements IAuthenticationService {
     return axios.create({
       baseURL: baseClient.defaults.baseURL,
       headers: {
-        'Content-Type': 'application/json',
         ...(token ? { Authorization: token } : {})
       }
     })
   }
 
-  async nonce(publicAddress: string, chainId: string): Promise<Nonce> {
+  async nonce(
+    publicAddress: string,
+    chainId: string,
+    origin: string
+  ): Promise<Nonce> {
     return this.getClient()
       .get('/auth/wallet/nonce/', {
         params: {
           address: publicAddress,
           chain_id: chainId
+        },
+        headers: {
+          Origin: origin
         }
       })
       .then(({ data }) => data)

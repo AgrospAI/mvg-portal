@@ -1,7 +1,7 @@
-import { setTokenRefresher, API } from '@utils/consents/api'
-import { useAccount, useNetwork, useSigner } from 'wagmi'
-import { useEffect } from 'react'
+import { API, setTokenRefresher } from '@utils/consents/api'
 import { NonceResponseSchema, NonceSchema } from '@utils/consents/schemas'
+import { useEffect } from 'react'
+import { useAccount, useNetwork, useSigner } from 'wagmi'
 
 const useUserConsentsToken = () => {
   const { address } = useAccount()
