@@ -11,7 +11,6 @@ import {
   Consent,
   ConsentDirection,
   ConsentList,
-  NonceResponse,
   PossibleRequests,
   UserConsentsData
 } from './types'
