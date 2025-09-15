@@ -25,13 +25,8 @@ export const API = axios.create({
 
 API.interceptors.request.use((config) => {
   const token = localStorage.getItem('Consents-JWT')
-  const requireAuth = ['post', 'put', 'patch', 'delete']
 
-  if (
-    token &&
-    config.method &&
-    requireAuth.includes(config.method.toLowerCase())
-  ) {
+  if (token && config.method) {
     config.headers.Authorization = `Bearer ${token}`
   }
   return config

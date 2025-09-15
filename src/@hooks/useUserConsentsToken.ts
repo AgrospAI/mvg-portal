@@ -9,6 +9,11 @@ const useUserConsentsToken = () => {
   const { data: signer } = useSigner()
 
   useEffect(() => {
+    // Address changes => Remove stored JWT
+    localStorage.setItem('Consents-JWT', null)
+  }, [address])
+
+  useEffect(() => {
     if (!signer || !address || !chain) return
 
     setTokenRefresher(async () => {
