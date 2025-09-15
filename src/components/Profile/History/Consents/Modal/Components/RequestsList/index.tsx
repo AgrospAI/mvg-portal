@@ -29,6 +29,16 @@ function RequestsList({ dataset, algorithm, handleSubmit }: RequestsListProps) {
         } else if (values.reason.length > 255) {
           errors.reason = 'Must be 255 characters or less'
         }
+
+        const permissions = Object.values(values.permissions)
+        if (
+          !permissions ||
+          permissions.length === 0 ||
+          permissions.every((x) => !x)
+        ) {
+          errors.permissions = 'Must make a request'
+        }
+
         return errors
       }}
       onSubmit={({ reason, permissions }, { setSubmitting }) => {
@@ -58,6 +68,14 @@ function RequestsList({ dataset, algorithm, handleSubmit }: RequestsListProps) {
             fieldName="permissions"
           >
             Request for:
+            <ErrorMessage name="permissions" component="div">
+              {(msg: ReactNode) => (
+                <div className={styles.error}>
+                  <Info />
+                  {msg}
+                </div>
+              )}
+            </ErrorMessage>
           </InteractiveRequests>
           <Actions acceptText="Submit" isLoading={!isValid || isSubmitting} />
         </Form>
