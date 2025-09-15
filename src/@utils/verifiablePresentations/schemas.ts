@@ -74,11 +74,13 @@ export const GaiaXVerifiableCredentialSchema = z.object({
     .optional()
 })
 
-export const GaiaXVerifiablePresentationSchema = z.object({
-  '@context': z.url(),
-  type: z.literal('VerifiablePresentation'),
-  verifiableCredential: GaiaXVerifiableCredentialSchema.array()
-})
+// export const GaiaXVerifiablePresentationSchema = z.object({
+//   '@context': z.url(),
+//   type: z.literal('VerifiablePresentation'),
+//   verifiableCredential: GaiaXVerifiableCredentialSchema.array()
+// })
+
+export const GaiaXVerifiablePresentationSchema = z.any()
 
 export const GaiaXVerifiablePresentationArraySchema =
   GaiaXVerifiablePresentationSchema.array()

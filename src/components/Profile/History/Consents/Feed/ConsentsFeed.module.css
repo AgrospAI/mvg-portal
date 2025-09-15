@@ -31,8 +31,15 @@
 .columnItem {
   display: flex;
   overflow: hidden;
+  white-space: nowrap;
   text-overflow: ellipsis;
-  justify-content: center;
+  width: 100%;
+}
+
+.overflow {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .container {

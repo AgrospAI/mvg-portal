@@ -1,4 +1,3 @@
-import Time from '@components/@shared/atoms/Time'
 import { VerifiableCredential } from '@components/Profile/Header/VerifiableCredential'
 import { useVerifiablePresentationContext } from '@context/VerifiablePresentation'
 import External from '@images/external.svg'
@@ -6,6 +5,7 @@ import { filterVerifiableCredentialType } from '@utils/verifiablePresentations/u
 import Link from 'next/link'
 import { Address } from 'wagmi'
 import { VerifiablePresentationMessage } from '../VerifiablePresentationMessage'
+import { VerifiablePresentationVerification } from '../VerifiablePresentationVerification'
 import styles from './index.module.css'
 
 interface VerifiablePresentationCardProperties {
@@ -89,14 +89,13 @@ export const VerifiablePresentationCard = ({
         {verifiableCredential.credentialSubject.id}
         <External />
       </Link>
-      <span className={styles.verification}>
-        Verification Issuance{' '}
-        <Time
-          date={verifiableCredential.issuanceDate}
-          className={styles.date}
+      {verifiablePresentations && verifiablePresentations[0]?.data && (
+        <VerifiablePresentationVerification
+          verifiablePresentation={verifiablePresentations[0]?.data}
+          index={0}
+          className={styles.credentials}
         />
-        <VerifiableCredential address={address} />
-      </span>
+      )}
     </section>
   )
 }

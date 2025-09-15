@@ -3,7 +3,6 @@ import ExcludingAccordion from '@context/ExcludingAccordion'
 import { useVerifiablePresentationContext } from '@context/VerifiablePresentation'
 import { useRef } from 'react'
 import { VerifiablePresentationTitle } from '../VerifiablePresentationTitle/index'
-import styles from './index.module.css'
 import { VerifiablePresentation } from '..'
 
 export const VerifiablePresentationAccordion = () => {
@@ -42,15 +41,13 @@ export const VerifiablePresentationAccordion = () => {
                 ref={(el) => (refs.current[index] = el)}
                 openCallback={() => openCallback(index)}
               >
-                <VerifiablePresentationTitle
-                  index={index}
-                  verifiablePresentation={data}
-                />
+                <VerifiablePresentationTitle verifiablePresentation={data} />
               </ExcludingAccordion.Trigger>
               <ExcludingAccordion.Content index={index}>
-                <div className={styles.content}>
-                  <VerifiablePresentation verifiablePresentation={data} />
-                </div>
+                <VerifiablePresentation
+                  verifiablePresentation={data}
+                  index={index}
+                />
               </ExcludingAccordion.Content>
             </>
           )}
