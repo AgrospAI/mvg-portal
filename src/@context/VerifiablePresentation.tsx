@@ -5,6 +5,7 @@ import { type ReactNode, createContext, useContext } from 'react'
 import { Address } from 'wagmi'
 
 interface VerifiablePresentationContextProps {
+  address: Address
   credentials: PontusVerifiableCredentialArray
   verifiablePresentations: Awaited<
     ReturnType<typeof useVerifiablePresentations>
@@ -30,6 +31,7 @@ const VerifiablePresentationProvider = ({
   return (
     <VerifiablePresentationContext.Provider
       value={{
+        address,
         credentials,
         verifiablePresentations
       }}

@@ -96,7 +96,7 @@ const getColumns = (): TableOceanColumn<Consent>[] => {
       selector: (row) => (
         <CachedAssetListTitle
           did={extractDidFromUrl(row.dataset)}
-          className={styles.centered}
+          className={styles.overflow}
         />
       ),
       grow: 1
@@ -107,7 +107,7 @@ const getColumns = (): TableOceanColumn<Consent>[] => {
         <div className={styles.columnItem}>
           <CachedAssetListTitle
             did={extractDidFromUrl(row.algorithm)}
-            className={styles.centered}
+            className={styles.overflow}
           />
         </div>
       ),
@@ -116,13 +116,15 @@ const getColumns = (): TableOceanColumn<Consent>[] => {
     {
       name: 'Solicitor',
       selector: (row) => (
-        <Publisher
-          account={row.solicitor.address}
-          showName
-          className={styles.centered}
-        />
+        <div className={styles.centered}>
+          <Publisher
+            account={row.solicitor.address}
+            showName
+            className={styles.overflow}
+          />
+        </div>
       ),
-      grow: 0
+      grow: 1
     },
     {
       name: 'State',
@@ -131,7 +133,8 @@ const getColumns = (): TableOceanColumn<Consent>[] => {
           <ConsentStateBadge status={row.status} />
         </div>
       ),
-      grow: -1
+      grow: 0,
+      ignoreRowClick: true
     },
     {
       name: 'Actions',

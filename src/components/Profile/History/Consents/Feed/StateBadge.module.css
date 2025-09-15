@@ -1,4 +1,5 @@
 .badge {
+  display: flex;
   padding: calc(var(--spacer) / 6) calc(var(--spacer) / 4);
   align-items: center;
   justify-content: center;
