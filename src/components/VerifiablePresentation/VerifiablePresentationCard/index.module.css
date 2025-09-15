@@ -2,7 +2,6 @@
   display: flex;
   text-align: start;
   flex-direction: column;
-  gap: calc(var(--spacer) / 2);
   width: 300px;
   max-width: 300px;
   overflow: hidden;
@@ -48,7 +47,13 @@
   display: block;
   color: var(--color-secondary);
   font-size: var(--font-size-small);
-  overflow-wrap: break-word;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.description:hover {
+  white-space: wrap;
 }
 
 .link {
