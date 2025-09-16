@@ -51,11 +51,7 @@ function ConsentPetitionModal({ asset }: Props) {
           description="What algorithm do you want to access this asset with?"
           icon={<IconAlgorithm />}
         >
-          <AssetInput
-            asset={asset}
-            selected={selected}
-            setSelected={setSelected}
-          />
+          <AssetInput asset={asset} setAlgorithm={setSelected} />
         </Sections.Section>
         {selected && (
           <Sections.Section

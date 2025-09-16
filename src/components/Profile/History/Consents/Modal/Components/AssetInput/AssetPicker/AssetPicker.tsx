@@ -1,23 +1,16 @@
-interface AssetPickerProps {
-  assets: PagedAssets
-  isWritten: boolean
-  className: string
-  handleSelectChange: (event: React.ChangeEvent<HTMLSelectElement>) => void
-}
+import { useAssetPicker } from './AssetPicker.hook'
+import styles from './AssetPicker.module.css'
 
-function AssetPicker({
-  assets,
-  isWritten,
-  className,
-  handleSelectChange
-}: AssetPickerProps) {
+function AssetPicker() {
+  const { assets, written, handleSelectChange } = useAssetPicker()
+
   return (
     <select
       name="algorithm"
       id="algorithm-select"
       onChange={handleSelectChange}
-      className={className}
-      disabled={!!isWritten}
+      className={styles.selector}
+      disabled={!!written}
     >
       {assets.results ? (
         <>
