@@ -24,7 +24,7 @@ export default function ConsentPetitionButton({
     <span className={styles.requestButtonContainer}>
       Your algorithm is not listed
       <Modal>
-        <Modal.Trigger name={'0'} onClick={() => console.log('clicked')}>
+        <Modal.Trigger name={'0'}>
           <Button
             style="text"
             size="small"

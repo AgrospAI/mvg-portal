@@ -1,4 +1,5 @@
 import { useCancelToken } from '@hooks/useCancelToken'
+import External from '@images/external.svg'
 import { Asset } from '@oceanprotocol/lib'
 import { getAsset } from '@utils/aquarius'
 import { extractDidFromUrl } from '@utils/consents/utils'
@@ -10,9 +11,15 @@ interface AssetLinkProps {
   asset?: Asset
   did?: string
   className?: string
+  isArrow?: boolean
 }
 
-export default function AssetLink({ asset, did, className }: AssetLinkProps) {
+export default function AssetLink({
+  asset,
+  did,
+  className,
+  isArrow
+}: AssetLinkProps) {
   const newCancelToken = useCancelToken()
   const [curr, setCurr] = useState<Asset>(asset)
 
@@ -22,6 +29,7 @@ export default function AssetLink({ asset, did, className }: AssetLinkProps) {
     if (did) {
       getAsset(extractDidFromUrl(did), newCancelToken()).then((fetched) => {
         isMounted && setCurr(fetched)
+        console.log(fetched)
       })
     }
 
@@ -32,13 +40,27 @@ export default function AssetLink({ asset, did, className }: AssetLinkProps) {
 
   return (
     <h3 className={className || styles.title}>
-      <Link
-        href={`/asset/${asset?.id}`}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {curr?.nft?.name ?? 'Missing name'}
-      </Link>
+      {isArrow ? (
+        <div className={styles.content}>
+          {curr?.nft?.name ?? 'Missing name'}
+          <Link
+            href={`/asset/${curr?.id}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.arrow}
+          >
+            <External />
+          </Link>{' '}
+        </div>
+      ) : (
+        <Link
+          href={`/asset/${curr?.id}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {curr?.nft?.name ?? 'Missing name'}
+        </Link>
+      )}
     </h3>
   )
 }
