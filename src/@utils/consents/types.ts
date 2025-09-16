@@ -1,6 +1,5 @@
 import * as z from 'zod'
 import * as schemas from './schemas'
-import { NonceResponseSchema } from './schemas'
 
 export interface Paginated<T> {
   count: number

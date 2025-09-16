@@ -1,13 +1,11 @@
-import Loader from '@components/@shared/atoms/Loader'
+import Time from '@components/@shared/atoms/Time'
 import Modal from '@components/@shared/Modal'
+import InspectConsent from '@components/Profile/History/Consents/Feed/Actions/Buttons/InspectConsent'
 import AssetLink from '@components/Profile/History/Consents/Modal/Components/AssetLink'
-import InspectConsentsModal from '@components/Profile/History/Consents/Modal/InspectConsentsModal'
 import { useUserIncomingConsents } from '@hooks/useUserConsents'
-import Cog from '@images/cog.svg'
 import { Asset } from '@oceanprotocol/lib'
 import { Consent } from '@utils/consents/types'
 import { isPending } from '@utils/consents/utils'
-import { Suspense } from 'react'
 import styles from './IncomingPendingConsentsSimple.module.css'
 
 interface Props {
@@ -17,35 +15,44 @@ interface Props {
 export default function IncomingPendingConsentsSimple({ asset }: Props) {
   const { data: incoming } = useUserIncomingConsents()
 
-  const incomingForAsset = incoming.filter(
+  const filtered = incoming.filter(
     (consent: Consent) =>
       isPending(consent) && consent.dataset.includes(asset.id)
   )
 
   return (
     <>
-      {incomingForAsset?.length ? (
+      {filtered?.length ? (
         <div className={styles.section}>
-          <div className={styles.title}>Incoming consents</div>
+          <div className={styles.title}>Incoming petitions</div>
           <div className={styles.consentList}>
-            {incomingForAsset?.map((consent, index) => (
-              <div key={index} className={styles.consentRow}>
-                <AssetLink
-                  did={consent.algorithm}
-                  className={styles.assetLink}
-                />
-                <Modal.Trigger name={asset.nft.address}>
-                  <div className={styles.actionContainer}>
-                    <Cog class={styles.action} />
+            <Modal>
+              {filtered.map((consent) => (
+                <div key={consent.id}>
+                  <div className={styles.consentRow}>
+                    <div className={styles.consentDetail}>
+                      <AssetLink
+                        did={consent.algorithm}
+                        className={styles.assetLink}
+                        isArrow
+                      />
+                      <div className={styles.description}>
+                        <span>
+                          {Object.keys(consent.request).length} request(s)
+                        </span>
+                        <span>|</span>
+                        <Time
+                          date={consent.created_at.toString()}
+                          isUnix
+                          relative
+                        />
+                      </div>
+                    </div>
+                    <InspectConsent consent={consent} />
                   </div>
-                </Modal.Trigger>
-                <Modal.Content name={asset.nft.address}>
-                  <Suspense fallback={<Loader />}>
-                    <InspectConsentsModal />
-                  </Suspense>
-                </Modal.Content>
-              </div>
-            ))}
+                </div>
+              ))}
+            </Modal>
           </div>
         </div>
       ) : (

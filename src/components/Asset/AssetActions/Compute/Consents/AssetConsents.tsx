@@ -12,9 +12,11 @@ export default function AssetConsents({ asset }: Props) {
 
   if (address === asset.nft.owner) {
     return (
-      <QueryBoundary text="Loading incoming consents">
-        <IncomingPendingConsentsSimple asset={asset} />
-      </QueryBoundary>
+      <>
+        <QueryBoundary text="Loading incoming consents">
+          <IncomingPendingConsentsSimple asset={asset} />
+        </QueryBoundary>
+      </>
     )
   }
 

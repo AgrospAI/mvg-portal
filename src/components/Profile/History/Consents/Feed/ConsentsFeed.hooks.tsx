@@ -140,7 +140,7 @@ const getColumns = (): TableOceanColumn<Consent>[] => {
       name: 'Actions',
       selector: (row) => (
         <ConsentRowActions consent={row}>
-          <ConsentRowActions.Inspect consent={row} />
+          <ConsentRowActions.Inspect consent={row} showFull />
           {isOutgoing(row) ? <ConsentRowActions.DeleteConsent /> : <></>}
           {isIncoming(row) && row.response ? (
             <ConsentRowActions.DeleteConsentResponse />

@@ -9,9 +9,10 @@ import styles from './Buttons.module.css'
 
 interface InspectConsentProps {
   consent: Consent
+  showFull?: boolean
 }
 
-function InspectConsent({ consent }: InspectConsentProps) {
+function InspectConsent({ consent, showFull }: InspectConsentProps) {
   const { setCurrentConsent } = useCurrentConsent()
 
   return (
@@ -24,8 +25,9 @@ function InspectConsent({ consent }: InspectConsentProps) {
           className={styles.button}
           title="Inspect"
           aria-label="Inspect Consent"
+          type="button"
         >
-          Inspect <Info />
+          {showFull && 'Inspect'} <Info />
         </button>
       </Modal.Trigger>
       <Modal.Content name={String(consent.id)}>

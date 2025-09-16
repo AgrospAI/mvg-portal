@@ -22,6 +22,7 @@ export const useAssets = (
   filters.push(getFilterTerm('metadata.type', type))
   filters.push(getFilterTerm('nft.state', [0, 4, 5]))
   filters.push(getFilterTerm('nft.owner', address.toLowerCase()))
+  filters.push(getFilterTerm('services.type', 'compute'))
 
   const baseQueryParams = {
     chainIds: [chainId],

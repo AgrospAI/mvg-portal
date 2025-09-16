@@ -1,48 +1,66 @@
 import { useCancelToken } from '@hooks/useCancelToken'
+import External from '@images/external.svg'
 import { Asset } from '@oceanprotocol/lib'
 import { getAsset } from '@utils/aquarius'
+import { extractDidFromUrl } from '@utils/consents/utils'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import styles from './index.module.css'
 
 interface AssetLinkProps {
-  curr?: Asset
+  asset?: Asset
   did?: string
   className?: string
+  isArrow?: boolean
 }
 
-export default function AssetLink({ curr, did, className }: AssetLinkProps) {
+export default function AssetLink({
+  asset,
+  did,
+  className,
+  isArrow
+}: AssetLinkProps) {
   const newCancelToken = useCancelToken()
-  const [asset, setAsset] = useState<Asset>(curr)
+  const [curr, setCurr] = useState<Asset>(asset)
 
   useEffect(() => {
     let isMounted = true
-    async function fetchAsset() {
-      if (curr) {
-        setAsset(curr)
-      } else if (did) {
-        const fetchedAsset = await getAsset(did, newCancelToken())
-        console.log('fetchedAsset', fetchedAsset)
-        if (isMounted && fetchedAsset) setAsset(fetchedAsset)
-      } else {
-        throw new Error('No did or curr provided')
-      }
+
+    if (did) {
+      getAsset(extractDidFromUrl(did), newCancelToken()).then((fetched) => {
+        isMounted && setCurr(fetched)
+        console.log(fetched)
+      })
     }
-    fetchAsset()
+
     return () => {
       isMounted = false
     }
-  }, [curr, did, newCancelToken])
+  }, [did, newCancelToken])
 
   return (
     <h3 className={className || styles.title}>
-      <Link
-        href={`/asset/${asset?.id}`}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {asset?.nft?.name ?? 'Missing name'}
-      </Link>
+      {isArrow ? (
+        <div className={styles.content}>
+          {curr?.nft?.name ?? 'Missing name'}
+          <Link
+            href={`/asset/${curr?.id}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.arrow}
+          >
+            <External />
+          </Link>{' '}
+        </div>
+      ) : (
+        <Link
+          href={`/asset/${curr?.id}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {curr?.nft?.name ?? 'Missing name'}
+        </Link>
+      )}
     </h3>
   )
 }
