@@ -57,7 +57,7 @@ function InspectConsentsModal() {
   return (
     <Sections>
       <Sections.Section
-        icon={<IconCompute></IconCompute>}
+        icon={<IconCompute />}
         title="Assets"
         description="Assets involved in this consent, your dataset and the requested algorithm"
       >
@@ -69,7 +69,7 @@ function InspectConsentsModal() {
         </DetailedAsset>
       </Sections.Section>
       <Sections.Section
-        icon={<IconTransaction></IconTransaction>}
+        icon={<IconTransaction />}
         title="Requests"
         description="Requests made by the solicitor"
       >

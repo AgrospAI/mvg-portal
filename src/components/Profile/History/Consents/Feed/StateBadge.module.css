@@ -4,10 +4,10 @@
   align-items: center;
   justify-content: center;
   border-radius: var(--border-radius);
-  font-size: 0.8rem;
   color: var(--brand-grey-dimmed);
-  font-weight: 500;
-  width: 100%;
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-bold);
+  width: 10rem;
 }
 
 .badge-pending {
