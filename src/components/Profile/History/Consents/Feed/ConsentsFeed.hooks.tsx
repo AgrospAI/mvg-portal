@@ -26,6 +26,9 @@ import styles from './ConsentsFeed.module.css'
 import { consentsTableStyles } from './ConsentsFeedStyles'
 import ConsentStateBadge from './StateBadge'
 
+const INCOMING_TAB_INDEX = 0
+const OUTGOING_TAB_INDEX = 1
+
 const getTabs = (
   columns: TableOceanColumn<Consent>[],
   incomingConsents: Consent[],
@@ -84,7 +87,7 @@ const getTabs = (
   })
 }
 
-const getColumns = (): TableOceanColumn<Consent>[] => {
+const getColumns = (tabIndex: number): TableOceanColumn<Consent>[] => {
   return [
     {
       name: 'Date',
@@ -124,7 +127,8 @@ const getColumns = (): TableOceanColumn<Consent>[] => {
           />
         </div>
       ),
-      grow: 1
+      grow: 0,
+      omit: tabIndex === OUTGOING_TAB_INDEX
     },
     {
       name: 'State',
@@ -141,9 +145,13 @@ const getColumns = (): TableOceanColumn<Consent>[] => {
       selector: (row) => (
         <ConsentRowActions consent={row}>
           <ConsentRowActions.Inspect consent={row} showFull />
-          {isOutgoing(row) ? <ConsentRowActions.DeleteConsent /> : <></>}
+          {isOutgoing(row) ? (
+            <ConsentRowActions.DeleteConsent consent={row} />
+          ) : (
+            <></>
+          )}
           {isIncoming(row) && row.response ? (
-            <ConsentRowActions.DeleteConsentResponse />
+            <ConsentRowActions.DeleteConsent consent={row} isResponse />
           ) : (
             <></>
           )}
@@ -164,21 +172,23 @@ export const useConsentsFeed = () => {
   const searchParams = useSearchParams()
   const isOnlyPending = searchParams.get('isOnlyPending') === 'true'
 
-  const getDefaultIndex = useCallback(() => {
-    let tabIndex = 0
+  const getDefaultIndex = useCallback(
+    (defaultValue: number) => {
+      let tabIndex = defaultValue
 
-    if (incoming.length) tabIndex = 0
-    else if (outgoing.length) tabIndex = 1
+      // If the given (stored) value has consents, keep it
+      if ([incoming, outgoing][tabIndex]?.length) return tabIndex
 
-    const params = new URLSearchParams(window.location.search)
-    params.set('consentTab', tabIndex.toString())
-    router.push(`${window.location.pathname}?${params.toString()}`, undefined, {
-      shallow: true
-    })
+      if (incoming.length) tabIndex = INCOMING_TAB_INDEX
+      else if (outgoing.length) tabIndex = OUTGOING_TAB_INDEX
+      updateQueryParameters(router, 'consentTab', tabIndex.toString())
 
-    return tabIndex
-  }, [incoming, outgoing, router])
-  const tabIndex = Number(searchParams.get('consentTab') ?? getDefaultIndex())
+      return tabIndex
+    },
+    [incoming, outgoing, router]
+  )
+
+  const tabIndex = getDefaultIndex(Number(searchParams.get('consentTab')))
 
   const filterPending = (consents: Consent[]) => consents.filter(isPending)
 
@@ -189,7 +199,10 @@ export const useConsentsFeed = () => {
     )
   }, [queryClient])
 
-  const columns = useMemo(() => getColumns(), [])
+  const columns = useMemo(
+    (tabIndex: number) => getColumns(tabIndex),
+    [tabIndex]
+  )
   const tabs = useMemo(
     () =>
       isOnlyPending

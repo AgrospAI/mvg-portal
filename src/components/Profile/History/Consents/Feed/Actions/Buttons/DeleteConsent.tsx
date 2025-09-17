@@ -1,54 +1,46 @@
-import { useDeleteConsent } from '@hooks/useUserConsents'
-import DeleteButton from './Delete'
-import { useCallback, useState } from 'react'
-import Modal from '@components/@shared/atoms/Modal'
+import Loader from '@components/@shared/atoms/Loader'
+import Modal from '@components/@shared/Modal'
+import { useCurrentConsent } from '@hooks/useCurrentConsent'
 import { Consent } from '@utils/consents/types'
-import styles from './DeleteConsent.module.css'
-import Button from '@components/@shared/atoms/Button'
+import { Suspense } from 'react'
+import { DeleteConsentModal } from '../../../Modal/DeleteConsentModal'
+import styles from './Buttons.module.css'
+import classNames from 'classnames'
+import Cross from '@images/cross.svg'
 
-function DeleteConsent() {
-  const { mutateAsync: deleteConsent } = useDeleteConsent()
+const cx = classNames.bind(styles)
 
-  const [passedConsent, setPassedConsent] = useState<Consent | null>(null)
-  const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false)
+interface DeleteConsentProperties {
+  consent: Consent
+  isResponse?: boolean
+}
 
-  const toggleCallback = useCallback((consent: Consent) => {
-    setPassedConsent(consent)
-    setIsConfirmationModalOpen(true)
-  }, [])
+function DeleteConsent({
+  consent,
+  isResponse
+}: Readonly<DeleteConsentProperties>) {
+  const { setCurrentConsent } = useCurrentConsent()
 
   return (
     <>
-      <Modal
-        title={'Confirm deletion'}
-        onToggleModal={() => setIsConfirmationModalOpen(false)}
-        isOpen={isConfirmationModalOpen}
-        className={styles.confirmationModal}
-        style={{
-          overlay: {
-            backgroundColor: 'transparent'
-          }
-        }}
+      <Modal.Trigger
+        name={`${consent.id}_delete`}
+        onClick={() => setCurrentConsent(consent)}
       >
-        <div className={styles.actions}>
-          <Button
-            className={styles.cancelButton}
-            onClick={() => {
-              setIsConfirmationModalOpen(false)
-              setPassedConsent(null)
-            }}
-          >
-            Cancel
-          </Button>
-          <Button
-            className={styles.deleteButton}
-            onClick={() => deleteConsent({ consent: passedConsent })}
-          >
-            Delete
-          </Button>
-        </div>
-      </Modal>
-      <DeleteButton action={toggleCallback}>consent</DeleteButton>
+        <button
+          className={cx(styles.button, styles.deleteButton)}
+          title="Delete"
+          aria-label="Delete Consent"
+          type="button"
+        >
+          Delete {isResponse ? 'Response' : 'Consent'} <Cross />
+        </button>
+      </Modal.Trigger>
+      <Modal.Content name={`${consent.id}_delete`}>
+        <Suspense fallback={<Loader />}>
+          <DeleteConsentModal isResponse={isResponse} />
+        </Suspense>
+      </Modal.Content>
     </>
   )
 }

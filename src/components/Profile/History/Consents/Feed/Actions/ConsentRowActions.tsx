@@ -2,7 +2,6 @@ import QueryBoundary from '@components/@shared/QueryBoundary'
 import { Consent } from '@utils/consents/types'
 import { ReactNode, createContext, useContext } from 'react'
 import DeleteConsent from './Buttons/DeleteConsent'
-import DeleteConsentResponse from './Buttons/DeleteConsentResponse'
 import InspectButton from './Buttons/InspectConsent'
 
 interface ConsentRowActionsValue {
@@ -46,4 +45,3 @@ export const useConsentRowActions = () => {
 
 ConsentRowActions.Inspect = InspectButton
 ConsentRowActions.DeleteConsent = DeleteConsent
-ConsentRowActions.DeleteConsentResponse = DeleteConsentResponse
