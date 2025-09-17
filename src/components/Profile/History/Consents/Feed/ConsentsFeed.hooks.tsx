@@ -199,10 +199,7 @@ export const useConsentsFeed = () => {
     )
   }, [queryClient])
 
-  const columns = useMemo(
-    (tabIndex: number) => getColumns(tabIndex),
-    [tabIndex]
-  )
+  const columns = useMemo(() => getColumns(tabIndex), [tabIndex])
   const tabs = useMemo(
     () =>
       isOnlyPending
