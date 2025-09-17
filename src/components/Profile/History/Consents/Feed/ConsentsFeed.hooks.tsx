@@ -175,13 +175,20 @@ export const useConsentsFeed = () => {
   const getDefaultIndex = useCallback(
     (defaultValue: number) => {
       let tabIndex = defaultValue
+      let updated = false
 
       // If the given (stored) value has consents, keep it
       if ([incoming, outgoing][tabIndex]?.length) return tabIndex
 
-      if (incoming.length) tabIndex = INCOMING_TAB_INDEX
-      else if (outgoing.length) tabIndex = OUTGOING_TAB_INDEX
-      updateQueryParameters(router, 'consentTab', tabIndex.toString())
+      if (incoming.length) {
+        tabIndex = INCOMING_TAB_INDEX
+        updated = true
+      } else if (outgoing.length) {
+        tabIndex = OUTGOING_TAB_INDEX
+        updated = true
+      }
+      updated &&
+        updateQueryParameters(router, 'consentTab', tabIndex.toString())
 
       return tabIndex
     },
