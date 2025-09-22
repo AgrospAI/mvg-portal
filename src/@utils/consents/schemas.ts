@@ -24,7 +24,6 @@ export const ConsentDirectionSchema = z.enum(['Incoming', 'Outgoing', '-'])
 export const PossibleRequestsSchema = z.object({
   trusted_algorithm_publisher: z.boolean().optional().nullable(),
   trusted_algorithm: z.boolean().optional().nullable(),
-  trusted_credential_address: z.boolean().optional().nullable(),
   allow_network_access: z.boolean().optional().nullable()
 })
 
