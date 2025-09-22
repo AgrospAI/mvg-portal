@@ -19,6 +19,6 @@ export const getAddressCredentials = async (
         .then(({ data }) => data)
         .catch((err) => {
           console.error('Error fetching verifiable credentials', err)
-          throw new Error(err)
+          return []
         })
     : []

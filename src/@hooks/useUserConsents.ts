@@ -3,6 +3,7 @@ import {
   useQueryClient,
   useSuspenseQuery
 } from '@tanstack/react-query'
+import { AssetConsentApplier } from '@utils/assetConsentApplier'
 import {
   createConsent,
   createConsentResponse,
@@ -94,7 +95,7 @@ export const useCreateConsentResponse = () => {
       createConsentResponse(consentId, reason, permitted),
 
     onSuccess: (newConsent, { consentId, reason, permitted }) => {
-      // Update the list of incoming consents
+      // 1. Update the list of incoming consents
       queryClient.setQueryData(
         ['user-incoming-consents', address],
         (oldData: Consent[] = []) => {
@@ -116,7 +117,7 @@ export const useCreateConsentResponse = () => {
         }
       )
 
-      // Decrease the amount of pending consents
+      // 2. Decrease the amount of pending consents
       queryClient.setQueryData(
         ['profile-consents', address],
         (oldData: UserConsentsData) => ({
@@ -124,6 +125,8 @@ export const useCreateConsentResponse = () => {
           incoming_pending_consents: oldData.incoming_pending_consents - 1
         })
       )
+
+      // 3. Update the blockchain asset with the changes
     }
   })
 }
