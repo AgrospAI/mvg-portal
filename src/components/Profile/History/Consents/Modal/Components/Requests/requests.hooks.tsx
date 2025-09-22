@@ -11,8 +11,6 @@ export const useSimpleRequests = () =>
         return 'Do you want to trust the publisher?'
       case 'trusted_algorithm':
         return 'Do you want to trust the algorithm usage?'
-      case 'trusted_credential_address':
-        return 'Trusted Credential Address'
       case 'allow_network_access':
         return 'Do you want to allow network access?'
       default:
@@ -48,8 +46,6 @@ export const useCompleteRequests = ({
               <Link href={`/asset/${algorithm.id}`}>{algorithm.nft.name}</Link>.
             </>
           )
-        case 'trusted_credential_address':
-          return <>Trusted Credential Address.</>
         case 'allow_network_access':
           return (
             <>

@@ -24,7 +24,6 @@ export const InteractiveRequests = ({
   const defaultRequests: PossibleRequests = {
     trusted_algorithm_publisher: false,
     trusted_algorithm: false,
-    trusted_credential_address: false,
     allow_network_access: false
   }
   const values = Object.entries(requests ?? defaultRequests)
