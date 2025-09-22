@@ -8,8 +8,7 @@ import { injectable } from 'inversify'
 import { createClient } from 'redis'
 import { Address } from 'wagmi'
 import ICredentialsService from '../credentials'
-
-class RedisCredentialsServiceError extends Error {}
+import { RedisCredentialsServiceError } from '../errors'
 
 @injectable()
 export class RedisCredentialsService implements ICredentialsService {
@@ -40,7 +39,17 @@ export class RedisCredentialsService implements ICredentialsService {
       env.CREDENTIALS_REDIS_USERNAME
     )
 
-    const config: RedisClientOptions = { url: env.CREDENTIALS_REDIS_URL }
+    const config: RedisClientOptions = {
+      url: env.CREDENTIALS_REDIS_URL,
+      socket: {
+        reconnectStrategy: (retries) => {
+          console.warn(`[Redis] Attempt ${retries}, retrying in 5s...`)
+          return 5000
+        }
+      },
+      disableOfflineQueue: true,
+      commandsQueueMaxLength: 0
+    }
 
     if (env.CREDENTIALS_REDIS_USERNAME) {
       config.username = env.CREDENTIALS_REDIS_USERNAME
@@ -52,12 +61,10 @@ export class RedisCredentialsService implements ICredentialsService {
     this.client.on('error', (err) => {
       console.error('Redis Client Error', err)
       this.client = null
-      throw new RedisCredentialsServiceError(err)
     })
     this.client.connect().catch((err) => {
-      console.error('Redis connection error:', err)
+      console.error('Redis connection Error:', err)
       this.client = null
-      throw new RedisCredentialsServiceError(err)
     })
 
     return this.client

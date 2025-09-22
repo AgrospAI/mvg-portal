@@ -11,7 +11,7 @@ import {
 import { injectable } from 'inversify'
 
 const missingCallback = <T>(error: any, defaultValue: T) => {
-  if (error.response.status === 404) return defaultValue
+  if (!error.response || error.response?.status === 404) return defaultValue
   console.error('Error fetching user consents', error)
   throw error
 }
