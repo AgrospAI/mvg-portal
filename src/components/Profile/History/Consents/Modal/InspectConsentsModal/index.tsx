@@ -12,6 +12,7 @@ import { FullRequests } from '../Components/Requests'
 import Sections from '../Components/Sections'
 import Solicitor from '../Components/Solicitor'
 import styles from './index.module.css'
+import AssetProvider from '@context/Asset'
 
 function InspectConsentsModal() {
   const { address } = useAccount()
@@ -29,11 +30,13 @@ function InspectConsentsModal() {
   const renderResponse = isShowResponse && (
     <ConsentResponse>
       {isInteractive ? (
-        <ConsentResponse.InteractiveResponseForm
-          consent={consent}
-          dataset={dataset}
-          algorithm={algorithm}
-        />
+        <AssetProvider did={dataset.id}>
+          <ConsentResponse.InteractiveResponseForm
+            consent={consent}
+            dataset={dataset}
+            algorithm={algorithm}
+          />
+        </AssetProvider>
       ) : (
         <>
           <Reason>{consent.response?.reason}</Reason>

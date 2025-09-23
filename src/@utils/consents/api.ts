@@ -121,6 +121,9 @@ export const createConsent = async (
     algorithmDid,
     request,
     reason
+  }).catch((error) => {
+    console.error(error)
+    return null
   })
 
 export const deleteConsent = async (
