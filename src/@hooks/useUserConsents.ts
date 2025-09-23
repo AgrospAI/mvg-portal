@@ -3,7 +3,6 @@ import {
   useQueryClient,
   useSuspenseQuery
 } from '@tanstack/react-query'
-import { AssetConsentApplier } from '@utils/assetConsentApplier'
 import {
   createConsent,
   createConsentResponse,
@@ -22,6 +21,7 @@ import {
 import { isPending } from '@utils/consents/utils'
 import { useEffect } from 'react'
 import { useAccount } from 'wagmi'
+import { useConsentUpdater } from './useConsentUpdater'
 import { useUserConsentsToken } from './useUserConsentsToken'
 
 export const useUserConsentsAmount = () => {
@@ -79,9 +79,10 @@ export const useUserOutgoingConsents = () => {
   return useUserConsents('Outgoing', 'user-outgoing-consents')
 }
 
-export const useCreateConsentResponse = () => {
+export const useCreateConsentResponse = (asset: AssetExtended) => {
   const queryClient = useQueryClient()
   const { address } = useAccount()
+  const { newUpdater } = useConsentUpdater()
   useUserConsentsToken()
 
   interface Mutation {
@@ -94,7 +95,7 @@ export const useCreateConsentResponse = () => {
     mutationFn: async ({ consentId, reason, permitted }: Mutation) =>
       createConsentResponse(consentId, reason, permitted),
 
-    onSuccess: (newConsent, { consentId, reason, permitted }) => {
+    onSuccess: async (newConsent, { consentId, reason, permitted }) => {
       // 1. Update the list of incoming consents
       queryClient.setQueryData(
         ['user-incoming-consents', address],
@@ -127,6 +128,7 @@ export const useCreateConsentResponse = () => {
       )
 
       // 3. Update the blockchain asset with the changes
+      await newUpdater(newConsent).apply(asset)
     }
   })
 }

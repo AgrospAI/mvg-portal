@@ -1,4 +1,3 @@
-import { Asset, LoggerInstance } from '@oceanprotocol/lib'
 import {
   Consent,
   ConsentResponse,
@@ -9,131 +8,103 @@ import { CancelToken } from 'axios'
 import { Signer } from 'ethers'
 import { Address } from 'wagmi'
 import { createTrustedAlgorithmList } from './compute'
+import { extractDidFromUrl } from './consents/utils'
 
 interface AssetUpdater {
-  update(asset: Asset): Promise<void>
+  update(asset: AssetExtended): Promise<void>
 }
 
-class RequestTrustedAlgorithmPublisherUpdater implements AssetUpdater {
-  private readonly publisher: Readonly<NonNullable<string>>
-
-  constructor(publisher: Readonly<NonNullable<string>>) {
-    this.publisher = publisher
-  }
-
-  async update(asset: Asset): Promise<void> {
+const RequestTrustedAlgorithmPublisherUpdater = (
+  publisherDid: Readonly<NonNullable<string>>
+): AssetUpdater => ({
+  update: async (asset: AssetExtended) =>
     asset.services
       .filter(({ type }) => type === 'compute')
       .forEach((service) => {
-        service.compute.publisherTrustedAlgorithmPublishers.push(this.publisher)
+        service.compute.publisherTrustedAlgorithmPublishers.push(publisherDid)
       })
-  }
-}
+})
 
-class RequestTrustedAlgorithmUpdater implements AssetUpdater {
-  private readonly algorithm: Readonly<NonNullable<string>>
-  private readonly accountId: Address
-  private readonly signer: Signer
-  private readonly newCancelToken: () => CancelToken
-  private readonly newAbortSignal: () => AbortSignal
-
-  constructor(
-    algorithm: Readonly<NonNullable<string>>,
-    accountId: Address,
-    signer: Signer,
-    newCancelToken: () => CancelToken,
-    newAbortSignal: () => AbortSignal
-  ) {
-    this.algorithm = algorithm
-    this.accountId = accountId
-    this.signer = signer
-    this.newCancelToken = newCancelToken
-    this.newAbortSignal = newAbortSignal
-  }
-
-  async update(asset: Asset): Promise<void> {
+const RequestTrustedAlgorithmUpdater = (
+  algorithmDid: Readonly<NonNullable<string>>,
+  newCancelToken: () => CancelToken
+): AssetUpdater => ({
+  update: async (asset: AssetExtended) => {
     const publisherTrustedAlgorithms = await createTrustedAlgorithmList(
-      [this.algorithm],
+      [algorithmDid],
       asset.chainId,
-      this.newCancelToken()
+      newCancelToken()
     )
 
-    asset.services
-      .filter(({ type }) => type === 'compute')
-      .forEach((service) => {
-        service.compute.publisherTrustedAlgorithms.push(
-          ...publisherTrustedAlgorithms
-        )
-      })
+    const computeIndex = asset.services.findIndex((s) => s.type === 'compute')
+    if (computeIndex !== -1) {
+      asset.services[computeIndex].compute.publisherTrustedAlgorithms.push(
+        ...publisherTrustedAlgorithms
+      )
+    }
 
-    LoggerInstance.log('[Edited asset]', asset)
-    await setNFTMetadataAndTokenURI(
-      asset,
-      this.accountId,
-      this.signer,
-      decodeTokenURI(asset.nft.tokenURI),
-      this.newAbortSignal()
-    )
+    return Promise.resolve()
   }
-}
+})
 
-class RequestAllowNetworkAccessUpdater implements AssetUpdater {
-  async update(asset: Asset): Promise<void> {
+const RequestAllowNetworkAccessUpdater = (): AssetUpdater => ({
+  update: async (asset: AssetExtended) =>
     asset.services
       .filter(({ type }) => type === 'compute')
       .forEach((service) => {
         service.compute.allowNetworkAccess = true
       })
-  }
-}
+})
 
-export class AssetConsentApplier {
-  private readonly consent: Readonly<NonNullable<Consent>>
-  private readonly consentResponse: Readonly<NonNullable<ConsentResponse>>
-  private readonly accountId: Address
-  private readonly signer: Signer
-  private readonly newCancelToken: () => CancelToken
-  private readonly newAbortSignal: () => AbortSignal
-
-  constructor(
-    consent: Readonly<NonNullable<Consent>>,
-    accountId: Address,
-    signer: Signer,
-    newCancelToken: () => CancelToken,
-    newAbortSignal: () => AbortSignal
-  ) {
-    this.consent = consent
-    this.accountId = accountId
-    this.signer = signer
-    this.newCancelToken = newCancelToken
-    this.newAbortSignal = newAbortSignal
-  }
-
-  apply(asset: Readonly<NonNullable<Asset>>): AssetConsentApplier {
-    const _asset = asset
-    const consents = Object.keys(this.consentResponse.permitted)
-    consents
-      .filter((key) => consents[this.consentResponse.permitted[key]])
-      .forEach((key) => this.get(key as keyof PossibleRequests).update(_asset))
-    return this
-  }
-
-  private get(key: keyof PossibleRequests): AssetUpdater {
-    switch (key) {
+const Updater = (consent: Consent, newCancelToken: () => CancelToken) => ({
+  get: (permission: keyof PossibleRequests): AssetUpdater => {
+    switch (permission) {
       case 'allow_network_access':
-        return new RequestAllowNetworkAccessUpdater()
+        return RequestAllowNetworkAccessUpdater()
       case 'trusted_algorithm':
-        return new RequestTrustedAlgorithmUpdater(
-          this.consent.algorithm,
-          this.accountId,
-          this.signer,
-          this.newCancelToken,
-          this.newAbortSignal
+        return RequestTrustedAlgorithmUpdater(
+          extractDidFromUrl(consent.algorithm),
+          newCancelToken
         )
       case 'trusted_algorithm_publisher':
-        return new RequestTrustedAlgorithmPublisherUpdater(
-          this.consent.solicitor.address
+        return RequestTrustedAlgorithmPublisherUpdater(
+          consent.solicitor.address
         )
     }
   }
-}
+})
+
+export const AssetConsentApplier = (
+  consent: Readonly<NonNullable<Consent>>,
+  response: Readonly<NonNullable<ConsentResponse>>,
+  accountId: Readonly<NonNullable<Address>>,
+  signer: Readonly<NonNullable<Signer>>,
+  newCancelToken: () => CancelToken,
+  newAbortSignal: () => AbortSignal
+) => ({
+  apply: async (asset: AssetExtended): Promise<void> => {
+    const consents = Object.keys(response.permitted)
+    await Promise.all(
+      consents
+        .filter((key) => response.permitted[key])
+        .map((key: keyof PossibleRequests) =>
+          Updater(consent, newCancelToken).get(key).update(asset)
+        )
+    )
+
+    console.log('[Edited asset]', asset)
+    const setMetadataTx = await setNFTMetadataAndTokenURI(
+      asset,
+      accountId,
+      signer,
+      decodeTokenURI(asset.nft.tokenURI),
+      newAbortSignal()
+    )
+
+    if (!setMetadataTx) {
+      console.error('Error')
+      return this
+    }
+    return setMetadataTx.wait().then()
+  }
+})

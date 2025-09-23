@@ -13,6 +13,7 @@ import Actions from '../Actions'
 import { FullRequests, InteractiveRequests } from '../Requests'
 import { AutoResize } from './AutoResize'
 import styles from './index.module.css'
+import { useAsset } from '@context/Asset'
 
 function ConsentResponse({ children }: PropsWithChildren) {
   return <Suspense fallback={<Loader />}>{children}</Suspense>
@@ -95,7 +96,8 @@ function InteractiveResponseForm({
 }: InteractiveResponseFormProps) {
   const { closeModal } = useModalContext()
   const [isTriedSubmitted, setIsTriedSubmitted] = useState(false)
-  const { mutate: createConsentResponse } = useCreateConsentResponse()
+  const { asset } = useAsset()
+  const { mutate: createConsentResponse } = useCreateConsentResponse(asset)
   return (
     <Formik
       validateOnChange={isTriedSubmitted}
