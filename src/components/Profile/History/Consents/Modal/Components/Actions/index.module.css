@@ -3,7 +3,6 @@
   column-gap: 0.5rem;
   align-items: flex-end;
   justify-content: flex-end;
-  margin: calc(var(--spacer) / 2) 0;
 }
 
 .action {

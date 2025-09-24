@@ -26,33 +26,33 @@ export default function IncomingPendingConsentsSimple({ asset }: Props) {
         <div className={styles.section}>
           <div className={styles.title}>Incoming petitions</div>
           <div className={styles.consentList}>
-            <Modal>
-              {filtered.map((consent) => (
-                <div key={consent.id}>
-                  <div className={styles.consentRow}>
-                    <div className={styles.consentDetail}>
-                      <AssetLink
-                        did={consent.algorithm}
-                        className={styles.assetLink}
-                        isArrow
+            {filtered.map((consent) => (
+              <div key={consent.id}>
+                <div className={styles.consentRow}>
+                  <div className={styles.consentDetail}>
+                    <AssetLink
+                      did={consent.algorithm}
+                      className={styles.assetLink}
+                      isArrow
+                    />
+                    <div className={styles.description}>
+                      <span>
+                        {Object.keys(consent.request).length} request(s)
+                      </span>
+                      <span>|</span>
+                      <Time
+                        date={consent.created_at.toString()}
+                        isUnix
+                        relative
                       />
-                      <div className={styles.description}>
-                        <span>
-                          {Object.keys(consent.request).length} request(s)
-                        </span>
-                        <span>|</span>
-                        <Time
-                          date={consent.created_at.toString()}
-                          isUnix
-                          relative
-                        />
-                      </div>
                     </div>
-                    <InspectConsent consent={consent} />
                   </div>
+                  <Modal>
+                    <InspectConsent consent={consent} />
+                  </Modal>
                 </div>
-              ))}
-            </Modal>
+              </div>
+            ))}
           </div>
         </div>
       ) : (

@@ -23,6 +23,7 @@ import { useEffect } from 'react'
 import { useAccount } from 'wagmi'
 import { useConsentUpdater } from './useConsentUpdater'
 import { useUserConsentsToken } from './useUserConsentsToken'
+import { toast } from 'react-toastify'
 
 export const useUserConsentsAmount = () => {
   const { address } = useAccount()
@@ -79,10 +80,54 @@ export const useUserOutgoingConsents = () => {
   return useUserConsents('Outgoing', 'user-outgoing-consents')
 }
 
+export const useDeleteConsentResponse = () => {
+  const queryClient = useQueryClient()
+  const { address } = useAccount()
+  useUserConsentsToken()
+
+  interface Mutation {
+    consentId: number
+  }
+
+  return useMutation({
+    mutationFn: async ({ consentId }: Mutation) =>
+      deleteConsentResponse(consentId),
+
+    onSuccess: (_data, { consentId }) => {
+      // Set the consent back to "no-response" state
+      queryClient.setQueryData(
+        ['user-incoming-consents', address],
+        (oldData: Consent[] = []) => {
+          return oldData.map((consent) => {
+            if (consent.id !== consentId) return consent
+
+            return {
+              ...consent,
+              status: 'Pending',
+              response: null
+            }
+          })
+        }
+      )
+
+      // Increase the amount of pending consents
+      queryClient.setQueryData(
+        ['profile-consents', address],
+        (oldData: UserConsentsData) => ({
+          ...oldData,
+          incoming_pending_consents: oldData.incoming_pending_consents + 1
+        })
+      )
+    }
+  })
+}
+
 export const useCreateConsentResponse = (asset: AssetExtended) => {
   const queryClient = useQueryClient()
   const { address } = useAccount()
   const { newUpdater } = useConsentUpdater()
+  const { mutateAsync: deleteConsentResponse } = useDeleteConsentResponse()
+
   useUserConsentsToken()
 
   interface Mutation {
@@ -127,8 +172,20 @@ export const useCreateConsentResponse = (asset: AssetExtended) => {
         })
       )
 
+      const callback = async (result: boolean | string): Promise<void> => {
+        let response = 'Reverting consent response'
+        if (typeof result === 'boolean' && result) return
+        else if (typeof result === 'string')
+          response = response.concat(` ${result}`)
+
+        return await deleteConsentResponse({ consentId }).then(() => {
+          toast.warn(response)
+          console.log(response)
+        })
+      }
+
       // 3. Update the blockchain asset with the changes
-      await newUpdater(newConsent).apply(asset)
+      await newUpdater(newConsent).apply(asset).then(callback).catch(callback)
     }
   })
 }
@@ -188,48 +245,6 @@ export const useDeleteConsent = () => {
           })
         )
       }
-    }
-  })
-}
-
-export const useDeleteConsentResponse = () => {
-  const queryClient = useQueryClient()
-  const { address } = useAccount()
-  useUserConsentsToken()
-
-  interface Mutation {
-    consentId: number
-  }
-
-  return useMutation({
-    mutationFn: async ({ consentId }: Mutation) =>
-      deleteConsentResponse(consentId),
-
-    onSuccess: (_data, { consentId }) => {
-      // Set the consent back to "no-response" state
-      queryClient.setQueryData(
-        ['user-incoming-consents', address],
-        (oldData: Consent[] = []) => {
-          return oldData.map((consent) => {
-            if (consent.id !== consentId) return consent
-
-            return {
-              ...consent,
-              status: 'Pending',
-              response: null
-            }
-          })
-        }
-      )
-
-      // Increase the amount of pending consents
-      queryClient.setQueryData(
-        ['profile-consents', address],
-        (oldData: UserConsentsData) => ({
-          ...oldData,
-          incoming_pending_consents: oldData.incoming_pending_consents + 1
-        })
-      )
     }
   })
 }
