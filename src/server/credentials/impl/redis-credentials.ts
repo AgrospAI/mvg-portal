@@ -62,7 +62,7 @@ export class RedisCredentialsService implements ICredentialsService {
       console.error('Redis Client Error', err)
       this.client = null
     })
-    this.client.connect().catch((err) => {
+    await this.client.connect().catch((err) => {
       console.error('Redis connection Error:', err)
       this.client = null
     })
@@ -75,7 +75,7 @@ export class RedisCredentialsService implements ICredentialsService {
   ): Promise<PontusVerifiableCredentialArray> {
     if (!address) {
       console.error(
-        '[RedisCredentialsService] getAddressCredentials caled with undefined address'
+        '[RedisCredentialsService] getAddressCredentials called with undefined address'
       )
       return []
     }
@@ -90,9 +90,8 @@ export class RedisCredentialsService implements ICredentialsService {
             const result = PontusVerifiableCredentialArraySchema.safeParse([
               data
             ])
-            if (result.success) {
-              return result.data
-            }
+            if (result.success) return result.data
+
             console.error(
               '[RedisCredentialsService] Schema validation failed:',
               result.error
