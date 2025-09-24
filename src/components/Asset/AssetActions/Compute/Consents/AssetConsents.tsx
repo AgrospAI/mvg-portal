@@ -2,7 +2,6 @@ import QueryBoundary from '@components/@shared/QueryBoundary'
 import { useAccount } from 'wagmi'
 import ConsentPetitionButton from './ConsentPetitionButton'
 import IncomingPendingConsentsSimple from './IncomingPendingConsentsSimple'
-import AssetProvider from '@context/Asset'
 
 interface Props {
   asset: AssetExtended
@@ -15,9 +14,7 @@ export default function AssetConsents({ asset }: Props) {
     return (
       <>
         <QueryBoundary text="Loading incoming consents">
-          <AssetProvider did={asset.id}>
-            <IncomingPendingConsentsSimple asset={asset} />
-          </AssetProvider>
+          <IncomingPendingConsentsSimple asset={asset} />
         </QueryBoundary>
       </>
     )
