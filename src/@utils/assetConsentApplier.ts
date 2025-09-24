@@ -82,7 +82,7 @@ export const AssetConsentApplier = (
   newCancelToken: () => CancelToken,
   newAbortSignal: () => AbortSignal
 ) => ({
-  apply: async (asset: AssetExtended): Promise<void> => {
+  apply: async (asset: AssetExtended): Promise<boolean> => {
     const consents = Object.keys(response.permitted)
     await Promise.all(
       consents
@@ -92,7 +92,6 @@ export const AssetConsentApplier = (
         )
     )
 
-    console.log('[Edited asset]', asset)
     const setMetadataTx = await setNFTMetadataAndTokenURI(
       asset,
       accountId,
@@ -101,10 +100,7 @@ export const AssetConsentApplier = (
       newAbortSignal()
     )
 
-    if (!setMetadataTx) {
-      console.error('Error')
-      return this
-    }
-    return setMetadataTx.wait().then()
+    if (!setMetadataTx) return false
+    return setMetadataTx.wait().then(() => true)
   }
 })
