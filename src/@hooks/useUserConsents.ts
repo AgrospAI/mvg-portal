@@ -19,11 +19,12 @@ import {
   UserConsentsData
 } from '@utils/consents/types'
 import { isPending } from '@utils/consents/utils'
-import { useCallback, useEffect } from 'react'
+import { useEffect } from 'react'
+import { toast } from 'react-toastify'
 import { useAccount } from 'wagmi'
+import { useAutoSigner } from './useAutoSigner'
 import { useConsentUpdater } from './useConsentUpdater'
 import { useUserConsentsToken } from './useUserConsentsToken'
-import { toast } from 'react-toastify'
 
 export const useUserConsentsAmount = () => {
   const { address } = useAccount()
@@ -82,7 +83,7 @@ export const useUserOutgoingConsents = () => {
 
 export const useDeleteConsentResponse = () => {
   const queryClient = useQueryClient()
-  const { address } = useAccount()
+  const { accountId: address } = useAutoSigner()
   useUserConsentsToken()
 
   interface Mutation {
@@ -124,8 +125,8 @@ export const useDeleteConsentResponse = () => {
 
 export const useCreateConsentResponse = (asset: AssetExtended) => {
   const queryClient = useQueryClient()
-  const { address } = useAccount()
-  const { newUpdater } = useConsentUpdater()
+  const { signer, accountId: address } = useAutoSigner()
+  const { newUpdater } = useConsentUpdater(address, signer)
   const { mutateAsync: deleteConsentResponse } = useDeleteConsentResponse()
   useUserConsentsToken()
 
@@ -171,26 +172,30 @@ export const useCreateConsentResponse = (asset: AssetExtended) => {
         })
       )
 
-      const callback = async (result: boolean | string): Promise<void> => {
-        let response = 'Reverting consent response'
-        const res = typeof result
-        if (res === 'boolean' && result) return
-        else if (res === 'string') response = response.concat(` ${result}`)
-
-        return await deleteConsentResponse({ consentId }).then(() => {
-          toast.warn(response)
-          console.log(response)
-        })
-      }
-
       // 3. Update the blockchain asset with the changes
-      await newUpdater(newConsent).apply(asset).then(callback).catch(callback)
+      await newUpdater(newConsent)
+        .apply(asset)
+        .then(async (res) => {
+          if (res) return
+
+          await deleteConsentResponse({ consentId }).then(() =>
+            toast.warn('Failed transaction, reverted consent response.')
+          )
+        })
+        .catch(async (error) => {
+          console.error(error)
+          toast.error(error)
+
+          await deleteConsentResponse({ consentId }).then(() =>
+            toast.warn('Failed transaction, reverted consent response.')
+          )
+        })
     }
   })
 }
 
 export const useCreateAssetConsent = () => {
-  const { address } = useAccount()
+  const { accountId: address } = useAutoSigner()
   useUserConsentsToken()
 
   interface Mutation {
@@ -215,7 +220,7 @@ export const useCreateAssetConsent = () => {
 
 export const useDeleteConsent = () => {
   const queryClient = useQueryClient()
-  const { address } = useAccount()
+  const { accountId: address } = useAutoSigner()
   useUserConsentsToken()
 
   interface Mutation {
