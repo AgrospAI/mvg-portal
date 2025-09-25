@@ -19,7 +19,7 @@ import {
   UserConsentsData
 } from '@utils/consents/types'
 import { isPending } from '@utils/consents/utils'
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import { useAccount } from 'wagmi'
 import { useConsentUpdater } from './useConsentUpdater'
 import { useUserConsentsToken } from './useUserConsentsToken'
@@ -127,7 +127,6 @@ export const useCreateConsentResponse = (asset: AssetExtended) => {
   const { address } = useAccount()
   const { newUpdater } = useConsentUpdater()
   const { mutateAsync: deleteConsentResponse } = useDeleteConsentResponse()
-
   useUserConsentsToken()
 
   interface Mutation {
@@ -174,9 +173,9 @@ export const useCreateConsentResponse = (asset: AssetExtended) => {
 
       const callback = async (result: boolean | string): Promise<void> => {
         let response = 'Reverting consent response'
-        if (typeof result === 'boolean' && result) return
-        else if (typeof result === 'string')
-          response = response.concat(` ${result}`)
+        const res = typeof result
+        if (res === 'boolean' && result) return
+        else if (res === 'string') response = response.concat(` ${result}`)
 
         return await deleteConsentResponse({ consentId }).then(() => {
           toast.warn(response)
