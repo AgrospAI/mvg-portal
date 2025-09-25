@@ -2,11 +2,10 @@ import { useAbortController } from '@hooks/useAbortController'
 import { useCancelToken } from '@hooks/useCancelToken'
 import { AssetConsentApplier } from '@utils/assetConsentApplier'
 import { Consent } from '@utils/consents/types'
-import { useAutoSigner } from './useAutoSigner'
+import { Signer } from 'ethers'
+import { Address } from 'wagmi'
 
-export const useConsentUpdater = () => {
-  const { signer, accountId } = useAutoSigner()
-
+export const useConsentUpdater = (address: Address, signer: Signer) => {
   const newAbortSignal = useAbortController()
   const newCancelToken = useCancelToken()
 
@@ -15,7 +14,7 @@ export const useConsentUpdater = () => {
       AssetConsentApplier(
         consent,
         consent.response,
-        accountId,
+        address,
         signer,
         newCancelToken,
         newAbortSignal
