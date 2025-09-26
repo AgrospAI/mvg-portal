@@ -6,7 +6,14 @@ import { Asset } from '@oceanprotocol/lib'
 import { Consent, ConsentState, PossibleRequests } from '@utils/consents/types'
 import { cleanRequests } from '@utils/consents/utils'
 import { ErrorMessage, Form, Formik } from 'formik'
-import { PropsWithChildren, ReactNode, Suspense, useState } from 'react'
+import {
+  PropsWithChildren,
+  ReactNode,
+  Suspense,
+  useCallback,
+  useEffect,
+  useState
+} from 'react'
 import { toast } from 'react-toastify'
 import ConsentStateBadge from '../../../Feed/StateBadge'
 import Actions from '../Actions'
@@ -14,6 +21,7 @@ import { FullRequests, InteractiveRequests } from '../Requests'
 import { AutoResize } from './AutoResize'
 import styles from './index.module.css'
 import { useAsset } from '@context/Asset'
+import { AutoSave } from './AutoSave'
 
 function ConsentResponse({ children }: PropsWithChildren) {
   return <Suspense fallback={<Loader />}>{children}</Suspense>
@@ -84,6 +92,12 @@ function InteractiveRequestForm({
   )
 }
 
+interface CachedResponse {
+  id: number
+  reason: string
+  permitted: PossibleRequests
+}
+
 interface InteractiveResponseFormProps {
   consent: Consent
   dataset: Asset
@@ -98,17 +112,59 @@ function InteractiveResponseForm({
   const [isTriedSubmitted, setIsTriedSubmitted] = useState(false)
   const { asset } = useAsset()
   const { mutate: createConsentResponse } = useCreateConsentResponse(asset)
+
+  const [cachedResponse, setCachedResponse] = useState<CachedResponse>(() => {
+    const response = localStorage.getItem('cachedConsentResponse') ?? '{}'
+    try {
+      const parsed = JSON.parse(response) as CachedResponse
+      if (!response || consent.id !== parsed.id) {
+        return {
+          id: consent.id,
+          reason: '',
+          permitted: {}
+        }
+      }
+
+      return parsed
+    } catch (error) {
+      console.warn(
+        'Could not parse cached consent response, maybe corrupted.',
+        error
+      )
+      return {
+        id: consent.id,
+        reason: '',
+        permitted: {}
+      }
+    }
+  })
+
+  useEffect(() => {
+    localStorage.setItem(
+      'cachedConsentResponse',
+      JSON.stringify(cachedResponse)
+    )
+  }, [cachedResponse])
+
   return (
     <Formik
+      enableReinitialize
       validateOnChange={isTriedSubmitted}
       validateOnBlur={isTriedSubmitted}
-      initialValues={{ reason: '', permitted: {} as PossibleRequests }}
-      validate={({ reason }) => {
+      initialValues={cachedResponse}
+      validate={({ reason, permitted }) => {
         const errors: { reason?: string; permitted?: string } = {}
         if (!reason) {
           errors.reason = 'Required'
         }
         setIsTriedSubmitted(true)
+
+        setCachedResponse((prev) => ({
+          ...prev,
+          reason,
+          permitted
+        }))
+
         return errors
       }}
       onSubmit={({ reason, permitted }, { setSubmitting }) => {
@@ -130,6 +186,7 @@ function InteractiveResponseForm({
     >
       {({ isValid, isSubmitting, setFieldValue, submitForm }) => (
         <Form>
+          <AutoSave onChange={setCachedResponse} />
           <div className={styles.requestInfo}>
             <div className={styles.requestContainer}>
               <AutoResize name="reason" placeholder="Reason of the response" />
