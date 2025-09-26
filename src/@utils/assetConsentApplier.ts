@@ -1,3 +1,4 @@
+import { PublisherTrustedAlgorithm } from '@oceanprotocol/lib'
 import {
   Consent,
   ConsentResponse,
@@ -9,7 +10,6 @@ import { Signer } from 'ethers'
 import { Address } from 'wagmi'
 import { createTrustedAlgorithmList } from './compute'
 import { extractDidFromUrl } from './consents/utils'
-import { PublisherTrustedAlgorithm } from '@oceanprotocol/lib'
 
 interface AssetUpdater {
   update(asset: AssetExtended): Promise<void>
@@ -65,7 +65,10 @@ const RequestAllowNetworkAccessUpdater = (): AssetUpdater => ({
       .forEach((service) => (service.compute.allowNetworkAccess = true))
 })
 
-const Updater = (consent: Consent, newCancelToken: () => CancelToken) => ({
+export const Updater = (
+  consent: Consent,
+  newCancelToken: () => CancelToken
+) => ({
   get: (permission: keyof PossibleRequests): AssetUpdater =>
     ({
       allow_network_access: RequestAllowNetworkAccessUpdater(),
@@ -85,22 +88,28 @@ export const AssetConsentApplier = (
   accountId: Readonly<NonNullable<Address>>,
   signer: Readonly<NonNullable<Signer>>,
   newCancelToken: () => CancelToken,
-  newAbortSignal: () => AbortSignal
+  newAbortSignal: () => AbortSignal,
+  switchNetworksIfNeeded: () => Promise<void>
 ) => ({
-  apply: async (asset: AssetExtended): Promise<boolean> =>
-    Promise.all(
+  apply: async (asset: AssetExtended): Promise<boolean> => {
+    await switchNetworksIfNeeded()
+
+    await Promise.all(
       Object.keys(response.permitted)
         .filter((key) => response.permitted[key])
         .map((key: keyof PossibleRequests) =>
           Updater(consent, newCancelToken).get(key).update(asset)
         )
-    ).then(async () =>
-      setNFTMetadataAndTokenURI(
-        asset,
-        accountId,
-        signer,
-        decodeTokenURI(asset.nft.tokenURI),
-        newAbortSignal()
-      ).then(async (tx) => (tx ? await tx.wait().then(() => true) : false))
     )
+
+    const tx = await setNFTMetadataAndTokenURI(
+      asset,
+      accountId,
+      signer,
+      decodeTokenURI(asset.nft.tokenURI),
+      newAbortSignal()
+    )
+
+    return tx ? await tx.wait().then(() => true) : false
+  }
 })
