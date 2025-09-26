@@ -21,7 +21,7 @@ import {
 import { isPending } from '@utils/consents/utils'
 import { useEffect } from 'react'
 import { toast } from 'react-toastify'
-import { useAccount } from 'wagmi'
+import { useAccount, useSwitchNetwork } from 'wagmi'
 import { useAutoSigner } from './useAutoSigner'
 import { useConsentUpdater } from './useConsentUpdater'
 import { useUserConsentsToken } from './useUserConsentsToken'
@@ -125,9 +125,10 @@ export const useDeleteConsentResponse = () => {
 
 export const useCreateConsentResponse = (asset: AssetExtended) => {
   const queryClient = useQueryClient()
-  const { signer, accountId: address } = useAutoSigner()
-  const { newUpdater } = useConsentUpdater(address, signer)
+  const { accountId: address } = useAutoSigner()
+  const { requestUpdate } = useConsentUpdater(asset)
   const { mutateAsync: deleteConsentResponse } = useDeleteConsentResponse()
+
   useUserConsentsToken()
 
   interface Mutation {
@@ -137,8 +138,23 @@ export const useCreateConsentResponse = (asset: AssetExtended) => {
   }
 
   return useMutation({
-    mutationFn: async ({ consentId, reason, permitted }: Mutation) =>
-      createConsentResponse(consentId, reason, permitted),
+    mutationFn: async ({ consentId, reason, permitted }: Mutation) => {
+      const consent = await createConsentResponse(consentId, reason, permitted)
+
+      const callback = async (error?: unknown) => {
+        if (error) {
+          console.error(error)
+          toast.error(error instanceof Error ? error.message : String(error))
+        }
+
+        await deleteConsentResponse({ consentId })
+        toast.warn('Failed transaction, reverted consent response.')
+      }
+
+      return requestUpdate(consent)
+        .then((res) => (res ? consent : callback() && consent))
+        .catch((error) => callback(error) && consent)
+    },
 
     onSuccess: async (newConsent, { consentId, reason, permitted }) => {
       // 1. Update the list of incoming consents
@@ -171,25 +187,6 @@ export const useCreateConsentResponse = (asset: AssetExtended) => {
           incoming_pending_consents: oldData.incoming_pending_consents - 1
         })
       )
-
-      // 3. Update the blockchain asset with the changes
-      await newUpdater(newConsent)
-        .apply(asset)
-        .then(async (res) => {
-          if (res) return
-
-          await deleteConsentResponse({ consentId }).then(() =>
-            toast.warn('Failed transaction, reverted consent response.')
-          )
-        })
-        .catch(async (error) => {
-          console.error(error)
-          toast.error(error)
-
-          await deleteConsentResponse({ consentId }).then(() =>
-            toast.warn('Failed transaction, reverted consent response.')
-          )
-        })
     }
   })
 }
