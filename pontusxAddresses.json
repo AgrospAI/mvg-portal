@@ -47,8 +47,10 @@
   "0x59bcD9665301CAB78bc6C31286F7203934c5fc0E": "deltaDAO AG",
   "0xf958C1F667f71C1C66C1702830A89057a90F40eE": "deltaDAO AG",
   "0xb042E9387f9dcBE2a98e8eeE0fe7e4e694115604": "deltaDAO AG",
+  "0x4B010D64C7b2037ea2Dabea4d303c4c24b723d00": "deltaDAO AG",
   "0x03606Ad8E09caCf3269188fc04755d7556CFC1bf": "deltaDAO AG (dev0000)",
   "0x4A806a4851472F7cFd579d3FF5465F03c3c2B5d4": "PTW - TU Darmstadt",
+  "0x257Ac5e233005d5C960BC261d04ad98166718d4a": "PTW - TU Darmstadt",
   "0x21CF19e1FaF3A62f82B432f82152e8c5C0FdBdaF": "PTW - TU Darmstadt",
   "0x6f9c23cAeB661D1ca9c58e0665fF3FEac008a33E": "PTW - TU Darmstadt",
   "0x9f4ceE0eBD03a1e9E4DcffaF876873d7a3e9595c": "AMIDS",
@@ -716,12 +718,15 @@
   "0xBcEf1784f5A7d12D9281840db626A8faFA247a59": "Turku University of Applied Sciences",
   "0x752bcd04a2b0ef9b4cafbdebfc98739a6b2d6a52": "Kiel Parking Data",
   "0xE158265FD2be5BCc208621f2c0f8AfCF11aC8408": "EURAU",
+  "0x852381bB887d3Cf4AEB9e1E9De3eB033AF82fBeE": "EURAU",
   "0x6e9d6595d216477dc57F966415Dd34d9585A0bc3": "Proalpha GmbH",
+  "0x3D5a386abA3f010Ca84548b7150E38F6a7c2deB2": "Proalpha GmbH",
   "0xCF33e39a02Bc27e2F8bFB30AE8E1f4dBda8E72fe": "Poznan Supercomputing and Networking Center",
   "0x051AFc22BBb3Bb337971973330D0b15bEc32405E": "Stichting Wageningen Research",
   "0x8a20c7E4758Db8D60Cbd409D71bF2195660aDB69": "Gradiant",
   "0xc47975a7e8fC3A5dC3b7D6447f15A06B4b755b22": "Hispatec Erpagro SL",
   "0x4b350b804f125548A49cb4e95eb4192011149e17": "Laboratoire National de Métrologie et d’Essais (LNE)",
   "0xb09d7Dc2DA521689D160029cf2141A35E0c96141": "Eigen Vermogen van het Instituut voor Landbouw- en Visserijonderzoek (ILVO)",
-  "0x28972b7A0bF03107FCF0031Baf116846d3044BDF": "RISE Research Institutes of Sweden AB"
+  "0x28972b7A0bF03107FCF0031Baf116846d3044BDF": "RISE Research Institutes of Sweden AB",
+  "0x6EDAaA73854C65164869E098DFD67C5eDB591ae7": "Celtiberian Solutions S.L."
 }

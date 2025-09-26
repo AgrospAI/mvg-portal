@@ -128,5 +128,8 @@ module.exports = {
     'https://registry.lab.gaia-x.eu/v2206'
   ],
 
-  plausibleDataDomain: false
+  plausibleDataDomain: false,
+
+  // token symbol used as fallback value in various components
+  defaultTokenSymbol: 'EURAU'
 }
