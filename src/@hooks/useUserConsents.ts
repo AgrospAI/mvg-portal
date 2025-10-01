@@ -19,9 +19,10 @@ import {
   UserConsentsData
 } from '@utils/consents/types'
 import { isPending } from '@utils/consents/utils'
-import { useEffect } from 'react'
+import { Signer } from 'ethers'
+import { useCallback, useEffect } from 'react'
 import { toast } from 'react-toastify'
-import { useAccount, useSwitchNetwork } from 'wagmi'
+import { useAccount } from 'wagmi'
 import { useAutoSigner } from './useAutoSigner'
 import { useConsentUpdater } from './useConsentUpdater'
 import { useUserConsentsToken } from './useUserConsentsToken'
@@ -124,39 +125,51 @@ export const useDeleteConsentResponse = () => {
 }
 
 export const useCreateConsentResponse = (asset: AssetExtended) => {
-  const queryClient = useQueryClient()
-  const { accountId: address } = useAutoSigner()
-  const { requestUpdate } = useConsentUpdater(asset)
   const { mutateAsync: deleteConsentResponse } = useDeleteConsentResponse()
-
+  const { update } = useConsentUpdater(asset)
+  const { getAutoSigner } = useAutoSigner()
+  const queryClient = useQueryClient()
   useUserConsentsToken()
 
-  interface Mutation {
-    consentId: number
-    reason: string
-    permitted: PossibleRequests
-  }
-
-  return useMutation({
-    mutationFn: async ({ consentId, reason, permitted }: Mutation) => {
-      const consent = await createConsentResponse(consentId, reason, permitted)
-
-      const callback = async (error?: unknown) => {
-        if (error) {
-          console.error(error)
-          toast.error(error instanceof Error ? error.message : String(error))
-        }
-
-        await deleteConsentResponse({ consentId })
-        toast.warn('Failed transaction, reverted consent response.')
+  const revertCallback = useCallback(
+    async (consentId: number, error?: unknown) => {
+      if (error) {
+        console.error(error)
+        toast.error(error instanceof Error ? error.message : String(error))
       }
 
-      return requestUpdate(consent)
-        .then((res) => (res ? consent : callback() && consent))
-        .catch((error) => callback(error) && consent)
+      await deleteConsentResponse({ consentId })
+      toast.warn('Failed transaction, reverted consent response.')
+    },
+    [deleteConsentResponse]
+  )
+
+  return useMutation({
+    mutationFn: async ({
+      consentId,
+      reason,
+      permitted
+    }: {
+      consentId: number
+      reason: string
+      permitted: PossibleRequests
+    }) => {
+      const consent = await createConsentResponse(consentId, reason, permitted)
+      return await update(consent, getAutoSigner())
+        .then(async (res) => {
+          if (!res) await revertCallback(consentId)
+          return consent
+        })
+        .catch(async (error) => {
+          await revertCallback(consentId, error)
+          return consent
+        })
     },
 
     onSuccess: async (newConsent, { consentId, reason, permitted }) => {
+      const signer = getAutoSigner()
+      const address = await signer.getAddress()
+
       // 1. Update the list of incoming consents
       queryClient.setQueryData(
         ['user-incoming-consents', address],

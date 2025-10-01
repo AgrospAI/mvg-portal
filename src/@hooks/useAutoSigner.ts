@@ -4,42 +4,38 @@ import { useCallback, useEffect, useState } from 'react'
 import { Address, useAccount, useSigner } from 'wagmi'
 
 export const useAutoSigner = () => {
-  const { address: accountId } = useAccount()
-  const { data: wagmiSigner } = useSigner() // signer from wagmi
+  const { address } = useAccount()
+  const { data: signer } = useSigner()
   const { autoWallet, isAutomationEnabled } = useAutomation()
 
-  const [signerToUse, setSignerToUse] = useState<Signer | undefined>(
-    wagmiSigner
-  )
-  const [accountIdToUse, setAccountIdToUse] = useState<Address | undefined>(
-    accountId
-  )
+  const [signerToUse, setSignerToUse] = useState<Signer | undefined>(signer)
+  const [accountToUse, setAccountToUse] = useState<Address | undefined>(address)
 
   const getAutoSigner = useCallback((): Signer | undefined => {
     let selectedSigner: Signer | undefined
 
+    const provider = new ethers.providers.Web3Provider(window.ethereum, 'any')
     if (isAutomationEnabled && autoWallet) {
-      const provider = new ethers.providers.Web3Provider(window.ethereum)
       selectedSigner = autoWallet.connect(provider)
     } else {
-      selectedSigner = wagmiSigner
+      selectedSigner = signer
     }
 
     // Update local state for convenience
     setSignerToUse(selectedSigner)
-    setAccountIdToUse(
+    setAccountToUse(
       isAutomationEnabled && autoWallet?.address
         ? (autoWallet.address as Address)
-        : accountId
+        : address
     )
 
     return selectedSigner
-  }, [isAutomationEnabled, autoWallet, wagmiSigner, accountId])
+  }, [isAutomationEnabled, autoWallet, address, signer])
 
   // Update signer whenever dependencies change (network, wallet, automation)
   useEffect(() => {
     getAutoSigner()
   }, [getAutoSigner])
 
-  return { signer: signerToUse, accountId: accountIdToUse, getAutoSigner }
+  return { signer: signerToUse, accountId: accountToUse, getAutoSigner }
 }
