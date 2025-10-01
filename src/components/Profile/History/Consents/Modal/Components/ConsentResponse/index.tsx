@@ -1,5 +1,6 @@
 import Loader from '@components/@shared/atoms/Loader'
 import { useModalContext } from '@components/@shared/Modal'
+import { useAsset } from '@context/Asset'
 import { useCreateConsentResponse } from '@hooks/useUserConsents'
 import Info from '@images/info.svg'
 import { Asset } from '@oceanprotocol/lib'
@@ -10,7 +11,6 @@ import {
   PropsWithChildren,
   ReactNode,
   Suspense,
-  useCallback,
   useEffect,
   useState
 } from 'react'
@@ -18,10 +18,12 @@ import { toast } from 'react-toastify'
 import ConsentStateBadge from '../../../Feed/StateBadge'
 import Actions from '../Actions'
 import { FullRequests, InteractiveRequests } from '../Requests'
+import { SwitchNetwork } from '../SwitchNetwork'
 import { AutoResize } from './AutoResize'
-import styles from './index.module.css'
-import { useAsset } from '@context/Asset'
 import { AutoSave } from './AutoSave'
+import styles from './index.module.css'
+import { useAutoSigner } from '@hooks/useAutoSigner'
+import { useNetwork, useSwitchNetwork } from 'wagmi'
 
 function ConsentResponse({ children }: PropsWithChildren) {
   return <Suspense fallback={<Loader />}>{children}</Suspense>
@@ -99,11 +101,13 @@ interface CachedResponse {
 }
 
 interface InteractiveResponseFormProps {
+  chainId: number
   consent: Consent
   dataset: Asset
   algorithm: Asset
 }
 function InteractiveResponseForm({
+  chainId,
   consent,
   dataset,
   algorithm
@@ -111,7 +115,9 @@ function InteractiveResponseForm({
   const { closeModal } = useModalContext()
   const [isTriedSubmitted, setIsTriedSubmitted] = useState(false)
   const { asset } = useAsset()
-  const { mutate: createConsentResponse } = useCreateConsentResponse(asset)
+  const { mutateAsync: createConsentResponse } = useCreateConsentResponse(asset)
+
+  const { switchNetworkAsync } = useSwitchNetwork({ chainId: asset?.chainId })
 
   const [cachedResponse, setCachedResponse] = useState<CachedResponse>(() => {
     const response = localStorage.getItem('cachedConsentResponse') ?? '{}'
@@ -138,6 +144,7 @@ function InteractiveResponseForm({
       }
     }
   })
+  const isWrongChain = asset?.chainId !== chainId
 
   useEffect(() => {
     localStorage.setItem(
@@ -148,6 +155,7 @@ function InteractiveResponseForm({
 
   return (
     <Formik
+      key={chainId}
       enableReinitialize
       validateOnChange={isTriedSubmitted}
       validateOnBlur={isTriedSubmitted}
@@ -167,8 +175,9 @@ function InteractiveResponseForm({
 
         return errors
       }}
-      onSubmit={({ reason, permitted }, { setSubmitting }) => {
-        createConsentResponse(
+      onSubmit={async ({ reason, permitted }, { setSubmitting }) => {
+        if (chainId !== asset.chainId) await switchNetworkAsync()
+        await createConsentResponse(
           {
             consentId: consent.id,
             reason,
@@ -205,14 +214,23 @@ function InteractiveResponseForm({
               >
                 Permissions:
               </InteractiveRequests>
-              <Actions
-                acceptText="Submit"
-                rejectText="Reject All"
-                handleReject={() =>
-                  setFieldValue('permitted', {}).then(submitForm)
-                }
-                isLoading={isSubmitting || !isValid}
-              />
+              <div className={styles.actions}>
+                <SwitchNetwork
+                  chainId={chainId}
+                  targetNetwork={asset?.chainId}
+                />
+                <Actions
+                  acceptText="Submit"
+                  rejectText="Reject All"
+                  handleAccept={async () => {
+                    await submitForm()
+                  }}
+                  handleReject={() =>
+                    setFieldValue('permitted', {}).then(submitForm)
+                  }
+                  isLoading={isSubmitting || !isValid || isWrongChain}
+                />
+              </div>
             </div>
           </div>
         </Form>

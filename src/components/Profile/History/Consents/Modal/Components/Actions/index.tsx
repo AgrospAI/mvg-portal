@@ -24,7 +24,7 @@ export default function Actions({
           name="action"
           className={`${styles.action} ${styles.reject}`}
           onClick={handleReject}
-          type="submit"
+          type="button"
           disabled={isLoading}
         >
           {rejectText ?? 'Reject'}
@@ -35,7 +35,7 @@ export default function Actions({
         name="action"
         className={`${styles.action} ${styles.confirm}`}
         onClick={handleAccept}
-        type="submit"
+        type="button"
         disabled={isLoading}
       >
         {acceptText ?? 'Accept'}

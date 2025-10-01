@@ -37,3 +37,16 @@
 .error > svg {
   margin: 0;
 }
+
+.requestContainer {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacer) / 2);
+}
+
+.actions {
+  display: flex;
+  column-gap: calc(var(--spacer) / 2);
+  align-items: center;
+  justify-content: flex-end;
+}

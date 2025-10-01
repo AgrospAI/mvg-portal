@@ -4,7 +4,7 @@ import IconCompute from '@images/compute.svg'
 import IconLock from '@images/lock.svg'
 import IconTransaction from '@images/transaction.svg'
 import { isPending } from '@utils/consents/utils'
-import { useAccount } from 'wagmi'
+import { useAccount, useNetwork } from 'wagmi'
 import ConsentResponse from '../Components/ConsentResponse'
 import DetailedAsset from '../Components/DetailedAsset'
 import Reason from '../Components/Reason'
@@ -17,6 +17,8 @@ import AssetProvider from '@context/Asset'
 function InspectConsentsModal() {
   const { address } = useAccount()
   const { currentConsent: consent } = useCurrentConsent()
+
+  const { chain } = useNetwork()
 
   const {
     datasetQuery: { data: dataset },
@@ -32,6 +34,7 @@ function InspectConsentsModal() {
       {isInteractive ? (
         <AssetProvider did={dataset.id}>
           <ConsentResponse.InteractiveResponseForm
+            chainId={chain?.id}
             consent={consent}
             dataset={dataset}
             algorithm={algorithm}
