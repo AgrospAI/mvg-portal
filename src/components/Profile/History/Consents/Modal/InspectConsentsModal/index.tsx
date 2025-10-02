@@ -1,10 +1,13 @@
+import AssetProvider from '@context/Asset'
+import { useAutoSigner } from '@hooks/useAutoSigner'
 import { useCurrentConsent } from '@hooks/useCurrentConsent'
 import { useListConsent } from '@hooks/useListConsent'
 import IconCompute from '@images/compute.svg'
 import IconLock from '@images/lock.svg'
 import IconTransaction from '@images/transaction.svg'
 import { isPending } from '@utils/consents/utils'
-import { useAccount, useNetwork } from 'wagmi'
+import { useEffect, useState } from 'react'
+import { useAccount } from 'wagmi'
 import ConsentResponse from '../Components/ConsentResponse'
 import DetailedAsset from '../Components/DetailedAsset'
 import Reason from '../Components/Reason'
@@ -12,18 +15,26 @@ import { FullRequests } from '../Components/Requests'
 import Sections from '../Components/Sections'
 import Solicitor from '../Components/Solicitor'
 import styles from './index.module.css'
-import AssetProvider from '@context/Asset'
 
 function InspectConsentsModal() {
   const { address } = useAccount()
-  const { currentConsent: consent } = useCurrentConsent()
+  const { signer } = useAutoSigner()
 
-  const { chain } = useNetwork()
+  const [chainId, setChainId] = useState(0)
+  const { currentConsent: consent } = useCurrentConsent()
 
   const {
     datasetQuery: { data: dataset },
     algorithmQuery: { data: algorithm }
   } = useListConsent(consent)
+
+  useEffect(() => {
+    const updateChainId = async () => {
+      if (!signer) return
+      setChainId(await signer.getChainId())
+    }
+    updateChainId()
+  }, [signer])
 
   const isOwner = dataset.nft.owner === address
   const isInteractive = isOwner && isPending(consent)
@@ -34,7 +45,7 @@ function InspectConsentsModal() {
       {isInteractive ? (
         <AssetProvider did={dataset.id}>
           <ConsentResponse.InteractiveResponseForm
-            chainId={chain?.id}
+            chainId={chainId}
             consent={consent}
             dataset={dataset}
             algorithm={algorithm}

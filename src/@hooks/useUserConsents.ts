@@ -3,6 +3,7 @@ import {
   useQueryClient,
   useSuspenseQuery
 } from '@tanstack/react-query'
+import { AssetConsentApplier } from '@utils/assetConsentApplier'
 import {
   createConsent,
   createConsentResponse,
@@ -19,12 +20,12 @@ import {
   UserConsentsData
 } from '@utils/consents/types'
 import { isPending } from '@utils/consents/utils'
-import { Signer } from 'ethers'
 import { useCallback, useEffect } from 'react'
 import { toast } from 'react-toastify'
 import { useAccount } from 'wagmi'
+import { useAbortController } from './useAbortController'
 import { useAutoSigner } from './useAutoSigner'
-import { useConsentUpdater } from './useConsentUpdater'
+import { useCancelToken } from './useCancelToken'
 import { useUserConsentsToken } from './useUserConsentsToken'
 
 export const useUserConsentsAmount = () => {
@@ -126,9 +127,11 @@ export const useDeleteConsentResponse = () => {
 
 export const useCreateConsentResponse = (asset: AssetExtended) => {
   const { mutateAsync: deleteConsentResponse } = useDeleteConsentResponse()
-  const { update } = useConsentUpdater(asset)
-  const { getAutoSigner } = useAutoSigner()
+  const { signer } = useAutoSigner()
   const queryClient = useQueryClient()
+
+  const newCancelToken = useCancelToken()
+  const newAbortSignal = useAbortController()
   useUserConsentsToken()
 
   const revertCallback = useCallback(
@@ -145,7 +148,7 @@ export const useCreateConsentResponse = (asset: AssetExtended) => {
   )
 
   return useMutation({
-    mutationFn: async ({
+    mutationFn: ({
       consentId,
       reason,
       permitted
@@ -153,21 +156,8 @@ export const useCreateConsentResponse = (asset: AssetExtended) => {
       consentId: number
       reason: string
       permitted: PossibleRequests
-    }) => {
-      const consent = await createConsentResponse(consentId, reason, permitted)
-      return await update(consent, getAutoSigner())
-        .then(async (res) => {
-          if (!res) await revertCallback(consentId)
-          return consent
-        })
-        .catch(async (error) => {
-          await revertCallback(consentId, error)
-          return consent
-        })
-    },
-
+    }) => createConsentResponse(consentId, reason, permitted),
     onSuccess: async (newConsent, { consentId, reason, permitted }) => {
-      const signer = getAutoSigner()
       const address = await signer.getAddress()
 
       // 1. Update the list of incoming consents
@@ -200,6 +190,18 @@ export const useCreateConsentResponse = (asset: AssetExtended) => {
           incoming_pending_consents: oldData.incoming_pending_consents - 1
         })
       )
+
+      await AssetConsentApplier(
+        newConsent,
+        signer,
+        newCancelToken,
+        newAbortSignal
+      )
+        .apply(asset)
+        .catch(async (error) => {
+          await revertCallback(consentId)
+          console.error(error)
+        })
     }
   })
 }

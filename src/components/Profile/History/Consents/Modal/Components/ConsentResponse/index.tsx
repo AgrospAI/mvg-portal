@@ -1,6 +1,5 @@
 import Loader from '@components/@shared/atoms/Loader'
 import { useModalContext } from '@components/@shared/Modal'
-import { useAsset } from '@context/Asset'
 import { useCreateConsentResponse } from '@hooks/useUserConsents'
 import Info from '@images/info.svg'
 import { Asset } from '@oceanprotocol/lib'
@@ -22,8 +21,7 @@ import { SwitchNetwork } from '../SwitchNetwork'
 import { AutoResize } from './AutoResize'
 import { AutoSave } from './AutoSave'
 import styles from './index.module.css'
-import { useAutoSigner } from '@hooks/useAutoSigner'
-import { useNetwork, useSwitchNetwork } from 'wagmi'
+import { useAsset } from '@context/Asset'
 
 function ConsentResponse({ children }: PropsWithChildren) {
   return <Suspense fallback={<Loader />}>{children}</Suspense>
@@ -112,12 +110,10 @@ function InteractiveResponseForm({
   dataset,
   algorithm
 }: InteractiveResponseFormProps) {
+  const { asset } = useAsset()
   const { closeModal } = useModalContext()
   const [isTriedSubmitted, setIsTriedSubmitted] = useState(false)
-  const { asset } = useAsset()
   const { mutateAsync: createConsentResponse } = useCreateConsentResponse(asset)
-
-  const { switchNetworkAsync } = useSwitchNetwork({ chainId: asset?.chainId })
 
   const [cachedResponse, setCachedResponse] = useState<CachedResponse>(() => {
     const response = localStorage.getItem('cachedConsentResponse') ?? '{}'
@@ -176,7 +172,6 @@ function InteractiveResponseForm({
         return errors
       }}
       onSubmit={async ({ reason, permitted }, { setSubmitting }) => {
-        if (chainId !== asset.chainId) await switchNetworkAsync()
         await createConsentResponse(
           {
             consentId: consent.id,
@@ -222,9 +217,7 @@ function InteractiveResponseForm({
                 <Actions
                   acceptText="Submit"
                   rejectText="Reject All"
-                  handleAccept={async () => {
-                    await submitForm()
-                  }}
+                  handleAccept={submitForm}
                   handleReject={() =>
                     setFieldValue('permitted', {}).then(submitForm)
                   }

@@ -1,5 +1,4 @@
 import Button from '@components/@shared/atoms/Button'
-import { useAutoSigner } from '@hooks/useAutoSigner'
 import EthIcon from '@images/eth.svg'
 import { useSwitchNetwork } from 'wagmi'
 import styles from './index.module.css'
@@ -13,14 +12,12 @@ export const SwitchNetwork = ({
   chainId,
   targetNetwork
 }: Readonly<SwitchNetworkProps>) => {
-  const { signer } = useAutoSigner()
-  const { switchNetwork } = useSwitchNetwork({ chainId: targetNetwork })
+  const { switchNetwork } = useSwitchNetwork()
 
-  if (!signer) return null
   if (chainId === targetNetwork)
     return (
       <div className={styles.chainMessage}>
-        Correct network
+        Correct network {chainId}
         <EthIcon />
       </div>
     )
@@ -30,8 +27,7 @@ export const SwitchNetwork = ({
       style="text"
       type="button"
       onClick={() => {
-        switchNetwork()
-        // window.location.reload()
+        switchNetwork(targetNetwork)
       }}
       className={styles.button}
     >

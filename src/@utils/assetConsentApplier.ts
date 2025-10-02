@@ -1,13 +1,8 @@
 import { PublisherTrustedAlgorithm } from '@oceanprotocol/lib'
-import {
-  Consent,
-  ConsentResponse,
-  PossibleRequests
-} from '@utils/consents/types'
+import { Consent, PossibleRequests } from '@utils/consents/types'
 import { decodeTokenURI, setNFTMetadataAndTokenURI } from '@utils/nft'
 import { CancelToken } from 'axios'
 import { Signer } from 'ethers'
-import { Address } from 'wagmi'
 import { createTrustedAlgorithmList } from './compute'
 import { extractDidFromUrl } from './consents/utils'
 
@@ -84,32 +79,35 @@ export const Updater = (
 
 export const AssetConsentApplier = (
   consent: Readonly<NonNullable<Consent>>,
-  response: Readonly<NonNullable<ConsentResponse>>,
-  accountId: Readonly<NonNullable<Address>>,
   signer: Readonly<NonNullable<Signer>>,
   newCancelToken: () => CancelToken,
-  newAbortSignal: () => AbortSignal,
-  switchNetworksIfNeeded: () => Promise<void>
+  newAbortSignal: () => AbortSignal
 ) => ({
-  apply: async (asset: AssetExtended): Promise<boolean> => {
-    await switchNetworksIfNeeded()
+  apply: async (asset: AssetExtended): Promise<void> => {
+    const permitted = Object.keys(consent.response.permitted)
+    if (permitted.length === 0) return
 
+    const previousAsset = JSON.stringify(asset)
     await Promise.all(
-      Object.keys(response.permitted)
-        .filter((key) => response.permitted[key])
+      permitted
+        .filter((key) => consent.response.permitted[key])
         .map((key: keyof PossibleRequests) =>
           Updater(consent, newCancelToken).get(key).update(asset)
         )
     )
 
+    // If the underlying asset did not change, do not update the blockchain
+    if (previousAsset === JSON.stringify(asset)) return
+
     const tx = await setNFTMetadataAndTokenURI(
       asset,
-      accountId,
+      await signer.getAddress(),
       signer,
       decodeTokenURI(asset.nft.tokenURI),
       newAbortSignal()
     )
 
-    return tx ? await tx.wait().then(() => true) : false
+    if (!tx || !(await tx.wait()))
+      throw new Error('Failed to execute transaction')
   }
 })
