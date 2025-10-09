@@ -48,7 +48,7 @@ function RequestsList({ dataset, algorithm, handleSubmit }: RequestsListProps) {
         setSubmitting(false)
       }}
     >
-      {({ isSubmitting, isValid }) => (
+      {({ isSubmitting, isValid, submitForm }) => (
         <Form className={styles.form}>
           <AutoResize
             name="reason"
@@ -77,7 +77,11 @@ function RequestsList({ dataset, algorithm, handleSubmit }: RequestsListProps) {
               )}
             </ErrorMessage>
           </InteractiveRequests>
-          <Actions acceptText="Submit" isLoading={!isValid || isSubmitting} />
+          <Actions
+            acceptText="Submit"
+            handleAccept={submitForm}
+            isLoading={!isValid || isSubmitting}
+          />
         </Form>
       )}
     </Formik>
