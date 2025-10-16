@@ -21,6 +21,7 @@ import { ComputeDatasetForm } from './_constants'
 import { useAutomation } from '../../../../@context/Automation/AutomationProvider'
 import TermsAndConditionsCheckbox from '../TermsAndConditionsCheckbox'
 import { useMarketMetadata } from '@context/MarketMetadata'
+import AssetConsents from './Consents/AssetConsents'
 
 export default function FormStartCompute({
   algorithms,

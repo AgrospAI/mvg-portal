@@ -4,7 +4,7 @@
   gap: 0rem;
 }
 
-.requestContainer>p {
+.requestContainer > p {
   margin: 0;
 }
 
@@ -15,14 +15,13 @@
   margin: 0;
 }
 
-.requestList>.requestItem {
+.requestList > .requestItem {
   display: list-item;
   margin-left: var(--spacer);
   text-align: left;
 }
 
-
-.requestItem>* {
+.requestItem > * {
   display: inline;
   gap: 1em;
   margin: 0;

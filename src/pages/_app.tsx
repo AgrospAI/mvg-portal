@@ -54,9 +54,11 @@ function MyApp({ Component, pageProps }: AppProps): ReactElement {
                       <FilterProvider>
                         <QueryClientProvider client={queryClient}>
                           <QueryClientLoadingIndicator />
-                          <App>
-                            <Component {...pageProps} />
-                          </App>
+                          <QueryClientProvider client={queryClient}>
+                            <App>
+                              <Component {...pageProps} />
+                            </App>
+                          </QueryClientProvider>
                         </QueryClientProvider>
                       </FilterProvider>
                     </SearchBarStatusProvider>
