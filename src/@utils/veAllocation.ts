@@ -1,16 +1,16 @@
-import { AllLockedQuery } from '../../src/@types/subgraph/AllLockedQuery'
-import { OwnAllocationsQuery } from '../../src/@types/subgraph/OwnAllocationsQuery'
-import { NftOwnAllocationQuery } from '../../src/@types/subgraph/NftOwnAllocationQuery'
-import { OceanLockedQuery } from '../../src/@types/subgraph/OceanLockedQuery'
-import { gql, OperationResult } from 'urql'
-import { fetchData, getQueryContext } from './subgraph'
-import axios from 'axios'
-import networkdata from '../../content/networks-metadata.json'
 import {
   getNetworkDataById,
   getNetworkType,
   NetworkType
 } from '@hooks/useNetworkMetadata'
+import axios from 'axios'
+import { gql, OperationResult } from 'urql'
+import networkdata from '../../content/networks-metadata.json'
+import { AllLockedQuery } from '../../src/@types/subgraph/AllLockedQuery'
+import { NftOwnAllocationQuery } from '../../src/@types/subgraph/NftOwnAllocationQuery'
+import { OceanLockedQuery } from '../../src/@types/subgraph/OceanLockedQuery'
+import { OwnAllocationsQuery } from '../../src/@types/subgraph/OwnAllocationsQuery'
+import { fetchData, getQueryContext } from './subgraph'
 
 const AllLocked = gql`
   query AllLockedQuery {
