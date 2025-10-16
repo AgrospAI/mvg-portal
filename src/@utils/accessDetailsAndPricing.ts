@@ -1,9 +1,3 @@
-import { gql, OperationResult } from 'urql'
-import { fetchData, getQueryContext } from './subgraph'
-import {
-  TokenPriceQuery,
-  TokenPriceQuery_token as TokenPrice
-} from '../@types/subgraph/TokenPriceQuery'
 import {
   AssetPrice,
   getErrorMessage,
@@ -12,15 +6,21 @@ import {
   ProviderInstance,
   ZERO_ADDRESS
 } from '@oceanprotocol/lib'
-import { getFixedBuyPrice } from './ocean/fixedRateExchange'
 import Decimal from 'decimal.js'
-import {
-  consumeMarketOrderFee,
-  publisherMarketOrderFee,
-  customProviderUrl
-} from '../../app.config'
 import { Signer } from 'ethers'
 import { toast } from 'react-toastify'
+import { gql, OperationResult } from 'urql'
+import {
+  consumeMarketOrderFee,
+  customProviderUrl,
+  publisherMarketOrderFee
+} from '../../app.config'
+import {
+  TokenPriceQuery_token as TokenPrice,
+  TokenPriceQuery
+} from '../@types/subgraph/TokenPriceQuery'
+import { getFixedBuyPrice } from './ocean/fixedRateExchange'
+import { fetchData, getQueryContext } from './subgraph'
 
 const tokenPriceQuery = gql`
   query TokenPriceQuery($datatokenId: ID!, $account: String) {

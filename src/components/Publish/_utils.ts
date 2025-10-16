@@ -1,47 +1,46 @@
 import {
   Config,
+  ConsumerParameter,
+  Credentials,
+  DatatokenCreateParams,
   DDO,
+  DispenserCreationParams,
   FreCreationParams,
   generateDid,
-  DatatokenCreateParams,
-  DispenserCreationParams,
+  getEventFromTx,
   getHash,
   LoggerInstance,
+  Metadata,
   NftCreateData,
   NftFactory,
-  ZERO_ADDRESS,
-  getEventFromTx,
-  ConsumerParameter,
-  Metadata,
   Service,
-  Credentials
+  ZERO_ADDRESS
 } from '@oceanprotocol/lib'
 import { mapTimeoutStringToSeconds, normalizeFile } from '@utils/ddo'
+import { getContainerChecksum } from '@utils/docker'
 import { generateNftCreateData } from '@utils/nft'
 import { getEncryptedFiles } from '@utils/provider'
+import { sanitizeUrl } from '@utils/url'
+import axios from 'axios'
+import { parseEther } from 'ethers/lib/utils'
 import slugify from 'slugify'
+import { ServiceCredential } from 'src/@types/gaia-x/2210/ServiceCredential'
+import {
+  allowedGaiaXRegistryDomains,
+  complianceApiVersion,
+  complianceUri,
+  defaultDatatokenTemplateIndex,
+  defaultTermsAndConditionsUrl,
+  marketFeeAddress,
+  publisherMarketFixedSwapFee,
+  publisherMarketOrderFee
+} from '../../../app.config'
 import { algorithmContainerPresets } from './_constants'
 import {
   FormConsumerParameter,
   FormPublishData,
   MetadataAlgorithmContainer
 } from './_types'
-import {
-  marketFeeAddress,
-  publisherMarketOrderFee,
-  publisherMarketFixedSwapFee,
-  defaultDatatokenTemplateIndex,
-  customProviderUrl,
-  defaultTermsAndConditionsUrl,
-  complianceApiVersion,
-  complianceUri,
-  allowedGaiaXRegistryDomains
-} from '../../../app.config'
-import { sanitizeUrl } from '@utils/url'
-import { getContainerChecksum } from '@utils/docker'
-import axios from 'axios'
-import { ServiceCredential } from 'src/@types/gaia-x/2210/ServiceCredential'
-import { parseEther } from 'ethers/lib/utils'
 
 function getUrlFileExtension(fileUrl: string): string {
   const splittedFileUrl = fileUrl.split('.')

@@ -7,7 +7,7 @@ import {
 import {
   SortDirectionOptions,
   SortTermOptions
-} from 'src/@types/aquarius/SearchQuery'
+} from '../@types/aquarius/SearchQuery'
 import { useCancelToken } from './useCancelToken'
 
 export const useAssets = (

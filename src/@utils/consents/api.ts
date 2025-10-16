@@ -23,7 +23,7 @@ export const API = axios.create({
   }
 })
 
-API.interceptors.request.use((config) => {
+API?.interceptors.request.use((config) => {
   const token = localStorage.getItem('Consents-JWT')
 
   if (token && config.method) {
@@ -37,7 +37,7 @@ export const setTokenRefresher = (fn: () => Promise<string>) => {
   tokenRefresher = fn
 }
 
-API.interceptors.response.use(
+API?.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
     const originalRequest = error.config as AxiosRequestConfig & {
