@@ -25,7 +25,6 @@
       "name": "Faucet",
       "link": "/faucet"
     },
-
     {
       "name": "Log",
       "link": "https://explorer.pontus-x.eu/"
@@ -79,6 +78,14 @@
           "description": "The CIRP dataspace supports an integrated research environment designed to facilitate coordinated experimental activities within the CIRP STC-C community.",
           "image": "cirp.webp",
           "category": "manufacturing",
+          "isLive": true
+        },
+        {
+          "name": "SENSE Cityverse",
+          "link": "https://sense.pontus-x.eu",
+          "description": "SENSE connects cities through immersive VR/AR, data space and metaverse technology.",
+          "image": "sense.webp",
+          "category": "smart city",
           "isLive": true
         },
         {
@@ -160,14 +167,6 @@
           "image": "PSNC.webp",
           "category": "agriculture",
           "isLive": true
-        },
-        {
-          "name": "Car Repair 4.0",
-          "link": "https://portal.autowerkstatt40.org/",
-          "description": "Car Repair 4.0 develops a hub infrastructure that connects car workshops to Gaia-X ecosystems and enables AI-supported fault tracking.",
-          "image": "carrepair40.webp",
-          "category": "AI",
-          "isLive": true
         }
       ]
     },
@@ -191,7 +190,7 @@
   ],
   "announcement": {
     "text": "",
-    "state": ""
+    "state": "success"
   },
   "devPreviewAnnouncement": "You are visiting the SITE-TITLE-PLACEHOLDER Developer Preview. Please note that some functionalities are in beta and may not work as expected. Visit the [SITE-TITLE-PLACEHOLDER portal](SITE-LINK-PLACEHOLDER) instead.",
   "warning": {
