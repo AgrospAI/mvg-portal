@@ -28,19 +28,18 @@ export const VerifiablePresentationSelector = ({
   const handleLeft = useCallback(() => changeVP(-1), [changeVP])
   const handleRight = useCallback(() => changeVP(1), [changeVP])
 
-  const renderButton = (
-    onClick: () => void,
-    actionClass: string,
-    isDisabled: boolean
-  ) => (
-    <button
-      onClick={onClick}
-      className={`${styles.action} ${actionClass} ${
-        isDisabled ? styles.disabled : ''
-      }`}
-    >
-      <Caret />
-    </button>
+  const renderButton = useCallback(
+    (onClick: () => void, actionClass: string, isDisabled: boolean) => (
+      <button
+        onClick={onClick}
+        className={`${styles.action} ${actionClass} ${
+          isDisabled ? styles.disabled : ''
+        }`}
+      >
+        <Caret />
+      </button>
+    ),
+    []
   )
 
   return (
