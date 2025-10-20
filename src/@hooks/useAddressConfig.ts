@@ -16,7 +16,7 @@ export interface UseAddressConfig {
   }
   featured: { assets: string[]; title: string }[]
   verifiedAddresses: {
-    [key: string]: string
+    [key: string]: { name: string; credentials: string[] }
   }
   isAddressWhitelisted: (address: string) => boolean
   isDDOWhitelisted: (ddo: AssetExtended) => boolean

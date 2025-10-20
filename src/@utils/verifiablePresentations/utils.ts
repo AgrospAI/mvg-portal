@@ -4,18 +4,13 @@ import {
   GaiaXVerifiablePresentation
 } from './types'
 
-export const filterVerifiableCredentialType = (
-  verifiablePresentations: GaiaXVerifiablePresentation,
+export const findVCType = (
+  credentials: GaiaXVerifiablePresentation[],
   target: GaiaXCredentialSubjectType
-): Array<GaiaXVerifiableCredential> => {
-  if (
-    !verifiablePresentations ||
-    !verifiablePresentations.verifiableCredential
-  ) {
-    return []
-  }
-
-  return verifiablePresentations.verifiableCredential.filter(
-    ({ credentialSubject }) => credentialSubject.type === target
+): GaiaXVerifiableCredential[] =>
+  credentials.map(
+    (c) =>
+      c.verifiableCredential.filter(
+        (vc) => vc.credentialSubject.type === target
+      )[0]
   )
-}

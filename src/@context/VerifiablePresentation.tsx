@@ -1,15 +1,12 @@
-import { useVerifiableCredentials } from '@hooks/useVerifiableCredentials'
 import { useVerifiablePresentations } from '@hooks/useVerifiablePresentations'
-import { PontusVerifiableCredentialArray } from '@utils/verifiableCredentials/types'
+import { GaiaXVerifiablePresentationArray } from '@utils/verifiablePresentations/types'
 import { type ReactNode, createContext, useContext } from 'react'
 import { Address } from 'wagmi'
 
 interface VerifiablePresentationContextProps {
   address: Address
-  credentials: PontusVerifiableCredentialArray
-  verifiablePresentations: Awaited<
-    ReturnType<typeof useVerifiablePresentations>
-  >
+  credentials: GaiaXVerifiablePresentationArray
+  error: Error
 }
 
 const VerifiablePresentationContext = createContext(
@@ -25,15 +22,14 @@ const VerifiablePresentationProvider = ({
   address,
   children
 }: Readonly<VerifiablePresentationProps>) => {
-  const { data: credentials } = useVerifiableCredentials(address)
-  const verifiablePresentations = useVerifiablePresentations(credentials)
+  const { data: credentials, error } = useVerifiablePresentations(address)
 
   return (
     <VerifiablePresentationContext.Provider
       value={{
         address,
         credentials,
-        verifiablePresentations
+        error
       }}
     >
       {children}

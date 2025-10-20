@@ -16,3 +16,11 @@ export type GaiaXVerifiablePresentationArray = z.infer<
 export type GaiaXCredentialSubjectType = z.infer<
   typeof schemas.GaiaXCredentialType
 >
+
+export type PontusVerifiableCredential = z.infer<
+  typeof schemas.PontusVerifiableCredentialSchema
+>
+
+export type PontusVerifiableCredentialArray = z.infer<
+  typeof schemas.PontusVerifiableCredentialArraySchema
+>

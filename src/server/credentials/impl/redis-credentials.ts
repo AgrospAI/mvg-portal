@@ -2,13 +2,16 @@
 import { container } from '@/server/di/container'
 import IEnvironmentService from '@/server/env/env'
 import { RedisClientOptions, RedisClientType } from '@redis/client'
-import { PontusVerifiableCredentialArraySchema } from '@utils/verifiableCredentials/schemas'
-import { PontusVerifiableCredentialArray } from '@utils/verifiableCredentials/types'
+import {
+  GaiaXVerifiablePresentationSchema,
+  PontusVerifiableCredentialArraySchema
+} from '@utils/verifiablePresentations/schemas'
+import { GaiaXVerifiablePresentationArray } from '@utils/verifiablePresentations/types'
 import { injectable } from 'inversify'
 import { createClient } from 'redis'
 import { Address } from 'wagmi'
 import ICredentialsService from '../credentials'
-import { RedisCredentialsServiceError } from '../errors'
+import { CredentialsServiceError } from '../errors'
 
 @injectable()
 export class RedisCredentialsService implements ICredentialsService {
@@ -25,10 +28,10 @@ export class RedisCredentialsService implements ICredentialsService {
     ])
 
     if (!env.CREDENTIALS_REDIS_URL) {
-      throw new RedisCredentialsServiceError('Missing URL')
+      throw new CredentialsServiceError('Missing URL')
     }
     if (!!env.CREDENTIALS_REDIS_USERNAME !== !!env.CREDENTIALS_REDIS_PASSWORD) {
-      throw new RedisCredentialsServiceError(
+      throw new CredentialsServiceError(
         'Config "CREDENTIALS_REDIS_USERNAME" and "CREDENTIALS_REDIS_PASSWORD" must be both undefined or set'
       )
     }
@@ -72,7 +75,7 @@ export class RedisCredentialsService implements ICredentialsService {
 
   async getAddressCredentials(
     address: Address
-  ): Promise<PontusVerifiableCredentialArray> {
+  ): Promise<GaiaXVerifiablePresentationArray> {
     if (!address) {
       console.error(
         '[RedisCredentialsService] getAddressCredentials called with undefined address'
@@ -90,13 +93,32 @@ export class RedisCredentialsService implements ICredentialsService {
             const result = PontusVerifiableCredentialArraySchema.safeParse([
               data
             ])
-            if (result.success) return result.data
+            if (!result.success) {
+              console.error(
+                '[RedisCredentialsService] Schema validation failed:',
+                result.error
+              )
+              return []
+            }
 
-            console.error(
-              '[RedisCredentialsService] Schema validation failed:',
-              result.error
+            return Promise.all(
+              result.data.map((vp) =>
+                fetch(vp.credentialUrl).then(async (data) => {
+                  const res = await data.json()
+
+                  const parsed =
+                    GaiaXVerifiablePresentationSchema.safeParse(res)
+
+                  if (parsed.success) return parsed.data
+
+                  console.error(
+                    '[RedisCredentialsService] Schema validation failed:',
+                    result.error
+                  )
+                  return []
+                })
+              )
             )
-            return []
           })
           .catch((error) => {
             console.error(

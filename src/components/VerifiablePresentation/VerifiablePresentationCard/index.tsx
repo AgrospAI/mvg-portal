@@ -1,101 +1,87 @@
 import { VerifiableCredential } from '@components/Profile/Header/VerifiableCredential'
 import { useVerifiablePresentationContext } from '@context/VerifiablePresentation'
 import External from '@images/external.svg'
-import { filterVerifiableCredentialType } from '@utils/verifiablePresentations/utils'
+import { findVCType } from '@utils/verifiablePresentations/utils'
 import Link from 'next/link'
+import { useState } from 'react'
 import { Address } from 'wagmi'
+import { VerifiablePresentationCardDescription } from '../VerifiablePresentationLegalAddress'
 import { VerifiablePresentationMessage } from '../VerifiablePresentationMessage'
+import { VerifiablePresentationSelector } from '../VerifiablePresentationSelector/index'
 import { VerifiablePresentationVerification } from '../VerifiablePresentationVerification'
 import styles from './index.module.css'
 
 interface VerifiablePresentationCardProperties {
   address: Address
-  className?: string
 }
 
 export const VerifiablePresentationCard = ({
-  address,
-  className
+  address
 }: VerifiablePresentationCardProperties) => {
-  const { verifiablePresentations } = useVerifiablePresentationContext()
-  if (!verifiablePresentations.length) return <></>
+  const { credentials } = useVerifiablePresentationContext()
+  const [selected, setSelected] = useState(() => {
+    if (!credentials || credentials.length === 0) return 0
+    const idx = credentials.findIndex((c) =>
+      Object.keys(c).includes('verifiableCredential')
+    )
+    return idx >= 0 ? idx : 0
+  })
 
-  const data = verifiablePresentations
-    .filter(({ error }) => !error)
-    .map(({ data }) => data)
+  if (credentials.length === 0 || selected === -1) return null
 
-  if (!data || !data[0] || !data[0].verifiableCredential) {
+  const validCredentials = credentials.filter((c) => c.verifiableCredential)
+  if (validCredentials.length === 0)
     return (
       <VerifiablePresentationMessage variant="warn">
         All found verifiable presentations are faulty
       </VerifiablePresentationMessage>
     )
-  }
 
-  const verifiableCredentials = filterVerifiableCredentialType(
-    data[0],
+  const verifiableCredentials = findVCType(
+    validCredentials,
     'gx:LegalParticipant'
   )
-  if (!verifiableCredentials || !verifiableCredentials[0]) {
+  if (verifiableCredentials.length === 0)
     return (
       <VerifiablePresentationMessage variant="warn">
         Could not find representative information in Verifiable Presentation
       </VerifiablePresentationMessage>
     )
-  }
 
-  const verifiableCredential = verifiableCredentials[0]
-  const legalAddress = verifiableCredential.credentialSubject['gx:legalAddress']
-
-  const legalRegistrationNumberVerifiableCredential =
-    filterVerifiableCredentialType(data[0], 'gx:legalRegistrationNumber')[0]
+  const current = verifiableCredentials[selected]
 
   return (
-    <section className={`${className} ${styles.container}`}>
+    <section className={styles.container}>
       <VerifiableCredential address={address}>
         <span
           className={styles.title}
-          data-full={verifiableCredential.credentialSubject['gx:legalName']}
+          data-full={current?.credentialSubject?.['gx:legalName']}
         >
-          {verifiableCredential.credentialSubject['gx:legalName']}
+          {current?.credentialSubject?.['gx:legalName']}
         </span>
       </VerifiableCredential>
-
-      <div className={styles.descriptions}>
-        <span className={styles.description}>
-          {legalAddress?.['gx:streetAddress']},{' '}
-          {legalAddress?.['gx:postalCode']}, {legalAddress?.['gx:locality']},{' '}
-          {
-            legalRegistrationNumberVerifiableCredential.credentialSubject[
-              'gx:vatID-countryCode'
-            ]
-          }
-        </span>
-
-        <span className={styles.description}>
-          {
-            legalRegistrationNumberVerifiableCredential.credentialSubject[
-              'gx:vatID'
-            ]
-          }
-        </span>
-      </div>
-
+      <VerifiablePresentationCardDescription
+        credentials={verifiableCredentials}
+        selected={selected}
+      />
       <Link
-        href={verifiableCredential.credentialSubject.id}
+        href={current?.credentialSubject?.id ?? ''}
         target="_blank"
         className={styles.link}
       >
-        {verifiableCredential.credentialSubject.id}
+        {current?.credentialSubject?.id}
         <External />
       </Link>
-      {verifiablePresentations && verifiablePresentations[0]?.data && (
-        <VerifiablePresentationVerification
-          verifiablePresentation={verifiablePresentations[0]?.data}
-          index={0}
-          className={styles.credentials}
-        />
-      )}
+      <VerifiablePresentationVerification
+        verifiablePresentation={credentials[selected]}
+        index={selected}
+        className={styles.credentials}
+      />
+      <VerifiablePresentationSelector
+        selected={selected}
+        setSelected={setSelected}
+        max={validCredentials.length}
+      />
     </section>
   )
 }

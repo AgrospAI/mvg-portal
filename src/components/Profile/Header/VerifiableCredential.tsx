@@ -1,4 +1,4 @@
-import { useVerifiableCredentials } from '@hooks/useVerifiableCredentials'
+import { useVerifiablePresentations } from '@hooks/useVerifiablePresentations'
 import PatchCheck from '@images/patch_check.svg'
 import Link from 'next/link'
 import { Address } from 'wagmi'
@@ -14,7 +14,7 @@ export const VerifiableCredential = ({
   address,
   children
 }: Readonly<VerifiableCredentialProps>) => {
-  const { data: credentials } = useVerifiableCredentials(address)
+  const { data: credentials } = useVerifiablePresentations(address)
 
   if (!address || credentials.length === 0) return
 

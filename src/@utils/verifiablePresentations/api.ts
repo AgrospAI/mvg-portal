@@ -1,14 +1,24 @@
+import { GaiaXVerifiablePresentationArray } from '@utils/verifiablePresentations/types'
 import axios from 'axios'
-import { GaiaXVerifiablePresentationSchema } from './schemas'
-import { GaiaXVerifiablePresentation } from './types'
+import { Address } from 'wagmi'
+import { CredentialRoutes } from './routes'
 
-export const getVerifiablePresentation = (url: string) =>
-  url
-    ? axios
-        .get(url)
-        .then(({ data }) => GaiaXVerifiablePresentationSchema.parse(data))
-        .catch((error) => {
-          console.error(error)
-          throw error
+const API = axios.create({
+  baseURL: '/api',
+  timeout: 2000
+})
+
+export const getVerifiablePresentations = async (
+  address: Address,
+  signal?: AbortSignal
+): Promise<GaiaXVerifiablePresentationArray> =>
+  address
+    ? API.get(CredentialRoutes.GetPresentation(address), {
+        signal
+      })
+        .then(({ data }) => data)
+        .catch((err) => {
+          console.error('Error fetching verifiable credentials', err)
+          return []
         })
-    : Promise.resolve({} as GaiaXVerifiablePresentation)
+    : []

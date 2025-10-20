@@ -1,13 +1,39 @@
-import { PontusVerifiableCredentialArray } from '@utils/verifiableCredentials/types'
+'use server'
 import { Address } from 'abitype'
 import { injectable } from 'inversify'
 import ICredentialsService from '../credentials'
+
+import { GaiaXVerifiablePresentationArray } from '@utils/verifiablePresentations/types'
+import addresses from 'pontusxAddresses.json'
+import { CredentialsServiceError } from '../errors'
+import { GaiaXVerifiablePresentationSchema } from '@utils/verifiablePresentations/schemas'
 
 @injectable()
 export class LocalCredentialsService implements ICredentialsService {
   getAddressCredentials(
     address: Address
-  ): Promise<PontusVerifiableCredentialArray> {
-    throw new Error('Method not implemented.')
+  ): Promise<GaiaXVerifiablePresentationArray> {
+    const entry = addresses[address]
+
+    if (!entry) throw new CredentialsServiceError()
+
+    return Promise.all(
+      entry.credentials.map((url: string) =>
+        fetch(url, { method: 'GET' }).then(async (data) => {
+          const res = await data.json()
+
+          if (!res) throw new CredentialsServiceError()
+
+          const result = GaiaXVerifiablePresentationSchema.safeParse(res)
+          if (result.success) return result.data
+
+          console.error(
+            '[LocalCredentialsService] Schema validation failed:',
+            result.error
+          )
+          return []
+        })
+      )
+    )
   }
 }

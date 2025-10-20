@@ -1,1 +1,1 @@
-export class RedisCredentialsServiceError extends Error {}
+export class CredentialsServiceError extends Error {}

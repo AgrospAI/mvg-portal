@@ -28,17 +28,10 @@ export default function Account({
   const { autoWalletAddress } = useAutomation()
   const { verifiedAddresses } = useAddressConfig()
 
-  function getAddressKey(): string {
-    const addressKey = Object.keys(verifiedAddresses).find(
-      (key) => key.toLowerCase() === accountId?.toLowerCase()
-    )
-    return addressKey || ''
-  }
-
   const renderName = () => {
     return (
       <h3 className={styles.name}>
-        {verifiedAddresses?.[getAddressKey()] || accountTruncate(accountId)}{' '}
+        {verifiedAddresses?.[accountId]?.name || accountTruncate(accountId)}{' '}
         <QueryErrorResetBoundary>
           {({ reset }) => (
             <ErrorBoundary

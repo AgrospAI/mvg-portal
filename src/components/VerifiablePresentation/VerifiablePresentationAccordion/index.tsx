@@ -6,7 +6,7 @@ import { VerifiablePresentationTitle } from '../VerifiablePresentationTitle/inde
 import { VerifiablePresentation } from '..'
 
 export const VerifiablePresentationAccordion = () => {
-  const { verifiablePresentations } = useVerifiablePresentationContext()
+  const { credentials, error } = useVerifiablePresentationContext()
   const refs = useRef<(HTMLElement | null)[]>([])
 
   const openCallback = (index: number) => {
@@ -18,7 +18,7 @@ export const VerifiablePresentationAccordion = () => {
     }, 0)
   }
 
-  if (verifiablePresentations.length === 0)
+  if (credentials.length === 0)
     return (
       <VerifiablePresentationMessage variant="info">
         No verifiable credentials found.
@@ -27,7 +27,7 @@ export const VerifiablePresentationAccordion = () => {
 
   return (
     <ExcludingAccordion>
-      {verifiablePresentations.map(({ data, error }, index) => (
+      {credentials.map((cred, index) => (
         <>
           {error ? (
             <VerifiablePresentationMessage variant="warn">
@@ -41,11 +41,11 @@ export const VerifiablePresentationAccordion = () => {
                 ref={(el) => (refs.current[index] = el)}
                 openCallback={() => openCallback(index)}
               >
-                <VerifiablePresentationTitle verifiablePresentation={data} />
+                <VerifiablePresentationTitle verifiablePresentation={cred} />
               </ExcludingAccordion.Trigger>
               <ExcludingAccordion.Content index={index}>
                 <VerifiablePresentation
-                  verifiablePresentation={data}
+                  verifiablePresentation={cred}
                   index={index}
                 />
               </ExcludingAccordion.Content>

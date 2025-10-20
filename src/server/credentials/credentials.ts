@@ -1,11 +1,11 @@
 'use server'
-import { PontusVerifiableCredentialArray } from '@utils/verifiableCredentials/types'
+import { GaiaXVerifiablePresentationArray } from '@utils/verifiablePresentations/types'
 import { Address } from 'wagmi'
 
 interface ICredentialsService {
   getAddressCredentials(
     address: Address
-  ): Promise<PontusVerifiableCredentialArray>
+  ): Promise<GaiaXVerifiablePresentationArray>
 }
 
 export default ICredentialsService

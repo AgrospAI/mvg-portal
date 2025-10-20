@@ -1,13 +1,15 @@
-import { useSuspenseQueries } from '@tanstack/react-query'
-import { getVerifiablePresentation } from '@utils/verifiablePresentations/api'
-import { PontusVerifiableCredentialArray } from '../@utils/verifiableCredentials/types'
+import { useSuspenseQuery } from '@tanstack/react-query'
+import { getVerifiablePresentations } from '@utils/verifiablePresentations/api'
+import { Address } from 'wagmi'
 
-export const useVerifiablePresentations = (
-  credentials: PontusVerifiableCredentialArray
-) =>
-  useSuspenseQueries({
-    queries: credentials.map(({ credentialUrl }) => ({
-      queryKey: ['verifiable-presentation', credentialUrl],
-      queryFn: async () => getVerifiablePresentation(credentialUrl)
-    }))
+export const useVerifiablePresentations = (address: Address) => {
+  const { data, error } = useSuspenseQuery({
+    queryKey: ['address-credentials', address],
+    queryFn: async ({ signal }) => getVerifiablePresentations(address, signal)
   })
+
+  return {
+    data,
+    error
+  }
+}
