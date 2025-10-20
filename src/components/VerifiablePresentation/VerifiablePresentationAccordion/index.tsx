@@ -4,6 +4,7 @@ import { useVerifiablePresentationContext } from '@context/VerifiablePresentatio
 import { useRef } from 'react'
 import { VerifiablePresentationTitle } from '../VerifiablePresentationTitle/index'
 import { VerifiablePresentation } from '..'
+import styles from './index.module.css'
 
 export const VerifiablePresentationAccordion = () => {
   const { credentials, error } = useVerifiablePresentationContext()
@@ -26,7 +27,7 @@ export const VerifiablePresentationAccordion = () => {
     )
 
   return (
-    <ExcludingAccordion>
+    <ExcludingAccordion className={styles.accordion}>
       {credentials.map((cred, index) => (
         <>
           {error ? (

@@ -537,7 +537,6 @@
   "0xD999bAaE98AC5246568FD726be8832c49626867D": {
     "name": "Universitat de Lleida (UdL)",
     "credentials": [
-      "https://compliance.agrospai.udl.cat/.well-known/UdL.vp.json",
       "https://compliance.agrospai.udl.cat/.well-known/UdL.vp.json"
     ]
   },

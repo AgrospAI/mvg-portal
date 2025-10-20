@@ -20,11 +20,13 @@ const ExcludingAccordionContext = createContext(
 interface ExcludingAccordionProviderProps {
   startingOpenIndex?: number
   children: ReactNode
+  className?: string
 }
 
 function ExcludingAccordionProvider({
   startingOpenIndex,
-  children
+  children,
+  className
 }: Readonly<ExcludingAccordionProviderProps>) {
   const [openIndex, setOpenIndex] = useState(startingOpenIndex ?? 0)
 
@@ -45,7 +47,7 @@ function ExcludingAccordionProvider({
         triggerCallback
       }}
     >
-      {children}
+      <div className={className}>{children}</div>
     </ExcludingAccordionContext.Provider>
   )
 }
