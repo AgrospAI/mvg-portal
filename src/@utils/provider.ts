@@ -5,7 +5,6 @@ import {
   ComputeAlgorithm,
   ComputeAsset,
   ComputeEnvironment,
-  downloadFileBrowser,
   FileInfo,
   Ipfs,
   LoggerInstance,
@@ -232,6 +231,33 @@ export async function getFileInfo(
     }
   }
   return response
+}
+
+async function getFileNameFromUrl(url: string): Promise<string> {
+  try {
+    const response = await fetch(url, { method: 'HEAD' }) // Only headers
+    const contentDisposition = response.headers.get('content-disposition')
+    if (contentDisposition) {
+      const match = contentDisposition.match(
+        /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/
+      )
+      if (match && match[1]) return match[1].replace(/['"]/g, '')
+    }
+  } catch (err) {
+    console.warn('Could not fetch filename from headers', err)
+  }
+  // Fallback: take last part of URL
+  return url.split('/').pop()?.split('?')[0] || 'file'
+}
+
+async function downloadFileBrowser(url: string) {
+  const a = document.createElement('a')
+  a.href = url
+  const fileName = await getFileNameFromUrl(url)
+  a.setAttribute('download', fileName)
+  document.body.appendChild(a)
+  a.click()
+  a.remove()
 }
 
 export async function downloadFile(

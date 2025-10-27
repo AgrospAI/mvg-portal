@@ -1,11 +1,9 @@
-import { ReactElement, useEffect, useState } from 'react'
-import FileIcon from '@shared/FileIcon'
-import Price from '@shared/Price'
+import Button from '@components/@shared/atoms/Button'
+import SuccessConfetti from '@components/@shared/SuccessConfetti'
 import { useAsset } from '@context/Asset'
-import ButtonBuy from '../ButtonBuy'
-import { secondsToString } from '@utils/ddo'
-import styles from './index.module.css'
-import AlgorithmDatasetsListForCompute from '../Compute/AlgorithmDatasetsListForCompute'
+import { useMarketMetadata } from '@context/MarketMetadata'
+import { useIsMounted } from '@hooks/useIsMounted'
+import useNetworkMetadata from '@hooks/useNetworkMetadata'
 import {
   AssetPrice,
   FileInfo,
@@ -13,34 +11,35 @@ import {
   UserCustomParameters,
   ZERO_ADDRESS
 } from '@oceanprotocol/lib'
-import { order } from '@utils/order'
-import { downloadFile } from '@utils/provider'
-import { getOrderFeedback } from '@utils/feedback'
+import Alert from '@shared/atoms/Alert'
+import Loader from '@shared/atoms/Loader'
+import FileIcon from '@shared/FileIcon'
+import Price from '@shared/Price'
 import {
   getAvailablePrice,
   getOrderPriceAndFees
 } from '@utils/accessDetailsAndPricing'
+import { secondsToString } from '@utils/ddo'
+import { getOrderFeedback } from '@utils/feedback'
+import { order } from '@utils/order'
+import { downloadFile } from '@utils/provider'
+import { Signer } from 'ethers'
+import { Form, Formik, useFormikContext } from 'formik'
+import { ReactElement, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
-import { useIsMounted } from '@hooks/useIsMounted'
-import { useMarketMetadata } from '@context/MarketMetadata'
-import Alert from '@shared/atoms/Alert'
-import Loader from '@shared/atoms/Loader'
 import { useAccount } from 'wagmi'
-import useNetworkMetadata from '@hooks/useNetworkMetadata'
+import content from '../../../../../content/pages/startDownloadDataset.json'
+import ButtonBuy from '../ButtonBuy'
+import AlgorithmDatasetsListForCompute from '../Compute/AlgorithmDatasetsListForCompute'
+import WhitelistIndicator from '../Compute/WhitelistIndicator'
 import ConsumerParameters, {
   parseConsumerParameterValues
 } from '../ConsumerParameters'
-import { Field, Form, Formik, useFormikContext } from 'formik'
-import { getDownloadValidationSchema } from './_validation'
 import { getDefaultValues } from '../ConsumerParameters/FormConsumerParameters'
-import WhitelistIndicator from '../Compute/WhitelistIndicator'
-import { Signer } from 'ethers'
-import SuccessConfetti from '@components/@shared/SuccessConfetti'
-import Input from '@components/@shared/FormInput'
-import ContractingProvider, { PAYMENT_MODES } from './ContractingProvider'
-import Button from '@components/@shared/atoms/Button'
 import TermsAndConditionsCheckbox from '../TermsAndConditionsCheckbox'
-import content from '../../../../../content/pages/startDownloadDataset.json'
+import { getDownloadValidationSchema } from './_validation'
+import ContractingProvider, { PAYMENT_MODES } from './ContractingProvider'
+import styles from './index.module.css'
 
 export default function Download({
   accountId,
@@ -79,6 +78,7 @@ export default function Download({
   const [hasDatatoken, setHasDatatoken] = useState(false)
   const [statusText, setStatusText] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [isDownloading, setIsDownloading] = useState(false)
   const [isPriceLoading, setIsPriceLoading] = useState(false)
   const [isOwned, setIsOwned] = useState(false)
   const [validOrderTx, setValidOrderTx] = useState('')
@@ -158,8 +158,10 @@ export default function Download({
      * - if user balance is not sufficient
      * - if user has no datatokens
      * - if user is not whitelisted or blacklisted
+     * - if the asset is being downloaded
      */
     const isDisabled =
+      isDownloading ||
       !asset?.accessDetails.isPurchasable ||
       !isAssetNetwork ||
       ((!isBalanceSufficient || !isAssetNetwork) &&
@@ -178,7 +180,8 @@ export default function Download({
     isOwned,
     isUnsupportedPricing,
     orderPriceAndFees,
-    isAccountIdWhitelisted
+    isAccountIdWhitelisted,
+    isDownloading
   ])
 
   function redirectToSaasUrl() {
@@ -207,7 +210,16 @@ export default function Download({
           )[3]
         )
 
-        await downloadFile(signer, asset, accountId, validOrderTx, dataParams)
+        setIsDownloading(true)
+        try {
+          // Ensure the download takes at least 3 seconds
+          await Promise.all([
+            downloadFile(signer, asset, accountId, validOrderTx, dataParams),
+            new Promise((resolve) => setTimeout(resolve, 3000))
+          ])
+        } finally {
+          setIsDownloading(false)
+        }
       } else {
         setStatusText(
           getOrderFeedback(
