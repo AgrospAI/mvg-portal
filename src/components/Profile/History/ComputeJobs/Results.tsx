@@ -1,6 +1,5 @@
 import {
   ComputeResultType,
-  downloadFileBrowser,
   getErrorMessage,
   LoggerInstance,
   Provider
@@ -17,6 +16,7 @@ import { useAccount, useSigner } from 'wagmi'
 import { toast } from 'react-toastify'
 import { prettySize } from '@components/@shared/FormInput/InputElement/FilesInput/utils'
 import { useAutomation } from '../../../../@context/Automation/AutomationProvider'
+import { downloadFileBrowser } from '@utils/provider'
 
 export default function Results({
   job

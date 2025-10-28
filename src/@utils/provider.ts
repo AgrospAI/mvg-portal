@@ -250,7 +250,7 @@ async function getFileNameFromUrl(url: string): Promise<string> {
   return url.split('/').pop()?.split('?')[0] || 'file'
 }
 
-async function downloadFileBrowser(url: string) {
+export async function downloadFileBrowser(url: string) {
   const a = document.createElement('a')
   a.href = url
   const fileName = await getFileNameFromUrl(url)
