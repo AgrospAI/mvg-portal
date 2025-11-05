@@ -27,7 +27,7 @@ const chains = [
   },
   {
     chainId: 32457,
-    isDefault: true,
+    isDefault: false,
     isCustom: true,
     network: 'pontusx-testnet',
     oceanTokenSymbol: 'OCEAN',
@@ -47,6 +47,53 @@ const chains = [
     nodeUri: 'https://rpc.test.pontus-x.eu',
     subgraphUri: 'https://subgraph.test.pontus-x.eu',
     explorerUri: 'https://explorer.pontus-x.eu/pontusx/test'
+  },
+  {
+    chainId: 8996,
+    isDefault: true,
+    isCustom: true,
+    network: 'development',
+    oceanTokenSymbol: 'OCEAN',
+    oceanTokenAddress: '0xB2106512Eb5580CEC30cf1e7Fe6b9719e603386e',
+    nftFactoryAddress: '0x27658bB25Eb64485092E6d223fFA84E829270CE9',
+    fixedRateExchangeAddress: '0xa8C01293358F5cbbEB690222C888221A6eef0E4B',
+    dispenserAddress: '0x716bf3c04DdE3474eFf0533D93483b1709C3642c',
+    opfCommunityFeeCollector: '0x62be228dA1E5f874EE5d6A81028f87f9F107641B',
+    startBlock: 0,
+    transactionBlockTimeout: 50,
+    transactionConfirmationBlocks: 1,
+    transactionPollingTimeout: 750,
+    gasFeeMultiplier: 1.1,
+    // Will only work with dockerized app
+    providerUri: 'http://host.docker.internal:8030',
+    providerAddress: '0xe2DD09d719Da89e5a3D0F2549c7E24566e947260',
+    metadataCacheUri: 'http://host.docker.internal:10000',
+    nodeUri: 'http://host.docker.internal:8545',
+    subgraphUri: 'http://host.docker.internal:9000',
+    explorerUri: 'http://host.docker.internal:25000'
+  },
+  {
+    chainId: 11155111,
+    isDefault: true,
+    isCustom: true,
+    network: 'sepolia-test',
+    oceanTokenSymbol: 'ETH',
+    oceanTokenAddress: '0x1B083D8584dd3e6Ff37d04a6e7e82b5F622f3985',
+    nftFactoryAddress: '0x9D6F7e4B5E655F4bba7c9BAdc466Fc35d6A3E3f8',
+    fixedRateExchangeAddress: '0x69B71C7991B9A8479Fd21a8A06C2E98251B27B7D',
+    dispenserAddress: '0x25B5Cb14A7C4B5D814B77f8Ea4e12Ab7f22d1b60',
+    opfCommunityFeeCollector: '0x0000000000000000000000000000000000000000',
+    startBlock: 0,
+    transactionBlockTimeout: 50,
+    transactionConfirmationBlocks: 1,
+    transactionPollingTimeout: 750,
+    gasFeeMultiplier: 1.1,
+    providerUri: 'https://v4.provider.sepolia.oceanprotocol.com',
+    providerAddress: '0x0000000000000000000000000000000000000000',
+    metadataCacheUri: 'https://v4.aquarius.oceanprotocol.com',
+    nodeUri: 'http://localhost:8545',
+    subgraphUri: 'https://v4.subgraph.sepolia.oceanprotocol.com',
+    explorerUri: 'https://sepolia.etherscan.io'
   }
 ]
 

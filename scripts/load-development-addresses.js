@@ -12,13 +12,9 @@ function getLocalAddresses() {
   return data.development
 }
 
-function updateEnvVariable(key, value) {
-  fs.readFile('.env', 'utf8', (err, data) => {
-    if (err) {
-      console.error(err)
-      return
-    }
-
+async function updateEnvVariable(key, value) {
+  try {
+    const data = await fs.promises.readFile('.env', 'utf8')
     const lines = data.split('\n')
 
     let keyExists = false
@@ -36,41 +32,40 @@ function updateEnvVariable(key, value) {
     }
 
     const updatedContent = lines.join('\n')
-    fs.writeFile('.env', updatedContent, 'utf8', (err) => {
-      if (err) {
-        console.error(err)
-        return
-      }
-      console.log(
-        `Successfully ${
-          keyExists ? 'updated' : 'added'
-        } the ${key} environment variable.`
-      )
-    })
-  })
+    await fs.promises.writeFile('.env', updatedContent, 'utf8')
+    console.log(
+      `Successfully ${
+        keyExists ? 'updated' : 'added'
+      } the ${key} environment variable.`
+    )
+  } catch (err) {
+    console.error(err)
+    throw err
+  }
 }
 
-const addresses = getLocalAddresses()
-updateEnvVariable('NEXT_PUBLIC_NFT_FACTORY_ADDRESS', addresses.ERC721Factory)
-updateEnvVariable(
-  'NEXT_PUBLIC_OPF_COMMUNITY_FEE_COLECTOR',
-  addresses.OPFCommunityFeeCollector
-)
-updateEnvVariable(
-  'NEXT_PUBLIC_FIXED_RATE_EXCHANGE_ADDRESS',
-  addresses.FixedPrice
-)
-updateEnvVariable('NEXT_PUBLIC_DISPENSER_ADDRESS', addresses.Dispenser)
-updateEnvVariable('NEXT_PUBLIC_OCEAN_TOKEN_ADDRESS', addresses.Ocean)
-updateEnvVariable('NEXT_PUBLIC_MARKET_DEVELOPMENT', true)
-updateEnvVariable(
-  '#NEXT_PUBLIC_PROVIDER_URL',
-  '"http://127.0.0.1:8030" # only for mac'
-)
-updateEnvVariable(
-  `#NEXT_PUBLIC_SUBGRAPH_URI',"http://127.0.0.1:9000" # only for mac`
-)
-updateEnvVariable(
-  '#NEXT_PUBLIC_METADATACACHE_URI',
-  '"http://127.0.0.1:5000" # only for mac'
-)
+async function main() {
+  const addresses = getLocalAddresses()
+
+  const updates = {
+    NEXT_PUBLIC_NFT_FACTORY_ADDRESS: addresses.ERC721Factory,
+    NEXT_PUBLIC_OPF_COMMUNITY_FEE_COLECTOR: addresses.OPFCommunityFeeCollector,
+    NEXT_PUBLIC_FIXED_RATE_EXCHANGE_ADDRESS: addresses.FixedPrice,
+    NEXT_PUBLIC_DISPENSER_ADDRESS: addresses.Dispenser,
+    NEXT_PUBLIC_OCEAN_TOKEN_ADDRESS: addresses.Ocean,
+    NEXT_PUBLIC_MARKET_DEVELOPMENT: true,
+    NEXT_PUBLIC_PROVIDER_URL: 'http://host.docker.internal:8030', // Only for macOS
+    NEXT_PUBLIC_SUBGRAPH_URI: 'http://host.docker.internal:9000', // Only for macOS
+    NEXT_PUBLIC_METADATACACHE_URI: 'http://host.docker.internal:10000' // Only for macOS
+  }
+
+  for (const [key, value] of Object.entries(updates))
+    await updateEnvVariable(key, value)
+
+  console.log('All environment variables correctly updated')
+}
+
+main().catch((err) => {
+  console.error('Error running script:', err)
+  process.exit(1)
+})

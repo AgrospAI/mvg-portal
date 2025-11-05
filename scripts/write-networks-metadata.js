@@ -2,7 +2,7 @@
 'use strict'
 
 const bargeNetwork = {
-  name: 'Ethereum Barge',
+  name: 'Ethereum Barge Testnet',
   chain: 'ETH',
   icon: 'ethereum',
   rpc: ['http://127.0.0.1:8545'],
@@ -29,13 +29,14 @@ const { getCustomChainIds } = require('../chains.config')
 const chainDataUrl = 'https://chainid.network/chains.json'
 
 axios(chainDataUrl).then((response) => {
-  response.data.push(bargeNetwork)
   // const networks ={...response.data, ...bargeNetwork}
+  // response.data.push(bargeNetwork)
 
   // avoid having 2 nodes with the same chainId
   const filteredData = response.data.filter(
     (node) => !getCustomChainIds().includes(node.chainId)
   )
+  filteredData.push(bargeNetwork)
 
   // add custom networks metadata to the list
   const fullNetworksMetadata = filteredData.concat(networksMetadata)

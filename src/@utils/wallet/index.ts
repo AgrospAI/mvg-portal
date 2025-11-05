@@ -35,6 +35,7 @@ function getProvider() {
   })
 }
 const supportedChains = getSupportedChains(chainIdsSupported)
+
 const { chains, provider, webSocketProvider } = configureChains(
   supportedChains,
   [getProvider()]

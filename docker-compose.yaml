@@ -1,0 +1,8 @@
+services:
+  local:
+    build:
+      context: .
+      dockerfile: Dockerfile-local
+    command: ['npm', 'run', 'start-local']
+    volumes:
+      - ./:/app:cached
