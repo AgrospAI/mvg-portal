@@ -3269,5 +3269,11 @@
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/CONAFE.vp.json"
     ]
+  },
+  "0x5993Ff26108bAd4b66498DF92B5cDBC297708496": {
+    "name": "Espacio SOA SLU",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/EspacioSOA.vp.json"
+    ]
   }
 }
