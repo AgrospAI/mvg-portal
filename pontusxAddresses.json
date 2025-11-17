@@ -3275,5 +3275,17 @@
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/EspacioSOA.vp.json"
     ]
+  },
+  "0x07e393F4F2B48C81409732fdBc87120D254CfB02": {
+    "name": "Höhere Bundeslehr- und Forschungsanstalt für Landwirtschaft Raumberg-Gumpenstein",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Raumberg-Gumpenstein.vp.json"
+    ]
+  },
+  "0xE8Cbc1fe884059Fe169AFe877D8a8617AdEb7bB7": {
+    "name": "Fachhochschule Wiener Neustadt GmbH",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/FHWN.vp.json"
+    ]
   }
 }
