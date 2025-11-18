@@ -29,7 +29,7 @@ export function getOceanConfig(network: string | number): Config {
   const filterBy = typeof network === 'string' ? 'network' : 'chainId'
   const customConfig = chains.find((c) => c[filterBy] === network)
 
-  if (getCustomChainIds().includes(network as number))
+  if (network !== 8996 && getCustomChainIds().includes(network as number))
     return customConfig as Config
 
   let config = new ConfigHelper().getConfig(

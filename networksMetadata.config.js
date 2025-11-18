@@ -51,7 +51,7 @@ const networksMetadata = [
     networkId: 8996,
     name: 'Local Network',
     chain: 'Ganache',
-    rpc: ['http://localhost:8545'],
+    rpc: ['http://ganache:8545'],
     faucets: [],
     nativeCurrency: {
       name: 'ETH',
@@ -63,33 +63,33 @@ const networksMetadata = [
     explorers: [
       {
         name: 'Local Network Explorer',
-        url: 'http://localhost',
-        standard: ''
-      }
-    ]
-  },
-  {
-    chainId: 11155111,
-    networkId: 11155111,
-    name: 'Sepolia Testnet',
-    chain: 'Sepolia',
-    rpc: ['wss://sepolia.drpc.org'],
-    faucets: [],
-    nativeCurrency: {
-      name: 'ETH',
-      symbol: 'ETH',
-      decimals: 18
-    },
-    infoURL: 'https://docs.pontus-x.eu',
-    shortName: 'Sepolia',
-    explorers: [
-      {
-        name: 'Sepolia Explorer',
-        url: 'https://sepolia.etherscan.io',
+        url: 'http://ganache',
         standard: ''
       }
     ]
   }
+  // {
+  //   chainId: 11155111,
+  //   networkId: 11155111,
+  //   name: 'Sepolia Testnet',
+  //   chain: 'Sepolia',
+  //   rpc: ['wss://sepolia.drpc.org'],
+  //   faucets: [],
+  //   nativeCurrency: {
+  //     name: 'ETH',
+  //     symbol: 'ETH',
+  //     decimals: 18
+  //   },
+  //   infoURL: 'https://docs.pontus-x.eu',
+  //   shortName: 'Sepolia',
+  //   explorers: [
+  //     {
+  //       name: 'Sepolia Explorer',
+  //       url: 'https://sepolia.etherscan.io',
+  //       standard: ''
+  //     }
+  //   ]
+  // }
 ]
 
 module.exports = {

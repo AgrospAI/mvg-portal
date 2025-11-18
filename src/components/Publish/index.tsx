@@ -17,7 +17,8 @@ import {
   ProviderInstance,
   LoggerInstance,
   DDO,
-  getErrorMessage
+  getErrorMessage,
+  LogLevel
 } from '@oceanprotocol/lib'
 import { getOceanConfig } from '@utils/ocean'
 import { validationSchema } from './_validation'
@@ -26,6 +27,8 @@ import { setNFTMetadataAndTokenURI } from '@utils/nft'
 import { customProviderUrl } from '../../../app.config'
 import { useAccount, useNetwork, useSigner } from 'wagmi'
 import { useAutomation } from '../../@context/Automation/AutomationProvider'
+
+LoggerInstance.setLevel(LogLevel.Verbose)
 
 export default function PublishPage({
   content
@@ -107,7 +110,7 @@ export default function PublishPage({
 
       return { erc721Address, datatokenAddress }
     } catch (error) {
-      LoggerInstance.error('[publish] error', error.message)
+      LoggerInstance.error('[publish] error 1', error.message)
       if (error.message.length > 65) {
         error.message = 'No Token created. Please try again.'
       }
@@ -183,7 +186,7 @@ export default function PublishPage({
       }))
       return { ddo, ddoEncrypted }
     } catch (error) {
-      LoggerInstance.error('[publish] error', error.message)
+      LoggerInstance.error('[publish] error 2', error.message)
       setFeedback((prevState) => ({
         ...prevState,
         '2': {
@@ -242,7 +245,7 @@ export default function PublishPage({
 
       return { did: ddo.id }
     } catch (error) {
-      LoggerInstance.error('[publish] error', error.message)
+      LoggerInstance.error('[publish] error 3', error.message)
       setFeedback((prevState) => ({
         ...prevState,
         '3': {

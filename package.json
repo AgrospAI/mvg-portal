@@ -6,7 +6,8 @@
   "homepage": "https://pontus-x.eu",
   "scripts": {
     "start": "npm run pregenerate && next dev -p 8000",
-    "start-local": "npm run copy:contracts && npm run set-barge-env && npm run pregenerate && next dev",
+    "start-local": "npm run set-barge-env && npm run pregenerate && next dev",
+    "docker-entrypoint": "npm run set-barge-env && node server.js",
     "build": "npm run pregenerate && next build",
     "build:static": "npm run build && next export",
     "serve": "serve -s public/",

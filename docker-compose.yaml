@@ -1,8 +1,18 @@
 services:
   local:
-    build:
-      context: .
-      dockerfile: Dockerfile-local
-    command: ['npm', 'run', 'start-local']
+    build: .
+    command: ['npm', 'run', 'docker-entrypoint']
     volumes:
-      - ./:/app:cached
+      - ./scripts:/app/scripts:ro
+      - ./package.json:/app/package.json:ro
+      - .env:/app/.env:rw
+      - ~/.ocean/ocean-contracts/artifacts:/home/nextjs/.ocean/ocean-contracts/artifacts/:cached
+    ports:
+      - '3000:3000'
+    networks:
+      ocean:
+        ipv4_address: 172.16.0.99
+
+networks:
+  ocean:
+    external: true

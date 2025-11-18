@@ -5,7 +5,7 @@ function getLocalAddresses() {
   const data = JSON.parse(
     // eslint-disable-next-line security/detect-non-literal-fs-filename
     fs.readFileSync(
-      `${os.homedir}/.ocean/ocean-contracts/artifacts/address.json`,
+      `${os.homedir()}/.ocean/ocean-contracts/artifacts/address.json`,
       'utf8'
     )
   )
@@ -54,9 +54,23 @@ async function main() {
     NEXT_PUBLIC_DISPENSER_ADDRESS: addresses.Dispenser,
     NEXT_PUBLIC_OCEAN_TOKEN_ADDRESS: addresses.Ocean,
     NEXT_PUBLIC_MARKET_DEVELOPMENT: true,
-    NEXT_PUBLIC_PROVIDER_URL: 'http://host.docker.internal:8030', // Only for macOS
-    NEXT_PUBLIC_SUBGRAPH_URI: 'http://host.docker.internal:9000', // Only for macOS
-    NEXT_PUBLIC_METADATACACHE_URI: 'http://host.docker.internal:10000' // Only for macOS
+    // NEXT_PUBLIC_PROVIDER_URL: 'http://127.0.0.1:8030',
+    // NEXT_PUBLIC_SUBGRAPH_URI: 'http://127.0.0.1:9000',
+    // NEXT_PUBLIC_METADATACACHE_URI: 'http://127.0.0.1:10000',
+    NEXT_PUBLIC_PROVIDER_URL: 'http://provider:8030',
+    NEXT_PUBLIC_SUBGRAPH_URI: 'http://graph-node:9000',
+    NEXT_PUBLIC_METADATACACHE_URI: 'http://aquarius:10000'
+  }
+
+  // Check if running inside container, change IPs accordingly
+  if (fs.existsSync('/.dockerenv') || fs.existsSync('/.containerenv')) {
+    const newUpdates = {
+      NEXT_PUBLIC_PROVIDER_URL: 'http://172.16.0.14:8030',
+      NEXT_PUBLIC_SUBGRAPH_URI: 'http://172.16.0.5:8000',
+      NEXT_PUBLIC_METADATACACHE_URI: 'http://172.16.0.13:5000'
+    }
+
+    Object.keys(newUpdates).map((key) => (updates[key] = newUpdates[key]))
   }
 
   for (const [key, value] of Object.entries(updates))

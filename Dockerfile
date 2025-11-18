@@ -7,14 +7,8 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 # Install dependencies based on the preferred package manager
-COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
-RUN \
-  if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
-  elif [ -f package-lock.json ]; then npm ci --ignore-scripts; \
-  elif [ -f pnpm-lock.yaml ]; then yarn global add pnpm && pnpm i --frozen-lockfile; \
-  else echo "Lockfile not found." && exit 1; \
-  fi
-
+COPY package.json package-lock.json* ./
+RUN npm ci --ignore-scripts
 
 # Rebuild the source code only when needed
 FROM base AS builder
@@ -27,11 +21,10 @@ COPY . .
 # Uncomment the following line in case you want to disable telemetry during the build.
 ENV NEXT_TELEMETRY_DISABLED 1
 
-# RUN yarn build
-
 # If using npm comment out above and use below instead
 ENV BRANCH 'udl'
 ENV COMMIT_REF 0.1
+
 RUN npm run postinstall
 RUN npm run build
 
@@ -48,12 +41,14 @@ RUN adduser --system --uid 1001 nextjs
 
 USER nextjs
 
-COPY --from=builder /app/public ./public
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
+COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
+# Add node modules so it runs the apollo codegen & barge env
+COPY --from=builder /app/node_modules/ ./node_modules
 
 EXPOSE 3000
 
