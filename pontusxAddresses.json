@@ -473,6 +473,18 @@
       "https://compliance.agrospai.udl.cat/.well-known/UdL.vp.json"
     ]
   },
+  "0x7774693eBe0352092cF1C81368AfB034E4D042D1": {
+    "name": "Universitat de Lleida (UdL)",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/UdL.vp.json"
+    ]
+  },
+  "0x7e102FF28971Be04C3EcB5B486eDC94ED2b83C12": {
+    "name": "Universitat de Lleida (UdL)",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/UdL.vp.json"
+    ]
+  },
   "0x38f8c44FFaa8bE015F2DCDcD258ceBBed911840d": {
     "name": "Centre d'Estudis Porcins (CEP)",
     "credentials": [
@@ -3286,6 +3298,18 @@
     "name": "Fachhochschule Wiener Neustadt GmbH",
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/FHWN.vp.json"
+    ]
+  },
+  "0xEdC161aECb97596193a5a9a1714CfBC0C4CD3430": {
+    "name": "Avícola Sucer SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/AvicolaSucer.vp.json"
+    ]
+  },
+  "0xA8E2DeCF026E2acaf66dB5357f4A381E6B8838aE": {
+    "name": "Avícola Subirats SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/AvicolaSubirats.vp.json"
     ]
   }
 }
