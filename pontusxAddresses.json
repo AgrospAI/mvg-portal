@@ -3311,5 +3311,11 @@
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/AvicolaSubirats.vp.json"
     ]
+  },
+  "0xF19758fC2Ab767712698B0eCB9Db22342a603DAA": {
+    "name": "Martirbas 1000 SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Martirbas1000.vp.json"
+    ]
   }
 }
