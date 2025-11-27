@@ -13,7 +13,7 @@
     },
     {
       "title": "Data Sovereignty by Design",
-      "body": "One core concept of AgrospAI is the **Compute-to-Data (CtD)** approach. Compute-to-Data is the functionality that solves the current trade-off between the benefits of using private data and the risks of exposing it. It allows data consumers to run compute jobs on private data while the data stays on-premise with the data provider, who retains control.",
+      "body": "One core concept of Tareando is the **Compute-to-Data (CtD)** approach. Compute-to-Data is the functionality that solves the current trade-off between the benefits of using private data and the risks of exposing it. It allows data consumers to run compute jobs on private data while the data stays on-premise with the data provider, who retains control.",
       "cta": "Learn More",
       "ctaTo": "https://docs.pontus-x.eu/docs/technical-architecture/architecture-overview",
       "image": "/images/ctd_benefits.webp"
