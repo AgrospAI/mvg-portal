@@ -140,12 +140,7 @@ export function generateBaseQuery(
           ...(baseQueryParams.chainIds
             ? [getFilterTerm('chainId', baseQueryParams.chainIds)]
             : []),
-          getFilterTerm('metadata.tags.keyword', [
-            'agrospai',
-            'udl',
-            'agrifoodtef',
-            'tareando'
-          ]),
+          getFilterTerm('metadata.tags.keyword', ['tareando']),
           getFilterTerm(
             '_index',
             getIndexForChainIds(baseQueryParams.chainIds)
