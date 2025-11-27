@@ -10,7 +10,7 @@ interface Props {
 export default function AssetConsents({ asset }: Props) {
   const { address } = useAccount()
 
-  if (address === asset.nft.owner) {
+  if (address === asset?.nft?.owner) {
     return (
       <>
         <QueryBoundary text="Loading incoming consents">
