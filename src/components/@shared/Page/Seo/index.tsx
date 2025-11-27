@@ -35,7 +35,7 @@ export default function Seo({
       <title>{pageTitle}</title>
 
       {isBrowser &&
-        window?.location?.hostname !== 'portal.agrospai.udl.cat' && (
+        window?.location?.hostname !== 'tareando.agrospai.udl.cat' && (
           <meta name="robots" content="noindex,nofollow" />
         )}
 
