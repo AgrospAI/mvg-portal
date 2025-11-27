@@ -1,6 +1,6 @@
-<h1 align="center">AgrospAI Data Space</h1>
+<h1 align="center">Tareando Data Space</h1>
 
-[![Build Status](https://github.com/agrospai/mvg-portal/workflows/deploy/badge.svg)](https://github.com/rhizomik/mvg-portal/actions)
+[![Build Status](https://github.com/agrospai/tareando-mvg-portal/workflows/deploy/badge.svg)](https://github.com/AgrospAI/tareando-mvg-portal/actions)
 
 **Table of Contents**
 
