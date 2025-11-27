@@ -1,27 +1,10 @@
 .logo {
-  display: none;
-}
-.logoSmall {
-  position: absolute;
-  top: 0;
-  display: block;
-  width: var(--menu-logo-size-width-sm);
-  height: var(--menu-logo-size-height-sm);
-  margin: 0;
-}
-.logoWrappper {
-  position: relative;
+  width: 7rem;
+  height: 2rem;
+  margin: 4px 0;
 }
 
-@media screen and (min-width: 68rem) {
-  .logo {
-    position: absolute;
-    top: 16px;
-    display: block;
-    width: var(--menu-logo-size-width-lg);
-    height: var(--menu-logo-size-height-lg);
-  }
-  .logoSmall {
-    display: none;
-  }
+.logo > svg {
+  width: auto;
+  height: 100%;
 }
