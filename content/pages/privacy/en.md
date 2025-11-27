@@ -112,24 +112,6 @@ We store your personal data as long as we need it to process your inquires. We s
 
 **Right to object:** You have the right to object to the processing of your personal data (see also chapter 8.6).
 
-**4.4 Aggregated statistics**
-
-UdL uses [**Umami**](https://umami.is/), an open-source, **privacy-focused web analytics tool** that serves as an alternative to Google Analytics. It provides essential insights into website traffic, user behavior, and performance, all while prioritizing data privacy. Unlike many traditional analytics platforms, Umami **does not collect or store personal data**, avoiding the need for cookies, and is **GDPR and PECR compliant**. UdL uses a self-hosted deployment of Umami on our own servers. .
-
-**Purpose:**
-We process your personal data to reach measurement and website optimization.
-
-**Legal basis:**
-The legal basis for this processing is our legitimate interest, according to Art. 6(1)(f) GDPR.
-
-**Legitimate interests:**
-Our legitimate interest is to gain insights to improve existing and future features and services, and to evaluate user engagement.
-
-**Retention period:**
-Umami does not collect any personally identifiable information and anonymizes all data collected. Users cannot be identified and are never tracked across websites.
-
-**Right to object:** You have the right to object to the processing of your personal data (see also chapter 8.6).
-
 ## 5. Automated decision making including profiling according to Article 13(2)(f) GDPR
 
 Automated decision making including profiling does not take place.
@@ -143,10 +125,6 @@ A cookie is a small file that stores information on your device. Your web browse
 Web storage (local storage and session storage) has similar functionality to cookies.
 
 On our portal demonstrator we are using local storage enabling you to use our portal demonstrator features. You can find more information about our use of cookie and web storage in our [**Cookie Policy**](/cookies/en).
-
-**6.2 Analytics**
-
-UdL uses [**Umami**](https://umami.is), a privacy-friendly web analytics tool for tracking overall trends in our website traffic. Umami **does not use cookies or similar technologies** that require information to be stored on your device. Umami **does not track individual visitors** and **does not create persistent identifiers**. It does not use cross-platform or cross-device tracking and does not pass on data to third parties as it is self-hosted on UdL servers.
 
 ## 7. External links
 
