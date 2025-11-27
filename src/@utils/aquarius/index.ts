@@ -143,7 +143,8 @@ export function generateBaseQuery(
           getFilterTerm('metadata.tags.keyword', [
             'agrospai',
             'udl',
-            'agrifoodtef'
+            'agrifoodtef',
+            'tareando'
           ]),
           getFilterTerm(
             '_index',
