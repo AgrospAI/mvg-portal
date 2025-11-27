@@ -140,15 +140,10 @@ export function generateBaseQuery(
           ...(baseQueryParams.chainIds
             ? [getFilterTerm('chainId', baseQueryParams.chainIds)]
             : []),
-          getFilterTerm('metadata.tags.keyword', [
-            'agrospai',
-            'udl',
-            'agrifoodtef'
-          ]),
-          getFilterTerm(
-            '_index',
-            getIndexForChainIds(baseQueryParams.chainIds)
-          ),
+          // getFilterTerm(
+          //   '_index',
+          //   getIndexForChainIds(baseQueryParams.chainIds)
+          // ),
           ...(baseQueryParams.ignorePurgatory
             ? []
             : [getFilterTerm('purgatory.state', false)]),
