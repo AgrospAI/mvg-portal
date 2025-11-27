@@ -71,11 +71,6 @@ export default function Seo({
           {JSON.stringify(datasetSchema).replace(/</g, '\\u003c')}
         </script>
       )}
-      <script
-        defer
-        src="https://umami.agrospai.udl.cat/umami"
-        data-website-id="dd68db0f-4cc5-4114-b3b2-9d9621a7ce27"
-      ></script>
     </Head>
   )
 }
