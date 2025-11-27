@@ -6,8 +6,8 @@
   --color-secondary: var(--brand-grey-light);
   --color-highlight: var(--brand-blue);
 
-  --color-agrospai-light: rgb(212, 227, 147);
-  --color-agrospai-dark: rgb(41, 81, 64);
+  --color-tareando-light: rgb(245, 245, 255);
+  --color-tareando-dark: rgb(22, 116, 182);
 
   /* Only use these vars for most color referencing for easy light/dark mode */
   --font-color-text: var(--brand-grey);
@@ -55,9 +55,9 @@
   --menu-network-badge-font-color: var(--brand-white);
 
   /* Footer */
-  --footer-background-color: var(--color-agrospai-dark);
+  --footer-background-color: var(--color-tareando-dark);
   --footer-font-color: var(--brand-white);
-  --footer-font-color-highlight: var(--color-agrospai-light);
+  --footer-font-color-highlight: var(--color-tareando-light);
   --footer-link-category-font-color: var(--brand-white);
 
   /* Homepage */
