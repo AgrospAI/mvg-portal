@@ -11,15 +11,15 @@
 }
 
 .confirm {
-  background-color: var(--color-agrospai-dark);
-  color: var(--color-agrospai-light);
+  background-color: var(--color-tareando-dark);
+  color: var(--color-tareando-light);
 }
 
 .confirm:hover,
 .confirm:focus {
-  background-color: var(--color-agrospai-light);
-  color: var(--color-agrospai-dark);
-  border: var(--border-size-sm) solid var(--color-agrospai-dark);
+  background-color: var(--color-tareando-light);
+  color: var(--color-tareando-dark);
+  border: var(--border-size-sm) solid var(--color-tareando-dark);
 }
 
 .reject {
