@@ -5,6 +5,8 @@ description: Thanks for using our product and services.
 
 # Tareando DATA PORTAL - TERMS AND CONDITIONS
 
+All the infrastructure components of the Tareando Data Space ecosystem including the data portal demonstrator are provided by Universitat de Lleida (hereinafter "UdL"). These terms and conditions (hereinafter "Terms") govern the access to and use of the data portal demonstrator (hereinafter "Data Portal") provided by UdL. By accessing or using the Data Portal, you agree to be bound by these Terms. If you do not agree to these Terms, you may not access or use the Data Portal.
+
 UdL (as defined below) provides a technical infrastructure for a digital portal enabling access to Data (as defined below). Based on these terms and conditions, a customer (as defined below) and UdL enter into an agreement which governs the customer’s access to and use of the data portal (as defined below) and takes effect on the date of UdL’s acceptance of such customer’s offer.
 
 ### Table of contents

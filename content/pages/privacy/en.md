@@ -17,17 +17,17 @@ E-mail: <rgpd@disi.es>
 
 ## 2. What's personal data?
 
-Personal data is any information that can be (directly or indirectly) related to you. UdL processes a minimal amount of personal data, as we believe your personal data belongs to you. We process the following personal data.
+Personal data is any information that can be (directly or indirectly) related to you. Tareando processes a minimal amount of personal data, as we believe your personal data belongs to you. We process the following personal data.
 
 - **IP address:** Your IP address is processed when visiting and using our portal demonstrator.
-- **E-mail:** If you contact UdL via e-mail, we process your e-mail address and any personal data you decide to provide in your message (such as your name).
+- **E-mail:** If you contact Tareando via e-mail, we process your e-mail address and any personal data you decide to provide in your message (such as your name).
 
 For detailed information about the processing operations, lawfulness, purposes, and how your personal data serves to reach these purposes, please take a look at the chapter "Processing operations according to Article 13 GDPR".
 
 ## 3. Recipients and cross-border data transfer
 
 **Exoscale and OVH Cloud**  
-The portal demonstrator and the UdL compute provider are hosted and managed by UdL on its premises. However, when using our portal demonstrator functionalities, your IP address is processed by the Pontus-X ecosystem backend components, which are managed by deltaDAO AG and hosted on
+The portal demonstrator and the Tareando compute provider are hosted and managed by Universitat de Lleida (UdL) on its premises. However, when using our portal demonstrator functionalities, your IP address is processed by the Pontus-X ecosystem backend components, which are managed by deltaDAO AG and hosted on
 
 - **Exoscale** servers located in Frankfurt, **Germany**. Akenes SAE (hereafter Exoscale) is headquartered in Boulevard de Grancy 19A, 1006 – Lausanne, Switzerland.
 - **OVH Cloud** servers located in **Germany, France and Poland**. OVH GmbH is headquartered in Oskar-Jäger-Str. 173/K6, 50825 Cologne, **Germany**.
@@ -52,7 +52,7 @@ Further information about the **purpose, legal basis, and retention period** can
 We process your personal data for the following purposes.
 
 **4.1 Providing our portal demonstrator and ensuring its security**  
-Your IP address is collected, used, and stored when visiting our portal demonstrator. Our portal demonstrator (frontend) is hosted by UdL.
+Your IP address is collected, used, and stored when visiting our portal demonstrator. Our portal demonstrator (frontend) is hosted by Universitat de Lleida (UdL).
 
 **Purpose:**  
 Collecting and using your IP address is necessary for providing our portal demonstrator because it is a technical requirement for ensuring communication between your device and our portal demonstrator. Your IP address and other log file data are also processed for security, fraud-prevention, abuse-prevention, and troubleshooting purposes.
@@ -87,7 +87,7 @@ IP addresses received by the backend components are only retained for the minimu
 You have the right to object to the processing of your personal data where we based the processing on legitimate interests (see also chapter 8.6).
 
 **4.3 Contact via e-mail**  
-If you contact us via e-mail, UdL collects, uses, and stores your e-mail address, and any other information you provide us in your message, such as your name. When you send us an e-mail, our (mail) service provider Microsoft Corporation (see also chapter 3) supports us in processing your personal data so we can communicate with you.
+If you contact us via e-mail, Tareando collects, uses, and stores your e-mail address, and any other information you provide us in your message, such as your name. When you send us an e-mail, our (mail) service provider Microsoft Corporation (see also chapter 3) supports us in processing your personal data so we can communicate with you.
 
 **Purpose:**  
 We collect, use and store this personal data to respond to your inquiries.
@@ -119,14 +119,14 @@ On our portal demonstrator we are using local storage enabling you to use our po
 
 ## 7. External links
 
-Our portal demonstrator contains links to external websites that are beyond the control and responsibility of UdL.
+Our portal demonstrator contains links to external websites that are beyond the control and responsibility of Tareando.
 
 ## 8. Your rights
 
 If you want to make use of your rights described below, do not hesitate to contact us.
 
 **8.1 Right of access (Art. 15 GDPR)**  
-You have the right to obtain confirmation as to whether UdL processes personal data about you. If we are processing personal data about you, you have the right to access these personal data and to gain the information defined in Art. 15 GDPR.
+You have the right to obtain confirmation as to whether Tareando processes personal data about you. If we are processing personal data about you, you have the right to access these personal data and to gain the information defined in Art. 15 GDPR.
 
 **8.2 Right to rectification (Art. 16 GDPR)**  
 You have the right to obtain without undue delay the rectification of inaccurate personal data about you. Additionally, you have the right that incomplete personal data about you are completed.
@@ -141,10 +141,10 @@ Moreover, you have the right to obtain the restriction of processing your person
 You have the right to receive your personal data in a structured, commonly used, and machine-readable format. Additionally, you have the right to transmit those data to another controller without hindrance, where the defined legal grounds in Art. 20 GDPR apply. You can make use of your right to data portability by contacting us.
 
 **8.6 Right to object (Art. 21 GDPR)**  
-On grounds relating to your particular situation, you have the right to object to the processing of your personal data where we based the processing on legitimate interests (Art. 6(1)(f) GDPR). If you object, UdL will no longer process your personal data unless we can demonstrate compelling legitimate grounds for the processing, overriding your rights, freedoms, and interests, or if the processing is required to establish, exercise, or defend legal claims.
+On grounds relating to your particular situation, you have the right to object to the processing of your personal data where we based the processing on legitimate interests (Art. 6(1)(f) GDPR). If you object, Tareando will no longer process your personal data unless we can demonstrate compelling legitimate grounds for the processing, overriding your rights, freedoms, and interests, or if the processing is required to establish, exercise, or defend legal claims.
 
 **8.7 Right to lodge a complaint (Art. 77 GDPR)**  
-You have the right to lodge a complaint with a supervisory authority if you consider the processing of your personal data by UdL to infringe the GDPR. You can lodge a complaint in particular
+You have the right to lodge a complaint with a supervisory authority if you consider the processing of your personal data by Tareando to infringe the GDPR. You can lodge a complaint in particular
 
 - in the Member State of your habitual residence,
 - in the Member State of your place of work, and
