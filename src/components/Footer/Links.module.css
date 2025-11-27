@@ -19,10 +19,10 @@
 
 .links {
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  gap: calc(var(--spacer) / 4);
+  justify-content: center;
+  gap: calc(var(--spacer));
   text-transform: capitalize;
+  margin-bottom: 2rem;
 }
 
 .link {
