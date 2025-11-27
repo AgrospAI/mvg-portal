@@ -1,6 +1,6 @@
 ---
 title: Privacy Policy
-description: This privacy policy informs you about how Universitat de Lleida (in the following UdL) processes your personal data when you visit our portal demonstrator, when you use one of our portal demonstrator functionalities and when you contact us. Moreover, this privacy policy informs you about your rights.
+description: This privacy policy informs you about how Tareando processes your personal data when you visit our portal demonstrator, when you use one of our portal demonstrator functionalities and when you contact us. Moreover, this privacy policy informs you about your rights.
 ---
 
 ### Table of contents
@@ -9,20 +9,11 @@ description: This privacy policy informs you about how Universitat de Lleida (in
 
 The controller pursuant to the EU General Data Protection Regulation ("GDPR") for the processing of your personal data is:
 
-Universitat de Lleida
-Víctor Siurana, 1
-25003 Lleida
-Spain
-E-mail: agrospai@udl.cat
+E-mail: <hola@tareando.es>
 
-If you have any questions about the protection of your personal data at UdL, please contact our Data Protection Officer:
+If you have any questions about the protection of your personal data at Tareando, please contact our Data Protection Officer:
 
-Data Protection Officer  
-Universitat de Lleida
-Víctor Siurana, 1
-25003 Lleida
-Spain
-E-mail: <dpd@udl.cat>
+E-mail: <rgpd@disi.es>
 
 ## 2. What's personal data?
 
@@ -49,7 +40,7 @@ deltaDAO cooperation with Exoscale and OVH GmbH is based on a Data Processing Ag
 Further information about the **purpose, legal basis, and retention period** can be found in chapter 4.
 
 **Microsoft Corporation**  
-When you contact us via e-mail, our (mail) service provider Microsoft Corporation (located at 1 Microsoft Way, Redmond, Washington 98052-8300, **USA**) supports us in processing your personal data so we can communicate with you. There is no adequacy decision for the USA from the European Commission. We have **restricted storage on the EEA** and signed SCC with our provider. You have the right to receive a copy of these SCC. To exercise your right, please contact us at agrospai@udl.cat.
+When you contact us via e-mail, our (mail) service provider Microsoft Corporation (located at 1 Microsoft Way, Redmond, Washington 98052-8300, **USA**) supports us in processing your personal data so we can communicate with you. There is no adequacy decision for the USA from the European Commission. We have **restricted storage on the EEA** and signed SCC with our provider. You have the right to receive a copy of these SCC. To exercise your right, please contact us at <hola@tareando.es>.
 
 - Here you can find Microsoft&#39;s current [**DPA including SCC** &#8599;](https://www.microsoft.com/licensing/docs/view/Microsoft-Products-and-Services-Data-Protection-Addendum-DPA).
 - Here you can find Microsoft&#39;s [**privacy policy** &#8599;](https://privacy.microsoft.com/de-de/privacystatement).
@@ -161,7 +152,7 @@ You have the right to lodge a complaint with a supervisory authority if you cons
 
 ## 9. Questions
 
-For any requests regarding our privacy policy, please send us an e-mail to <agrospai@udl.cat>.
+For any requests regarding our privacy policy, please send us an e-mail to <hello@tareando.es>.
 
 ## 10. Changes to the Privacy Policy
 
