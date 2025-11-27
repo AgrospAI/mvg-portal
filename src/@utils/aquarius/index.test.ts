@@ -22,12 +22,7 @@ const defaultBaseQueryReturn: SearchQuery = {
         },
         {
           terms: {
-            'metadata.tags.keyword': [
-              'agrospai',
-              'udl',
-              'agrifoodtef',
-              'tareando'
-            ]
+            'metadata.tags.keyword': ['tareando']
           }
         }
       ]
