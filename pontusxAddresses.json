@@ -3317,5 +3317,23 @@
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/Martirbas1000.vp.json"
     ]
+  },
+  "0xf45C1dEeA721778Ef95027C8e751d84d1885f78e": {
+    "name": "Comercialització Avícola Subirats SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/ComercialitzacioAvicolaSubirats.vp.json"
+    ]
+  },
+  "0xd40b6e0873159e9e71D9f7a9Fa764Ef342d3d654": {
+    "name": "PROLEC SA",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/PROLEC.vp.json"
+    ]
+  },
+  "0x71Bdc620651c65A62E998e57969491896e38F3C0": {
+    "name": "Pecus Veterinaria SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/PecusVet.vp.json"
+    ]
   }
 }
