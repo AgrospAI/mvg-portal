@@ -3335,5 +3335,35 @@
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/PecusVet.vp.json"
     ]
+  },
+  "0xbf5A2888E291A477f9FfD746d27cCd599c47a305": {
+    "name": "Didac Tomàs Comunicació SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/DTComunicacio.vp.json"
+    ]
+  },
+  "0xb74cdae0b0C80F9EFa38841ba4354Fe271412288": {
+    "name": "Pauonaada Soluciones Empresariales SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/PAUONAADA.vp.json"
+    ]
+  },
+  "0xdA00ba4f28335B294492744FB78740627dCE064f": {
+    "name": "DISI TALENT BCN SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/DISITALENT.vp.json"
+    ]
+  },
+  "0xFbd9289E2FDdDa9b532063DD059c4A3d006b5B30": {
+    "name": "Econutrients Biomarkets SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/ECONUTRIENTSBIOMARKET.vp.json"
+    ]
+  },
+  "0xC71Dc3Fb0410FBa013164c70a1C1e68400cb767A": {
+    "name": "Servicios Profesionales de la Formación Empresarial SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/FORMATE.vp.json"
+    ]
   }
 }
