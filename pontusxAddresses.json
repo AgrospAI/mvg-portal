@@ -3365,5 +3365,11 @@
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/FORMATE.vp.json"
     ]
+  },
+  "0x38A1406CF0dCa1815f6f69f8C595226d039648B7": {
+    "name": "Optimal Artificial Social Intelligence Solutions SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/OASIS.vp.json"
+    ]
   }
 }
