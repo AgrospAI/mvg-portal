@@ -3383,5 +3383,35 @@
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/LAU71.vp.json"
     ]
+  },
+  "0x7e1Fa1181331230C79A987DcdBdf43844F541E05": {
+    "name": "FILAMAN SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/FILAMAN.vp.json"
+    ]
+  },
+  "0x549a283bFcc7b1791fADc9741C8a1bb04847d3fB": {
+    "name": "Terres de l'Ebre Comunicació Multimèdia SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/TERRESEBRECOMUNICACIO.vp.json"
+    ]
+  },
+  "0x02148423eB4Cee60D4603267f533ED64817b2AE9": {
+    "name": "Sie-Systems Packaging Solutions SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/SIE-SYSTEMS.vp.json"
+    ]
+  },
+  "0xC2Ea7061cBa715B8494A072C5180cc99DbaE6C03": {
+    "name": "CADEPA GLOBAL PACKAGING SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/CADEPA.vp.json"
+    ]
+  },
+  "0x2ff1666D1a7d7b0FaB16B505fAf048C196931a73": {
+    "name": "PuntDoc Consultors SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/PUNTDOC.vp.json"
+    ]
   }
 }
