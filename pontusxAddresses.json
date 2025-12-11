@@ -3371,5 +3371,17 @@
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/OASIS.vp.json"
     ]
+  },
+  "0x031F4456Ed25a04369E66B6197D76374eF6E51df": {
+    "name": "Imagina Ràdio SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/IMAGINARADIO.vp.json"
+    ]
+  },
+  "0x0c41573f23856F23ee285399A248bB3d583EAfC3": {
+    "name": "LAU71 Serveis Integrals SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/LAU71.vp.json"
+    ]
   }
 }
