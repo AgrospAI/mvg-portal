@@ -1,0 +1,190 @@
+.container {
+  min-height: 100vh;
+  background-color: #f9fafb;
+  padding: 3rem 1rem;
+}
+
+.formWrapper {
+  max-width: 64rem;
+  margin: 0 auto;
+}
+
+.formStack {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.sectionCard {
+  background-color: #ffffff;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border: 1px solid #f3f4f6;
+  overflow: hidden;
+}
+
+.sectionHeader {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid #f3f4f6;
+  background-color: #f9fafb;
+}
+
+.sectionTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1f2937;
+  display: flex;
+  align-items: center;
+  margin: 0;
+}
+
+.titleAccent {
+  background-color: var(--color-tareando-dark);
+  width: 0.5rem;
+  height: 1.5rem;
+  margin-right: 0.75rem;
+  border-radius: 9999px;
+  display: inline-block;
+}
+
+.sectionContent {
+  padding: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .sectionContent {
+    padding: 2rem;
+  }
+}
+
+.gridContainer {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem; /* gap-8 */
+}
+
+@media (min-width: 768px) {
+  .gridContainer {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.fieldWrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 16px;
+}
+
+.label {
+  display: block;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 0.75rem;
+  margin-left: 0.25rem;
+}
+
+.inputWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.inputControl {
+  width: 100%;
+  box-sizing: border-box;
+  height: 60px;
+  font-size: 18px;
+  padding-left: 20px;
+  padding-right: 20px;
+  display: block;
+  border: 2px solid #e5e7eb;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease-in-out;
+  background-color: #ffffff;
+  color: #374151;
+}
+
+select.inputControl {
+  padding-right: 60px;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.5rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+}
+
+.inputControl:focus {
+  outline: none;
+  border-color: var(--color-tareando-dark);
+  box-shadow: 0 0 0 4px #eff6ff;
+}
+
+.inputControl:hover:not(:focus) {
+  border-color: #60a5fa;
+}
+
+.inputError {
+  border-color: #ef4444;
+  background-color: #fef2f2;
+  color: #7f1d1d;
+}
+
+.inputError:focus {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 4px #fef2f2;
+}
+
+.errorMessage {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  margin-top: 8px;
+  color: #c10505;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.submitWrapper {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 1.5rem;
+}
+
+.submitButtonContainer {
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .submitButtonContainer {
+    width: auto;
+  }
+}
+
+.customButton {
+  width: 100%;
+  padding: 0.75rem 2rem;
+  font-size: 1.125rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.customButton:hover {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+@media (min-width: 640px) {
+  .customButton {
+    width: auto;
+  }
+}
+
+.loadingContent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+}
