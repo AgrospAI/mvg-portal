@@ -3413,5 +3413,11 @@
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/PUNTDOC.vp.json"
     ]
+  },
+  "0x2D615d6BbeFcBe5F285DF2e888581408186DB06D": {
+    "name": "Blauver Foods SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Blauver.vp.json"
+    ]
   }
 }
