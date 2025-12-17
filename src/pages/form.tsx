@@ -3,7 +3,7 @@ import Form from '../components/Form'
 import Page from '../components/@shared/Page'
 import Head from 'next/head'
 
-export default function TestPage(): ReactElement {
+export default function PageForm(): ReactElement {
   return (
     <>
       <Head>
