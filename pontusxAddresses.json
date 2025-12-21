@@ -3419,5 +3419,23 @@
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/Blauver.vp.json"
     ]
+  },
+  "0x9DCdC61B789B6e710E08a67c81666A0DAE4c961f": {
+    "name": "Bacallaners Sorolla SLU",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Sorolla.vp.json"
+    ]
+  },
+  "0x5c63DFd42807906d90c80cF638A2dC4B4DF0FdD5": {
+    "name": "Hermitransa SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Hermitransa.vp.json"
+    ]
+  },
+  "0xD87820A484c4101d8Fd7A5306bd35B223D89D509": {
+    "name": "Europillow SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Europillow.vp.json"
+    ]
   }
 }
