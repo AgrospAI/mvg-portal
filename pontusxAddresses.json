@@ -3437,5 +3437,35 @@
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/Europillow.vp.json"
     ]
+  },
+  "0xeC7EC64f48d13C0bC1d6F6b8ca658dE1AB59F6f8": {
+    "name": "Agricultura4Data SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Agro4Data.vp.json"
+    ]
+  },
+  "0x1a36725511EE1Dba90E6C6FbbCC9DD1f7F8DBB93": {
+    "name": "1919 IBERICA SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/1919IBERICA.vp.json"
+    ]
+  },
+  "0x1535210F2566C7692b93F92eF1780C682FD6C134": {
+    "name": "SASCOM INFORMATICA SLU",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/SASCOM.vp.json"
+    ]
+  },
+  "0x47ae438e3a7D307D4a3A4e439B93d58AC548E31a": {
+    "name": "BAU GRUP SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/BAUGRUP.vp.json"
+    ]
+  },
+  "0xa3E9CE7F5405248153eF4C9Ae0be518ccEB45119": {
+    "name": "JJP Muebles SA",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/JJPMuebles.vp.json"
+    ]
   }
 }
