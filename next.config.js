@@ -43,12 +43,6 @@ module.exports = (phase, { defaultConfig }) => {
       })
       config.resolve.fallback = fallback
 
-      config.plugins = (config.plugins || []).concat([
-        new options.webpack.ProvidePlugin({
-          process: 'process/browser',
-          Buffer: ['buffer', 'Buffer']
-        })
-      ])
       return typeof defaultConfig.webpack === 'function'
         ? defaultConfig.webpack(config, options)
         : config
@@ -63,8 +57,8 @@ module.exports = (phase, { defaultConfig }) => {
       ]
     },
 
-    experimental: { 
-      instrumentationHook: true, /* REMOVE WHEN NEXT>=15.0.0 */
+    experimental: {
+      instrumentationHook: true /* REMOVE WHEN NEXT>=15.0.0 */
     }
   }
 
