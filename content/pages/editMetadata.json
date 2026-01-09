@@ -244,8 +244,8 @@
       {
         "name": "license",
         "label": "License",
-        "placeholder": "e.g. MIT",
-        "help": "A SPDX identifier of the license applicable to this service."
+        "placeholder": "e.g. MIT or https://sample.licenses/mine.html",
+        "help": "A URL pointing to a custom license applicable to this asset or a SPDX identifier of the license."
       },
       {
         "name": "accessTermsAndConditions",
