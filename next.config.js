@@ -43,6 +43,12 @@ module.exports = (phase, { defaultConfig }) => {
       })
       config.resolve.fallback = fallback
 
+      config.plugins = (config.plugins || []).concat([
+        new options.webpack.ProvidePlugin({
+          process: 'process/browser',
+          Buffer: ['buffer', 'Buffer']
+        })
+      ])
       return typeof defaultConfig.webpack === 'function'
         ? defaultConfig.webpack(config, options)
         : config
