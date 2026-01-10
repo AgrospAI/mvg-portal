@@ -5,8 +5,8 @@
   "license": "Apache-2.0",
   "homepage": "https://pontus-x.eu",
   "scripts": {
-    "start": "npm run pregenerate &&next dev -p 8000",
-    "build": "npm run pregenerate &&next build",
+    "start": "npm run pregenerate && next dev -p 8000",
+    "build": "npm run pregenerate && next build",
     "build:static": "npm run build && next export",
     "serve": "serve -s public/",
     "pregenerate": "sh scripts/pregenerate.sh",
