@@ -64,7 +64,8 @@ module.exports = (phase, { defaultConfig }) => {
     },
 
     experimental: {
-      instrumentationHook: true /* REMOVE WHEN NEXT>=15.0.0 */
+      instrumentationHook: true /* REMOVE WHEN NEXT>=15.0.0 */,
+      serverActions: true /* REMOVE WHEN NEXT>=15.0.0 */
     }
   }
 
