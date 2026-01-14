@@ -3467,5 +3467,23 @@
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/JJPMuebles.vp.json"
     ]
+  },
+  "0x82d653D481179932593590caa6185dcb1748d053": {
+    "name": "Albacar Assessors i Consultors SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Albacar.vp.json"
+    ]
+  },
+  "0x60e0bF3512E95C6301A9E2bDfD485140ec9980E0": {
+    "name": "Aillaments i Reformes Bertomeu SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Imperebre.vp.json"
+    ]
+  },
+  "0xf044C797a540a5A851F9F56e0B1a2f0685749D72": {
+    "name": "CEALVET SLU",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/CEALVET.vp.json"
+    ]
   }
 }
