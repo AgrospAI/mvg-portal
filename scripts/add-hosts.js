@@ -6,7 +6,7 @@
 const fs = require('fs')
 const path = '/etc/hosts'
 
-const services = ['ganache', 'aquarius', 'graph-node', 'provider']
+const services = ['anvil', 'aquarius', 'graph-node', 'provider']
 
 try {
   const hostsContent = fs.readFileSync(path, 'utf8')

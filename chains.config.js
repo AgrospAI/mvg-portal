@@ -68,7 +68,7 @@ const chains = [
     providerAddress: '0xe2DD09d719Da89e5a3D0F2549c7E24566e947260',
     providerUri: 'http://provider:8030',
     metadataCacheUri: 'http://aquarius:10000',
-    nodeUri: 'http://ganache:8545',
+    nodeUri: 'http://anvil:8545',
     subgraphUri: 'http://graph-node:9000',
     explorerUri: ''
   }
