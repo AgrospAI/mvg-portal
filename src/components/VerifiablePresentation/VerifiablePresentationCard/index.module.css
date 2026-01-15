@@ -6,11 +6,12 @@
   width: 300px;
   max-width: 300px;
   overflow: hidden;
-  padding: calc(var(--spacer) / 4);
+  padding: calc(var(--spacer) / 2);
   border: var(--box-template-border-size) solid var(--box-template-border-color);
   border-radius: var(--box-template-border-radius);
   box-shadow: var(--box-template-box-shadow);
   box-sizing: border-box;
+  aspect-ratio: 1.618 / 1;
 }
 
 .container svg {
@@ -62,18 +63,6 @@
   gap: calc(var(--spacer) / 4);
   font-size: var(--font-size-small);
   color: var(--color-secondary);
-}
-
-@media (min-width: 60rem) {
-  .verification {
-    margin-top: calc(var(--spacer) / 2);
-  }
-
-  .container {
-    padding: calc(var(--spacer) / 2);
-    gap: 0;
-    aspect-ratio: 1.618 / 1;
-  }
 }
 
 .verification > svg {

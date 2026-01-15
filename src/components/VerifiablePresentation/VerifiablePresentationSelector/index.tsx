@@ -42,6 +42,10 @@ export const VerifiablePresentationSelector = ({
     []
   )
 
+  if (isLeftDisabled && isRightDisabled) {
+    return <></>
+  }
+
   return (
     <span className={styles.actions}>
       {renderButton(handleLeft, styles.leftAction, isLeftDisabled)}

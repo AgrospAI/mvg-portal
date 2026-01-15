@@ -63,7 +63,7 @@ export default function VerifiedBadge({
   isIdMatchVerifiable?: string
   isLoading?: boolean
   apiVersion?: string
-  timestamp?: boolean
+  timestamp?: 'exact' | 'relative' | 'none'
 }): ReactElement {
   const styleClasses = cx({
     verifiedBadge: true,
@@ -96,9 +96,14 @@ export default function VerifiedBadge({
                 version: {formattedApiVersion}
               </span>
             )}
-            {timestamp && (
+            {timestamp !== 'none' && (
               <span className={styles.lastVerified}>
-                last check: <Time date={new Date().toString()} relative />
+                last check:{' '}
+                <Time
+                  date={new Date().toString()}
+                  displayFormat="MMMM dd, yyyy, HH:mm"
+                  relative={timestamp === 'relative'}
+                />
               </span>
             )}
           </div>

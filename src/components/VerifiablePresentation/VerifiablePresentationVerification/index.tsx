@@ -32,7 +32,7 @@ export const VerifiablePresentationVerification = ({
       isIdMatchVerifiable={isIdMatchVerifiable}
       apiVersion={complianceApiVersion}
       isLoading={isLoading}
-      timestamp
+      timestamp="exact"
       className={className}
     />
   )

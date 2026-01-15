@@ -44,7 +44,7 @@ export default function MetaMain({
               idMatch={serviceCredentialIdMatch}
               isIdMatchVerifiable={isIdMatchVerifiable}
               apiVersion={serviceCredentialVersion}
-              timestamp={isServiceCredentialVerified}
+              timestamp={isServiceCredentialVerified ? 'relative' : 'none'}
             />
           </div>
         )}
