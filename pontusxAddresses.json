@@ -3485,5 +3485,23 @@
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/CEALVET.vp.json"
     ]
+  },
+  "0xb7Aa36CaEe95E4f127CE973239aDA311881C83eD": {
+    "name": "Also Casals Instal·lacions SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/AlsoCasals.vp.json"
+    ]
+  },
+  "0x2C101eA58692C9B922c2Ce66E6412F82036818b5": {
+    "name": "Ferros Coll de l'Alba SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/FerrosCA.vp.json"
+    ]
+  },
+  "0x538289EcA73f83A7ee0A53b960Ca42B943989caD": {
+    "name": "Laboratori d'aigues QUIMLAB SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/QUIMLAB.vp.json"
+    ]
   }
 }
