@@ -5,7 +5,11 @@ import NumberUnit from './NumberUnit'
 import styles from './Stats.module.css'
 import StatsConsents from './StatsConsents'
 
-export default function Stats(): ReactElement {
+interface Props {
+  accountId: string
+}
+
+export default function Stats({ accountId }: Readonly<Props>): ReactElement {
   const { assetsTotal, sales } = useProfile()
 
   return (
@@ -16,7 +20,7 @@ export default function Stats(): ReactElement {
       />
       <NumberUnit label="Published" value={assetsTotal} />
       <QueryBoundary text="Loading consents stats">
-        <StatsConsents />
+        <StatsConsents accountId={accountId} />
       </QueryBoundary>
     </div>
   )

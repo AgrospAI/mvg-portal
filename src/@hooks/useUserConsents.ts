@@ -28,8 +28,8 @@ import { useAutoSigner } from './useAutoSigner'
 import { useCancelToken } from './useCancelToken'
 import { useUserConsentsToken } from './useUserConsentsToken'
 
-export const useUserConsentsAmount = () => {
-  const { address } = useAccount()
+export const useUserConsentsAmount = (address: string) => {
+  // const { address } = useAccount()
   return useSuspenseQuery({
     queryKey: ['profile-consents', address],
     queryFn: async ({ signal }) => getUserConsents(address, signal)

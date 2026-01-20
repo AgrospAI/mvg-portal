@@ -1,13 +1,17 @@
 import { useUserConsentsAmount } from '@hooks/useUserConsents'
 import NumberUnit from './NumberUnit'
 
-function StatsConsents() {
+interface Props {
+  accountId: string
+}
+
+function StatsConsents({ accountId }: Readonly<Props>) {
   const {
     data: {
       incoming_pending_consents: incomingPendingConsents,
       outgoing_pending_consents: outgoingPendingConsents
     }
-  } = useUserConsentsAmount()
+  } = useUserConsentsAmount(accountId)
 
   return (
     <>

@@ -10,9 +10,9 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
-    console.log('[API] /api/credentials/[address] HIT')
-
     const { address } = req.query
+
+    console.log(`[API] /api/credentials/[address:${address}] HIT`)
 
     if (!address || typeof address !== 'string') {
       console.error('[API] Missing "address" param in URL')

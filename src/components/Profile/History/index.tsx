@@ -40,21 +40,21 @@ function getTabs(
       content: <Downloads accountId={accountId} />
     }
   ]
-  const computeTab: HistoryTab = {
-    title: 'Compute Jobs',
-    content: (
-      <ComputeJobs
-        jobs={jobs}
-        isLoading={isLoadingJobs}
-        refetchJobs={() => setRefetchJobs(!refetchJobs)}
-      />
-    )
-  }
-  const consentsTab: HistoryTab = {
-    title: 'Consents',
-    content: <ConsentsContent />
-  }
   if (accountId === userAccountId || accountId === autoWalletAccountId) {
+    const computeTab: HistoryTab = {
+      title: 'Compute Jobs',
+      content: (
+        <ComputeJobs
+          jobs={jobs}
+          isLoading={isLoadingJobs}
+          refetchJobs={() => setRefetchJobs(!refetchJobs)}
+        />
+      )
+    }
+    const consentsTab: HistoryTab = {
+      title: 'Consents',
+      content: <ConsentsContent />
+    }
     defaultTabs.push(computeTab, consentsTab)
   }
 
