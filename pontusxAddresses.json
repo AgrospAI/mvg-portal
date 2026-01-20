@@ -3503,5 +3503,23 @@
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/QUIMLAB.vp.json"
     ]
+  },
+  "0x0E6e6FC27b13F0939988A42F09CcB4A2664B20e2": {
+    "name": "Tennders Europe SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Tennders.vp.json"
+    ]
+  },
+  "0x78E9335A32EfAacF2dcd9747722C24408A07fBC0": {
+    "name": "Picas-de la Rosa & Asociados SAP",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/PICAS.vp.json"
+    ]
+  },
+  "0xb83cAFA4cE9eFDab11f67Fe8cf1C8561E87A993d": {
+    "name": "Lonja Online Española SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Abastores.vp.json"
+    ]
   }
 }
