@@ -3551,5 +3551,11 @@
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/Exportcargo.vp.json"
     ]
+  },
+  "0xBe5683a73070bb77aF0113803189f31FBdd3b4e3": {
+    "name": "Complutum Tecnologías de la Información Geográfica SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/COMPLUTIG.vp.json"
+    ]
   }
 }
