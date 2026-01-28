@@ -3557,5 +3557,17 @@
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/COMPLUTIG.vp.json"
     ]
+  },
+  "0x26788633FE72D58322E3fC80304d742b72b9A308": {
+    "name": "Unimedia Technology SLU",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Unimedia.vp.json"
+    ]
+  },
+  "0x29113807ccC8C0cae08b2A441514EfB9f7c86E02": {
+    "name": "Torta Castello Assessors SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/TortaCastello.vp.json"
+    ]
   }
 }
