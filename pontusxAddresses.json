@@ -3569,5 +3569,17 @@
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/TortaCastello.vp.json"
     ]
+  },
+  "0xBaA7Ca6CD84D1Df35125ed958b50bd2e2edF18dA": {
+    "name": "Maquinaria Atomizadora SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/MAKATO.vp.json"
+    ]
+  },
+  "0x9dAdf18aAc879AbFF40D33a766954E7085e53818": {
+    "name": "SIMBIONATUR SLU",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/SIMBIONATUR.vp.json"
+    ]
   }
 }
