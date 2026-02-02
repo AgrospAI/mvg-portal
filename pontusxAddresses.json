@@ -3581,5 +3581,17 @@
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/SIMBIONATUR.vp.json"
     ]
+  },
+  "0x7A045EEef9B074D8e4549A5cCAB89Abd2C9Ebd33": {
+    "name": "Centre Especial de Treball El Pla",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/CETElPla.vp.json"
+    ]
+  },
+  "0x34BD4e0e19F2aC69330611aE542dEa8C8F1A6Ef2": {
+    "name": "Disseny i Moda SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/DissenyModa.vp.json"
+    ]
   }
 }
