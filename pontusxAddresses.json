@@ -3593,5 +3593,23 @@
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/DissenyModa.vp.json"
     ]
+  },
+  "0xFDC98BDF61976A20De0c62244C2F1f1AE581F729": {
+    "name": "Transportes Sedano SA",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/TranSedano.vp.json"
+    ]
+  },
+  "0x29913B86fC6fe73760feC6Aef559058FfAdE8C1c": {
+    "name": "MARTI MOTOSPAIN SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/MartiMotoSpain.vp.json"
+    ]
+  },
+  "0x78f94e0116fE689a3018b7B431341c288691b8FD": {
+    "name": "Senyum Manamement SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Senyum.vp.json"
+    ]
   }
 }
