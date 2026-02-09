@@ -3607,9 +3607,21 @@
     ]
   },
   "0x78f94e0116fE689a3018b7B431341c288691b8FD": {
-    "name": "Senyum Manamement SL",
+    "name": "Senyum Management SL",
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/Senyum.vp.json"
+    ]
+  },
+  "0x62ED43720AC024c6bC781E543485fEF2037f1CBd": {
+    "name": "Sundis SA",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Sundisa.vp.json"
+    ]
+  },
+  "0xD6f82122A2279fc02E28cee7019900fB93d5f1aF": {
+    "name": "Sanidad y Nutrición Ganadera SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/sngveterinaria.vp.json"
     ]
   }
 }
