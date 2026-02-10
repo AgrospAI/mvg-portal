@@ -1,12 +1,10 @@
 import { ReactElement, useEffect, useState } from 'react'
-import { matchSorter } from 'match-sorter'
 import IconExternal from '@images/external.svg'
 import type { AgroportalSearchResult } from '@components/AgroPortal/schema'
-import Select from 'react-select'
 import { InputProps } from '@components/@shared/FormInput'
 import { useField } from 'formik'
 import styles from './AgroPortalAutocomplete.module.css'
-import { OnChangeValue } from 'react-select'
+import Select, { type OnChangeValue } from 'react-select'
 import OntologyAutocomplete from './OntologyAutocomplete'
 
 interface OntologyTerm {
