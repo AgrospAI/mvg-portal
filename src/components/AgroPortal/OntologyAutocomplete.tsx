@@ -1,5 +1,5 @@
 import { ReactElement, useEffect, useState } from 'react'
-import Select, { OnChangeValue } from 'react-select'
+import { OnChangeValue } from 'react-select'
 import styles from './OntologyAutocomplete.module.css'
 import CreatableSelect from 'react-select/creatable'
 
