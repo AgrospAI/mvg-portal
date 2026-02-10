@@ -43,6 +43,12 @@
         "placeholder": "e.g. logistics"
       },
       {
+        "name": "ontologyTerms",
+        "label": "Ontology terms",
+        "type": "ontologyTerms",
+        "placeholder": "e.g. agriculture"
+      },
+      {
         "name": "license",
         "label": "License",
         "placeholder": "e.g. MIT or https://sample.licenses/mine.html",

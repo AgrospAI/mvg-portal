@@ -44,6 +44,7 @@ export interface FormPublishData {
     saas: { paymentMode?: SAAS_PAYMENT_MODE }
     license?: string
     tags?: string[]
+    ontologyTerms?: object
     dockerImage?: string
     dockerImageCustom?: string
     dockerImageCustomTag?: string

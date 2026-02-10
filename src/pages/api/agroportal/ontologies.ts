@@ -1,18 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import type { AgroportalSearchResult } from '@components/AgroPortal/schema'
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<AgroportalSearchResult | { error: string }>
+  res: NextApiResponse<any | { error: string }>
 ) {
   if (req.method !== 'GET') {
     return res.status(405).json({ error: 'Method not allowed' })
-  }
-
-  const { q, ontologies, page, pagesize } = req.query
-
-  if (!q || typeof q !== 'string') {
-    return res.status(400).json({ error: 'Query parameter "q" is required' })
   }
 
   const apiKey = process.env.AGROPORTAL_API_KEY
@@ -22,20 +15,8 @@ export default async function handler(
   }
 
   try {
-    const searchParams = new URLSearchParams({
-      q,
-      page: (page as string) || '1',
-      pagesize: (pagesize as string) || '10',
-      display_context: 'false',
-      display_links: 'true'
-    })
-
-    if (ontologies) {
-      searchParams.append('ontologies', ontologies as string)
-    }
-
     const response = await fetch(
-      `https://data.agroportal.lirmm.fr/search?${searchParams.toString()}`,
+      `https://data.agroportal.lirmm.fr/ontologies`,
       {
         headers: {
           Authorization: `apikey token=${apiKey}`,
@@ -48,8 +29,9 @@ export default async function handler(
       throw new Error(`AgroPortal API error: ${response.statusText}`)
     }
 
-    const data: AgroportalSearchResult = await response.json()
-    return res.status(200).json(data)
+    const data = await response.json()
+    const acronyms = data.map((ontology) => ontology.acronym)
+    return res.status(200).json(acronyms)
   } catch (error) {
     console.error('AgroPortal search error:', error)
     return res.status(500).json({ error: 'Failed to fetch from AgroPortal' })

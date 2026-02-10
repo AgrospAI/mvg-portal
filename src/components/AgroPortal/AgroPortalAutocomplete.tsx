@@ -2,66 +2,56 @@ import { ReactElement, useEffect, useState } from 'react'
 import { matchSorter } from 'match-sorter'
 import IconExternal from '@images/external.svg'
 import type { AgroportalSearchResult } from '@components/AgroPortal/schema'
-import { getTagsList } from '@utils/aquarius'
-import { useCancelToken } from '@hooks/useCancelToken'
-import { chainIds } from 'app.config'
-import CreatableSelect from 'react-select/creatable'
+import Select from 'react-select'
 import { InputProps } from '@components/@shared/FormInput'
 import { useField } from 'formik'
 import styles from './AgroPortalAutocomplete.module.css'
 import { OnChangeValue } from 'react-select'
+import OntologyAutocomplete from './OntologyAutocomplete'
 
-interface AutoCompleteOption {
-  value: string
-  label: string
-  url?: string
-  source?: 'local' | 'agroportal'
+interface OntologyTerm {
+  '@id': string
+  '@type': string
+  'skos:prefLabel': {
+    '@value': string
+    '@language': string
+  }
+  'skos:inScheme': {
+    '@id': string
+    'rdfs:label': string
+  }
+  'dct:source': {
+    '@id': string
+  }
 }
 
-interface Props extends InputProps {
-  ontology?: string
-}
+interface Props extends InputProps {}
 
 export default function AgroPortalAutocomplete({
-  ontology = 'AGROVOC',
   ...props
 }: Props): ReactElement {
   const { name } = props
-  const [, , helpers] = useField(name)
+  const [field, , helpers] = useField(name)
 
   const [input, setInput] = useState<string>('')
-  const [selected, setSelected] = useState<AutoCompleteOption[]>([])
-  const [localTags, setLocalTags] = useState<AutoCompleteOption[]>([])
-  const [matchedLocalTags, setMatchedLocalTags] = useState<
-    AutoCompleteOption[]
-  >([])
-  const [matchedAgroportalOptions, setMatchedAgroportalOptions] = useState<
-    AutoCompleteOption[]
-  >([])
+  const defaultSelected =
+    Array.isArray(field.value) && field.value.length > 0 ? field.value : []
+  const [selected, setSelected] = useState<OntologyTerm[]>(defaultSelected)
+  const [options, setOptions] = useState<OntologyTerm[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
-  const newCancelToken = useCancelToken()
+  const [ontologies, setOntologies] = useState<string[]>([])
+  const ontologiesString = ontologies.join(',')
 
-  // Fetch tags once
-  useEffect(() => {
-    const fetchTags = async () => {
-      const tags = await getTagsList(chainIds, newCancelToken())
-      setLocalTags(
-        tags.map((tag) => ({ value: tag, label: tag, source: 'local' }))
-      )
-    }
-    fetchTags()
-  }, [])
+  const [page, setPage] = useState<number>(1)
+  const [hasMore, setHasMore] = useState<boolean>(true)
 
   // Fetch AgroPortal options when input changes
   useEffect(() => {
     if (!input) {
-      setMatchedLocalTags(localTags)
-      setMatchedAgroportalOptions([])
+      setOptions([])
       return
     }
-
-    setMatchedLocalTags(matchSorter(localTags, input, { keys: ['value'] }))
 
     const controller = new AbortController()
     const debounceTimeout = setTimeout(() => {
@@ -71,10 +61,15 @@ export default function AgroPortalAutocomplete({
 
           const searchParams = new URLSearchParams({
             q: input,
-            ontology,
-            page: '1',
-            pagesize: '10'
+            page: page.toString(),
+            pagesize: '10',
+            language: 'en'
           })
+
+          if (ontologiesString) {
+            searchParams.append('ontologies', ontologiesString)
+          }
+
           const response = await fetch(
             `/api/agroportal/search?${searchParams.toString()}`,
             {
@@ -82,20 +77,26 @@ export default function AgroPortalAutocomplete({
             }
           )
           const data: AgroportalSearchResult = await response.json()
-          const opts: AutoCompleteOption[] = (data.collection || []).map(
-            (item) => ({
-              value: item.prefLabel,
-              label: item.prefLabel,
-              url: item.links?.ui,
-              source: 'agroportal' as const
-            })
-          )
-          setMatchedAgroportalOptions(
-            matchSorter(opts, input, { keys: ['value'] })
-          )
+          const opts: OntologyTerm[] = (data.collection || []).map((item) => ({
+            '@id': item['@id'],
+            '@type': 'skos:Concept',
+            'skos:prefLabel': {
+              '@value': item.prefLabel,
+              '@language': 'en'
+            },
+            'skos:inScheme': {
+              '@id': item.links.ontology,
+              'rdfs:label': item.links.ontology.split('/').pop() || ''
+            },
+            'dct:source': {
+              '@id': item.links.ui
+            }
+          }))
+          setOptions((prevOptions) => [...prevOptions, ...opts])
+          setHasMore(data.nextPage !== null)
         } catch (error) {
           console.error('Error fetching AgroPortal data:', error)
-          setMatchedAgroportalOptions([])
+          setOptions([])
         } finally {
           setIsLoading(false)
         }
@@ -106,54 +107,66 @@ export default function AgroPortalAutocomplete({
       controller.abort()
       clearTimeout(debounceTimeout)
     }
-  }, [input, ontology, localTags])
+  }, [input, ontologiesString, page])
 
-  const handleChange = (userInput: OnChangeValue<AutoCompleteOption, true>) => {
-    setSelected(userInput as AutoCompleteOption[])
-    const normalizedInput = userInput.map((input) => input.value)
-    helpers.setValue(normalizedInput)
+  const handleChange = (userInput: OnChangeValue<OntologyTerm, true>) => {
+    setSelected(userInput as OntologyTerm[])
+    helpers.setValue(userInput)
     helpers.setTouched(true)
   }
 
-  const groupedOptions = [
-    { label: 'Tags', options: matchedLocalTags },
-    { label: ontology, options: matchedAgroportalOptions }
-  ]
+  const handleInputChange = (newValue: string) => {
+    setInput(newValue)
+    setPage(1)
+    setOptions([])
+  }
+
+  const onLoadMore = () => {
+    if (hasMore && !isLoading) {
+      setPage((prevPage) => prevPage + 1)
+    }
+  }
 
   return (
-    <CreatableSelect
-      defaultValue={selected}
-      hideSelectedOptions
-      isMulti
-      isClearable={false}
-      onChange={handleChange}
-      onInputChange={setInput}
-      className={styles.select}
-      openMenuOnClick
-      options={groupedOptions}
-      placeholder={'e.g. agrospai'}
-      isLoading={isLoading}
-      createOptionPosition="first"
-      allowCreateWhileLoading
-      formatGroupLabel={(group) => group.label}
-      formatOptionLabel={(option: AutoCompleteOption) => (
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 8,
-            marginRight: 8
-          }}
-        >
-          {option.source === 'agroportal' && option.url ? (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+      <Select
+        defaultValue={selected}
+        hideSelectedOptions
+        getOptionValue={(option) => option?.['@id']}
+        getOptionLabel={(option) => option?.['skos:prefLabel']?.['@value']}
+        isMulti
+        isClearable={false}
+        onChange={handleChange}
+        onInputChange={handleInputChange}
+        className={styles.select}
+        openMenuOnClick
+        options={options}
+        placeholder={'e.g. agriculture, plant, soil...'}
+        isLoading={isLoading}
+        onMenuScrollToBottom={onLoadMore}
+        noOptionsMessage={() => 'No results found'}
+        formatOptionLabel={(option: OntologyTerm) => (
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 8,
+              marginRight: 8
+            }}
+          >
             <a
-              href={option.url}
+              href={option['dct:source']?.['@id'] || '#'}
               target="_blank"
               rel="noreferrer noopener"
               style={{
                 display: 'flex',
                 alignItems: 'center',
                 color: 'inherit'
+              }}
+              onClick={(e) => {
+                if (!option['dct:source']?.['@id']) {
+                  e.preventDefault()
+                }
               }}
             >
               <IconExternal
@@ -164,21 +177,37 @@ export default function AgroPortalAutocomplete({
                   color: 'inherit'
                 }}
               />
-              <span style={{ fontWeight: 500, paddingBottom: 2 }}>
-                {option.label}
-              </span>
+              <div
+                style={{
+                  display: 'flex',
+                  gap: 8,
+                  alignItems: 'center'
+                }}
+              >
+                <span style={{ fontWeight: 500, paddingBottom: 4 }}>
+                  {option?.['skos:prefLabel']?.['@value']}
+                </span>
+                <span style={{ fontSize: 9, color: 'var(--text-secondary)' }}>
+                  {option?.['skos:inScheme']?.['rdfs:label']}
+                </span>
+              </div>
             </a>
-          ) : (
-            <span style={{ fontWeight: 500, paddingBottom: 2 }}>
-              {option.label}
-            </span>
-          )}
-        </div>
-      )}
-      theme={(theme) => ({
-        ...theme,
-        colors: { ...theme.colors, primary25: 'var(--border-color)' }
-      })}
-    />
+          </div>
+        )}
+        theme={(theme) => ({
+          ...theme,
+          colors: { ...theme.colors, primary25: 'var(--border-color)' }
+        })}
+      />
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+        <span style={{ fontSize: 12, color: 'var(--text-secondary)' }}>
+          Filter search by ontology
+        </span>
+        <OntologyAutocomplete
+          ontologies={ontologies}
+          setOntologies={setOntologies}
+        />
+      </div>
+    </div>
   )
 }
