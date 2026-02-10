@@ -134,6 +134,13 @@ export default function Edit({
         }
       }
 
+      if (values.ontologyTerms) {
+        updatedMetadata.additionalInformation = {
+          ...(updatedMetadata.additionalInformation || {}),
+          'dcat:theme': values.ontologyTerms
+        }
+      }
+
       if (asset.metadata.type === 'algorithm') {
         updatedMetadata.algorithm.consumerParameters =
           !values.usesConsumerParameters

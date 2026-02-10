@@ -74,6 +74,7 @@ export const initialValues: FormPublishData = {
     author: '',
     description: '',
     tags: [],
+    ontologyTerms: {},
     termsAndConditions: false,
     dockerImage: '',
     dockerImageCustom: '',

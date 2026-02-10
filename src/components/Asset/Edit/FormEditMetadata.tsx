@@ -121,6 +121,12 @@ export default function FormEditMetadata({
 
       <Field {...getFieldContent('tags', data)} component={Input} name="tags" />
 
+      <Field
+        {...getFieldContent('ontologyTerms', data)}
+        component={Input}
+        name="ontologyTerms"
+      />
+
       {asset.metadata.type === 'algorithm' && (
         <>
           <Field

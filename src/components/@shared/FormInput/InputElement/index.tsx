@@ -19,6 +19,7 @@ import ComputeEnvSelection from './ComputeEnvSelection'
 import Credentials from './Credential'
 import Option from './Radio/Option'
 import AgroPortalAutocomplete from '@components/AgroPortal/AgroPortalAutocomplete'
+import TagsAutoComplete from './TagsAutoComplete'
 
 const cx = classNames.bind(styles)
 
@@ -235,6 +236,8 @@ const InputElement = forwardRef(
           />
         )
       case 'tags':
+        return <TagsAutoComplete {...field} {...props} />
+      case 'ontologyTerms':
         return <AgroPortalAutocomplete {...field} {...props} />
       case 'credentials':
         return <Credentials {...field} {...props} />
