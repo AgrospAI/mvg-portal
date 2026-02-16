@@ -3623,5 +3623,29 @@
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/sngveterinaria.vp.json"
     ]
+  },
+  "0x37725E9FfD22C10814FEE67Abec6890584Af8219": {
+    "name": "Cultilogic Global SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Cultilogic.vp.json"
+    ]
+  },
+  "0x7caE3C97dec1Ac748A1A676b82e864b31A4F176D": {
+    "name": "ITV Barbastro SAU",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/ITVBarbastro.vp.json"
+    ]
+  },
+  "0x7f322Fbe62AB51EC8165db97C5611FE499f3De16": {
+    "name": "Eurotrucha SLU",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Eurotrucha.vp.json"
+    ]
+  },
+  "0x2Ac4E396d72A4162F245f99736b683A710cC7DDD": {
+    "name": "Piszolla SLU",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Piszolla.vp.json"
+    ]
   }
 }
