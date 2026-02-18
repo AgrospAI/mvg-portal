@@ -3647,5 +3647,17 @@
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/Piszolla.vp.json"
     ]
+  },
+  "0x59B4161cA3516fDBB2a63d0C1aE4497cD6AC112f": {
+    "name": "Sercom Informática SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Sercom.vp.json"
+    ]
+  },
+  "0x7d446Cc71bc6a63a900bfb99630FACC6888cb1F3": {
+    "name": "Advance Technology and Innovation Systems Cantabria SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Artisca.vp.json"
+    ]
   }
 }
