@@ -3659,5 +3659,17 @@
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/Artisca.vp.json"
     ]
+  },
+  "0x68611Ec6096BbCaeCdaB891461755703DD496890": {
+    "name": "Signlab Nuevas Tecnologías SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Signlab.vp.json"
+    ]
+  },
+  "0x34C89d5A7f9b3bbB6f71098aA6F465d213CDb898": {
+    "name": "Confederación Española de Empresas de Tecnologías de la Información, Comunicaciones y Electrónica",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/CONETIC.vp.json"
+    ]
   }
 }
