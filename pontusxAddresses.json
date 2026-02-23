@@ -3671,5 +3671,11 @@
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/CONETIC.vp.json"
     ]
+  },
+  "0x893E1c29A66AFE8fF71Af7c6dDBC07c90840F79c": {
+    "name": "SRT Ingeniería Desarrollo y Aplicaciones Técnicas SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/STR.vp.json"
+    ]
   }
 }
