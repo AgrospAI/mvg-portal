@@ -3655,7 +3655,7 @@
     ]
   },
   "0x7d446Cc71bc6a63a900bfb99630FACC6888cb1F3": {
-    "name": "Advance Technology and Innovation Systems Cantabria SL",
+    "name": "Advanced Technology and Innovation Systems Cantabria SL",
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/Artisca.vp.json"
     ]
@@ -3676,6 +3676,36 @@
     "name": "SRT Ingeniería Desarrollo y Aplicaciones Técnicas SL",
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/STR.vp.json"
+    ]
+  },
+  "0x5fA316E70F9fC51523405427D06da2b526C7D8DB": {
+    "name": "Fragadis SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Fragadis.vp.json"
+    ]
+  },
+  "0xb9aC60c85DA7e4f654EdBEAc4E6dc3e37bF368aa": {
+    "name": "Aplicaciones Profesionales Chafer SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/APChafer.vp.json"
+    ]
+  },
+  "0x00339025B3250d6f8018306C1C012Ad083781809": {
+    "name": "Inversiones Patrimoniales MIPE SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/MIPE.vp.json"
+    ]
+  },
+  "0x65c52A35320A443440ae15e764D6667849dDf705": {
+    "name": "Productos Químicos Miravalls SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/PQMiravalls.vp.json"
+    ]
+  },
+  "0x1356a85e9D5C4217b7aa825bA32861d6c6f6e674": {
+    "name": "Agrobrox SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Agrobrox.vp.json"
     ]
   }
 }
