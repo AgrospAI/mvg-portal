@@ -3707,5 +3707,41 @@
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/Agrobrox.vp.json"
     ]
+  },
+  "0x27Ad0A4A3dE6620EfE77f923a390F4B57ECc8C99": {
+    "name": "Gestora Laboral Mediterranea ETT SA",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/GLM-ETT-EMPLEO.vp.json"
+    ]
+  },
+  "0x2B1dc41B076Ee56c7Fdf8c62Ae304a9019AA12Fb": {
+    "name": "Hydrotecna Green SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Hydrotecna.vp.json"
+    ]
+  },
+  "0x44db17FC65C7bAb5d6DB90F8081D109143566B09": {
+    "name": "Rocor Agrícola SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Rocor.vp.json"
+    ]
+  },
+  "0xDF54DE28eF858a9c0d3711eFBE06d1b6bbea7e3f": {
+    "name": "Cilanis SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Cilanis.vp.json"
+    ]
+  },
+  "0x6e6f9c154625c0153fb7dCc7E623C3dC69DaD436": {
+    "name": "Explotaciones Agrícolas Campaña y Montes SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/EACampañaYMontes.vp.json"
+    ]
+  },
+  "0x5D244Af8A3b377B7b141e4F64B6ea37f2c95A90C": {
+    "name": "APPISTACO Trade SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/APPISTACO.vp.json"
+    ]
   }
 }
