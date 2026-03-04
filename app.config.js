@@ -90,7 +90,7 @@ module.exports = {
     enableAutomation: process.env.NEXT_PUBLIC_ENABLE_AUTOMATION || 'true',
     networkTokenFundDefaultValue: '2',
     erc20ApprovalDefaultValue: '50',
-    roughTxGasEstimate: 0.02,
+    roughTxGasEstimate: 0.01,
     defaultMode: 'simple'
   },
 
