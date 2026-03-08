@@ -3791,5 +3791,41 @@
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/IPMProjects.vp.json"
     ]
+  },
+  "0x7E98eF12E435434f6ED9C98e8A17C62C5537eb7c": {
+    "name": "Explotació Ramadera Amerenca SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Amerenca.vp.json"
+    ]
+  },
+  "0x31093f7548eaF83fe823B4c0322ecBb10e31c455": {
+    "name": "AMP Investigación y Análisis Alimentarios SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/AMPLab.vp.json"
+    ]
+  },
+  "0xc9766c380e71eDCCCD460Ac7e74782e4518a0eb7": {
+    "name": "Hábitat Colaborativo SCA",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/HabitatColaborativo.vp.json"
+    ]
+  },
+  "0x3aCe8E8B050a9A17eA4Af05D382eAAFca41D19AD": {
+    "name": "Innoune Group SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Innoune.vp.json"
+    ]
+  },
+  "0x12F4d2F55E56eb4C5Fc279b126848c92CdD51014": {
+    "name": "Centro de Demostración y Transferencia Agraria El Mirador SCoop",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/CDTAElMirador.vp.json"
+    ]
+  },
+  "0xd775591B70EE727B91Bf788F6C616e16c7080aef": {
+    "name": "Okos Agronegocios SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/VentanasAgroalimentarias.vp.json"
+    ]
   }
 }
