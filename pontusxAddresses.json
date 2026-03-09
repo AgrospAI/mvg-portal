@@ -3827,5 +3827,23 @@
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/VentanasAgroalimentarias.vp.json"
     ]
+  },
+  "0x82855975e550f0f46F36F93c7E48c81AE9A1771d": {
+    "name": "Fidelityfarma SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Fidelityfarma.vp.json"
+    ]
+  },
+  "0x0C5Fc3A742BB3DBD8141d1ad5bEBd7443Bf447a0": {
+    "name": "Qualque SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Qualque.vp.json"
+    ]
+  },
+  "0x68e20DD04834003A84d0BCc8dd34b15ac1aA0013": {
+    "name": "Distribuidora Joan SA",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/DistJoan.vp.json"
+    ]
   }
 }
