@@ -3881,5 +3881,23 @@
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/Eoloarroz.vp.json"
     ]
+  },
+  "0xEe6a9e382729cE4A32DBf6A103F09b9B21Cba245": {
+    "name": "Nido de Ideas Avanzadas SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/NidoIDi.vp.json"
+    ]
+  },
+  "0x1c6095Dd6CA6a356D5d149Df16FD28416B5751DA": {
+    "name": "Fundación EMET",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/FundacionEMET.vp.json"
+    ]
+  },
+  "0xcd081BA12d0315617A0a7E452B02721248c1DB9c": {
+    "name": "AGE Agrocinegética SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/AGEAgrocinegetica.vp.json"
+    ]
   }
 }
