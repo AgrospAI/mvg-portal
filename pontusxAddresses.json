@@ -3845,5 +3845,41 @@
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/DistJoan.vp.json"
     ]
+  },
+  "0x3b4a13B45581d63e29C3374Ab15bd650D8ccB33A": {
+    "name": "Auria Ventures SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/AuriaVentures.vp.json"
+    ]
+  },
+  "0x668fe9B100622F1f0e9E672048432EbAac005033": {
+    "name": "Agricolum SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Agricolum.vp.json"
+    ]
+  },
+  "0x506d53ec8f9EF83305A0E90a40995b7c18a1230b": {
+    "name": "Agroaerospace SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Sanzar.vp.json"
+    ]
+  },
+  "0xe11D0017A41B2630e6E97776131AB2089dAd7fF2": {
+    "name": "Agrícola Consolación SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/AgricolaConsolacion.vp.json"
+    ]
+  },
+  "0xC0357E4FEb7ae97AB3dB0e3c15dFDD4EBDD8b11C": {
+    "name": "Cuarterola SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Cuarterola.vp.json"
+    ]
+  },
+  "0x1D7A10AFD66321a6575f1C8345636699438b9Ad8": {
+    "name": "Eoloarroz SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Eoloarroz.vp.json"
+    ]
   }
 }
