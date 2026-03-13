@@ -3899,5 +3899,41 @@
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/AGEAgrocinegetica.vp.json"
     ]
+  },
+  "0x24947C5d5b3F1e7d832316057C615C577EA23bc2": {
+    "name": "Asociación Agraria de Galicia",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/ASAGA.vp.json"
+    ]
+  },
+  "0xB8E18DE01a32f241e5236018FCDBb599Fde23e90": {
+    "name": "Asociación Agraria Jóvenes Agricultores de Ávila",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/ASAJAAvila.vp.json"
+    ]
+  },
+  "0xC3e515F87da3ca91Abfac5fd680Fe675e3135b3e": {
+    "name": "Jóvenes Agricultores y Ganaderos de Cantabria",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/ASAJACantabria.vp.json"
+    ]
+  },
+  "0x5274fa3E44e2Ef5F687904c57Ea2BAa662239027": {
+    "name": "Asociación Agraria Jóvenes Agricultores y Ganaderos de Asturias",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/ASAJAAsturias.vp.json"
+    ]
+  },
+  "0x72F4457F6348e8c2cad4EC7dCe0787761A2D0949": {
+    "name": "Horticola El Alto SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/HorticolaElAlto.vp.json"
+    ]
+  },
+  "0xe975b6AdB7c65f5Cf2deA9C8eB3D2107D84345F2": {
+    "name": "Exagayca SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Exagayca.vp.json"
+    ]
   }
 }
