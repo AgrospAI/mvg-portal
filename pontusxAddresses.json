@@ -3935,5 +3935,89 @@
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/Exagayca.vp.json"
     ]
+  },
+  "0x395101Dc168d9A98D759AaFC87cDCaAe6C2d9A15": {
+    "name": "ADEC Assessors SLP",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/ADECAssessors.vp.json"
+    ]
+  },
+  "0x70753e2131C9a23A051015a94a4bA30Ba4a64860": {
+    "name": "Aquí Hay Marketing Digital SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/AquiHayMarketingDigital.vp.json"
+    ]
+  },
+  "0x2654cA0B70Fae4ca21dA57A6cd5bf8833cB96338": {
+    "name": "Audidata Sistemas SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/AudidataSistemas.vp.json"
+    ]
+  },
+  "0xA78f583148D21E8e8BB3f7FF71e22Ee9fc24FE9a": {
+    "name": "Cortamotor SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Cortamotor.vp.json"
+    ]
+  },
+  "0xD7E43B8992e0324C864EB953aBB349cE3c079EBf": {
+    "name": "Exactio 365 Cloud Consulting SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Exactio365.vp.json"
+    ]
+  },
+  "0xFA844bC81FD1a166cEFe6f066c91C53CaA85D3D4": {
+    "name": "Expediciones del Mediterráneo SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/ExpedicionesMediterraneo.vp.json"
+    ]
+  },
+  "0x741112f9fbCBC5fCe5D2Bc7A211ee59E61A3eEdd": {
+    "name": "F.F. Inmobles SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/FFInmobles.vp.json"
+    ]
+  },
+  "0x675576bD44D41dE1ff5D94517C5C6a8b4D519c5d": {
+    "name": "Grupo Expertsis SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/GrupoExpertsis.vp.json"
+    ]
+  },
+  "0x311b2f4fED4bC4487518de4220145c915BDDe04E": {
+    "name": "Italian Dough SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/ItalianDough.vp.json"
+    ]
+  },
+  "0xf0A01E6D8F072B2044f11547FFD13E4382F51171": {
+    "name": "JNC Sistemas Informáticos SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/JNCSistemasInformaticos.vp.json"
+    ]
+  },
+  "0xF4D89B9F4cE70E60F637e5dc00560966ecbD4f49": {
+    "name": "Líder Aliment SAU",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/LiderAliment.vp.json"
+    ]
+  },
+  "0x190F981032BABb5fC6F03F68cb749f2D61c3EceA": {
+    "name": "Marfrallo SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Marfrallo.vp.json"
+    ]
+  },
+  "0xB4237811ca999fb0d92a9360986ECC61a311E121": {
+    "name": "Pollos Planes SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/PollosPlanes.vp.json"
+    ]
+  },
+  "0x3c8F4c9a4319294B4E2a2ED18A9aD139DCd1Ea66": {
+    "name": "Pollos Planes Barcelona SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/PollosPlanesBarcelona.vp.json"
+    ]
   }
 }
