@@ -4019,5 +4019,65 @@
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/PollosPlanesBarcelona.vp.json"
     ]
+  },
+  "0xd603576CAADc133CA176E9bCe389C8B4Fc92650c": {
+    "name": "Atzaro PG Financial Services SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Atzaro.vp.json"
+    ]
+  },
+  "0x02a6c7780f744c2262e488c5D1fD432Bf8A14490": {
+    "name": "Campora Abogados y Asesores Tributarios SLP",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/CamporaAbogados.vp.json"
+    ]
+  },
+  "0x029545F024AF3E61D3980470fbdb91841Aa859f1": {
+    "name": "Factory Soul Torrent SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/FactorySoul.vp.json"
+    ]
+  },
+  "0xA587794e88F5Eb85aD1BB2cDe8Ab1373834D3750": {
+    "name": "LUCALB 2006 SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/LUCALB.vp.json"
+    ]
+  },
+  "0xe0DBd25628744DEC02A991E28A9E29C1BBCc9B4B": {
+    "name": "Lucas Abogados y Asesores Legales SLP",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/LucasAbogados.vp.json"
+    ]
+  },
+  "0xCfeb0e450494a13fB8BFC92B98Da5940e6D4cB1F": {
+    "name": "Moon Distillery SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/MOA.vp.json"
+    ]
+  },
+  "0xe387Bb1B7396ECe512B8092114Cca4943Da31932": {
+    "name": "Odisea Foods SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/OdiseaFoods.vp.json"
+    ]
+  },
+  "0x52e6f5b8261223aEE6Eb21728e6713CDCEE6a706": {
+    "name": "Soul Coffe Beer and Kitchen SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/SoulCoffee.vp.json"
+    ]
+  },
+  "0xfd9d40507596698Fe3cBE85a189a2502A1EE2fA0": {
+    "name": "Street Soul Valencia SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/StreetSoul.vp.json"
+    ]
+  },
+  "0xce2EfBE0AccFad8341695Ab8832037516B61d328": {
+    "name": "VR Soccer Solutions SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/VRSoccer.vp.json"
+    ]
   }
 }
