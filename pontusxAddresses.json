@@ -4079,5 +4079,17 @@
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/VRSoccer.vp.json"
     ]
+  },
+  "0x07ac8DB2602b983a0062615Aa8e63CEB91b003f1": {
+    "name": "Provaluta España Reciclaje de Metales SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Provaluta.vp.json"
+    ]
+  },
+  "0x6226A587e4F8Fb1386C0C73dFA83EfE7D92F576D": {
+    "name": "Trans HEDESA SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/TransHEDESA.vp.json"
+    ]
   }
 }
