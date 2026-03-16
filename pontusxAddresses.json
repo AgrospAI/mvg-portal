@@ -4091,5 +4091,41 @@
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/TransHEDESA.vp.json"
     ]
+  },
+  "0x4DcCe8E2D31a26ab4AD9fB1bbb3Cbf6d71da1551": {
+    "name": "Asociación Agraria – Jóvenes Agricultores de Sevilla",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/ASAJASevilla.vp.json"
+    ]
+  },
+  "0xf4B8b84Dc6DEcB4795CDccE7e3b00D19b0423246": {
+    "name": "Arcodan SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Arcodan.vp.json"
+    ]
+  },
+  "0x4d12637C29089605D5167e52569E37ef795781e7": {
+    "name": "Asegrain Agricultura SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/AsegrainAgricultura.vp.json"
+    ]
+  },
+  "0x0Db96B7b3Dd6f2c1F3762D50b8E46a549407cB44": {
+    "name": "Servicios Asegrain Gordaliza SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/ServiciosAsegrainGordaliza.vp.json"
+    ]
+  },
+  "0xa35ddc73683Ac6919bD3816135fd415Ea91c9071": {
+    "name": "UPIntelligence SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/UPIntelligence.vp.json"
+    ]
+  },
+  "0xF5106959C11aC93d93De4bdb71f1dCD2dBCAb86B": {
+    "name": "Zona Enginy SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/ZLWorks.vp.json"
+    ]
   }
 }
