@@ -4181,5 +4181,71 @@
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/ViuAlDelta.vp.json"
     ]
+  },
+  "0xC41B4dc4a77CDaa3c4Cf1BF4f9A77f438F343031": {
+    "name": "Asociación Española Agricultura Conservación Suelos Vivos",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/AgriculturaConservación.vp.json"
+    ]
+  },
+  "0xBD217a176c4813fC1c3D6e306A5FA788b7aAcF0b": {
+    "name": "Comercial Ovinos SCoop",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/ComercialOvinos.vp.json"
+    ]
+  },
+  "0xae09FbE5A2931Fa01e1aA097317b56706DF2f479": {
+    "name": "Corderos Campiña Sur SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/CorderoCampinaSur.vp.json"
+    ]
+  },
+  "0xD3869dEA77b07c7236575c685AEC453c0B1acb9E": {
+    "name": "Desguace y Gruas Baena SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/DesguaceBaena.vp.json"
+    ]
+  },
+  "0xBed09D666F2b15424604f361AFC9f49Fe4DDCb0B": {
+    "name": "Desguace Suspiro del Moro SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/DesguaceSuspiroMoro.vp.json"
+    ]
+  },
+  "0xe8f85dfA1d1172950eE0E560F5F97a0A0f3d6B6f": {
+    "name": "EA Group SCoop",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/EAGroup.vp.json"
+    ]
+  },
+  "0x2d99613a40D84d6d5a084D7CDC49167E80BEde2C": {
+    "name": "European Conservation Agriculture Federation",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/ECAF.vp.json"
+    ]
+  },
+  "0x260e303E0E9187F3D66ca476F7a05c28240CEA48": {
+    "name": "Manantiales del Portell SA",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/ManantialesPortell.vp.json"
+    ]
+  },
+  "0x295aCC2ddbA50828a46AC294c1144a38Ba85fdDC": {
+    "name": "Ovipiel SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Ovipiel.vp.json"
+    ]
+  },
+  "0xe23ecB06200d2775d10fc23a786045257BcCa063": {
+    "name": "Reciclados y Desguaces Industriales y de Automoción PyV SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/RecicladosPyV.vp.json"
+    ]
+  },
+  "0xb8082F938dc3D1432136d2E8616822F4c4934475": {
+    "name": "Standard Cableteam Spain SLU",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/StandardCableteam.vp.json"
+    ]
   }
 }
