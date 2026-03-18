@@ -4127,5 +4127,59 @@
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/ZLWorks.vp.json"
     ]
+  },
+  "0x8Ece787B43C4592F8408EE0Eee4AEF02Edf91D40": {
+    "name": "Centro y Entidades de Formación de Andalucía",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/AndaluciaCEFOFormacion.vp.json"
+    ]
+  },
+  "0x3FE9F0dd36d326A853258bed9694f7faBA2D4d4C": {
+    "name": "Beepallet SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Beepallet.vp.json"
+    ]
+  },
+  "0xa5aCDEdfCA992743C78Aa2d52414862E4E881CDA": {
+    "name": "Centro Autorizado de Tratamiento Campiña Sur SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/CATCampinaSurSL.vp.json"
+    ]
+  },
+  "0xb2aC9190ed477384e8c8199258F60227100c8278": {
+    "name": "Esfain Almassora SLU",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Esfain.vp.json"
+    ]
+  },
+  "0x709883567ddF959FB13dCbAAb28f0D8f5843Cc5E": {
+    "name": "Innovaciones Tecnológicas NIR SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/InnTechNIR.vp.json"
+    ]
+  },
+  "0x81018B5f23248E8985799fC4C0De5FE88b7B2979": {
+    "name": "Laboratorio Agroalimentario Aproa SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/LaboratorioAproa.vp.json"
+    ]
+  },
+  "0xCB097b56d3d4e0CC28178fD873E94FFa6444a552": {
+    "name": "Tresbits Ingenieros de Software SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Tresbits.vp.json"
+    ]
+  },
+  "0x153E70De4dD71a71F0F5b5E389b2e02Ae8eb32Eb": {
+    "name": "Veracid SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Veracid.vp.json"
+    ]
+  },
+  "0x24B9f548e942e6fa4E68bEe900f8beebc236A430": {
+    "name": "ServInmDelta, SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/ViuAlDelta.vp.json"
+    ]
   }
 }
