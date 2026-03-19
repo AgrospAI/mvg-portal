@@ -4247,5 +4247,59 @@
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/StandardCableteam.vp.json"
     ]
+  },
+  "0xe6e23fAfF09420F4D2602C4ED2A9350288C5d400": {
+    "name": "Arrufat Sanchez SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/ArrufatGrup.vp.json"
+    ]
+  },
+  "0x0f0B1d2bFdfcAa355D32E1f0c29169F28269B20b": {
+    "name": "Capen Suministros SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/CapenSuministros.vp.json"
+    ]
+  },
+  "0x0CA31d1014718D358C5b9C75deeC85a3aA69Ce23": {
+    "name": "Calogon SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Cologon.vp.json"
+    ]
+  },
+  "0x28B8e953df64dF27E2064fCd0e4295dE49f4f338": {
+    "name": "Data Recover SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/DataRecover.vp.json"
+    ]
+  },
+  "0x4A02b711108941b585ae1E7AEd5ce3199fd64126": {
+    "name": "Metrohm Dropsens SLU",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Dropsens.vp.json"
+    ]
+  },
+  "0xE2402BB8C4FeB9A0539840dE4Cb4FD23f3BcDF2b": {
+    "name": "IM Wisdom SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/IMWisdom.vp.json"
+    ]
+  },
+  "0xAc9065EaaF15C1d910Ef435b14eD126F419733cB": {
+    "name": "Radian Space SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Radian.vp.json"
+    ]
+  },
+  "0xEAA931770B8162A69bc8FCcD20E2c9dC576120a2": {
+    "name": "Sumando Más Vida En Valladolid SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/SumandoVida.vp.json"
+    ]
+  },
+  "0x8c4e8807B75321Ef59843675c2aA41370AeE0240": {
+    "name": "Thinking5zero Soluciones SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Thinking5zero.vp.json"
+    ]
   }
 }
