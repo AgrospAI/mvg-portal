@@ -4301,5 +4301,29 @@
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/Thinking5zero.vp.json"
     ]
+  },
+  "0x20cC3507be7704Af6A6eCA5932E3a5F5F8D025AF": {
+    "name": "Automation Technical Advice SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Atead.vp.json"
+    ]
+  },
+  "0x598FBa06680d658d0a180105Cd21119d16B4EaF0": {
+    "name": "Fides Servicios Jurídicos SLP",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Fides.vp.json"
+    ]
+  },
+  "0x2F93826B03b7abFA8a0953455128A0F075eD84aF": {
+    "name": "Proyectos Tecnológicos Sostenibles SLU",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/ProyTecnSostenibles.vp.json"
+    ]
+  },
+  "0x2b35e1286114E4f42DFe6c6cABA6D429fc584B3B": {
+    "name": "Terrastar SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Terrastar.vp.json"
+    ]
   }
 }
