@@ -4325,5 +4325,35 @@
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/Terrastar.vp.json"
     ]
+  },
+  "0x2A06DA90531A62DB334bA444e2199D9484C58b48": {
+    "name": "Comunidad General de Regantes del Canal de Navarra",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/CGRCanalNavarra.vp.json"
+    ]
+  },
+  "0x00Af2819d2AF84F20062f5feC5C36fC7278593B1": {
+    "name": "Cooperativa Agrícola de Artajona",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/CoopArtajona.vp.json"
+    ]
+  },
+  "0xE1E09a16740E34C679B4a9A82508EBFCDa39143E": {
+    "name": "Rurápolis SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Rurapolis.vp.json"
+    ]
+  },
+  "0xb5a4066e9d9C77560aa2d868E6f7677f7F7811EF": {
+    "name": "Rustic Architecture Mallorca SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/RusticArchitectureMallorca.vp.json"
+    ]
+  },
+  "0x3bf33C48bBb0cE5a9bc1a8574CA1Bc98980Df33f": {
+    "name": "Tamarindos Peñíscola SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Tamarindos.vp.json"
+    ]
   }
 }
