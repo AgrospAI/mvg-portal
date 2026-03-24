@@ -4355,5 +4355,23 @@
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/Tamarindos.vp.json"
     ]
+  },
+  "0x453447C69b05f9547D6618055E2cb0f3047008f6": {
+    "name": "Bioconsum SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Bioconsum.vp.json"
+    ]
+  },
+  "0xEFD5A88D3d67dB1A5E39A6114ca80B623e7Ad83A": {
+    "name": "Eamsa 75 SA",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Eamsa.vp.json"
+    ]
+  },
+  "0x948ec60062c7ed880C11669AbF1d1D1e46e7B3Cf": {
+    "name": "Sinfines Factory SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/SinfinesFactory.vp.json"
+    ]
   }
 }
