@@ -23,7 +23,7 @@
       "@images/*": ["./src/@images/*"],
       "@utils/*": ["./src/@utils/*"],
       "@content/*": ["./@content/*"],
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*", "./artifacts/*"]
     },
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true

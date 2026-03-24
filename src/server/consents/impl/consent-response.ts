@@ -1,4 +1,3 @@
-'use server'
 import IAuthenticationService from '@/server/auth/authentication'
 import { container } from '@/server/di/container'
 import { validateWithSchema } from '@utils/consents/api'
@@ -18,7 +17,6 @@ export class ConsentResponseService implements IConsentResponseService {
     permitted?: PossibleRequests,
     token?: string
   ): Promise<Consent> {
-    console.log(permitted)
     const isPermitted =
       permitted && Object.values(permitted).some((value) => Boolean(value))
 

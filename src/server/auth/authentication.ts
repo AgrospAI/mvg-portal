@@ -1,4 +1,3 @@
-'use server'
 import { Nonce } from '@utils/consents/types'
 import { Axios, AxiosResponse } from 'axios'
 

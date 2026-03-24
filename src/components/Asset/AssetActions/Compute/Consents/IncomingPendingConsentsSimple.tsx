@@ -1,63 +1,58 @@
 import Time from '@components/@shared/atoms/Time'
 import Modal from '@components/@shared/Modal'
-import InspectConsent from '@components/Profile/History/Consents/Feed/Actions/Buttons/InspectConsent'
+import { InspectModal } from '@components/Profile/History/Consents/Feed/Actions/Buttons/InspectConsent'
 import AssetLink from '@components/Profile/History/Consents/Modal/Components/AssetLink'
-import { useUserIncomingConsents } from '@hooks/useUserConsents'
+import { useMetadataRequests } from '@context/UserMetadataRequests'
 import { Asset } from '@oceanprotocol/lib'
-import { Consent } from '@utils/consents/types'
-import { isPending } from '@utils/consents/utils'
+import { getUserVote, isPending } from '@utils/consents/utils'
+import { useAccount } from 'wagmi'
 import styles from './IncomingPendingConsentsSimple.module.css'
 
-interface Props {
+export default function IncomingPendingConsentsSimple({
+  asset
+}: Readonly<{
   asset: Asset
-}
+}>) {
+  const { address } = useAccount()
+  const { incoming } = useMetadataRequests()
 
-export default function IncomingPendingConsentsSimple({ asset }: Props) {
-  const { data: incoming } = useUserIncomingConsents()
+  const filtered =
+    incoming?.filter(
+      (request) =>
+        isPending(request) &&
+        request.dataset.did.toLowerCase() === asset.id.toLowerCase() &&
+        !getUserVote(request.votes, address)
+    ) || []
 
-  const filtered = incoming.filter(
-    (consent: Consent) =>
-      isPending(consent) && consent.dataset.includes(asset.id)
-  )
+  if (filtered?.length === 0)
+    return <div className={styles.noConsents}>No incoming consents</div>
 
   return (
-    <>
-      {filtered?.length ? (
-        <div className={styles.section}>
-          <div className={styles.title}>Incoming petitions</div>
-          <div className={styles.consentList}>
-            {filtered.map((consent) => (
-              <div key={consent.id}>
-                <div className={styles.consentRow}>
-                  <div className={styles.consentDetail}>
-                    <AssetLink
-                      did={consent.algorithm}
-                      className={styles.assetLink}
-                      isArrow
-                    />
-                    <div className={styles.description}>
-                      <span>
-                        {Object.keys(consent.request).length} request(s)
-                      </span>
-                      <span>|</span>
-                      <Time
-                        date={consent.created_at.toString()}
-                        isUnix
-                        relative
-                      />
-                    </div>
-                  </div>
-                  <Modal>
-                    <InspectConsent consent={consent} />
-                  </Modal>
+    <div className={styles.section}>
+      <div className={styles.title}>Incoming petitions</div>
+      <div className={styles.consentList}>
+        {filtered.map((request) => (
+          <div key={request.id}>
+            <div className={styles.consentRow}>
+              <div className={styles.consentDetail}>
+                <AssetLink
+                  did={request.algorithm.did}
+                  className={styles.assetLink}
+                  isArrow
+                />
+                <div className={styles.description}>
+                  <span>{filtered.length} request(s)</span>
+                  <span>|</span>
+                  <Time date={request.createdAt.toString()} isUnix relative />
                 </div>
               </div>
-            ))}
+              <Modal>
+                <InspectModal request={request} />
+              </Modal>
+            </div>
           </div>
-        </div>
-      ) : (
-        <div className={styles.noConsents}>No incoming consents</div>
-      )}
-    </>
+        ))}
+      </div>
+    </div>
   )
 }

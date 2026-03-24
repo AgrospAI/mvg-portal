@@ -1,6 +1,6 @@
+import Modal from '@components/@shared/Modal'
 import QueryBoundary from '@components/@shared/QueryBoundary'
 import ConsentsFeed from './Feed/ConsentsFeed'
-import Modal from '@components/@shared/Modal'
 
 export default function ConsentsContent() {
   return (

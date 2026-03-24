@@ -1,5 +1,3 @@
-'use server'
-
 import { Container } from 'inversify'
 import IAuthenticationService from '../auth/authentication'
 import { AuthenticationService } from '../auth/impl/authentication'

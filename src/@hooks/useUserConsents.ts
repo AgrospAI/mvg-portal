@@ -1,273 +1,143 @@
-import {
-  useMutation,
-  useQueryClient,
-  useSuspenseQuery
-} from '@tanstack/react-query'
-import { AssetConsentApplier } from '@utils/assetConsentApplier'
-import {
-  createConsent,
-  createConsentResponse,
-  deleteConsent,
-  deleteConsentResponse,
-  getHealth,
-  getUserConsents,
-  getUserConsentsDirection
-} from '@utils/consents/api'
-import {
-  Consent,
-  ConsentDirection,
-  PossibleRequests,
-  UserConsentsData
-} from '@utils/consents/types'
-import { isPending } from '@utils/consents/utils'
-import { useCallback, useEffect } from 'react'
-import { toast } from 'react-toastify'
-import { useAccount } from 'wagmi'
-import { useAbortController } from './useAbortController'
+import { FormResponse } from '@components/Profile/History/Consents/Modal/Components/ConsentResponse/index.hooks'
+import { LoggerInstance } from '@oceanprotocol/lib'
+import { getContract } from '@utils/contracts'
+import { ethers } from 'ethers'
+import { useNetwork } from 'wagmi'
 import { useAutoSigner } from './useAutoSigner'
-import { useCancelToken } from './useCancelToken'
-import { useUserConsentsToken } from './useUserConsentsToken'
 
-export const useUserConsentsAmount = () => {
-  const { address } = useAccount()
-  return useSuspenseQuery({
-    queryKey: ['profile-consents', address],
-    queryFn: async ({ signal }) => getUserConsents(address, signal)
-  })
-}
-
-const useUserConsents = (direction: ConsentDirection, queryKey: string) => {
-  const { address } = useAccount()
-  const queryClient = useQueryClient()
-  const query = useSuspenseQuery({
-    queryKey: [queryKey, address],
-    queryFn: async ({ signal }) =>
-      getUserConsentsDirection(address, direction, signal)
-  })
-
-  // Check if the fetched data differs from the stored pendings, if so, refetch user stats
-  useEffect(() => {
-    const amounts = (queryClient.getQueryData(['profile-consents', address]) ??
-      {}) as UserConsentsData
-
-    let hasChanged = false
-
-    switch (direction) {
-      case 'Incoming':
-        hasChanged =
-          amounts.incoming_pending_consents !==
-          query.data.filter(isPending).length
-        break
-      case 'Outgoing':
-        hasChanged =
-          amounts.outgoing_pending_consents !==
-          query.data.filter(isPending).length
-        break
-    }
-
-    if (hasChanged) {
-      queryClient.invalidateQueries({
-        queryKey: ['profile-consents', address]
-      })
-    }
-  }, [address, direction, query.data, queryClient])
-
-  return query
-}
-
-export const useUserIncomingConsents = () => {
-  return useUserConsents('Incoming', 'user-incoming-consents')
-}
-
-export const useUserOutgoingConsents = () => {
-  return useUserConsents('Outgoing', 'user-outgoing-consents')
-}
-
-export const useDeleteConsentResponse = () => {
-  const queryClient = useQueryClient()
-  const { accountId: address } = useAutoSigner()
-  useUserConsentsToken()
-
-  interface Mutation {
-    consentId: number
-  }
-
-  return useMutation({
-    mutationFn: async ({ consentId }: Mutation) =>
-      deleteConsentResponse(consentId),
-
-    onSuccess: (_data, { consentId }) => {
-      // Set the consent back to "no-response" state
-      queryClient.setQueryData(
-        ['user-incoming-consents', address],
-        (oldData: Consent[] = []) => {
-          return oldData.map((consent) => {
-            if (consent.id !== consentId) return consent
-
-            return {
-              ...consent,
-              status: 'Pending',
-              response: null
-            }
-          })
-        }
-      )
-
-      // Increase the amount of pending consents
-      queryClient.setQueryData(
-        ['profile-consents', address],
-        (oldData: UserConsentsData) => ({
-          ...oldData,
-          incoming_pending_consents: oldData.incoming_pending_consents + 1
-        })
-      )
-    }
-  })
-}
-
-export const useCreateConsentResponse = (asset: AssetExtended) => {
-  const { mutateAsync: deleteConsentResponse } = useDeleteConsentResponse()
+export const useContract = (contractName: string) => {
+  const { chain } = useNetwork()
   const { signer } = useAutoSigner()
-  const queryClient = useQueryClient()
 
-  const newCancelToken = useCancelToken()
-  const newAbortSignal = useAbortController()
-  useUserConsentsToken()
+  const getContractInstance = () => {
+    if (!signer) throw new Error('No signer available')
+    if (!chain?.id) throw new Error('No chain connected')
+    return getContract(contractName, chain.id, signer)
+  }
 
-  const revertCallback = useCallback(
-    async (consentId: number, error?: unknown) => {
-      if (error) {
-        console.error(error)
-        toast.error(error instanceof Error ? error.message : String(error))
+  return { getContractInstance }
+}
+
+const useMetadataRequestManager = () => useContract('MetadataRequestManager')
+
+export const useVoteMetadataRequest = () => {
+  const { getContractInstance } = useMetadataRequestManager()
+
+  const voteMetadataRequest = async ({
+    requestId,
+    response
+  }: {
+    requestId: number
+    response: FormResponse
+  }): Promise<void> => {
+    const inFavourBitmap = response.permissions.reduce((bitmap, permission) => {
+      if (permission.permitted) {
+        const bitValue = BigInt(1) << BigInt(permission.requestType)
+        return bitmap | bitValue
       }
+      return bitmap
+    }, BigInt(0))
 
-      await deleteConsentResponse({ consentId })
-      toast.warn('Failed transaction, reverted consent response.')
-    },
-    [deleteConsentResponse]
-  )
+    const contract = getContractInstance()
+    const args = [BigInt(requestId), inFavourBitmap, response.reason || '']
+    LoggerInstance.log('Sending vote', ...args)
 
-  return useMutation({
-    mutationFn: ({
-      consentId,
+    try {
+      // 2. Try to estimate gas with a 20% buffer
+      const estimatedGas = await contract.estimateGas.vote(...args)
+      const gasLimit = estimatedGas.mul(120).div(100)
+
+      const tx = await contract.vote(...args, { gasLimit })
+      await tx.wait()
+    } catch (error) {
+      LoggerInstance.warn('Estimation failed, manual limit', error)
+      const tx = await contract.vote(...args, { gasLimit: 400_000 })
+      await tx.wait()
+    }
+  }
+
+  return { voteMetadataRequest }
+}
+
+export const useCreateAssetMetadataRequest = () => {
+  const { getContractInstance } = useMetadataRequestManager()
+
+  const createAssetMetadataRequest = async ({
+    datasetAddress,
+    algorithmAddress,
+    reason,
+    requestTypes,
+    data,
+    expiresIn
+  }: {
+    datasetAddress: string
+    algorithmAddress: string
+    reason: string
+    requestTypes: number[]
+    data: string[]
+    expiresIn: number
+  }): Promise<void> => {
+    const contract = getContractInstance()
+    const args = [
+      datasetAddress,
+      algorithmAddress,
       reason,
-      permitted
-    }: {
-      consentId: number
-      reason: string
-      permitted: PossibleRequests
-    }) => createConsentResponse(consentId, reason, permitted),
-    onSuccess: async (newConsent, { consentId, reason, permitted }) => {
-      const address = await signer.getAddress()
+      requestTypes,
+      data,
+      expiresIn
+    ]
+    console.log('Sending metadata creation request', ...args)
 
-      // 1. Update the list of incoming consents
-      queryClient.setQueryData(
-        ['user-incoming-consents', address],
-        (oldData: Consent[] = []) => {
-          return oldData.map((consent) => {
-            if (consent.id !== consentId) return consent
+    try {
+      const estimatedGas = await contract.estimateGas.createRequest(args)
+      const gasLimit = estimatedGas.mul(120).div(100)
 
-            return {
-              ...consent,
-              status: newConsent.status,
-              response: {
-                consent: newConsent.url,
-                status: newConsent.status,
-                reason,
-                permitted,
-                last_updated_at: 0
-              }
-            }
-          })
-        }
-      )
-
-      // 2. Decrease the amount of pending consents
-      queryClient.setQueryData(
-        ['profile-consents', address],
-        (oldData: UserConsentsData) => ({
-          ...oldData,
-          incoming_pending_consents: oldData.incoming_pending_consents - 1
-        })
-      )
-
-      await AssetConsentApplier(
-        newConsent,
-        signer,
-        newCancelToken,
-        newAbortSignal
-      )
-        .apply(asset)
-        .catch(async (error) => {
-          await revertCallback(consentId)
-          console.error(error)
-        })
+      const tx = await contract.createRequest(args, { gasLimit })
+      await tx.wait()
+    } catch (error) {
+      console.warn('Estimation failed, manual limit', error)
+      const tx = await contract.createRequest(args, {
+        gasLimit: 1_000_000
+      })
+      await tx.wait()
     }
-  })
-}
-
-export const useCreateAssetConsent = () => {
-  const { accountId: address } = useAutoSigner()
-  useUserConsentsToken()
-
-  interface Mutation {
-    chainId: number
-    datasetDid: string
-    algorithmDid: string
-    request: PossibleRequests
-    reason?: string
   }
 
-  return useMutation({
-    mutationFn: async ({
-      chainId,
-      datasetDid,
-      algorithmDid,
-      request,
-      reason
-    }: Mutation) =>
-      createConsent(address, chainId, datasetDid, algorithmDid, request, reason)
-  })
+  return { createAssetMetadataRequest }
 }
 
-export const useDeleteConsent = () => {
-  const queryClient = useQueryClient()
-  const { accountId: address } = useAutoSigner()
-  useUserConsentsToken()
+export const useDeleteMetadataRequest = () => {
+  const { getContractInstance } = useMetadataRequestManager()
 
-  interface Mutation {
-    consent: Consent
+  const deleteMetadataRequest = async ({
+    requestId
+  }: {
+    requestId: ethers.BigNumber | number
+  }): Promise<void> => {
+    LoggerInstance.log(`Deleting metadata request: ${requestId}`)
+
+    const contract = getContractInstance()
+    const tx = await contract.cancelRequest(requestId)
+    await tx.wait()
   }
 
-  return useMutation({
-    mutationFn: async ({ consent }: Mutation) => deleteConsent(consent.id),
-
-    onSuccess: async (_, { consent }) => {
-      if (!address) return
-
-      const direction = `user-${consent.direction.toLowerCase()}-consents`
-      queryClient.setQueryData(
-        [direction, address],
-        (oldData: Consent[] = []) => oldData.filter((c) => c.id !== consent.id)
-      )
-
-      if (isPending(consent)) {
-        // Decrease the amount of pending consents
-        queryClient.setQueryData(
-          ['profile-consents', address],
-          (oldData: UserConsentsData) => ({
-            ...oldData,
-            outgoing_pending_consents: oldData.outgoing_pending_consents - 1
-          })
-        )
-      }
-    }
-  })
+  return { deleteMetadataRequest }
 }
 
-export const useHealthcheck = () =>
-  useSuspenseQuery({
-    queryKey: ['health'],
-    queryFn: getHealth,
-    staleTime: 0
-  })
+export const useFinalizeMetadataRequest = () => {
+  const { getContractInstance } = useMetadataRequestManager()
+
+  const finalizeMetadataRequest = async ({
+    requestId
+  }: {
+    requestId: ethers.BigNumber | number
+  }) => {
+    LoggerInstance.log(`Finalizing metadata request: ${requestId}`)
+
+    const contract = getContractInstance()
+    const tx = await contract.finalize(requestId)
+    await tx.wait()
+  }
+
+  return { finalizeMetadataRequest }
+}

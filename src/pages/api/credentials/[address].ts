@@ -22,6 +22,11 @@ export default async function handler(
     const creds = await credentialsService.getAddressCredentials(
       address as Address
     )
+
+    if (!creds) {
+      return res.status(404).json({ error: 'Address not found' })
+    }
+
     console.log('[API] Got credentials:', creds)
 
     return res.status(200).json(creds)

@@ -1,12 +1,13 @@
-import { ReactElement, useEffect, useState } from 'react'
-import Page from '@shared/Page'
-import ProfilePage from '../../components/Profile'
-import { accountTruncate } from '@utils/wallet'
 import ProfileProvider from '@context/Profile'
-import { useRouter } from 'next/router'
-import { useAccount } from 'wagmi'
+import UserMetadataRequestsProvider from '@context/UserMetadataRequests'
+import Page from '@shared/Page'
+import { accountTruncate } from '@utils/wallet'
 import { isAddress } from 'ethers/lib/utils'
+import { useRouter } from 'next/router'
+import { ReactElement, useEffect, useState } from 'react'
+import { useAccount } from 'wagmi'
 import { useAutomation } from '../../@context/Automation/AutomationProvider'
+import ProfilePage from '../../components/Profile'
 
 export default function PageProfile(): ReactElement {
   const router = useRouter()
@@ -48,7 +49,9 @@ export default function PageProfile(): ReactElement {
       noPageHeader
     >
       <ProfileProvider accountId={finalAccountId} ownAccount={ownAccount}>
-        <ProfilePage accountId={finalAccountId} />
+        <UserMetadataRequestsProvider address={accountId}>
+          <ProfilePage accountId={finalAccountId} />
+        </UserMetadataRequestsProvider>
       </ProfileProvider>
     </Page>
   )

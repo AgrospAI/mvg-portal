@@ -1,34 +1,64 @@
 import Info from '@images/info.svg'
 import { Asset } from '@oceanprotocol/lib'
-import { PossibleRequests } from '@utils/consents/types'
-import { cleanRequests } from '@utils/consents/utils'
 import { ErrorMessage, Form, Formik } from 'formik'
-import { ReactNode } from 'react'
+import { ReactNode, useState } from 'react'
 import Actions from '../Actions'
 import { AutoResize } from '../ConsentResponse/AutoResize'
 import { InteractiveRequests } from '../Requests/InteractiveRequests'
+import { TimeSelector } from '../TimeSelector/index'
 import styles from './index.module.css'
 
-interface RequestsListProps {
-  dataset: Asset
-  algorithm: Asset
-  handleSubmit: (reason: string, request: PossibleRequests) => void
+const Error = ({ name }: Readonly<{ name: string }>) => (
+  <ErrorMessage name={name} component="div">
+    {(msg: ReactNode) => (
+      <div className={styles.error}>
+        <Info />
+        {msg}
+      </div>
+    )}
+  </ErrorMessage>
+)
+
+export interface SubmitType {
+  reason: string
+  expiresInSeconds: number
+  permissions: { data?: string; requestType: number; permitted: boolean }[]
 }
 
-function RequestsList({ dataset, algorithm, handleSubmit }: RequestsListProps) {
+export const MetadataRequestPetitions = ({
+  dataset,
+  algorithm,
+  handleSubmit
+}: Readonly<{
+  dataset: Asset
+  algorithm: Asset
+  handleSubmit: (data: SubmitType) => Promise<void>
+}>) => {
+  const [amount, setAmount] = useState(1)
+  const [unit, setUnit] = useState(3600 * 24 * 7 * 30)
+
+  const initialValues = {
+    reason: '',
+    permissions: [],
+    expiresInSeconds: amount * unit
+  } as SubmitType
+
   return (
     <Formik
-      initialValues={{ reason: '', permissions: {} }}
+      initialValues={initialValues}
+      validateOnChange
       validateOnBlur={false}
-      validateOnChange={true}
       validateOnMount={false}
-      validate={(values) => {
-        const errors: { reason?: string; permissions?: string } = {}
+      validate={(values: SubmitType) => {
+        const errors: Partial<Record<keyof SubmitType, string>> = {}
+
         if (!values.reason || values.reason.length === 0) {
           errors.reason = 'Reason required'
         } else if (values.reason.length > 255) {
           errors.reason = 'Must be 255 characters or less'
         }
+
+        if (!values.permissions) return errors
 
         const permissions = Object.values(values.permissions)
         if (
@@ -41,12 +71,9 @@ function RequestsList({ dataset, algorithm, handleSubmit }: RequestsListProps) {
 
         return errors
       }}
-      onSubmit={({ reason, permissions }, { setSubmitting }) => {
-        console.log('Submitting', reason, permissions)
-
-        handleSubmit(reason, cleanRequests(permissions))
-        setSubmitting(false)
-      }}
+      onSubmit={async (data: SubmitType, { setSubmitting }) =>
+        await handleSubmit(data).finally(() => setSubmitting(false))
+      }
     >
       {({ isSubmitting, isValid, submitForm }) => (
         <Form className={styles.form}>
@@ -54,29 +81,24 @@ function RequestsList({ dataset, algorithm, handleSubmit }: RequestsListProps) {
             name="reason"
             placeholder="This is where your reasons go"
           />
-          <ErrorMessage name="reason" component="div">
-            {(msg: ReactNode) => (
-              <div className={styles.error}>
-                <Info />
-                {msg}
-              </div>
-            )}
-          </ErrorMessage>
+          <Error name="reason" />
+
           <InteractiveRequests
             dataset={dataset}
             algorithm={algorithm}
-            fieldName="permissions"
+            isInteractive
           >
             Request for:
-            <ErrorMessage name="permissions" component="div">
-              {(msg: ReactNode) => (
-                <div className={styles.error}>
-                  <Info />
-                  {msg}
-                </div>
-              )}
-            </ErrorMessage>
           </InteractiveRequests>
+
+          <TimeSelector
+            amount={amount}
+            setAmount={setAmount}
+            unit={unit}
+            setUnit={setUnit}
+          />
+          <Error name="expiresIn" />
+
           <Actions
             acceptText="Submit"
             handleAccept={submitForm}
@@ -88,4 +110,4 @@ function RequestsList({ dataset, algorithm, handleSubmit }: RequestsListProps) {
   )
 }
 
-export default RequestsList
+export default { MetadataRequestPetitions }

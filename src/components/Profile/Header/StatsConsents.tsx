@@ -1,24 +1,13 @@
-import { useUserConsentsAmount } from '@hooks/useUserConsents'
+import { useMetadataRequests } from '@context/UserMetadataRequests'
 import NumberUnit from './NumberUnit'
 
 function StatsConsents() {
-  const {
-    data: {
-      incoming_pending_consents: incomingPendingConsents,
-      outgoing_pending_consents: outgoingPendingConsents
-    }
-  } = useUserConsentsAmount()
+  const { pendingIncoming, pendingRequested } = useMetadataRequests()
 
   return (
     <>
-      <NumberUnit
-        label="Incoming Pending Consents"
-        value={incomingPendingConsents ?? 0}
-      />
-      <NumberUnit
-        label="Outgoing Pending Consents"
-        value={outgoingPendingConsents ?? 0}
-      />
+      <NumberUnit label="Incoming Pending Consents" value={pendingIncoming} />
+      <NumberUnit label="Requested Pending Consents" value={pendingRequested} />
     </>
   )
 }

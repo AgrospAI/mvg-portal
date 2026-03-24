@@ -4,19 +4,17 @@ import {
   getFilterTerm,
   queryMetadata
 } from '@utils/aquarius'
+import { cancelToken } from '@utils/axios'
 import {
   SortDirectionOptions,
   SortTermOptions
 } from '../@types/aquarius/SearchQuery'
-import { useCancelToken } from './useCancelToken'
 
 export const useAssets = (
   address: string,
   type: 'algorithm' | 'dataset',
   chainId: number
 ) => {
-  const newCancelToken = useCancelToken()
-
   const filters = [] as FilterTerm[]
 
   filters.push(getFilterTerm('metadata.type', type))
@@ -42,6 +40,7 @@ export const useAssets = (
 
   return useSuspenseQuery({
     queryKey: [type, address],
-    queryFn: async () => await queryMetadata(query, newCancelToken())
+    queryFn: async ({ signal }) =>
+      await queryMetadata(query, cancelToken(signal))
   })
 }

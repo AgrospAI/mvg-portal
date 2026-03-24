@@ -1,46 +1,51 @@
 import Loader from '@components/@shared/atoms/Loader'
 import { useModalContext } from '@components/@shared/Modal'
-import { useCreateAssetConsent, useHealthcheck } from '@hooks/useUserConsents'
+import { useCreateAssetMetadataRequest } from '@hooks/useUserConsents'
 import IconAlgorithm from '@images/algorithm.svg'
 import IconTransaction from '@images/transaction.svg'
 import { Asset } from '@oceanprotocol/lib'
-import { PossibleRequests } from '@utils/consents/types'
 import { Suspense, useCallback, useState } from 'react'
 import { toast } from 'react-toastify'
-import AssetInput from './Components/AssetInput'
-import RequestsList from './Components/RequestsList'
-import Sections from './Components/Sections'
-import { useNetwork } from 'wagmi'
+import AssetInput from '../Components/AssetInput'
+import {
+  MetadataRequestPetitions,
+  SubmitType
+} from '../Components/MetadataRequestPetitions'
+import Sections from '../Components/Sections'
 
-interface Props {
+export const CreateMetadataRequestModal = ({
+  asset
+}: Readonly<{
   asset: Asset
-}
-
-function ConsentPetitionModal({ asset }: Props) {
-  useHealthcheck()
-  const { chain } = useNetwork()
+}>) => {
   const { closeModal } = useModalContext()
-  const { mutateAsync: createConsent } = useCreateAssetConsent()
+  const { createAssetMetadataRequest } = useCreateAssetMetadataRequest()
   const [selected, setSelected] = useState<Asset>()
 
   const handleSubmit = useCallback(
-    (reason: string, request: PossibleRequests) => {
-      const consent = {
-        chainId: chain.id,
-        datasetDid: asset.id,
-        algorithmDid: selected.id,
-        request,
-        reason
-      }
-
-      createConsent(consent, {
-        onSuccess: () => {
-          closeModal()
-          toast.success('Consent petition created successfully')
-        }
+    async ({ reason, permissions, expiresInSeconds }: SubmitType) => {
+      await createAssetMetadataRequest({
+        datasetAddress: asset.nftAddress,
+        algorithmAddress: selected.nftAddress,
+        reason,
+        requestTypes: permissions
+          .filter((r) => r.permitted)
+          .map((r) => r.requestType),
+        data: permissions
+          .filter((r) => r.permitted)
+          .map((r) => r.data ?? 'default'),
+        expiresIn: Math.floor(expiresInSeconds)
+      }).then(() => {
+        toast.success('Consent petition created successfully')
+        closeModal()
       })
     },
-    [asset.id, chain.id, closeModal, createConsent, selected]
+    [
+      asset.nftAddress,
+      selected?.nftAddress,
+      closeModal,
+      createAssetMetadataRequest
+    ]
   )
 
   return (
@@ -59,7 +64,7 @@ function ConsentPetitionModal({ asset }: Props) {
             description="Ask for what you need and provide a short reason"
             icon={<IconTransaction />}
           >
-            <RequestsList
+            <MetadataRequestPetitions
               dataset={asset}
               algorithm={selected}
               handleSubmit={handleSubmit}
@@ -71,4 +76,4 @@ function ConsentPetitionModal({ asset }: Props) {
   )
 }
 
-export default ConsentPetitionModal
+export default { CreateMetadataRequestModal }

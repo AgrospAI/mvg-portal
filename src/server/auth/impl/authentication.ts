@@ -1,4 +1,3 @@
-'use server'
 import IAuthenticationService from '@/server/auth/authentication'
 import { container } from '@/server/di/container'
 import IEnvironmentService from '@/server/env/env'

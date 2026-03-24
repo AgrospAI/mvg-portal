@@ -1,4 +1,3 @@
-'use server'
 import IAuthenticationService from '@/server/auth/authentication'
 import IConsentsService from '@/server/consents/consents'
 import { container } from '@/server/di/container'

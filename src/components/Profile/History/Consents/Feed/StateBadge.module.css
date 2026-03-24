@@ -10,20 +10,20 @@
   width: 10rem;
 }
 
-.badge-pending {
+.badge-0 {
   background-color: var(--brand-alert-orange);
 }
 
-.badge-accepted {
+.badge-2 {
   background-color: var(--brand-alert-green);
   color: black;
 }
 
-.badge-resolved {
+.badge-3 {
   background-color: var(--brand-alert-yellow);
   color: black;
 }
 
-.badge-denied {
+.badge-4 {
   background-color: var(--brand-alert-red);
 }

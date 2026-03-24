@@ -1,4 +1,3 @@
-import QueryBoundary from '@components/@shared/QueryBoundary'
 import { useProfile } from '@context/Profile'
 import { ReactElement } from 'react'
 import NumberUnit from './NumberUnit'
@@ -15,9 +14,7 @@ export default function Stats(): ReactElement {
         value={typeof sales !== 'number' || sales < 0 ? 0 : sales}
       />
       <NumberUnit label="Published" value={assetsTotal} />
-      <QueryBoundary text="Loading consents stats">
-        <StatsConsents />
-      </QueryBoundary>
+      <StatsConsents />
     </div>
   )
 }

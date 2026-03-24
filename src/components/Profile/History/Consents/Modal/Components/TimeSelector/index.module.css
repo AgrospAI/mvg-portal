@@ -1,0 +1,9 @@
+.options {
+  display: flex;
+  flex-direction: 'row';
+  gap: 0.5rem;
+}
+
+.option {
+  width: 5rem;
+}

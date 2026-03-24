@@ -1,4 +1,5 @@
 import QueryBoundary from '@components/@shared/QueryBoundary'
+import UserMetadataRequestsProvider from '@context/UserMetadataRequests'
 import { useAccount } from 'wagmi'
 import ConsentPetitionButton from './ConsentPetitionButton'
 import IncomingPendingConsentsSimple from './IncomingPendingConsentsSimple'
@@ -10,11 +11,13 @@ interface Props {
 export default function AssetConsents({ asset }: Props) {
   const { address } = useAccount()
 
-  if (address === asset.nft.owner) {
+  if (address === asset?.nft?.owner) {
     return (
       <>
         <QueryBoundary text="Loading incoming consents">
-          <IncomingPendingConsentsSimple asset={asset} />
+          <UserMetadataRequestsProvider address={address}>
+            <IncomingPendingConsentsSimple asset={asset} />
+          </UserMetadataRequestsProvider>
         </QueryBoundary>
       </>
     )

@@ -1,9 +1,8 @@
 import Button from '@components/@shared/atoms/Button'
 import Modal from '@components/@shared/Modal'
-import ConsentPetitionModal from '@components/Profile/History/Consents/Modal/ConsentPetitionModal'
-import { useHealthcheck } from '@hooks/useUserConsents'
-import styles from './ConsentPetitionButton.module.css'
+import { CreateMetadataRequestModal } from '@components/Profile/History/Consents/Modal/CreateMetadataRequestModal'
 import { useAccount } from 'wagmi'
+import styles from './ConsentPetitionButton.module.css'
 
 interface ConsentPetitionButtonProps {
   asset: AssetExtended
@@ -12,8 +11,6 @@ interface ConsentPetitionButtonProps {
 export default function ConsentPetitionButton({
   asset
 }: ConsentPetitionButtonProps) {
-  useHealthcheck()
-
   const { address } = useAccount()
 
   if (!address) {
@@ -36,7 +33,7 @@ export default function ConsentPetitionButton({
           </Button>
         </Modal.Trigger>
         <Modal.Content name={'0'}>
-          <ConsentPetitionModal asset={asset} />
+          <CreateMetadataRequestModal asset={asset} />
         </Modal.Content>
       </Modal>
     </span>

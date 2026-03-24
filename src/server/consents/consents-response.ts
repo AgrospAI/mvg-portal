@@ -1,5 +1,3 @@
-'use server'
-
 import { Consent, PossibleRequests } from '@utils/consents/types'
 
 interface IConsentResponseService {

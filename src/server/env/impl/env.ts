@@ -1,4 +1,3 @@
-'use server'
 import { EnvironmentSchema } from '@utils/env/schemas'
 import { Environment } from '@utils/env/types'
 import { injectable } from 'inversify'

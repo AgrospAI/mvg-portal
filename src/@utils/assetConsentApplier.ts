@@ -78,13 +78,18 @@ export const Updater = (
 })
 
 export const AssetConsentApplier = (
-  consent: Readonly<NonNullable<Consent>>,
+  request: Readonly<NonNullable<MetadataRequest>>,
+  // consent: Readonly<NonNullable<Consent>>,
   signer: Readonly<NonNullable<Signer>>,
   newCancelToken: () => CancelToken,
   newAbortSignal: () => AbortSignal
 ) => ({
   apply: async (asset: AssetExtended): Promise<void> => {
-    const permitted = Object.keys(consent.response.permitted)
+    if (request.expiresAt > Date.now()) return
+
+    // const permitted = Object.keys(consent.response.permitted)
+    const permitted =
+      request.subRequests?.filter((r) => r.yesWeight > r.noWeight) ?? []
     if (permitted.length === 0) return
 
     const previousAsset = JSON.stringify(asset)
