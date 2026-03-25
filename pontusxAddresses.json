@@ -1428,7 +1428,9 @@
   },
   "0xc1dF3Cd04BE1159f1b6e27Dfa04a846FAbc959dc": {
     "name": "BEEBUCKET GmbH",
-    "credentials": []
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Beebucket.vp.json"
+    ]
   },
   "0xd794CeB60d49755762C17bD7Cc5f613FE363b9F6": {
     "name": "Neoception GmbH",
@@ -4372,6 +4374,120 @@
     "name": "Sinfines Factory SL",
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/SinfinesFactory.vp.json"
+    ]
+  },
+  "0x1Fac355dE317540Dec424777Eb41dAB543d30525": {
+    "name": "A3 Sides SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/A3Sides.vp.json"
+    ]
+  },
+  "0x492503734387228b917B468C695BaD843FD613b2": {
+    "name": "Cal Gironella SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/CalGironella.vp.json"
+    ]
+  },
+  "0xe2e9BAeC0F3162911d8C79db952bD18e1314FB7d": {
+    "name": "Crismar Activa't SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/CrismarActivat.vp.json"
+    ]
+  },
+  "0xD6C38d883FE2104025E2e0c0444Bdf681910170C": {
+    "name": "Crismar Salut SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/CrismarSalut.vp.json"
+    ]
+  },
+  "0x32Ec168e8C4E8EfbF5d25aD16cf1d21d973BA633": {
+    "name": "Excavacions Ramon Roma S.L.",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/ExcavacionsRR.vp.json"
+    ]
+  },
+  "0x55a6b8ca257185Cc00da60d2580b0e426111c5F2": {
+    "name": "Fuentes Pujol SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/FuentesPujol.vp.json"
+    ]
+  },
+  "0x8a42bffe1E94Dd93755c6511Ea73e5B332037e7c": {
+    "name": "Fuentes Pujol Integracions SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/FuentesPujolIntegracions.vp.json"
+    ]
+  },
+  "0x4A03A5Eeef2e09247c8Cf99AA5E51dC35073571e": {
+    "name": "Bertomeu i Santiago Assessors SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/GabinetAdministratiu.vp.json"
+    ]
+  },
+  "0x28915D33588d748f8EEFdA3157c020210a3d0504": {
+    "name": "Investigación, Desarrollo y Soporte de Aplicaciones Informáticas SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/IDSOP.vp.json"
+    ]
+  },
+  "0x7FbBD9056320137715a786b41d3BDBe2f5d3BB71": {
+    "name": "Soluciones Informáticas Globales SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Infosegovia.vp.json"
+    ]
+  },
+  "0x6762E222064bC35a3Fc61641125e5dBe050a7d02": {
+    "name": "Kenus Informática SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/KenusInformatica.vp.json"
+    ]
+  },
+  "0xE8a5B2ad09FaD2ca28f1447677845a06dE76FDfd": {
+    "name": "Agropecuaria Les Sogues SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/LesSogues.vp.json"
+    ]
+  },
+  "0xFBf52C0aE9143527328E5FaF67F8C34f87A43E3F": {
+    "name": "Limgest i Associats Serveis Empresarials SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Limgest.vp.json"
+    ]
+  },
+  "0xa7e01c796417AEae7CCA1b715829f0c1DF87C920": {
+    "name": "Maposa Quess, SLU",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/MaposaQuess.vp.json"
+    ]
+  },
+  "0xE3f276b59d15A77ee9340C9606b5BBa900Cd3305": {
+    "name": "Natural Cria SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/NaturalCria.vp.json"
+    ]
+  },
+  "0xA1d2C56041a6530190e4d5844C9D009Cdb3E2B32": {
+    "name": "Orbatrans Barna SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Orbatrans.vp.json"
+    ]
+  },
+  "0x0a2E3Ce932522f386cD0B61B4fB951aca344323C": {
+    "name": "Valdevilloco Sociedad Cooperativa",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/ValdevillocoCoop.vp.json"
+    ]
+  },
+  "0xa653b93d3cE763A2c1e2aB317a10352e06ade482": {
+    "name": "Emp Sport Events SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/WeFeel.vp.json"
+    ]
+  },
+  "0x67dc7BC781EF5f6BA5cA418698020F4f77C7E309": {
+    "name": "Wiese Sieben UG (Haftungsbeschränkt)",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/WieseSieben.vp.json"
     ]
   }
 }
