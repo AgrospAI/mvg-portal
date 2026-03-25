@@ -1,16 +1,18 @@
+import { useIsMounted } from '@hooks/useIsMounted'
+import { useGetMaximumExpireTime } from '@hooks/useUserMetadataRequests'
 import Info from '@images/info.svg'
 import { Asset } from '@oceanprotocol/lib'
 import { ErrorMessage, Form, Formik } from 'formik'
-import { ReactNode, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Actions from '../Actions'
 import { AutoResize } from '../ConsentResponse/AutoResize'
 import { InteractiveRequests } from '../Requests/InteractiveRequests'
-import { TimeSelector } from '../TimeSelector/index'
+import { TimePicker } from '../TimePicker'
 import styles from './index.module.css'
 
 const Error = ({ name }: Readonly<{ name: string }>) => (
   <ErrorMessage name={name} component="div">
-    {(msg: ReactNode) => (
+    {(msg) => (
       <div className={styles.error}>
         <Info />
         {msg}
@@ -34,8 +36,17 @@ export const MetadataRequestPetitions = ({
   algorithm: Asset
   handleSubmit: (data: SubmitType) => Promise<void>
 }>) => {
-  const [amount, setAmount] = useState(1)
-  const [unit, setUnit] = useState(3600 * 24 * 7 * 30)
+  const isMounted = useIsMounted()
+
+  const [amount, setAmount] = useState<number>()
+  const [unit, setUnit] = useState<number>()
+
+  const { getExpireTime } = useGetMaximumExpireTime()
+  const [maximumExpireTime, setMaximumExpireTime] = useState<number>()
+
+  useEffect(() => {
+    getExpireTime().then((value) => isMounted && setMaximumExpireTime(value))
+  }, [isMounted, getExpireTime])
 
   const initialValues = {
     reason: '',
@@ -58,12 +69,20 @@ export const MetadataRequestPetitions = ({
           errors.reason = 'Must be 255 characters or less'
         }
 
+        if (values.expiresInSeconds < 1) {
+          errors.expiresInSeconds = 'Must be greater than 0'
+        } else if (values.expiresInSeconds > maximumExpireTime) {
+          errors.expiresInSeconds = `Exceeds maximum expire time: ${maximumExpireTime} seconds`
+        }
+
+        console.log(values.expiresInSeconds, maximumExpireTime)
+
         if (!values.permissions) return errors
 
         const permissions = Object.values(values.permissions)
         if (
           !permissions ||
-          permissions.length === 0 ||
+          permissions.length < 1 ||
           permissions.every((x) => !x)
         ) {
           errors.permissions = 'Must make a request'
@@ -91,13 +110,13 @@ export const MetadataRequestPetitions = ({
             Request for:
           </InteractiveRequests>
 
-          <TimeSelector
+          <TimePicker
             amount={amount}
             setAmount={setAmount}
             unit={unit}
             setUnit={setUnit}
           />
-          <Error name="expiresIn" />
+          <Error name="expiresInSeconds" />
 
           <Actions
             acceptText="Submit"

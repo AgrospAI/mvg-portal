@@ -1,9 +1,12 @@
 import { useFormikContext } from 'formik'
-import { Dispatch, SetStateAction, useCallback } from 'react'
+import { Dispatch, SetStateAction, useCallback, useEffect } from 'react'
 import { SubmitType } from '../MetadataRequestPetitions'
 import styles from './index.module.css'
 
-export const TimeSelector = ({
+const DEFAULT_AMOUNT = 1
+const DEFAULT_UNIT = 3600 * 24
+
+export const TimePicker = ({
   amount,
   unit,
   setAmount,
@@ -14,11 +17,9 @@ export const TimeSelector = ({
   setAmount: Dispatch<SetStateAction<number>>
   setUnit: Dispatch<SetStateAction<number>>
 }>) => {
-  const { values, setValues, errors, setErrors } =
-    useFormikContext<SubmitType>()
+  const { setFieldValue, setFieldTouched } = useFormikContext<SubmitType>()
 
   const timeOptions = {
-    month: 3600 * 24 * 7 * 30,
     week: 3600 * 24 * 7,
     day: 3600 * 24,
     hour: 3600,
@@ -27,27 +28,18 @@ export const TimeSelector = ({
 
   const updateFormik = useCallback(
     (newAmount: number, newUnit: number) => {
-      const expiresIn = newAmount * newUnit
-
-      if (newAmount < 1) {
-        setErrors({ expiresInSeconds: 'Must be greater than 0' })
-        return
-      }
-
-      setErrors({
-        ...errors,
-        expiresInSeconds: ''
-      })
-
-      setValues({
-        ...values,
-        expiresInSeconds: expiresIn
-      })
-
-      console.log('New values', values)
+      setFieldValue('expiresInSeconds', newAmount * newUnit)
+      setFieldTouched('expiresInSeconds', true, false)
     },
-    [errors, setErrors, setValues, values]
+    [setFieldValue, setFieldTouched]
   )
+
+  useEffect(() => {
+    setAmount(DEFAULT_AMOUNT)
+    setUnit(DEFAULT_UNIT)
+
+    updateFormik(DEFAULT_AMOUNT, DEFAULT_UNIT)
+  }, [setAmount, setUnit, updateFormik])
 
   const handleAmountChange = (e) => {
     const newAmount = Number(e.target.value)
@@ -64,17 +56,16 @@ export const TimeSelector = ({
   return (
     <div className={styles.options}>
       <label className={styles.options}>
-        Expires In
+        Expires In:
         <input
-          id="time-input"
           type="number"
           className={styles.option}
-          defaultValue={1}
           min={1}
+          value={amount}
           onChange={handleAmountChange}
         />
       </label>
-      <select id="unit-select" onChange={handleUnitChange}>
+      <select value={unit} onChange={handleUnitChange}>
         {Object.entries(timeOptions).map(([unit, inSeconds]) => (
           <option key={unit} value={inSeconds} className={styles.option}>
             {unit}
@@ -84,3 +75,5 @@ export const TimeSelector = ({
     </div>
   )
 }
+
+export default { TimePicker }

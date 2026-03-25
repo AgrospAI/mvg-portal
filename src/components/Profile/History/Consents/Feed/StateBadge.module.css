@@ -14,6 +14,10 @@
   background-color: var(--brand-alert-orange);
 }
 
+.badge-1 {
+  background-color: black;
+}
+
 .badge-2 {
   background-color: var(--brand-alert-green);
   color: black;

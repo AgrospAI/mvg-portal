@@ -1,9 +1,20 @@
-import { createContext, ReactNode, useCallback, useContext } from 'react'
-import { Address, useNetwork } from 'wagmi'
+import {
+  createContext,
+  PropsWithChildren,
+  useCallback,
+  useContext,
+  useMemo
+} from 'react'
+import { useAccount, useNetwork } from 'wagmi'
 
 import {
-  getMetadataRequestsByRequester,
-  getMetadataRequestsForOwnedAssets
+  MetadataRequestFilterByStateOptions,
+  MetadataRequestFilterByTypeOptions
+} from '@/@types/MetadataRequest'
+import { useMetadataRequestFilter } from '@components/Profile/History/Consents/Feed/MetadataRequestFilters/MetadataRequestFilter'
+import {
+  getMetadataRequests,
+  getUserStats
 } from '@context/UserMetadataRequests/_queries'
 import {
   QueryFunctionContext,
@@ -17,31 +28,27 @@ import { fetchData, getQueryContext } from '@utils/subgraph'
 import { CancelToken } from 'axios'
 
 interface UserMetadataRequestsContextValue {
-  requested: ExtendedMetadataRequest[]
-  incoming: ExtendedMetadataRequest[]
-  pendingRequested: number
-  pendingIncoming: number
-  refreshRequested: () => void
-  refreshIncoming: () => void
+  requests: ExtendedMetadataRequest[]
+  pendingCount: number
+  totalCount: number
+  refreshRequests: () => void
 }
 
 const UserMetadataRequestsContext = createContext(
   {} as UserMetadataRequestsContextValue
 )
 
-interface UserMetadataRequestsProviderProps {
-  address: Address
-  children: ReactNode
-}
-
 const providerChainsCache = new Map<string, Promise<number[]>>()
 
 function UserMetadataRequestsProvider({
-  address,
   children
-}: Readonly<UserMetadataRequestsProviderProps>) {
+}: Readonly<PropsWithChildren>) {
   const { chain } = useNetwork()
+  const { address } = useAccount()
   const queryClient = useQueryClient()
+
+  const { filters, showPurgatory, showExpired, sort } =
+    useMetadataRequestFilter()
 
   interface DidCandidate {
     chainId: number
@@ -123,8 +130,6 @@ function UserMetadataRequestsProvider({
 
       if (!list.length) return []
 
-      console.log('Fetched data', list)
-
       // 1. Discover candidate DIDs for all requests
       const discoveries = await Promise.all(
         list.map((request) => discoverRequestDids(request))
@@ -137,11 +142,9 @@ function UserMetadataRequestsProvider({
       ])
 
       const uniqueDids = [...new Set(allDids)]
-      console.log('Possible DIDS', uniqueDids)
 
       // 3. Fetch asset names in ONE request
       const assetNames = await getAssetsNames(uniqueDids, cancelToken)
-      console.log('Asset names', assetNames)
 
       // 4. Resolve dataset + algorithm for each request
       const extended: ExtendedMetadataRequest[] = list.map((req, i) => {
@@ -159,31 +162,104 @@ function UserMetadataRequestsProvider({
     [chain.id, discoverRequestDids]
   )
 
-  const [{ data: requested }, { data: incoming }] = useSuspenseQueries({
+  const requestWhereClause = useMemo(() => {
+    const nowInSeconds = Math.floor(Date.now() / 1000)
+    const roundedNow = Math.floor(nowInSeconds / 60) * 60
+
+    const userAddr = address.toLowerCase()
+
+    // Base filters only (Status, etc.)
+    const where: Record<string, any> = {}
+
+    if (!showExpired) {
+      where.expiresAt_gt = roundedNow
+    }
+
+    if (filters.state.length > 0) {
+      const statusMap: Record<string, number> = {
+        [MetadataRequestFilterByStateOptions.Pending]: 0,
+        [MetadataRequestFilterByStateOptions.Approved]: 2,
+        [MetadataRequestFilterByStateOptions.Resolved]: 3,
+        [MetadataRequestFilterByStateOptions.Rejected]: 4
+      }
+      const statusValues = filters.state
+        .map((s) => statusMap[s])
+        .filter((v) => v !== undefined)
+      if (statusValues.length === 1) where.status = statusValues[0]
+      else where.status_in = statusValues
+    } else if (!showPurgatory) {
+      where.status_not = 1
+    }
+
+    // ONLY apply direction if exactly ONE is selected
+    // If 0 or 2 are selected, we leave 'where' empty of address filters
+    // so the queryFn can handle the merge logic.
+    if (filters.direction.length === 1) {
+      if (
+        filters.direction.includes(MetadataRequestFilterByTypeOptions.Incoming)
+      ) {
+        where.datasetAddress_ = { owner: userAddr }
+      } else {
+        where.requester = userAddr
+      }
+    }
+
+    return where
+  }, [address, filters, showPurgatory, showExpired])
+
+  const [{ data: requests }, { data: stats }] = useSuspenseQueries({
     queries: [
       {
-        queryKey: ['metadata-requested', address, chain?.id],
-        queryFn: async ({ signal }: QueryFunctionContext) =>
-          fetchAndExtend(
-            getMetadataRequestsByRequester,
-            {
-              user: address.toLowerCase()
-            },
-            cancelToken(signal)
-          ),
-        staleTime: 150_000
+        queryKey: ['metadata-requests', address, chain?.id, requestWhereClause],
+        queryFn: async ({ signal }: QueryFunctionContext) => {
+          const userAddr = address.toLowerCase()
+          const directions = filters?.direction || []
+          const ctrl = cancelToken(signal)
+
+          // Scenario 1: Both or None selected (The "OR" workaround)
+          if (directions.length !== 1) {
+            const [outgoing, incoming] = await Promise.all([
+              fetchAndExtend(
+                getMetadataRequests,
+                { where: { ...requestWhereClause, requester: userAddr } },
+                ctrl
+              ),
+              fetchAndExtend(
+                getMetadataRequests,
+                {
+                  where: {
+                    ...requestWhereClause,
+                    datasetAddress_: { owner: userAddr }
+                  }
+                },
+                ctrl
+              )
+            ])
+
+            return [...outgoing, ...incoming]
+          }
+
+          // Scenario 2: Explicit filter (Incoming OR Outgoing)
+          // The requestWhereClause already contains the correct specific filter
+          return fetchAndExtend(
+            getMetadataRequests,
+            { where: requestWhereClause },
+            ctrl
+          )
+        },
+        staleTime: 180_000
       },
       {
-        queryKey: ['metadata-incoming', address, chain?.id],
-        queryFn: async ({ signal }: QueryFunctionContext) =>
-          fetchAndExtend(
-            getMetadataRequestsForOwnedAssets,
+        queryKey: ['pending-metadata-requests', address, chain?.id],
+        queryFn: async (): Promise<any> => // TODO: define to generated type
+          fetchData(
+            getUserStats,
             {
               user: address.toLowerCase()
             },
-            cancelToken(signal)
+            getQueryContext(chain.id)
           ),
-        staleTime: 150_000
+        staleTime: 180_000
       }
     ]
   })
@@ -191,17 +267,12 @@ function UserMetadataRequestsProvider({
   return (
     <UserMetadataRequestsContext.Provider
       value={{
-        incoming,
-        requested,
-        pendingRequested: requested.filter((rq) => rq.status === 0).length || 0,
-        pendingIncoming: incoming.filter((rq) => rq.status === 0).length || 0,
-        refreshRequested: () =>
+        requests,
+        pendingCount: stats.pendingCount || 0,
+        totalCount: stats.totalCount || 0,
+        refreshRequests: () =>
           queryClient.invalidateQueries({
-            queryKey: ['metadata-requested', address, chain?.id]
-          }),
-        refreshIncoming: () =>
-          queryClient.invalidateQueries({
-            queryKey: ['metadata-incoming', address, chain?.id]
+            queryKey: ['metadata-requests']
           })
       }}
     >

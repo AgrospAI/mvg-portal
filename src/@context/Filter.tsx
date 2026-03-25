@@ -14,7 +14,7 @@ export interface Filters {
   [key: string]: string[]
 }
 
-export interface Sort {
+interface Sort {
   sort: SortTermOptions
   sortOrder: SortDirectionOptions
 }

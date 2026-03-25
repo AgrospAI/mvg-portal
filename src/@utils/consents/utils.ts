@@ -7,13 +7,16 @@ export function extractDidFromUrl(url: string): string | null {
   return match ? match[0] : null
 }
 
+const compareAddresses = (a: string, b: string) =>
+  a.toLowerCase() === b.toLowerCase()
+
 export const isPending = (request: MetadataRequest) => request.status === 0
 
 export const isIncoming = (request: MetadataRequest, forUser: string) =>
-  request.datasetAddress.owner.id === forUser
+  compareAddresses(request.datasetAddress.owner.id, forUser)
 
 export const isOutgoing = (request: MetadataRequest, forUser: string) =>
-  request.requester === forUser
+  compareAddresses(request.requester, forUser)
 
 export const isFinished = (request: MetadataRequest) => {
   const nowInSeconds = Math.floor(Date.now() / 1000)
@@ -21,7 +24,7 @@ export const isFinished = (request: MetadataRequest) => {
 }
 
 export const getUserVote = (votes: MetadataRequestVote[], address: string) =>
-  votes.find((v) => v.voter.toLowerCase() === address.toLowerCase())
+  votes.find((v) => compareAddresses(v.voter, address))
 
 const didCache = new Map<string, string>()
 

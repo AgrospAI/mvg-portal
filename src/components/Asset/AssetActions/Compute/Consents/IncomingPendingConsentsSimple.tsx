@@ -4,7 +4,7 @@ import { InspectModal } from '@components/Profile/History/Consents/Feed/Actions/
 import AssetLink from '@components/Profile/History/Consents/Modal/Components/AssetLink'
 import { useMetadataRequests } from '@context/UserMetadataRequests'
 import { Asset } from '@oceanprotocol/lib'
-import { getUserVote, isPending } from '@utils/consents/utils'
+import { getUserVote, isFinished, isPending } from '@utils/consents/utils'
 import { useAccount } from 'wagmi'
 import styles from './IncomingPendingConsentsSimple.module.css'
 
@@ -14,12 +14,13 @@ export default function IncomingPendingConsentsSimple({
   asset: Asset
 }>) {
   const { address } = useAccount()
-  const { incoming } = useMetadataRequests()
+  const { requests } = useMetadataRequests()
 
   const filtered =
-    incoming?.filter(
+    requests?.filter(
       (request) =>
         isPending(request) &&
+        !isFinished(request) &&
         request.dataset.did.toLowerCase() === asset.id.toLowerCase() &&
         !getUserVote(request.votes, address)
     ) || []

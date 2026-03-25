@@ -49,9 +49,7 @@ export default function PageProfile(): ReactElement {
       noPageHeader
     >
       <ProfileProvider accountId={finalAccountId} ownAccount={ownAccount}>
-        <UserMetadataRequestsProvider address={accountId}>
-          <ProfilePage accountId={finalAccountId} />
-        </UserMetadataRequestsProvider>
+        <ProfilePage accountId={finalAccountId} />
       </ProfileProvider>
     </Page>
   )

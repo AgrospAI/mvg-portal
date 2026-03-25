@@ -1,19 +1,11 @@
-import Button from '@components/@shared/atoms/Button'
-import Tabs from '@components/@shared/atoms/Tabs'
-import Refresh from '@images/refresh.svg'
+import Table from '@components/@shared/atoms/Table'
 import { useConsentsFeed } from './ConsentsFeed.hooks'
 import styles from './ConsentsFeed.module.css'
+import { consentsTableStyles } from './ConsentsFeedStyles'
+import { MetadataRequestFilters } from './MetadataRequestFilters'
 
 export default function ConsentsFeed() {
-  const {
-    address,
-    tabs,
-    tabIndex,
-    setTabIndex,
-    setIsOnlyPending,
-    isOnlyPending,
-    refreshConsents
-  } = useConsentsFeed()
+  const { address, requests, columns } = useConsentsFeed()
 
   if (!address) {
     return <div>Please connect your wallet.</div>
@@ -21,36 +13,18 @@ export default function ConsentsFeed() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.buttons}>
-        <Button
-          style="text"
-          size="small"
-          title="Refresh consents"
-          className={styles.refresh}
-          onClick={refreshConsents}
-        >
-          <Refresh />
-          Refresh
-        </Button>
-
-        <div className={styles.onlyPending}>
-          <input
-            type="checkbox"
-            checked={isOnlyPending}
-            onChange={() => setIsOnlyPending(!isOnlyPending)}
-            id="onlyPending"
-          />
-          <label className={styles.toggle} htmlFor="onlyPending">
-            Only show pending
-          </label>
-        </div>
+      <div className={styles.filterContainer}>
+        <MetadataRequestFilters />
       </div>
-
-      <Tabs
-        items={tabs}
-        selectedIndex={tabIndex}
-        onIndexSelected={setTabIndex}
-      />
+      <div className={styles.results}>
+        <Table
+          columns={columns}
+          data={requests}
+          emptyMessage="No requests"
+          customStyles={consentsTableStyles}
+          highlightOnHover
+        />
+      </div>
     </div>
   )
 }

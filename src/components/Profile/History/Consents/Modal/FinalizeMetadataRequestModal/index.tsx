@@ -2,7 +2,7 @@ import Alert from '@components/@shared/atoms/Alert'
 import { useModalContext } from '@components/@shared/Modal'
 import { useMetadataRequests } from '@context/UserMetadataRequests'
 import { getAssetQueryOptions } from '@hooks/useMetadataRequests'
-import { useFinalizeMetadataRequest } from '@hooks/useUserConsents'
+import { useFinalizeMetadataRequest } from '@hooks/useUserMetadataRequests'
 import IconCompute from '@images/compute.svg'
 import IconLock from '@images/lock.svg'
 import { useSuspenseQueries } from '@tanstack/react-query'
@@ -22,7 +22,7 @@ interface Props {
 export const FinalizeMetadataRequestModal = ({ request }: Readonly<Props>) => {
   const { closeModal } = useModalContext()
   const { finalizeMetadataRequest } = useFinalizeMetadataRequest()
-  const { refreshIncoming } = useMetadataRequests()
+  const { refreshRequests } = useMetadataRequests()
   const [{ data: dataset }, { data: algorithm }] = useSuspenseQueries({
     queries: [
       getAssetQueryOptions(request.dataset.did),
@@ -32,9 +32,9 @@ export const FinalizeMetadataRequestModal = ({ request }: Readonly<Props>) => {
 
   const successCallback = useCallback(() => {
     closeModal()
-    refreshIncoming()
+    refreshRequests()
     toast.success('Succesfully applied metadata request')
-  }, [closeModal, refreshIncoming])
+  }, [closeModal, refreshRequests])
 
   const callback = useCallback(() => {
     finalizeMetadataRequest({ requestId: request.id })

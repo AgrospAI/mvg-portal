@@ -20,6 +20,40 @@ export const useContract = (contractName: string) => {
 
 const useMetadataRequestManager = () => useContract('MetadataRequestManager')
 
+const callEstimatingGas = async (
+  contract: ethers.Contract,
+  func: string,
+  args: any[],
+  unwind: boolean = true,
+  fallbackGas: ethers.BigNumber = ethers.BigNumber.from(500_000)
+) => {
+  const addBuffer = (n: ethers.BigNumber) => n.mul(120).div(100)
+
+  const estimateGas = async () =>
+    unwind
+      ? await contract.estimateGas[func](...args)
+      : await contract.estimateGas[func](args)
+
+  const call = async (gasLimit: ethers.BigNumber) =>
+    unwind
+      ? await contract[func](...args, { gasLimit })
+      : await contract[func](args, { gasLimit })
+
+  const isUserRejection = (error) =>
+    error?.code === 4001 || error?.code === 'ACTION_REJECTED'
+
+  return await estimateGas()
+    .then(addBuffer)
+    .then(call)
+    .then((tx) => tx.wait())
+    .catch(async (error) => {
+      if (isUserRejection(error)) throw error
+
+      LoggerInstance.warn('Estimation failed, manual limit', error)
+      return call(fallbackGas).then((tx) => tx.wait())
+    })
+}
+
 export const useVoteMetadataRequest = () => {
   const { getContractInstance } = useMetadataRequestManager()
 
@@ -42,18 +76,13 @@ export const useVoteMetadataRequest = () => {
     const args = [BigInt(requestId), inFavourBitmap, response.reason || '']
     LoggerInstance.log('Sending vote', ...args)
 
-    try {
-      // 2. Try to estimate gas with a 20% buffer
-      const estimatedGas = await contract.estimateGas.vote(...args)
-      const gasLimit = estimatedGas.mul(120).div(100)
-
-      const tx = await contract.vote(...args, { gasLimit })
-      await tx.wait()
-    } catch (error) {
-      LoggerInstance.warn('Estimation failed, manual limit', error)
-      const tx = await contract.vote(...args, { gasLimit: 400_000 })
-      await tx.wait()
-    }
+    await callEstimatingGas(
+      contract,
+      'vote',
+      args,
+      true,
+      ethers.BigNumber.from(400_000)
+    )
   }
 
   return { voteMetadataRequest }
@@ -88,19 +117,13 @@ export const useCreateAssetMetadataRequest = () => {
     ]
     console.log('Sending metadata creation request', ...args)
 
-    try {
-      const estimatedGas = await contract.estimateGas.createRequest(args)
-      const gasLimit = estimatedGas.mul(120).div(100)
-
-      const tx = await contract.createRequest(args, { gasLimit })
-      await tx.wait()
-    } catch (error) {
-      console.warn('Estimation failed, manual limit', error)
-      const tx = await contract.createRequest(args, {
-        gasLimit: 1_000_000
-      })
-      await tx.wait()
-    }
+    await callEstimatingGas(
+      contract,
+      'createRequest',
+      args,
+      false,
+      ethers.BigNumber.from(1_000_000)
+    )
   }
 
   return { createAssetMetadataRequest }
@@ -140,4 +163,16 @@ export const useFinalizeMetadataRequest = () => {
   }
 
   return { finalizeMetadataRequest }
+}
+
+export const useGetMaximumExpireTime = () => {
+  const { getContractInstance } = useMetadataRequestManager()
+
+  const getExpireTime = async (): Promise<number> => {
+    const contract = getContractInstance()
+    const value = await contract.MAX_EXPIRE_DURATION()
+    return value.toNumber()
+  }
+
+  return { getExpireTime }
 }

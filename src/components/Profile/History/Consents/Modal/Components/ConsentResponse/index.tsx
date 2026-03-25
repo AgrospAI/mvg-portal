@@ -3,7 +3,7 @@ import Loader from '@components/@shared/atoms/Loader'
 import { useModalContext } from '@components/@shared/Modal'
 import { useAsset } from '@context/Asset'
 import { subRequestsQueryOptions } from '@hooks/useMetadataRequests'
-import { useVoteMetadataRequest } from '@hooks/useUserConsents'
+import { useVoteMetadataRequest } from '@hooks/useUserMetadataRequests'
 import Info from '@images/info.svg'
 import { Asset } from '@oceanprotocol/lib'
 import { useSuspenseQuery } from '@tanstack/react-query'
@@ -21,6 +21,7 @@ import { AutoResize } from './AutoResize'
 import { AutoSave } from './AutoSave'
 import { FormResponse, useMetadataRequestResponse } from './index.hooks'
 import styles from './index.module.css'
+import { useMetadataRequests } from '@context/UserMetadataRequests'
 
 function ConsentResponse({ children }: PropsWithChildren) {
   return <Suspense fallback={<Loader />}>{children}</Suspense>
@@ -110,6 +111,7 @@ function InteractiveResponseForm({
   const { closeModal } = useModalContext()
   const [isTriedSubmitted, setIsTriedSubmitted] = useState(false)
   const { voteMetadataRequest } = useVoteMetadataRequest()
+  const { refreshRequests } = useMetadataRequests()
 
   const { cachedResponse, setCachedResponse, userVote } =
     useMetadataRequestResponse(request.id)
@@ -147,6 +149,7 @@ function InteractiveResponseForm({
         }).then(() => {
           closeModal()
           setSubmitting(false)
+          refreshRequests()
           toast.success('MetadataRequest responded successfully')
         })
       }

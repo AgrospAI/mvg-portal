@@ -1,12 +1,17 @@
 import { gql } from 'urql'
 
-export const getMetadataRequestsByRequester = gql`
-  query MetadataRequestsByRequester($user: Bytes!) {
+export const getMetadataRequests = gql`
+  query GetMetadataRequests(
+    $where: MetadataRequest_filter
+    $first: Int = 100
+    $orderBy: MetadataRequest_orderBy = expiresAt
+    $orderDirection: OrderDirection = asc
+  ) {
     metadataRequests(
-      where: { requester: $user, status_not: 1 }
-      orderBy: createdAt
-      orderDirection: desc
-      first: 20
+      where: $where
+      first: $first
+      orderBy: $orderBy
+      orderDirection: $orderDirection
     ) {
       id
       reason
@@ -14,7 +19,6 @@ export const getMetadataRequestsByRequester = gql`
       createdAt
       expiresAt
       requester
-
       datasetAddress {
         id
         name
@@ -40,41 +44,11 @@ export const getMetadataRequestsByRequester = gql`
   }
 `
 
-export const getMetadataRequestsForOwnedAssets = gql`
-  query MetadataRequestsForOwnedAssets($user: Bytes!) {
-    metadataRequests(
-      where: { datasetAddress_: { owner: $user }, status_not: 1 }
-      orderBy: createdAt
-      orderDirection: desc
-    ) {
-      id
-      status
-      createdAt
-      expiresAt
-      requester
-      reason
-
-      datasetAddress {
-        id
-        name
-        owner {
-          id
-        }
-        providerUrl
-      }
-      algorithmAddress {
-        id
-        name
-        owner {
-          id
-        }
-        providerUrl
-      }
-      votes {
-        voter
-        weight
-        inFavourBitmap
-      }
+export const getUserStats = gql`
+  query GetUserStats($userAddress: ID!) {
+    userCounter(id: $userAddress) {
+      pendingCount
+      totalCount
     }
   }
 `

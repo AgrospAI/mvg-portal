@@ -1,7 +1,7 @@
 import { useModalContext } from '@components/@shared/Modal'
 import { useMetadataRequests } from '@context/UserMetadataRequests'
 import { getAssetQueryOptions } from '@hooks/useMetadataRequests'
-import { useDeleteMetadataRequest } from '@hooks/useUserConsents'
+import { useDeleteMetadataRequest } from '@hooks/useUserMetadataRequests'
 import IconCompute from '@images/compute.svg'
 import { useSuspenseQueries } from '@tanstack/react-query'
 import { useCallback } from 'react'

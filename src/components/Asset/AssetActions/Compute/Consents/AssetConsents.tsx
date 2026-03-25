@@ -1,5 +1,4 @@
 import QueryBoundary from '@components/@shared/QueryBoundary'
-import UserMetadataRequestsProvider from '@context/UserMetadataRequests'
 import { useAccount } from 'wagmi'
 import ConsentPetitionButton from './ConsentPetitionButton'
 import IncomingPendingConsentsSimple from './IncomingPendingConsentsSimple'
@@ -15,9 +14,7 @@ export default function AssetConsents({ asset }: Props) {
     return (
       <>
         <QueryBoundary text="Loading incoming consents">
-          <UserMetadataRequestsProvider address={address}>
-            <IncomingPendingConsentsSimple asset={asset} />
-          </UserMetadataRequestsProvider>
+          <IncomingPendingConsentsSimple asset={asset} />
         </QueryBoundary>
       </>
     )

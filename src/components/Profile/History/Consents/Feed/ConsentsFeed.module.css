@@ -1,33 +1,3 @@
-.buttons {
-  display: flex;
-  flex-direction: row;
-  column-gap: calc(var(--spacer) * 1.5);
-  margin: 0 auto;
-  align-items: center;
-}
-
-.refresh {
-  margin: 0;
-}
-
-.toggle {
-  margin: auto;
-  align-items: center;
-  display: flex;
-  justify-content: baseline;
-  cursor: pointer;
-  color: var(--button-text-font-color);
-}
-
-.refresh svg {
-  display: inline-block;
-  fill: currentColor;
-  width: 1em;
-  height: 1em;
-  margin-right: calc(var(--spacer) / 6);
-  margin-bottom: -0.1rem;
-}
-
 .columnItem {
   display: flex;
   overflow: hidden;
@@ -42,27 +12,40 @@
   text-overflow: ellipsis;
 }
 
-.container {
-  display: flex;
-  flex-direction: column;
-  margin: 0 auto;
-}
-
-.onlyPending {
-  display: flex;
-  flex-direction: row;
-  cursor: pointer;
-}
-
-.onlyPending > input[type='checkbox'] {
-  cursor: pointer;
-}
-
 .centered {
   display: flex;
   margin: 0 auto;
 }
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacer) / 2);
+}
 
-.tabs {
+.filterContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: calc(var(--spacer) / 4);
   width: 100%;
+  padding-right: calc(var(--spacer) / 1.2);
+}
+
+@media screen and (min-width: 65rem) {
+  .container {
+    flex-direction: row;
+    gap: calc(var(--spacer) / 1.2);
+  }
+  .filterContainer {
+    flex-direction: column;
+    width: 15rem;
+    border-right: 1px solid var(--border-color);
+  }
+  .filterContainer > div {
+    padding-bottom: calc(var(--spacer) / 1.2);
+    border-bottom: 1px solid var(--border-color);
+  }
+  .results {
+    width: 100%;
+  }
 }
