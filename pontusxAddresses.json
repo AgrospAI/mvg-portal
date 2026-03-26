@@ -4489,5 +4489,47 @@
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/WieseSieben.vp.json"
     ]
+  },
+  "0xF819387Af03d18F5b15C597f115F6Fa365099A5F": {
+    "name": "Agromasana SCCL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Agromasana.vp.json"
+    ]
+  },
+  "0xC385923C53Fdb8F17180c13848D6A33131b839d7": {
+    "name": "Ajuntament de Pujalt",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/AjuntamentPujalt.vp.json"
+    ]
+  },
+  "0x3498b43b93c5d451C1b9b5a34468C67826b7F2FF": {
+    "name": "Environmental Smart Device SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/ENVISAD.vp.json"
+    ]
+  },
+  "0xd1f38e9a28638F0d0Ba53CaB10d3445B9797e484": {
+    "name": "Fundació Ernest Guillé i Moliné",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/FundacioErnestGuille.vp.json"
+    ]
+  },
+  "0x6b96Df442009fBFc085b9E58B53D89D7cC018C8a": {
+    "name": "OCC Sport Plus Europe SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/OCCSportPlus.vp.json"
+    ]
+  },
+  "0xB725e7A7Cf6AC3af77a692BA39376439864e14E9": {
+    "name": "Treballs Agrícoles Reverter SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/TreballsAgricolesReverter.vp.json"
+    ]
+  },
+  "0x3F659E2e6A2b49ac14aE690D855b576Fd6723a8C": {
+    "name": "Zzircon Technologies SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/ZZircon.vp.json"
+    ]
   }
 }
