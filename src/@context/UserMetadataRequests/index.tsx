@@ -290,12 +290,16 @@ function UserMetadataRequestsProvider({
     <UserMetadataRequestsContext.Provider
       value={{
         requests,
-        pendingCount: stats.pendingCount || 0,
-        totalCount: stats.totalCount || 0,
-        refreshRequests: () =>
+        pendingCount: stats?.pendingCount || 0,
+        totalCount: stats?.totalCount || 0,
+        refreshRequests: () => {
           queryClient.invalidateQueries({
             queryKey: ['metadata-requests']
           })
+          queryClient.invalidateQueries({
+            queryKey: ['metadata-requests-stats']
+          })
+        }
       }}
     >
       {children}
