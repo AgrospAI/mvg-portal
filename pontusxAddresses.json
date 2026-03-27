@@ -4531,5 +4531,17 @@
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/ZZircon.vp.json"
     ]
+  },
+  "0xb5ee3f6073BC5C2798B0bf03b620131004b7cCe6": {
+    "name": "Agrobaiona SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Agrobaiona.vp.json"
+    ]
+  },
+  "0x8d5158482fd6504DacCcd7bb4380113ca31Ac2d0": {
+    "name": "Transports I Excavacions Marsol SA",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Marsol.vp.json"
+    ]
   }
 }
