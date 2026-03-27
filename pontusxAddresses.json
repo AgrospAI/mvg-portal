@@ -4543,5 +4543,29 @@
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/Marsol.vp.json"
     ]
+  },
+  "0x747D5A67d9d09B3F96892C9338E04A5aaef0E860": {
+    "name": "Forrajes Alfredo Pascual SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/ForrajesAlfredoPascual.vp.json"
+    ]
+  },
+  "0xB2268697A90fF88BD2940aA8676eB45104cA9C22": {
+    "name": "Shia Logística Integral SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/GrupoShia.vp.json"
+    ]
+  },
+  "0x7C702A045C0105B0b10cFE9b7D0029039bFAc8dC": {
+    "name": "Ciscart Projects SLU",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Khumbu.vp.json"
+    ]
+  },
+  "0x30527c9b73ecde10e094F9fE5F4181cD5CE4D991": {
+    "name": "Trans Sarria SLU",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/TransSarria.vp.json"
+    ]
   }
 }
