@@ -99,7 +99,12 @@ export const FinalizeMetadataRequestModal = ({
         </Sections.Column>
       </Sections.Section>
 
-      {!isInPendingState && (
+      {isInPendingState ? (
+        <Alert
+          text="Upon applying changes you will be asked for two transactions: one for applying the metadata changes, and the other for updating the request status"
+          state="info"
+        />
+      ) : (
         <Alert text="This request has already been applied to" state="info" />
       )}
 

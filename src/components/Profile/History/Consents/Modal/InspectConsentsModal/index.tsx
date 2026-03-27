@@ -92,7 +92,7 @@ export const InspectMetadataRequestModal = ({
                   Resolution:
                 </ConsentResponse.ResponsePermissions>
                 <Alert
-                  text="You will be able to apply the changes once the metadata request expires"
+                  text="The asset owner will be able to apply the changes once the metadata request expires"
                   state="info"
                 />
               </>
