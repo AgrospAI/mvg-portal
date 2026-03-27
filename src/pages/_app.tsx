@@ -1,8 +1,9 @@
 import { QueryClientLoadingIndicator } from '@components/@shared/QueryClientLoadingIndicator'
-import { MetadataRequestFilterProvider } from '@components/Profile/History/Consents/Feed/MetadataRequestFilters/MetadataRequestFilter'
+
 import ConsentProvider from '@context/CookieConsent'
 import { FilterProvider } from '@context/Filter'
 import MarketMetadataProvider from '@context/MarketMetadata'
+import { MetadataRequestFilterProvider } from '@context/MetadataRequestFilter'
 import { SearchBarStatusProvider } from '@context/SearchBarStatus'
 import UrqlProvider from '@context/UrqlProvider'
 import UserMetadataRequestsProvider from '@context/UserMetadataRequests'
@@ -15,7 +16,7 @@ import { ConnectKitProvider } from 'connectkit'
 import Decimal from 'decimal.js'
 import type { AppProps } from 'next/app'
 import Script from 'next/script'
-import { ReactElement, Suspense } from 'react'
+import { ReactElement } from 'react'
 import { WagmiConfig } from 'wagmi'
 import App from '../../src/components/App'
 import AutomationProvider from '../@context/Automation/AutomationProvider'
@@ -54,10 +55,14 @@ function MyApp({ Component, pageProps }: AppProps): ReactElement {
                     <SearchBarStatusProvider>
                       <FilterProvider>
                         <QueryClientProvider client={queryClient}>
-                          <QueryClientLoadingIndicator />
-                          <App>
-                            <Component {...pageProps} />
-                          </App>
+                          <MetadataRequestFilterProvider>
+                            <UserMetadataRequestsProvider>
+                              <QueryClientLoadingIndicator />
+                              <App>
+                                <Component {...pageProps} />
+                              </App>
+                            </UserMetadataRequestsProvider>
+                          </MetadataRequestFilterProvider>
                         </QueryClientProvider>
                       </FilterProvider>
                     </SearchBarStatusProvider>

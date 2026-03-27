@@ -1,10 +1,8 @@
 import { PublisherTrustedAlgorithm } from '@oceanprotocol/lib'
-import { Consent, PossibleRequests } from '@utils/consents/types'
 import { decodeTokenURI, setNFTMetadataAndTokenURI } from '@utils/nft'
 import { CancelToken } from 'axios'
 import { Signer } from 'ethers'
 import { createTrustedAlgorithmList } from './compute'
-import { extractDidFromUrl } from './consents/utils'
 
 interface AssetUpdater {
   update(asset: AssetExtended): Promise<void>
@@ -26,29 +24,31 @@ const RequestTrustedAlgorithmUpdater = (
   newCancelToken: () => CancelToken
 ): AssetUpdater => ({
   update: async (asset: AssetExtended) => {
-    await Promise.all(
-      asset.services
-        .filter(({ type }) => type === 'compute')
-        .map(async (service) => {
-          const newAlgorithmList = await createTrustedAlgorithmList(
-            [algorithmDid],
-            asset.chainId,
-            newCancelToken()
-          )
-          service.compute.publisherTrustedAlgorithms = [
-            ...(service.compute.publisherTrustedAlgorithms || []),
-            ...newAlgorithmList
-          ].filter(
-            // Only keep one copy of each algorithm
-            (
-              algo: PublisherTrustedAlgorithm,
-              index: number,
-              self: PublisherTrustedAlgorithm[]
-            ) => self.findIndex((a) => a.did === algo.did) === index
-          )
+    const isCompute = (service) => service?.type === 'compute'
 
-          return Promise.resolve()
-        })
+    console.log('Updating', asset)
+
+    await Promise.all(
+      asset.services.filter(isCompute).map(async (service) => {
+        const newAlgorithmList = await createTrustedAlgorithmList(
+          [algorithmDid],
+          asset.chainId,
+          newCancelToken()
+        )
+        service.compute.publisherTrustedAlgorithms = [
+          ...(service.compute.publisherTrustedAlgorithms || []),
+          ...newAlgorithmList
+        ].filter(
+          // Only keep one copy of each algorithm
+          (
+            algo: PublisherTrustedAlgorithm,
+            index: number,
+            self: PublisherTrustedAlgorithm[]
+          ) => self.findIndex((a) => a.did === algo.did) === index
+        )
+
+        return Promise.resolve()
+      })
     )
   }
 })
@@ -61,44 +61,38 @@ const RequestAllowNetworkAccessUpdater = (): AssetUpdater => ({
 })
 
 export const Updater = (
-  consent: Consent,
+  request: ExtendedMetadataRequest,
   newCancelToken: () => CancelToken
 ) => ({
-  get: (permission: keyof PossibleRequests): AssetUpdater =>
+  get: (type: MetadataSubRequest['requestType']): AssetUpdater =>
     ({
-      allow_network_access: RequestAllowNetworkAccessUpdater(),
-      trusted_algorithm: RequestTrustedAlgorithmUpdater(
-        extractDidFromUrl(consent.algorithm),
-        newCancelToken
-      ),
-      trusted_algorithm_publisher: RequestTrustedAlgorithmPublisherUpdater(
-        consent.solicitor.address
-      )
-    }[permission])
+      0: RequestAllowNetworkAccessUpdater(),
+      1: RequestTrustedAlgorithmUpdater(request.algorithm.did, newCancelToken),
+      2: RequestTrustedAlgorithmPublisherUpdater(request.requester)
+    }[type])
 })
 
 export const AssetConsentApplier = (
-  request: Readonly<NonNullable<MetadataRequest>>,
-  // consent: Readonly<NonNullable<Consent>>,
+  request: Readonly<NonNullable<ExtendedMetadataRequest>>,
+  subRequests: Readonly<NonNullable<MetadataSubRequest[]>>,
   signer: Readonly<NonNullable<Signer>>,
   newCancelToken: () => CancelToken,
   newAbortSignal: () => AbortSignal
 ) => ({
   apply: async (asset: AssetExtended): Promise<void> => {
-    if (request.expiresAt > Date.now()) return
+    const isFavorable = (request: MetadataSubRequest) =>
+      Number(request.yesWeight) > Number(request.noWeight)
 
-    // const permitted = Object.keys(consent.response.permitted)
-    const permitted =
-      request.subRequests?.filter((r) => r.yesWeight > r.noWeight) ?? []
+    const permitted = subRequests.filter(isFavorable) || []
+
     if (permitted.length === 0) return
 
     const previousAsset = JSON.stringify(asset)
+
     await Promise.all(
-      permitted
-        .filter((key) => consent.response.permitted[key])
-        .map((key: keyof PossibleRequests) =>
-          Updater(consent, newCancelToken).get(key).update(asset)
-        )
+      permitted.map(({ requestType }) =>
+        Updater(request, newCancelToken).get(requestType).update(asset)
+      )
     )
 
     // If the underlying asset did not change, do not update the blockchain

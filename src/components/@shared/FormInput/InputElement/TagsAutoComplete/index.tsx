@@ -30,6 +30,7 @@ export default function TagsAutoComplete({
   const generateAutocompleteOptions = (
     options: string[]
   ): AutoCompleteOption[] => {
+    console.log('options', options)
     return options?.map((tag) => ({
       value: tag,
       label: tag
@@ -43,7 +44,7 @@ export default function TagsAutoComplete({
   useEffect(() => {
     const generateTagsList = async () => {
       const tags = await getTagsList(chainIds, newCancelToken())
-      const autocompleteOptions = generateAutocompleteOptions(tags)
+      const autocompleteOptions = generateAutocompleteOptions(tags || [])
       setTagsList(autocompleteOptions)
     }
     generateTagsList()

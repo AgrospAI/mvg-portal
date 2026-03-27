@@ -15,7 +15,7 @@ import {
 } from 'react'
 import { SortDirectionOptions } from 'src/@types/aquarius/SearchQuery'
 
-interface Sort {
+export interface Sort {
   sort: MetadataRequestSortTermOptions
   sortOrder: SortDirectionOptions
 }

@@ -1,11 +1,14 @@
+import classNames from 'classnames'
 import { useCallback } from 'react'
 import styles from './StateBadge.module.css'
 
-interface Props {
-  status?: MetadataRequest['status']
-}
+const cx = classNames.bind(styles)
 
-export default function ConsentStateBadge({ status }: Props) {
+export const ConsentStateBadge = ({
+  status
+}: Readonly<{
+  status?: MetadataRequest['status']
+}>) => {
   const mapStatusNumber = useCallback((status: MetadataRequest['status']) => {
     switch (status) {
       case 0:
@@ -24,8 +27,10 @@ export default function ConsentStateBadge({ status }: Props) {
   }, [])
 
   return (
-    <div className={`${styles.badge} ${styles[`badge-${status}`]}`}>
+    <div className={cx(styles.badge, styles[`badge-${status}`])}>
       {mapStatusNumber(status)}
     </div>
   )
 }
+
+export default { ConsentStateBadge }

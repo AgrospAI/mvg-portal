@@ -2,65 +2,16 @@ import {
   getMetadataRequestVotesById,
   getMetadataSubRequestsById
 } from '@context/UserMetadataRequests/_queries'
-import { Asset } from '@oceanprotocol/lib'
-import {
-  QueryFunctionContext,
-  queryOptions,
-  UseQueryOptions,
-  useSuspenseQueries
-} from '@tanstack/react-query'
+import { queryOptions, UseQueryOptions } from '@tanstack/react-query'
 import { getAsset } from '@utils/aquarius'
 import { cancelToken } from '@utils/axios'
 import { fetchData, getQueryContext } from '@utils/subgraph'
-import { useCallback } from 'react'
-
-const STORAGE_KEY = 'currentConsent'
-
-export const useCurrentMetadataRequest = () => {
-  const setCurrentRequest = useCallback(
-    (consent: ExtendedMetadataRequest | null) => {
-      if (!consent) {
-        localStorage.removeItem(STORAGE_KEY)
-      } else {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(consent))
-      }
-    },
-    []
-  )
-
-  const getCurrentRequest = (): ExtendedMetadataRequest | null => {
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY)
-      return stored ? (JSON.parse(stored) as MetadataRequest) : null
-    } catch {
-      return null
-    }
-  }
-
-  return {
-    currentRequest: getCurrentRequest(),
-    setCurrentRequest
-  }
-}
 
 export const getAssetQueryOptions = (did: string) =>
   queryOptions({
     queryKey: ['asset', did],
     queryFn: async ({ signal }) => getAsset(did, cancelToken(signal))
   })
-
-export const useGetAssets = (dids: string[]): Asset[] => {
-  const results = useSuspenseQueries({
-    queries: dids.map((did) => ({
-      queryFn: async ({ signal }: QueryFunctionContext) =>
-        getAsset(did, cancelToken(signal))
-    }))
-  })
-
-  return results.map((result) => {
-    return result.data ?? null
-  })
-}
 
 const filterUniqueTypes = (
   requests: MetadataSubRequest[]

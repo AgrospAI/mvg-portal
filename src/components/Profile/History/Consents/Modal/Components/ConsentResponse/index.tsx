@@ -2,6 +2,7 @@ import Alert from '@components/@shared/atoms/Alert'
 import Loader from '@components/@shared/atoms/Loader'
 import { useModalContext } from '@components/@shared/Modal'
 import { useAsset } from '@context/Asset'
+import { useMetadataRequests } from '@context/UserMetadataRequests'
 import { subRequestsQueryOptions } from '@hooks/useMetadataRequests'
 import { useVoteMetadataRequest } from '@hooks/useUserMetadataRequests'
 import Info from '@images/info.svg'
@@ -12,7 +13,7 @@ import { ErrorMessage, Form, Formik } from 'formik'
 import { PropsWithChildren, ReactNode, Suspense, useState } from 'react'
 import { toast } from 'react-toastify'
 import { useNetwork } from 'wagmi'
-import ConsentStateBadge from '../../../Feed/StateBadge'
+import { ConsentStateBadge } from '../../../Feed/Badges/StateBadge'
 import Actions from '../Actions'
 import { FullRequests } from '../Requests/FullRequests'
 import { InteractiveRequests } from '../Requests/InteractiveRequests'
@@ -21,91 +22,28 @@ import { AutoResize } from './AutoResize'
 import { AutoSave } from './AutoSave'
 import { FormResponse, useMetadataRequestResponse } from './index.hooks'
 import styles from './index.module.css'
-import { useMetadataRequests } from '@context/UserMetadataRequests'
 
-function ConsentResponse({ children }: PropsWithChildren) {
-  return <Suspense fallback={<Loader />}>{children}</Suspense>
-}
+const ConsentResponse = ({ children }: Readonly<PropsWithChildren>) => (
+  <Suspense fallback={<Loader />}>{children}</Suspense>
+)
 
-interface StatusProps {
-  status: MetadataRequest['status']
-}
-
-function Status({ status }: StatusProps) {
-  return <ConsentStateBadge status={status} />
-}
-
-interface InteractiveRequestFormProps {
-  dataset: Asset
-  algorithm: Asset
-  handleSubmit: (reason: string, request: MetadataRequest) => void // TODO: Change to a MetadataRequestCreate type?
-}
-
-function InteractiveRequestForm({
-  dataset,
-  algorithm,
-  handleSubmit
-}: InteractiveRequestFormProps) {
-  return (
-    <Formik
-      initialValues={{ reason: '', permissions: [] } as FormResponse}
-      validate={(values) => {
-        const errors: { reason?: string; permissions?: string } = {}
-
-        if (!values.reason || values.reason.length === 0) {
-          errors.reason = 'Reason required'
-        } else if (values.reason.length > 255) {
-          errors.reason = 'Must be 255 characters or less'
-        }
-
-        return errors
-      }}
-      onSubmit={({ reason, permissions }, { setSubmitting }) => {
-        handleSubmit(reason, permissions)
-        setSubmitting(false)
-      }}
-    >
-      {({ isSubmitting, isValid }) => (
-        <Form className={styles.form}>
-          <div className={styles.requestInfo}>
-            <AutoResize
-              name="reason"
-              placeholder="This is where your reasons go"
-            />
-            <ErrorMessage name="reason" component="div">
-              {(msg) => (
-                <div className={styles.error}>
-                  <Info />
-                  {msg}
-                </div>
-              )}
-            </ErrorMessage>
-            <InteractiveRequests
-              dataset={dataset}
-              algorithm={algorithm}
-              isInteractive
-            ></InteractiveRequests>
-            <Actions acceptText="Submit" isLoading={!isValid || isSubmitting} />
-          </div>
-        </Form>
-      )}
-    </Formik>
-  )
-}
-
-interface InteractiveResponseFormProps {
-  chainId: number
-  request: MetadataRequest
-  dataset: Asset
-  algorithm: Asset
-}
+const Status = ({
+  status
+}: Readonly<{ status: MetadataRequest['status'] }>) => (
+  <ConsentStateBadge status={status} />
+)
 
 function InteractiveResponseForm({
   chainId,
   request,
   dataset,
   algorithm
-}: InteractiveResponseFormProps) {
+}: Readonly<{
+  chainId: number
+  request: MetadataRequest
+  dataset: Asset
+  algorithm: Asset
+}>) {
   const { asset } = useAsset()
   const { chain } = useNetwork()
   const { closeModal } = useModalContext()
@@ -113,7 +51,7 @@ function InteractiveResponseForm({
   const { voteMetadataRequest } = useVoteMetadataRequest()
   const { refreshRequests } = useMetadataRequests()
 
-  const { cachedResponse, setCachedResponse, userVote } =
+  const { cachedResponse, setCachedResponse, userVote, refreshVotes } =
     useMetadataRequestResponse(request.id)
 
   const { data: subRequests } = useSuspenseQuery(
@@ -146,12 +84,20 @@ function InteractiveResponseForm({
         voteMetadataRequest({
           requestId: request.id,
           response
-        }).then(() => {
-          closeModal()
-          setSubmitting(false)
-          refreshRequests()
-          toast.success('MetadataRequest responded successfully')
         })
+          .then(() => {
+            closeModal()
+            setSubmitting(false)
+            refreshVotes()
+            refreshRequests()
+            toast.success('MetadataRequest responded successfully')
+          })
+          .catch((err) => {
+            toast.error(
+              'There was an error voting, maybe you have already voted?',
+              err
+            )
+          })
       }
     >
       {({ isValid, isSubmitting, setFieldValue, submitForm }) => (
@@ -218,19 +164,17 @@ function InteractiveResponseForm({
   )
 }
 
-interface ResponsePermissionsProps {
-  requestId: number
-  dataset: Asset
-  algorithm: Asset
-  children?: ReactNode
-}
-
 const ResponsePermissions = ({
   requestId,
   dataset,
   algorithm,
   children
-}: ResponsePermissionsProps) => (
+}: Readonly<{
+  requestId: number
+  dataset: Asset
+  algorithm: Asset
+  children?: ReactNode
+}>) => (
   <div className={styles.requestInfo}>
     <div className={styles.requestContainer}>
       <FullRequests
@@ -247,7 +191,6 @@ const ResponsePermissions = ({
 
 ConsentResponse.Status = Status
 ConsentResponse.InteractiveResponseForm = InteractiveResponseForm
-ConsentResponse.InteractiveRequestForm = InteractiveRequestForm
 ConsentResponse.ResponsePermissions = ResponsePermissions
 
 export default ConsentResponse

@@ -5,12 +5,12 @@ import {
 import Accordion from '@components/@shared/Accordion'
 import Button from '@components/@shared/atoms/Button'
 import Input from '@components/@shared/FormInput'
-import styles from '@components/Search/Filter.module.css'
+import styles from './index.module.css'
+import { useMetadataRequestFilter } from '@context/MetadataRequestFilter'
 import classNames from 'classnames'
 import { useRouter } from 'next/router'
 import { useTransition } from 'react'
 import { useConsentsFeed } from '../ConsentsFeed.hooks'
-import { useMetadataRequestFilter } from './MetadataRequestFilter'
 
 interface FilterStructure {
   id: string
@@ -131,12 +131,16 @@ export const MetadataRequestFilters = ({
     })
   }
 
+  const booleanCount = [showExpired, showPurgatory].reduce(
+    (acc, filter) => acc + (filter ? 1 : 0),
+    0
+  )
   const selectedFiltersCount = filters
     ? Object.values(filters).reduce(
         (acc, filter) => acc + filter.length,
-        showPurgatory ? 1 : 0
+        booleanCount
       )
-    : 0
+    : booleanCount
 
   const styleClasses = cx({
     filterList: true,
@@ -144,109 +148,57 @@ export const MetadataRequestFilters = ({
   })
 
   return (
-    <div className={styles.sidePositioning}>
-      <Accordion
-        title="Filters"
-        defaultExpanded
-        badgeNumber={selectedFiltersCount}
-        action={
-          <Button
-            style="text"
-            size="small"
-            title="Refresh consents"
-            className={styles.refresh}
-            onClick={refreshRequests}
-          >
-            Refresh
-          </Button>
-        }
-      >
-        <div className={styleClasses}>
-          {filterList.map((filter) => (
-            <div key={filter.id} className={styles.filterType}>
-              <h5 className={styles.filterTypeLabel}>{filter.label}</h5>
-              {filter.options.map((option) => {
-                const isSelected = filters[filter.id].includes(option.value)
-                return (
-                  <Input
-                    key={option.value}
-                    name={option.label}
-                    type="checkbox"
-                    options={[option.label]}
-                    checked={isSelected}
-                    onChange={() =>
-                      handleSelectedFilter(option.value, filter.id)
-                    }
-                  />
-                )
-              })}
-            </div>
-          ))}
-          <div className={styles.filterType}>
-            <h5 className={styles.filterTypeLabel}>Expired</h5>
-            <Input
-              name={expiredFilterItem.value}
-              type="checkbox"
-              options={[expiredFilterItem.display]}
-              checked={showExpired}
-              onChange={handleExpiredToggle}
-            />
-          </div>
-          <div className={styles.filterType}>
-            <h5 className={styles.filterTypeLabel}>Purgatory</h5>
-            <Input
-              name={purgatoryFilterItem.value}
-              type="checkbox"
-              options={[purgatoryFilterItem.display]}
-              checked={showPurgatory}
-              onChange={handlePurgatoryToggle}
-            />
-          </div>
-        </div>
-        <div className={styles.topPositioning}>
-          {filterList.map((filter) => (
-            <div key={filter.id} className={styles.compactFilterContainer}>
-              <Accordion
-                title={filter.label}
-                badgeNumber={filters[filter.id].length}
-                compact
-              >
-                <div className={styles.compactOptionsContainer}>
-                  {filter.options.map((option) => {
-                    const isSelected = filters[filter.id].includes(option.value)
-                    return (
-                      <Input
-                        key={option.value}
-                        name={option.label}
-                        type="checkbox"
-                        options={[option.label]}
-                        checked={isSelected}
-                        onChange={() =>
-                          handleSelectedFilter(option.value, filter.id)
-                        }
-                      />
-                    )
-                  })}
-                </div>
-              </Accordion>
-            </div>
-          ))}
-          <div className={styles.compactFilterContainer}>
-            <h5 className={styles.filterTypeLabel}>Expired</h5>
-            <Input
-              name={expiredFilterItem.value}
-              type="checkbox"
-              options={[expiredFilterItem.display]}
-              checked={showExpired}
-              onChange={handleExpiredToggle}
-            />
-          </div>
-          <div className={styles.compactFilterContainer}>
-            <Accordion
-              title="Purgatory"
-              badgeNumber={showPurgatory ? 1 : 0}
-              compact
+    <>
+      <div className={styles.sidePositioning}>
+        <Accordion
+          title="Filters"
+          defaultExpanded
+          badgeNumber={selectedFiltersCount}
+          action={
+            <Button
+              style="text"
+              size="small"
+              title="Refresh consents"
+              className={styles.refresh}
+              onClick={refreshRequests}
             >
+              Refresh
+            </Button>
+          }
+        >
+          <div className={styleClasses}>
+            {filterList.map((filter) => (
+              <div key={filter.id} className={styles.filterType}>
+                <h5 className={styles.filterTypeLabel}>{filter.label}</h5>
+                {filter.options.map((option) => {
+                  const isSelected = filters[filter.id].includes(option.value)
+                  return (
+                    <Input
+                      key={option.value}
+                      name={option.label}
+                      type="checkbox"
+                      options={[option.label]}
+                      checked={isSelected}
+                      onChange={() =>
+                        handleSelectedFilter(option.value, filter.id)
+                      }
+                    />
+                  )
+                })}
+              </div>
+            ))}
+            <div className={styles.filterType}>
+              <h5 className={styles.filterTypeLabel}>Expired</h5>
+              <Input
+                name={expiredFilterItem.value}
+                type="checkbox"
+                options={[expiredFilterItem.display]}
+                checked={showExpired}
+                onChange={handleExpiredToggle}
+              />
+            </div>
+            <div className={styles.filterType}>
+              <h5 className={styles.filterTypeLabel}>Purgatory</h5>
               <Input
                 name={purgatoryFilterItem.value}
                 type="checkbox"
@@ -254,10 +206,64 @@ export const MetadataRequestFilters = ({
                 checked={showPurgatory}
                 onChange={handlePurgatoryToggle}
               />
+            </div>
+          </div>
+        </Accordion>
+      </div>
+      <div className={styles.topPositioning}>
+        {filterList.map((filter) => (
+          <div key={filter.id} className={styles.compactFilterContainer}>
+            <Accordion
+              title={filter.label}
+              badgeNumber={filters[filter.id].length}
+              compact
+            >
+              <div className={styles.compactOptionsContainer}>
+                {filter.options.map((option) => {
+                  const isSelected = filters[filter.id].includes(option.value)
+                  return (
+                    <Input
+                      key={option.value}
+                      name={option.label}
+                      type="checkbox"
+                      options={[option.label]}
+                      checked={isSelected}
+                      onChange={() =>
+                        handleSelectedFilter(option.value, filter.id)
+                      }
+                    />
+                  )
+                })}
+              </div>
             </Accordion>
           </div>
+        ))}
+        <div className={styles.compactFilterContainer}>
+          <h5 className={styles.filterTypeLabel}>Expired</h5>
+          <Input
+            name={expiredFilterItem.value}
+            type="checkbox"
+            options={[expiredFilterItem.display]}
+            checked={showExpired}
+            onChange={handleExpiredToggle}
+          />
         </div>
-      </Accordion>
-    </div>
+        <div className={styles.compactFilterContainer}>
+          <Accordion
+            title="Purgatory"
+            badgeNumber={showPurgatory ? 1 : 0}
+            compact
+          >
+            <Input
+              name={purgatoryFilterItem.value}
+              type="checkbox"
+              options={[purgatoryFilterItem.display]}
+              checked={showPurgatory}
+              onChange={handlePurgatoryToggle}
+            />
+          </Accordion>
+        </div>
+      </div>
+    </>
   )
 }

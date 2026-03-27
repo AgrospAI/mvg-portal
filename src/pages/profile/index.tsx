@@ -1,5 +1,5 @@
+import { ProfilePage } from '@/components/Profile'
 import ProfileProvider from '@context/Profile'
-import UserMetadataRequestsProvider from '@context/UserMetadataRequests'
 import Page from '@shared/Page'
 import { accountTruncate } from '@utils/wallet'
 import { isAddress } from 'ethers/lib/utils'
@@ -7,7 +7,6 @@ import { useRouter } from 'next/router'
 import { ReactElement, useEffect, useState } from 'react'
 import { useAccount } from 'wagmi'
 import { useAutomation } from '../../@context/Automation/AutomationProvider'
-import ProfilePage from '../../components/Profile'
 
 export default function PageProfile(): ReactElement {
   const router = useRouter()

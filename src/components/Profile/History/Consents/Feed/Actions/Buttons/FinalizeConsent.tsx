@@ -4,13 +4,14 @@ import { FinalizeMetadataRequestModal } from '../../../Modal/FinalizeMetadataReq
 import { useConsentRowActions } from '../ConsentRowActions.hooks'
 import styles from './Buttons.module.css'
 import Key from '@images/key.svg'
+import AssetProvider from '@context/Asset'
 
 const cx = classNames.bind(styles)
 
 const Content = ({
   request
 }: Readonly<{
-  request: MetadataRequest
+  request: ExtendedMetadataRequest
 }>) => (
   <>
     <Modal.Trigger name={`${request.id}_finalize`}>
@@ -24,7 +25,9 @@ const Content = ({
       </button>
     </Modal.Trigger>
     <Modal.Content name={`${request.id}_finalize`}>
-      <FinalizeMetadataRequestModal request={request} />
+      <AssetProvider did={request.dataset.did}>
+        <FinalizeMetadataRequestModal request={request} />
+      </AssetProvider>
     </Modal.Content>
   </>
 )

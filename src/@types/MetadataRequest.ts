@@ -2,7 +2,8 @@ import { SortDirectionOptions, SortTermOptions } from './aquarius/SearchQuery'
 
 export enum MetadataRequestSortTermOptions {
   Created = 'createdAt',
-  Expiration = 'expiresAt'
+  Expiration = 'expiresAt',
+  Status = 'status'
 }
 
 export enum MetadataRequestFilterByStateOptions {
@@ -26,6 +27,11 @@ declare global {
   type MetadataRequestFilters =
     | MetadataRequestFilterByTypeOptions
     | MetadataRequestFilterByStateOptions
+
+  interface UserStats {
+    pendingCount: number
+    totalCount: number
+  }
 
   interface ExtendedMetadataRequest extends MetadataRequest {
     dataset?: AssetData

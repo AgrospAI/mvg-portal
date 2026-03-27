@@ -13,7 +13,9 @@ import {
 import { useAccount } from 'wagmi'
 import ConsentRowActions from './Actions/ConsentRowActions'
 import styles from './ConsentsFeed.module.css'
-import ConsentStateBadge from './StateBadge'
+
+import { DirectionBadge } from './Badges/DirectionBadge'
+import { ConsentStateBadge } from './Badges/StateBadge'
 
 const getColumns = (
   callerAddress: string
@@ -74,7 +76,15 @@ const getColumns = (
         <ConsentStateBadge status={row.status} />
       </div>
     ),
-
+    ignoreRowClick: true
+  },
+  {
+    name: 'Direction',
+    selector: (row) => (
+      <div className={styles.columnItem}>
+        <DirectionBadge request={row} userAddress={callerAddress} />
+      </div>
+    ),
     ignoreRowClick: true
   },
   {
@@ -85,13 +95,12 @@ const getColumns = (
           request={row}
           isRequested={isOutgoing(row, callerAddress)}
         />
+        {isIncoming(row, callerAddress) &&
+          isPending(row) &&
+          isFinished(row) && <ConsentRowActions.FinalizeConsent />}
         {isOutgoing(row, callerAddress) &&
           isPending(row) &&
-          (isFinished(row) ? (
-            <ConsentRowActions.FinalizeConsent />
-          ) : (
-            <ConsentRowActions.DeleteConsent />
-          ))}
+          !isFinished(row) && <ConsentRowActions.DeleteConsent />}
       </ConsentRowActions>
     )
   }

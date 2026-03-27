@@ -45,8 +45,8 @@ export const getMetadataRequests = gql`
 `
 
 export const getUserStats = gql`
-  query GetUserStats($userAddress: ID!) {
-    userCounter(id: $userAddress) {
+  query GetUserStats($id: ID!) {
+    userCounter(id: $id) {
       pendingCount
       totalCount
     }

@@ -51,7 +51,7 @@ function getTabs(
     )
   }
   const consentsTab: HistoryTab = {
-    title: 'Consents',
+    title: 'Requests',
     content: <ConsentsContent />
   }
   if (accountId === userAccountId || accountId === autoWalletAccountId) {

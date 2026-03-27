@@ -1,21 +1,17 @@
+import { SortDirectionOptions } from '@/@types/aquarius/SearchQuery'
+import { MetadataRequestSortTermOptions } from '@/@types/MetadataRequest'
 import Accordion from '@components/@shared/Accordion'
 import Input from '@components/@shared/FormInput'
-import { Sort as SortInterface, useFilter } from '@context/Filter'
+import { Sort, useMetadataRequestFilter } from '@context/MetadataRequestFilter'
 import { useRouter } from 'next/router'
 import queryString from 'query-string'
-import { ReactElement, useEffect } from 'react'
-import {
-  SortDirectionOptions,
-  SortTermOptions
-} from '../../@types/aquarius/SearchQuery'
-import styles from './sort.module.css'
-import { addExistingParamsToUrl } from './utils'
+import { startTransition, useCallback, useEffect } from 'react'
+import styles from './index.module.css'
 
 const sortItems = [
-  { display: 'Relevance', value: SortTermOptions.Relevance },
-  { display: 'Published', value: SortTermOptions.Created },
-  { display: 'Sales', value: SortTermOptions.Orders },
-  { display: 'Price', value: SortTermOptions.Price }
+  { display: 'Created', value: MetadataRequestSortTermOptions.Created },
+  { display: 'Expiration', value: MetadataRequestSortTermOptions.Expiration },
+  { display: 'Status', value: MetadataRequestSortTermOptions.Status }
 ]
 
 const sortDirections = [
@@ -23,24 +19,8 @@ const sortDirections = [
   { display: '\u2193 Descending', value: SortDirectionOptions.Descending }
 ]
 
-function getInitialFilters(
-  parsedUrlParams: queryString.ParsedQuery<string>,
-  filterIds: (keyof SortInterface)[]
-): SortInterface {
-  if (!parsedUrlParams || !filterIds) return
-
-  const initialFilters = {}
-  filterIds.forEach((id) => (initialFilters[id] = parsedUrlParams?.[id]))
-
-  return initialFilters as SortInterface
-}
-
-export default function Sort({
-  expanded
-}: {
-  expanded?: boolean
-}): ReactElement {
-  const { sort, setSort } = useFilter()
+export const MetadataRequestSort = ({ expanded }: { expanded?: boolean }) => {
+  const { sort, setSort } = useMetadataRequestFilter()
 
   const router = useRouter()
 
@@ -48,30 +28,65 @@ export default function Sort({
     arrayFormat: 'separator'
   })
 
+  const getInitialSort = useCallback(
+    (
+      parsedUrlParams: queryString.ParsedQuery<string>,
+      filterIds: (keyof Sort)[]
+    ): Sort => {
+      if (!parsedUrlParams || !filterIds) return
+
+      const initialFilters = {}
+      filterIds.forEach((id) => (initialFilters[id] = parsedUrlParams?.[id]))
+
+      return initialFilters as Sort
+    },
+    []
+  )
+
+  const applySort = useCallback(
+    (value: string, sortId: keyof Sort) => {
+      const query = { ...router.query }
+
+      if (value.length > 0) {
+        query[sortId] = value
+      } else {
+        delete query[sortId]
+      }
+
+      router.push(
+        {
+          pathname: router.pathname,
+          query
+        },
+        undefined,
+        { shallow: true }
+      )
+    },
+    [router]
+  )
+
+  const handleSelectedSort = useCallback(
+    (value: string, sortId: keyof Sort) => {
+      startTransition(() => {
+        const updatedSort = {
+          ...sort,
+          [sortId]: value
+        }
+
+        setSort(updatedSort)
+        applySort(value, sortId)
+      })
+    },
+    [applySort, setSort, sort]
+  )
+
   useEffect(() => {
-    const initialFilters = getInitialFilters(
+    const initialFilters = getInitialSort(
       parsedUrl,
-      Object.keys(sort) as (keyof SortInterface)[]
+      Object.keys(sort) as (keyof Sort)[]
     )
     setSort(initialFilters)
   }, [])
-
-  async function sortResults(
-    sortBy?: SortTermOptions,
-    direction?: SortDirectionOptions
-  ) {
-    let urlLocation: string
-    if (sortBy) {
-      urlLocation = await addExistingParamsToUrl(location, ['sort'])
-      urlLocation = `${urlLocation}&sort=${sortBy}`
-      setSort({ ...sort, sort: sortBy })
-    } else if (direction) {
-      urlLocation = await addExistingParamsToUrl(location, ['sortOrder'])
-      urlLocation = `${urlLocation}&sortOrder=${direction}`
-      setSort({ ...sort, sortOrder: direction })
-    }
-    router.push(urlLocation)
-  }
 
   return (
     <>
@@ -79,7 +94,7 @@ export default function Sort({
         <Accordion title="Sort" defaultExpanded={expanded}>
           <div className={styles.sortList}>
             <div className={styles.sortType}>
-              <h5 className={styles.sortTypeLabel}>Type</h5>
+              <h5 className={styles.sortTypeLabel}>Field</h5>
               {sortItems.map((item) => (
                 <Input
                   key={item.value}
@@ -88,7 +103,7 @@ export default function Sort({
                   options={[item.display]}
                   value={item.value}
                   checked={sort.sort === item.value}
-                  onChange={() => sortResults(item.value, null)}
+                  onChange={() => handleSelectedSort(item.value, 'sort')}
                 />
               ))}
             </div>
@@ -102,7 +117,7 @@ export default function Sort({
                   options={[item.display]}
                   value={item.value}
                   checked={sort.sortOrder === item.value}
-                  onChange={() => sortResults(null, item.value)}
+                  onChange={() => handleSelectedSort(item.value, 'sortOrder')}
                 />
               ))}
             </div>
@@ -121,7 +136,7 @@ export default function Sort({
                   options={[item.display]}
                   value={item.value}
                   checked={sort.sort === item.value}
-                  onChange={() => sortResults(item.value, null)}
+                  onChange={() => handleSelectedSort(item.value, 'sort')}
                 />
               ))}
             </div>
@@ -138,7 +153,7 @@ export default function Sort({
                   options={[item.display]}
                   value={item.value}
                   checked={sort.sortOrder === item.value}
-                  onChange={() => sortResults(null, item.value)}
+                  onChange={() => handleSelectedSort(item.value, 'sortOrder')}
                 />
               ))}
             </div>
@@ -148,3 +163,5 @@ export default function Sort({
     </>
   )
 }
+
+export default { MetadataRequestSort }

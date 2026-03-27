@@ -2,9 +2,13 @@ import Alert from '@components/@shared/atoms/Alert'
 import { useModalContext } from '@components/@shared/Modal'
 import { useMetadataRequests } from '@context/UserMetadataRequests'
 import { getAssetQueryOptions } from '@hooks/useMetadataRequests'
-import { useFinalizeMetadataRequest } from '@hooks/useUserMetadataRequests'
+import {
+  useApplyMetadataRequest,
+  useFinalizeMetadataRequest
+} from '@hooks/useUserMetadataRequests'
 import IconCompute from '@images/compute.svg'
 import IconLock from '@images/lock.svg'
+import { LoggerInstance } from '@oceanprotocol/lib'
 import { useSuspenseQueries } from '@tanstack/react-query'
 import { isFinished, isPending } from '@utils/consents/utils'
 import { useCallback } from 'react'
@@ -15,36 +19,49 @@ import DetailedAsset from '../Components/DetailedAsset'
 import Sections from '../Components/Sections'
 import styles from './index.module.css'
 
-interface Props {
+export const FinalizeMetadataRequestModal = ({
+  request
+}: Readonly<{
   request: ExtendedMetadataRequest
-}
-
-export const FinalizeMetadataRequestModal = ({ request }: Readonly<Props>) => {
+}>) => {
   const { closeModal } = useModalContext()
   const { finalizeMetadataRequest } = useFinalizeMetadataRequest()
+  const { applyMetadataRequest } = useApplyMetadataRequest(request.id)
+
   const { refreshRequests } = useMetadataRequests()
   const [{ data: dataset }, { data: algorithm }] = useSuspenseQueries({
-    queries: [
-      getAssetQueryOptions(request.dataset.did),
-      getAssetQueryOptions(request.algorithm.did)
-    ]
+    queries: [request.dataset.did, request.algorithm.did].map(
+      getAssetQueryOptions
+    )
   })
 
-  const successCallback = useCallback(() => {
-    closeModal()
-    refreshRequests()
-    toast.success('Succesfully applied metadata request')
-  }, [closeModal, refreshRequests])
+  const callback = useCallback(async () => {
+    try {
+      await applyMetadataRequest(request)
+      toast.success('Successfully applied metadata changes')
+    } catch (err) {
+      toast.error('Could not apply changes')
+      LoggerInstance.error(err)
+    }
 
-  const callback = useCallback(() => {
-    finalizeMetadataRequest({ requestId: request.id })
-      .then(successCallback)
-      .catch(() =>
-        toast.error(
-          "Could not apply changes, maybe the request hasn't expired yet?"
-        )
+    try {
+      await finalizeMetadataRequest({ requestId: request.id })
+      refreshRequests()
+      toast.success('Successfully updated request state')
+      closeModal()
+    } catch (err) {
+      toast.error(
+        "Could not update state, maybe the request hasn't expired yet?"
       )
-  }, [finalizeMetadataRequest, request.id, successCallback])
+      LoggerInstance.error(err)
+    }
+  }, [
+    applyMetadataRequest,
+    closeModal,
+    finalizeMetadataRequest,
+    refreshRequests,
+    request
+  ])
 
   const isInPendingState = isPending(request)
   const isAlreadyExpired = isFinished(request)

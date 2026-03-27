@@ -27,10 +27,9 @@ export const InspectMetadataRequestModal = ({
   const [chainId, setChainId] = useState(0)
 
   const [{ data: dataset }, { data: algorithm }] = useSuspenseQueries({
-    queries: [
-      getAssetQueryOptions(request.dataset.did),
-      getAssetQueryOptions(request.algorithm.did)
-    ]
+    queries: [request.dataset.did, request.algorithm.did].map(
+      getAssetQueryOptions
+    )
   })
 
   useEffect(() => {
@@ -48,12 +47,11 @@ export const InspectMetadataRequestModal = ({
         title="Assets"
         description="Assets involved in this consent, your dataset and the requested algorithm"
       >
-        <DetailedAsset>
-          <DetailedAsset.AssetInfo asset={dataset} />
-        </DetailedAsset>
-        <DetailedAsset>
-          <DetailedAsset.AssetInfo asset={algorithm} />
-        </DetailedAsset>
+        {[dataset, algorithm].map((asset) => (
+          <DetailedAsset key={asset.id}>
+            <DetailedAsset.AssetInfo asset={asset} />
+          </DetailedAsset>
+        ))}
       </Sections.Section>
       <Sections.Section
         icon={<IconTransaction />}

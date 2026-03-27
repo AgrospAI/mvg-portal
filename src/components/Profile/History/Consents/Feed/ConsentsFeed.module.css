@@ -16,19 +16,20 @@
   display: flex;
   margin: 0 auto;
 }
+
 .container {
   display: flex;
   flex-direction: column;
-  gap: calc(var(--spacer) / 2);
+  gap: calc(var(--spacer));
 }
 
 .filterContainer {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  gap: calc(var(--spacer) / 4);
+  gap: calc(var(--spacer) / 8);
   width: 100%;
-  padding-right: calc(var(--spacer) / 1.2);
+  padding-right: var(--spacer);
 }
 
 @media screen and (min-width: 65rem) {

@@ -1,5 +1,5 @@
 import { metadataRequestVotesOptions } from '@hooks/useMetadataRequests'
-import { useSuspenseQuery } from '@tanstack/react-query'
+import { useQueryClient, useSuspenseQuery } from '@tanstack/react-query'
 import { getUserVote } from '@utils/consents/utils'
 import { useEffect, useMemo, useState } from 'react'
 import { useDebounce } from 'use-debounce'
@@ -52,6 +52,7 @@ export const mapVoteToFormResponse = (
 export const useMetadataRequestResponse = (requestId: number) => {
   const { address } = useAccount()
   const { chain } = useNetwork()
+  const queryClient = useQueryClient()
 
   const { data: votes } = useSuspenseQuery(
     metadataRequestVotesOptions(requestId, chain.id)
@@ -76,6 +77,10 @@ export const useMetadataRequestResponse = (requestId: number) => {
     cachedResponse,
     setCachedResponse,
     userVote,
-    votes
+    votes,
+    refreshVotes: () =>
+      queryClient.invalidateQueries({
+        queryKey: metadataRequestVotesOptions(requestId, chain.id).queryKey
+      })
   }
 }

@@ -1,9 +1,15 @@
 import { FormResponse } from '@components/Profile/History/Consents/Modal/Components/ConsentResponse/index.hooks'
 import { LoggerInstance } from '@oceanprotocol/lib'
+import { useSuspenseQuery } from '@tanstack/react-query'
+import { AssetConsentApplier } from '@utils/assetConsentApplier'
 import { getContract } from '@utils/contracts'
 import { ethers } from 'ethers'
 import { useNetwork } from 'wagmi'
+import { useAbortController } from './useAbortController'
 import { useAutoSigner } from './useAutoSigner'
+import { useCancelToken } from './useCancelToken'
+import { subRequestsQueryOptions } from './useMetadataRequests'
+import { useAsset } from '@context/Asset'
 
 export const useContract = (contractName: string) => {
   const { chain } = useNetwork()
@@ -163,6 +169,31 @@ export const useFinalizeMetadataRequest = () => {
   }
 
   return { finalizeMetadataRequest }
+}
+
+export const useApplyMetadataRequest = (requestId: MetadataRequest['id']) => {
+  const { signer } = useAutoSigner()
+  const { chain } = useNetwork()
+
+  const { asset } = useAsset()
+
+  const newCancelToken = useCancelToken()
+  const newAbortSignal = useAbortController()
+
+  const { data: subRequests } = useSuspenseQuery(
+    subRequestsQueryOptions(requestId, chain?.id)
+  )
+
+  const applyMetadataRequest = (request: ExtendedMetadataRequest) =>
+    AssetConsentApplier(
+      request,
+      subRequests,
+      signer,
+      newCancelToken,
+      newAbortSignal
+    ).apply(asset)
+
+  return { applyMetadataRequest }
 }
 
 export const useGetMaximumExpireTime = () => {

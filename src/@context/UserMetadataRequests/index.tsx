@@ -11,7 +11,7 @@ import {
   MetadataRequestFilterByStateOptions,
   MetadataRequestFilterByTypeOptions
 } from '@/@types/MetadataRequest'
-import { useMetadataRequestFilter } from '@components/Profile/History/Consents/Feed/MetadataRequestFilters/MetadataRequestFilter'
+import { useMetadataRequestFilter } from '@context/MetadataRequestFilter'
 import {
   getMetadataRequests,
   getUserStats
@@ -47,7 +47,7 @@ function UserMetadataRequestsProvider({
   const { address } = useAccount()
   const queryClient = useQueryClient()
 
-  const { filters, showPurgatory, showExpired, sort } =
+  const { sort, filters, showPurgatory, showExpired } =
     useMetadataRequestFilter()
 
   interface DidCandidate {
@@ -207,10 +207,25 @@ function UserMetadataRequestsProvider({
     return where
   }, [address, filters, showPurgatory, showExpired])
 
+  const requestOrderClause = useMemo(() => {
+    if (!sort?.sort || !sort?.sortOrder) return {}
+
+    return {
+      orderBy: sort.sort,
+      orderDirection: sort.sortOrder
+    }
+  }, [sort])
+
   const [{ data: requests }, { data: stats }] = useSuspenseQueries({
     queries: [
       {
-        queryKey: ['metadata-requests', address, chain?.id, requestWhereClause],
+        queryKey: [
+          'metadata-requests',
+          address,
+          chain?.id,
+          requestWhereClause,
+          requestOrderClause
+        ],
         queryFn: async ({ signal }: QueryFunctionContext) => {
           const userAddr = address.toLowerCase()
           const directions = filters?.direction || []
@@ -221,7 +236,10 @@ function UserMetadataRequestsProvider({
             const [outgoing, incoming] = await Promise.all([
               fetchAndExtend(
                 getMetadataRequests,
-                { where: { ...requestWhereClause, requester: userAddr } },
+                {
+                  where: { ...requestWhereClause, requester: userAddr },
+                  ...requestOrderClause
+                },
                 ctrl
               ),
               fetchAndExtend(
@@ -230,7 +248,8 @@ function UserMetadataRequestsProvider({
                   where: {
                     ...requestWhereClause,
                     datasetAddress_: { owner: userAddr }
-                  }
+                  },
+                  ...requestOrderClause
                 },
                 ctrl
               )
@@ -243,26 +262,29 @@ function UserMetadataRequestsProvider({
           // The requestWhereClause already contains the correct specific filter
           return fetchAndExtend(
             getMetadataRequests,
-            { where: requestWhereClause },
+            { where: requestWhereClause, ...requestOrderClause },
             ctrl
           )
         },
         staleTime: 180_000
       },
       {
-        queryKey: ['pending-metadata-requests', address, chain?.id],
-        queryFn: async (): Promise<any> => // TODO: define to generated type
+        queryKey: ['metadata-requests-stats', address, chain?.id],
+        queryFn: async () =>
           fetchData(
             getUserStats,
             {
-              user: address.toLowerCase()
+              id: address.toLowerCase()
             },
             getQueryContext(chain.id)
           ),
-        staleTime: 180_000
+        staleTime: 180_000,
+        select: ({ data }) => data?.userCounter
       }
     ]
   })
+
+  console.log(stats)
 
   return (
     <UserMetadataRequestsContext.Provider
