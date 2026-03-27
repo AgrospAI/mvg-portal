@@ -66,7 +66,28 @@ export default function Results({
     return buttonName
   }
 
-  async function downloadResults(resultIndex: number) {
+  async function openHtmlInNewTab(url: string) {
+    const newWindow = window.open('', '_blank')
+
+    if (!newWindow) {
+      console.error('Popup blocked')
+    }
+
+    try {
+      newWindow.document.write('<p>Loading...</p>')
+
+      const res = await fetch(url)
+      const text = await res.text()
+
+      newWindow.document.open()
+      newWindow.document.write(text)
+      newWindow.document.close()
+    } catch (err) {
+      newWindow.document.write('<p>Failed to load content</p>')
+    }
+  }
+
+  async function downloadResults(resultIndex: number, fileName?: string) {
     if (!accountId || !job) return
 
     const signerToUse =
@@ -81,7 +102,11 @@ export default function Results({
         job.jobId,
         resultIndex
       )
-      await downloadFileBrowser(jobResult)
+      if (fileName?.toLowerCase().includes('.html')) {
+        await openHtmlInNewTab(jobResult)
+      } else {
+        await downloadFileBrowser(jobResult)
+      }
     } catch (error) {
       const message = getErrorMessage(error.message)
       LoggerInstance.error('[Provider Get c2d results url] Error:', message)
@@ -104,7 +129,7 @@ export default function Results({
                     size="small"
                     className={styles.downloadButton}
                     onClick={() => {
-                      downloadResults(i)
+                      downloadResults(i, jobResult.filename)
                     }}
                     download
                   >
