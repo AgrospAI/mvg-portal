@@ -15,8 +15,8 @@ export default function Stats(): ReactElement {
         value={typeof sales !== 'number' || sales < 0 ? 0 : sales}
       />
       <NumberUnit label="Published" value={assetsTotal} />
-      <NumberUnit label="Incoming Pending Requests" value={pendingCount ?? 0} />
-      <NumberUnit label="Total Requests" value={totalCount ?? 0} />
+      <NumberUnit label="Pending Requests" value={pendingCount ?? 0} />
+      <NumberUnit label="Total Incoming Requests" value={totalCount ?? 0} />
     </div>
   )
 }
