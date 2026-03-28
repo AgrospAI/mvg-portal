@@ -4567,5 +4567,11 @@
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/TransSarria.vp.json"
     ]
+  },
+  "0x36861aE4422fFAb21906Fa8d006feCC206FEfDa5": {
+    "name": "Estudio de Gastronomía y Ocio SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Vrro.vp.json"
+    ]
   }
 }
