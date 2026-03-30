@@ -4573,5 +4573,11 @@
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/Vrro.vp.json"
     ]
+  },
+  "0x6dCdA0c8568e432f82ec7F3cA4D91AcF25669d42": {
+    "name": "iRiego New Generation SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/iRiego.vp.json"
+    ]
   }
 }
