@@ -4579,5 +4579,29 @@
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/iRiego.vp.json"
     ]
+  },
+  "0x31A1295486B71681C4cA9E112DBF0C225172D4eB": {
+    "name": "Consultoría Estratégica Delta SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/ConsultoriaEstrategicaDelta.vp.json"
+    ]
+  },
+  "0xa0a1d190c3E46A087b29b72fEb12508b84b29a8A": {
+    "name": "Restaurant Rally SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/RestaurantRally.vp.json"
+    ]
+  },
+  "0x246caFA15C518B05ECF52c4f2dC7738209b2AbAB": {
+    "name": "Singular Delta SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/SingularDelta.vp.json"
+    ]
+  },
+  "0x8Bf107AcbDb99158cE2A1B89D89d09D8e486746D": {
+    "name": "Viorcam Vinyols SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Viorcam.vp.json"
+    ]
   }
 }
