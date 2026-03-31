@@ -4603,5 +4603,11 @@
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/Viorcam.vp.json"
     ]
+  },
+  "0x4A072d11E13854994AcD183DeC69686974c31D72": {
+    "name": "Hispatec Erpagro SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Hispatec.vp.json"
+    ]
   }
 }
