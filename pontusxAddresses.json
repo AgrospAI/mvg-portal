@@ -4489,5 +4489,119 @@
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/WieseSieben.vp.json"
     ]
+  },
+  "0xF819387Af03d18F5b15C597f115F6Fa365099A5F": {
+    "name": "Agromasana SCCL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Agromasana.vp.json"
+    ]
+  },
+  "0xC385923C53Fdb8F17180c13848D6A33131b839d7": {
+    "name": "Ajuntament de Pujalt",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/AjuntamentPujalt.vp.json"
+    ]
+  },
+  "0x3498b43b93c5d451C1b9b5a34468C67826b7F2FF": {
+    "name": "Environmental Smart Device SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/ENVISAD.vp.json"
+    ]
+  },
+  "0xd1f38e9a28638F0d0Ba53CaB10d3445B9797e484": {
+    "name": "Fundació Ernest Guillé i Moliné",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/FundacioErnestGuille.vp.json"
+    ]
+  },
+  "0x6b96Df442009fBFc085b9E58B53D89D7cC018C8a": {
+    "name": "OCC Sport Plus Europe SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/OCCSportPlus.vp.json"
+    ]
+  },
+  "0xB725e7A7Cf6AC3af77a692BA39376439864e14E9": {
+    "name": "Treballs Agrícoles Reverter SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/TreballsAgricolesReverter.vp.json"
+    ]
+  },
+  "0x3F659E2e6A2b49ac14aE690D855b576Fd6723a8C": {
+    "name": "Zzircon Technologies SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/ZZircon.vp.json"
+    ]
+  },
+  "0xb5ee3f6073BC5C2798B0bf03b620131004b7cCe6": {
+    "name": "Agrobaiona SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Agrobaiona.vp.json"
+    ]
+  },
+  "0x8d5158482fd6504DacCcd7bb4380113ca31Ac2d0": {
+    "name": "Transports I Excavacions Marsol SA",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Marsol.vp.json"
+    ]
+  },
+  "0x747D5A67d9d09B3F96892C9338E04A5aaef0E860": {
+    "name": "Forrajes Alfredo Pascual SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/ForrajesAlfredoPascual.vp.json"
+    ]
+  },
+  "0xB2268697A90fF88BD2940aA8676eB45104cA9C22": {
+    "name": "Shia Logística Integral SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/GrupoShia.vp.json"
+    ]
+  },
+  "0x7C702A045C0105B0b10cFE9b7D0029039bFAc8dC": {
+    "name": "Ciscar Projects SLU",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Khumbu.vp.json"
+    ]
+  },
+  "0x30527c9b73ecde10e094F9fE5F4181cD5CE4D991": {
+    "name": "Trans Sarria SLU",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/TransSarria.vp.json"
+    ]
+  },
+  "0x36861aE4422fFAb21906Fa8d006feCC206FEfDa5": {
+    "name": "Estudio de Gastronomía y Ocio SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Vrro.vp.json"
+    ]
+  },
+  "0x6dCdA0c8568e432f82ec7F3cA4D91AcF25669d42": {
+    "name": "iRiego New Generation SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/iRiego.vp.json"
+    ]
+  },
+  "0x31A1295486B71681C4cA9E112DBF0C225172D4eB": {
+    "name": "Consultoría Estratégica Delta SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/ConsultoriaEstrategicaDelta.vp.json"
+    ]
+  },
+  "0xa0a1d190c3E46A087b29b72fEb12508b84b29a8A": {
+    "name": "Restaurant Rally SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/RestaurantRally.vp.json"
+    ]
+  },
+  "0x246caFA15C518B05ECF52c4f2dC7738209b2AbAB": {
+    "name": "Singular Delta SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/SingularDelta.vp.json"
+    ]
+  },
+  "0x8Bf107AcbDb99158cE2A1B89D89d09D8e486746D": {
+    "name": "Viorcam Vinyols SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Viorcam.vp.json"
+    ]
   }
 }
