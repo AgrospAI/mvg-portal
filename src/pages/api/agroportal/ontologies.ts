@@ -15,15 +15,12 @@ export default async function handler(
   }
 
   try {
-    const response = await fetch(
-      `https://data.agroportal.lirmm.fr/ontologies`,
-      {
-        headers: {
-          Authorization: `apikey token=${apiKey}`,
-          Accept: 'application/json'
-        }
+    const response = await fetch(`https://data.agroportal.eu/ontologies`, {
+      headers: {
+        Authorization: `apikey token=${apiKey}`,
+        Accept: 'application/json'
       }
-    )
+    })
 
     if (!response.ok) {
       throw new Error(`AgroPortal API error: ${response.statusText}`)

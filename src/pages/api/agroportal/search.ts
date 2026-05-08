@@ -35,7 +35,7 @@ export default async function handler(
     }
 
     const response = await fetch(
-      `https://data.agroportal.lirmm.fr/search?${searchParams.toString()}`,
+      `https://data.agroportal.eu/search?${searchParams.toString()}`,
       {
         headers: {
           Authorization: `apikey token=${apiKey}`,
