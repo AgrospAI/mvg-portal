@@ -4609,5 +4609,11 @@
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/Hispatec.vp.json"
     ]
+  },
+  "0xA561a4c93b62a088cAfb9e622408ac7190e61CA3": {
+    "name": "Centre de Ciència i Tecnologia Forestal de Catalunya",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/CTFC.vp.json"
+    ]
   }
 }
