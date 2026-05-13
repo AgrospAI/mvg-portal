@@ -9,7 +9,7 @@ const ABI_MAP = {
 
 const CHAIN_ID_TO_NETWORK: Record<number, string> = {
   8996: 'development',
-  32456: 'pontus-x-devnet',
+  32456: 'pontusx',
   32457: 'pontus-x-testnet'
 }
 
