@@ -72,7 +72,7 @@ const tableColumns: TableOceanColumn<AssetExtended>[] = [
   {
     name: 'Published',
     selector: (row) => {
-      return <Time date={row.nft.created} />
+      return <Time date={row.metadata.created} />
     },
     maxWidth: '7rem'
   }
