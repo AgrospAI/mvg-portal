@@ -37,10 +37,11 @@ export default function AssetSelection({
   ...props
 }: {
   assets: AssetSelectionAsset[]
-  selected?: string
+  selected?: string[]
   multiple?: boolean
   disabled?: boolean
   accountId?: string
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void
 }): JSX.Element {
   const [searchValue, setSearchValue] = useState('')
   const router = useRouter()
@@ -90,7 +91,7 @@ export default function AssetSelection({
                   id={slugify(asset.did)}
                   className={styleClassesInput}
                   {...props}
-                  checked={selected && asset.did === selected}
+                  checked={selected && selected.includes(asset.did)}
                   defaultChecked={asset.checked}
                   disabled={
                     disabled || isOnEditPage

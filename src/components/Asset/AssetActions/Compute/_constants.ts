@@ -15,12 +15,14 @@ export interface ComputeDatasetForm {
   algoParams: UserCustomParameters
   assetTermsAndConditions: boolean
   portalTermsAndConditions: boolean
+  selectedDatasets: string[]
 }
 
 export function getComputeValidationSchema(
   dataServiceParams: ConsumerParameter[],
   algoServiceParams: ConsumerParameter[],
-  algoParams: ConsumerParameter[]
+  algoParams: ConsumerParameter[],
+  requireSelectedDatasets = false
 ): Yup.SchemaOf<{
   algorithm: string
   computeEnv: string
@@ -29,6 +31,7 @@ export function getComputeValidationSchema(
   algoParams: any
   assetTermsAndConditions: boolean
   portalTermsAndConditions: boolean
+  selectedDatasets: string[]
 }> {
   return Yup.object().shape({
     algorithm: Yup.string().required('Required'),
@@ -43,7 +46,12 @@ export function getComputeValidationSchema(
       .isTrue('Please agree to the Terms and Conditions.'),
     portalTermsAndConditions: Yup.boolean()
       .required('Required')
-      .isTrue('Please agree to the Terms and Conditions.')
+      .isTrue('Please agree to the Terms and Conditions.'),
+    selectedDatasets: requireSelectedDatasets
+      ? Yup.array()
+          .of(Yup.string())
+          .min(1, 'Select at least one dataset to start the compute job.')
+      : Yup.array().of(Yup.string())
   })
 }
 
@@ -54,8 +62,12 @@ export function getInitialValues(
   assetTermsAndConditions?: boolean,
   portalTermsAndConditions?: boolean
 ): ComputeDatasetForm {
+  const algorithmId =
+    selectedAlgorithmAsset?.id ||
+    (asset?.metadata?.type === 'algorithm' ? asset?.id : '')
+
   return {
-    algorithm: selectedAlgorithmAsset?.id,
+    algorithm: algorithmId,
     computeEnv: selectedComputeEnv?.id,
     dataServiceParams: getDefaultValues(asset?.services[0].consumerParameters),
     algoServiceParams: getDefaultValues(
@@ -65,6 +77,7 @@ export function getInitialValues(
       selectedAlgorithmAsset?.metadata?.algorithm.consumerParameters
     ),
     assetTermsAndConditions: !!assetTermsAndConditions,
-    portalTermsAndConditions: !!portalTermsAndConditions
+    portalTermsAndConditions: !!portalTermsAndConditions,
+    selectedDatasets: []
   }
 }

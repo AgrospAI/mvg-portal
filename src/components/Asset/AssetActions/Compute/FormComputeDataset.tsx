@@ -23,40 +23,7 @@ import TermsAndConditionsCheckbox from '../TermsAndConditionsCheckbox'
 import { useMarketMetadata } from '@context/MarketMetadata'
 import AssetConsents from './Consents/AssetConsents'
 
-export default function FormStartCompute({
-  algorithms,
-  ddoListAlgorithms,
-  selectedAlgorithmAsset,
-  setSelectedAlgorithm,
-  isLoading,
-  isComputeButtonDisabled,
-  hasPreviousOrder,
-  hasDatatoken,
-  dtBalance,
-  assetType,
-  assetTimeout,
-  hasPreviousOrderSelectedComputeAsset,
-  hasDatatokenSelectedComputeAsset,
-  isAccountIdWhitelisted,
-  datasetSymbol,
-  algorithmSymbol,
-  providerFeesSymbol,
-  dtSymbolSelectedComputeAsset,
-  dtBalanceSelectedComputeAsset,
-  selectedComputeAssetType,
-  selectedComputeAssetTimeout,
-  computeEnvs,
-  setSelectedComputeEnv,
-  stepText,
-  isConsumable,
-  consumableFeedback,
-  datasetOrderPriceAndFees,
-  algoOrderPriceAndFees,
-  providerFeeAmount,
-  validUntil,
-  retry,
-  license
-}: {
+export interface FormStartComputeProps {
   algorithms: AssetSelectionAsset[]
   ddoListAlgorithms: Asset[]
   selectedAlgorithmAsset: AssetExtended
@@ -91,7 +58,46 @@ export default function FormStartCompute({
   validUntil?: string
   retry: boolean
   license: string
-}): ReactElement {
+  showAlgorithmField?: boolean
+  children?: ReactElement
+}
+
+export default function FormStartCompute({
+  algorithms,
+  ddoListAlgorithms,
+  selectedAlgorithmAsset,
+  setSelectedAlgorithm,
+  isLoading,
+  isComputeButtonDisabled,
+  hasPreviousOrder,
+  hasDatatoken,
+  dtBalance,
+  assetType,
+  assetTimeout,
+  hasPreviousOrderSelectedComputeAsset,
+  hasDatatokenSelectedComputeAsset,
+  isAccountIdWhitelisted,
+  datasetSymbol,
+  algorithmSymbol,
+  providerFeesSymbol,
+  dtSymbolSelectedComputeAsset,
+  dtBalanceSelectedComputeAsset,
+  selectedComputeAssetType,
+  selectedComputeAssetTimeout,
+  computeEnvs,
+  setSelectedComputeEnv,
+  stepText,
+  isConsumable,
+  consumableFeedback,
+  datasetOrderPriceAndFees,
+  algoOrderPriceAndFees,
+  providerFeeAmount,
+  validUntil,
+  retry,
+  license,
+  showAlgorithmField = true,
+  children
+}: FormStartComputeProps): ReactElement {
   const { address: accountId, isConnected } = useAccount()
   const { balance } = useBalance()
   const {
@@ -132,7 +138,17 @@ export default function FormStartCompute({
       const { id } = computeEnvs[0]
       setFieldValue('computeEnv', id, true)
     }
+
     if (
+      !showAlgorithmField &&
+      selectedAlgorithmAsset?.id &&
+      values.algorithm !== selectedAlgorithmAsset.id
+    ) {
+      setFieldValue('algorithm', selectedAlgorithmAsset.id, true)
+    }
+
+    if (
+      showAlgorithmField &&
       algorithms?.length === 1 &&
       !values.algorithm &&
       algorithms?.[0]?.isAccountIdWhitelisted
@@ -144,13 +160,14 @@ export default function FormStartCompute({
     algorithms,
     computeEnvs,
     setFieldValue,
-    setSelectedComputeEnv,
+    selectedAlgorithmAsset?.id,
+    showAlgorithmField,
     values.algorithm,
     values.computeEnv
   ])
 
   useEffect(() => {
-    if (!values.algorithm || !isConsumable) return
+    if (!showAlgorithmField || !values.algorithm || !isConsumable) return
 
     async function fetchAlgorithmAssetExtended() {
       const algorithmAsset = getAlgorithmAsset(values.algorithm)
@@ -167,7 +184,7 @@ export default function FormStartCompute({
       setSelectedAlgorithm(extendedAlgoAsset)
     }
     fetchAlgorithmAssetExtended()
-  }, [values.algorithm, accountId, isConsumable])
+  }, [values.algorithm, accountId, isConsumable, showAlgorithmField])
 
   useEffect(() => {
     if (!values.computeEnv) return
@@ -302,31 +319,41 @@ export default function FormStartCompute({
     automationBalance
   ])
 
+  const selectedAlgorithmPurchasable =
+    selectedAlgorithmAsset?.accessDetails?.isPurchasable ??
+    (showAlgorithmField ? undefined : asset?.accessDetails?.isPurchasable) ??
+    false
+
   return (
     <Form className={styles.form}>
-      {content.form.data.map((field: FormFieldContent) => (
-        <Field
-          key={field.name}
-          {...field}
-          component={Input}
-          disabled={isLoading || isComputeButtonDisabled}
-          options={
-            field.name === 'algorithm'
-              ? algorithms
-              : field.name === 'computeEnv'
-              ? computeEnvs
-              : field?.options
-          }
-          accountId={isAutomationEnabled ? autoWallet?.address : accountId}
-          selected={
-            field.name === 'algorithm'
-              ? values.algorithm
-              : field.name === 'computeEnv'
-              ? values.computeEnv
-              : undefined
-          }
-        />
-      ))}
+      {content.form.data
+        .filter((field: FormFieldContent) =>
+          showAlgorithmField ? true : field.name !== 'algorithm'
+        )
+        .map((field: FormFieldContent) => (
+          <Field
+            key={field.name}
+            {...field}
+            component={Input}
+            disabled={isLoading || isComputeButtonDisabled}
+            options={
+              field.name === 'algorithm'
+                ? algorithms
+                : field.name === 'computeEnv'
+                ? computeEnvs
+                : field?.options
+            }
+            accountId={isAutomationEnabled ? autoWallet?.address : accountId}
+            selected={
+              field.name === 'algorithm'
+                ? values.algorithm
+                : field.name === 'computeEnv'
+                ? values.computeEnv
+                : undefined
+            }
+          />
+        ))}
+      {children}
       {asset && selectedAlgorithmAsset && (
         <ConsumerParameters
           asset={asset}
@@ -362,7 +389,7 @@ export default function FormStartCompute({
           !isValid ||
           !isBalanceSufficient ||
           !isAssetNetwork ||
-          !selectedAlgorithmAsset?.accessDetails?.isPurchasable ||
+          !selectedAlgorithmPurchasable ||
           !isAccountIdWhitelisted
         }
         hasPreviousOrder={hasPreviousOrder}
@@ -387,9 +414,7 @@ export default function FormStartCompute({
         isBalanceSufficient={isBalanceSufficient}
         isConsumable={isConsumable}
         consumableFeedback={consumableFeedback}
-        isAlgorithmConsumable={
-          selectedAlgorithmAsset?.accessDetails?.isPurchasable
-        }
+        isAlgorithmConsumable={selectedAlgorithmPurchasable}
         isSupportedOceanNetwork={isSupportedOceanNetwork}
         hasProviderFee={providerFeeAmount && providerFeeAmount !== '0'}
         retry={retry}

@@ -376,15 +376,37 @@ export async function getAlgorithmDatasetsForCompute(
   const baseQueryParams = {
     chainIds: [datasetChainId],
     nestedQuery: {
-      must: [
+      should: [
+        // 1. publisherTrustedAlgorithms is null (not defined)
+        {
+          bool: {
+            must_not: {
+              exists: {
+                field: 'services.compute.publisherTrustedAlgorithms'
+              }
+            }
+          }
+        },
+
+        // 2. publisherTrustedAlgorithms contains algorithmId
         {
           match_phrase: {
             'services.compute.publisherTrustedAlgorithms.did': {
               query: algorithmId
             }
           }
+        },
+
+        // 3. publisherTrustedAlgorithmPublishers contains accountId
+        {
+          match_phrase: {
+            'services.compute.publisherTrustedAlgorithmPublishers': {
+              query: accountId
+            }
+          }
         }
-      ]
+      ],
+      minimum_should_match: 1
     },
     sortOptions: {
       sortBy: SortTermOptions.Created,
@@ -394,7 +416,9 @@ export async function getAlgorithmDatasetsForCompute(
 
   const query = generateBaseQuery(baseQueryParams)
   const computeDatasets = await queryMetadata(query, cancelToken)
-  if (computeDatasets?.results?.length === 0) return []
+  if (!computeDatasets || computeDatasets.results?.length === 0) return []
+
+  console.log('Retrieved datasets:', computeDatasets)
 
   const datasets = await transformAssetToAssetSelection(
     datasetProviderUri,
