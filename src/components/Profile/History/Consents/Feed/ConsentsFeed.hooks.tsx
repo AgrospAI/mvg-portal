@@ -33,8 +33,7 @@ const getColumns = (
     name: 'Dataset',
     selector: (row) =>
       row.dataset &&
-      row.dataset.did &&
-      row.dataset.name && (
+      row.dataset.did && (
         <MetadataRequestAssetListTitle
           name={row.dataset.name}
           did={row.dataset.did}
@@ -46,8 +45,7 @@ const getColumns = (
     name: 'Algorithm',
     selector: (row) =>
       row.algorithm &&
-      row.algorithm.did &&
-      row.algorithm.name && (
+      row.algorithm.did && (
         <div className={styles.columnItem}>
           <MetadataRequestAssetListTitle
             name={row.algorithm.name}

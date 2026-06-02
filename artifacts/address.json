@@ -365,8 +365,8 @@
     },
     "Dispenser": "0x5461b629E01f72E0A468931A36e039Eea394f9eA",
     "ERC721Factory": "0xFdC4a5DEaCDfc6D82F66e894539461a269900E13",
-    "MetadataRequestManager": "0xc40b08F75c0d71ec508FC65A34794c63Ab38692e",
-    "VotingWeight": "0xA297B4da2eB8A2D47CbD663A5E871c22344e265e",
+    "MetadataRequestManager": "0x0E04d317cc48Fe5dE8130dc42fD3c20c1d75eBc6",
+    "VotingWeight": "0x05FfC42449e18df7cADFeaAD639350371abFE55F",
     "startBlock": 57428
   },
   "pontus-x-testnet": {

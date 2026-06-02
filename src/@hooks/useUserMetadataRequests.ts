@@ -1,4 +1,5 @@
 import { FormResponse } from '@components/Profile/History/Consents/Modal/Components/ConsentResponse/index.hooks'
+import { useAsset } from '@context/Asset'
 import { LoggerInstance } from '@oceanprotocol/lib'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { AssetConsentApplier } from '@utils/assetConsentApplier'
@@ -9,7 +10,16 @@ import { useAbortController } from './useAbortController'
 import { useAutoSigner } from './useAutoSigner'
 import { useCancelToken } from './useCancelToken'
 import { subRequestsQueryOptions } from './useMetadataRequests'
-import { useAsset } from '@context/Asset'
+
+const isRpcUnavailable = (error: any): boolean => {
+  const data = error?.error?.data
+  return (
+    data?.code === -32000 &&
+    (data?.message?.includes('connection error') ||
+      data?.message?.includes('Unavailable') ||
+      data?.message?.includes('no such file'))
+  )
+}
 
 export const useContract = (contractName: string) => {
   const { chain } = useNetwork()
@@ -54,8 +64,13 @@ const callEstimatingGas = async (
     .then((tx) => tx.wait())
     .catch(async (error) => {
       if (isUserRejection(error)) throw error
-
-      LoggerInstance.warn('Estimation failed, manual limit', error)
+      if (isRpcUnavailable(error)) {
+        throw new Error(
+          'RPC node is unreachable. Please check your network or wallet RPC settings.'
+        )
+      }
+      // Only fall back to manual gas for genuine estimation failures
+      LoggerInstance.warn('Estimation failed, using fallback gas', error)
       return call(fallbackGas).then((tx) => tx.wait())
     })
 }
@@ -201,8 +216,15 @@ export const useGetMaximumExpireTime = () => {
 
   const getExpireTime = async (): Promise<number> => {
     const contract = getContractInstance()
-    const value = await contract.MAX_EXPIRE_DURATION()
-    return value.toNumber()
+    try {
+      const value = await contract.MAX_EXPIRE_DURATION()
+      return value.toNumber()
+    } catch (error) {
+      if (isRpcUnavailable(error)) {
+        throw new Error('Cannot reach RPC node to fetch expiry duration.')
+      }
+      throw error
+    }
   }
 
   return { getExpireTime }

@@ -63,6 +63,10 @@
   margin: calc(var(--spacer) / 4) 0;
 }
 
+.filterType * {
+  text-transform: capitalize;
+}
+
 .filterType > div:not(:last-child) {
   margin-bottom: calc(var(--spacer) / 8);
 }

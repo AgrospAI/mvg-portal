@@ -11,14 +11,21 @@ const MetadataRequestAssetListTitle = ({
   name,
   did,
   className
-}: MetadataRequestAssetListTitleProps) => (
-  <h3 className={`${styles.title} ${className}`}>
-    {name ? (
-      <Link href={`/asset/${did}`}>{name}</Link>
-    ) : (
-      <span className={styles.deleted}>&lt;DELETED&gt;</span>
-    )}
-  </h3>
-)
+}: MetadataRequestAssetListTitleProps) => {
+  console.log('Called with', {
+    name,
+    did
+  })
+
+  return (
+    <h3 className={`${styles.title} ${className}`}>
+      {name && name !== '' ? (
+        <Link href={`/asset/${did}`}>{name}</Link>
+      ) : (
+        <span className={styles.deleted}>Deleted Asset</span>
+      )}
+    </h3>
+  )
+}
 
 export default MetadataRequestAssetListTitle

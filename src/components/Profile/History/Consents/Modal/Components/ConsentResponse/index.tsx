@@ -93,6 +93,7 @@ function InteractiveResponseForm({
             toast.success('MetadataRequest responded successfully')
           })
           .catch((err) => {
+            console.error('Error voting request:', err)
             toast.error(
               'There was an error voting, maybe you have already voted?',
               err

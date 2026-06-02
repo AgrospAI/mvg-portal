@@ -66,7 +66,7 @@ export const MetadataRequestFilterProvider = ({
         MetadataRequestSortTermOptions.Expiration,
       sortOrder:
         (router.query.sortOrder as SortDirectionOptions) ||
-        SortDirectionOptions.Ascending
+        SortDirectionOptions.Descending
     }
 
     // Use a string check for boolean query params
