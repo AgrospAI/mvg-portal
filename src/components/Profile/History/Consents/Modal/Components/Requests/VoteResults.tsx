@@ -8,8 +8,8 @@ interface Props {
 export const VoteResults = ({ subRequest, totalWeight }: Props) => {
   // Prevent division by zero
   const safeTotal = totalWeight || 1
-  const yesPercentage = (subRequest.yesWeight / safeTotal) * 100
-  const noPercentage = (subRequest.noWeight / safeTotal) * 100
+  const yesPercentage = (Number(subRequest.yesWeight) / safeTotal) * 100
+  const noPercentage = (Number(subRequest.noWeight) / safeTotal) * 100
 
   return (
     <div className={styles.container}>

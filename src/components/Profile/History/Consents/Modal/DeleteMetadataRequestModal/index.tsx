@@ -18,7 +18,7 @@ export const DeleteMetadataRequestModal = ({
   request
 }: Readonly<ModalProps>) => {
   const { closeModal } = useModalContext()
-  const { refreshIncoming } = useMetadataRequests()
+  const { refreshRequests } = useMetadataRequests()
 
   const [{ data: dataset }, { data: algorithm }] = useSuspenseQueries({
     queries: [
@@ -31,9 +31,9 @@ export const DeleteMetadataRequestModal = ({
 
   const successCallback = useCallback(() => {
     closeModal()
-    refreshIncoming()
+    refreshRequests()
     toast.success('Succesfully deleted request petition')
-  }, [closeModal, refreshIncoming])
+  }, [closeModal, refreshRequests])
 
   const callback = useCallback(() => {
     deleteMetadataRequest({ requestId: request.id })
