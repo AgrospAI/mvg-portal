@@ -241,6 +241,13 @@ export async function transformPublishFormToDdo(
       })
   }
 
+  if (values.metadata.ontologyTerms) {
+    newMetadata.additionalInformation = {
+      ...newMetadata.additionalInformation,
+      'dcat:theme': values.metadata.ontologyTerms
+    }
+  }
+
   const file = {
     nftAddress,
     datatokenAddress,

@@ -43,12 +43,14 @@ module.exports = (phase, { defaultConfig }) => {
       })
       config.resolve.fallback = fallback
 
-      config.plugins = (config.plugins || []).concat([
-        new options.webpack.ProvidePlugin({
-          process: 'process/browser',
-          Buffer: ['buffer', 'Buffer']
-        })
-      ])
+      if (!options.isServer) {
+        config.plugins.push(
+          new options.webpack.ProvidePlugin({
+            process: 'process/browser',
+            Buffer: ['buffer', 'Buffer']
+          })
+        )
+      }
       return typeof defaultConfig.webpack === 'function'
         ? defaultConfig.webpack(config, options)
         : config
@@ -61,11 +63,11 @@ module.exports = (phase, { defaultConfig }) => {
           permanent: true
         }
       ]
-    }
+    },
 
-    // Prefer loading of ES Modules over CommonJS
-    // https://nextjs.org/blog/next-11-1#es-modules-support
-    // experimental: { esmExternals: true }
+    experimental: {
+      instrumentationHook: true /* REMOVE WHEN NEXT>=15.0.0 */
+    }
   }
 
   return nextConfig

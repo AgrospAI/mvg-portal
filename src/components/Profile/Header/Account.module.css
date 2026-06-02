@@ -22,7 +22,7 @@
   margin: 0;
 }
 
-@media (min-width: 60rem) {
+@media (min-width: 50rem) {
   .account {
     text-align: left;
     display: grid;
@@ -90,7 +90,7 @@ See https://github.com/oceanprotocol/market/issues/1143 */
   height: 1rem;
 }
 
-@media (min-width: 40rem) {
+@media (min-width: 50rem) {
   .card {
     position: absolute;
     right: var(--spacer);

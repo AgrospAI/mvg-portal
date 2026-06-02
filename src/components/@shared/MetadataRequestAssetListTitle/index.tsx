@@ -19,10 +19,10 @@ const MetadataRequestAssetListTitle = ({
 
   return (
     <h3 className={`${styles.title} ${className}`}>
-      {name && name !== '' ? (
+      {name && did ? (
         <Link href={`/asset/${did}`}>{name}</Link>
       ) : (
-        <span className={styles.deleted}>Deleted Asset</span>
+        <span className={styles.deleted}>Asset Not Found</span>
       )}
     </h3>
   )

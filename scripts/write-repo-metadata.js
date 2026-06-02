@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 'use strict'
 
+const { exec } = require('child_process')
+
 const execSync = require('child_process').execSync
 
 //
@@ -13,11 +15,25 @@ process.stdout.write(
     {
       version: require('../package.json').version,
       branch:
-        process.env.VERCEL_GITHUB_COMMIT_REF || process.env.BRANCH || 'dev',
+        process.env.VERCEL_GITHUB_COMMIT_REF ||
+        process.env.BRANCH ||
+        (() => {
+          try {
+            return execSync(`git rev-parse --abbrev-ref HEAD`).toString().trim()
+          } catch {
+            return 'unknown'
+          }
+        })(),
       commit:
         process.env.VERCEL_GITHUB_COMMIT_SHA ||
         process.env.COMMIT_REF ||
-        execSync(`git rev-parse HEAD`).toString().trim()
+        (() => {
+          try {
+            return execSync(`git rev-parse HEAD`).toString().trim()
+          } catch {
+            return 'unknown'
+          }
+        })()
     },
     null,
     '  '

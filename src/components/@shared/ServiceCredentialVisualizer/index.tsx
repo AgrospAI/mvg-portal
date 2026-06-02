@@ -57,7 +57,7 @@ export default function ServiceCredentialVisualizer({
             isValid={isValid}
             idMatch={idMatch}
             apiVersion={apiVersion}
-            timestamp
+            timestamp="relative"
           />
         )}
       </div>

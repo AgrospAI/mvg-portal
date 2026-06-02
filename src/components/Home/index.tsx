@@ -22,7 +22,7 @@ function AllAssetsButton(): ReactElement {
     <Button
       className={styles.allAssetsButton}
       style="text"
-      to="/search?sort=nft.created&sortOrder=desc"
+      to="/search?sort=metadata.created&sortOrder=desc"
       arrow
     >
       All datasets and algorithms

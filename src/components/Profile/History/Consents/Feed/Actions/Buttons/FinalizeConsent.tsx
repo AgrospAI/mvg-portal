@@ -25,9 +25,13 @@ const Content = ({
       </button>
     </Modal.Trigger>
     <Modal.Content name={`${request.id}_finalize`}>
-      <AssetProvider did={request.dataset.did}>
-        <FinalizeMetadataRequestModal request={request} />
-      </AssetProvider>
+      {request.dataset ? (
+        <AssetProvider did={request.dataset.did}>
+          <FinalizeMetadataRequestModal request={request} />
+        </AssetProvider>
+      ) : (
+        <>No dataset provided</>
+      )}
     </Modal.Content>
   </>
 )
