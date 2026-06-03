@@ -1,48 +1,80 @@
+/* Container for the menu items to ensure they stack nicely */
 .item {
-  cursor: pointer;
-}
-
-.item:hover {
-  scale: 1.1;
-}
-
-.button {
+  width: 100%;
   display: flex;
-  border: var(--border-size-sm) solid var(--button-border-color);
-  border-radius: var(--border-radius);
-  fill: var(--brand-grey-lighter);
-  background-color: var(--brand-grey-light);
+}
+
+/* Base style for every action row in the dropdown */
+.button {
+  all: unset; /* Reset default button styles */
+  display: flex;
+  align-items: center;
   justify-items: center;
-  padding: calc(var(--spacer) / 4) calc(var(--spacer) / 1.5);
-  gap: calc(var(--spacer) / 4);
-  color: var(--brand-grey-lighter);
-  transition: background-color 0.2s, color 0.2s;
+  gap: calc(var(--spacer) / 2);
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 6px;
+  color: var(--brand-grey-dimmed, #4a5568);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-sizing: border-box;
   font-size: var(--font-size-small);
   font-weight: var(--font-weight-bold);
 }
 
+/* Common Hover State */
 .button:hover,
 .button:focus {
-  cursor: pointer;
-  border: var(--border-size-sm) solid var(--brand-grey-dimmed);
-  background-color: var(--brand-grey);
+  background-color: var(--brand-grey-lighter, #f7fafc);
+  color: var(--brand-grey-dark, #1a202c);
   outline: none;
+}
+
+/* SVG Styling - Keeps them subtle but aligned */
+.button > svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+/* --- Specific Variations --- */
+
+/* Finalize Button - Modern Green */
+.finalizeButton {
+  color: #2f855a; /* Forest Green text */
+}
+
+.finalizeButton:hover {
+  background-color: #f0fff4 !important; /* Very light green bg */
+  color: #276749;
+}
+
+.finalizeButton > svg {
+  fill: #48bb78;
+}
+
+/* Delete Button - Modern Red */
+.deleteButton {
+  color: var(--brand-alert-red, #e53e3e);
+}
+
+.deleteButton:hover {
+  background-color: #fff5f5 !important; /* Very light red bg */
+  color: #c53030;
+}
+
+.deleteButton > svg {
+  fill: #fc8181;
+}
+
+/* Disabled State */
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: none;
 }
 
 .button > svg {
-  stroke-width: 0.2em;
   margin: 0;
-  width: 0.95em;
-}
-
-.deleteButton {
-  background-color: var(--brand-alert-red);
-}
-
-.deleteButton:hover,
-.deleteButton:focus {
-  border: var(--border-size-sm) solid var(--brand-alert-red);
-  background-color: var(--brand-alert-yellow);
-  color: var(--brand-alert-orange);
-  outline: none;
 }

@@ -1,11 +1,11 @@
-import { ReactElement, useEffect, useState } from 'react'
-import Page from '@shared/Page'
-import ProfilePage from '../../components/Profile'
-import { accountTruncate } from '@utils/wallet'
+import { ProfilePage } from '@/components/Profile'
 import ProfileProvider from '@context/Profile'
-import { useRouter } from 'next/router'
-import { useAccount } from 'wagmi'
+import Page from '@shared/Page'
+import { accountTruncate } from '@utils/wallet'
 import { isAddress } from 'ethers/lib/utils'
+import { useRouter } from 'next/router'
+import { ReactElement, useEffect, useState } from 'react'
+import { useAccount } from 'wagmi'
 import { useAutomation } from '../../@context/Automation/AutomationProvider'
 
 export default function PageProfile(): ReactElement {

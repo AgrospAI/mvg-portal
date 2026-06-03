@@ -1,9 +1,11 @@
+import Loader from '@components/@shared/atoms/Loader'
 import { updateQueryParameters } from '@utils/searchParams'
 import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/router'
 import {
   createContext,
   PropsWithChildren,
+  Suspense,
   useCallback,
   useContext
 } from 'react'
@@ -77,7 +79,7 @@ function ModalContent({
             }
           }}
         >
-          {children}
+          <Suspense fallback={<Loader />}>{children}</Suspense>
         </Modal>
       ) : (
         <></>

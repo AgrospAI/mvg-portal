@@ -72,7 +72,7 @@ const tableColumns: TableOceanColumn<AssetExtended>[] = [
   {
     name: 'Published',
     selector: (row) => {
-      return <Time date={row.nft.created} />
+      return <Time date={row.metadata.created} />
     },
     maxWidth: '7rem'
   }
@@ -153,10 +153,10 @@ export default function AssetList({
             )}
 
             {activeAssetView === AssetViewOptions.Grid &&
-              assets?.map((asset) => (
+              assets?.map((asset, idx) => (
                 <AssetTeaser
                   asset={asset}
-                  key={asset.id}
+                  key={`${asset.id}_${idx}`}
                   noPublisher={noPublisher}
                   noDescription={noDescription}
                   noPrice={noPrice}

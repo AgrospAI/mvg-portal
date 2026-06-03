@@ -1,4 +1,3 @@
-'use server'
 import { Address } from 'abitype'
 import { injectable } from 'inversify'
 import ICredentialsService from '../credentials'
@@ -12,13 +11,10 @@ import { GaiaXVerifiablePresentationSchema } from '@utils/verifiablePresentation
 export class LocalCredentialsService implements ICredentialsService {
   async getAddressCredentials(
     address: Address
-  ): Promise<GaiaXVerifiablePresentationArray> {
+  ): Promise<GaiaXVerifiablePresentationArray | null> {
     const entry = addresses[address]
 
-    if (!entry)
-      throw new CredentialsServiceError(
-        'Did not find entry for address ' + address
-      )
+    if (!entry) return null
 
     return Promise.all(
       entry.credentials.map((url: string) =>

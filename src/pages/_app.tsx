@@ -1,8 +1,12 @@
+import { QueryClientLoadingIndicator } from '@components/@shared/QueryClientLoadingIndicator'
+
 import ConsentProvider from '@context/CookieConsent'
 import { FilterProvider } from '@context/Filter'
 import MarketMetadataProvider from '@context/MarketMetadata'
+import { MetadataRequestFilterProvider } from '@context/MetadataRequestFilter'
 import { SearchBarStatusProvider } from '@context/SearchBarStatus'
 import UrqlProvider from '@context/UrqlProvider'
+import UserMetadataRequestsProvider from '@context/UserMetadataRequests'
 import { UserPreferencesProvider } from '@context/UserPreferences'
 import '@oceanprotocol/typographies/css/ocean-typo.css'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
@@ -17,7 +21,6 @@ import { WagmiConfig } from 'wagmi'
 import App from '../../src/components/App'
 import AutomationProvider from '../@context/Automation/AutomationProvider'
 import '../stylesGlobal/styles.css'
-import { QueryClientLoadingIndicator } from '@components/@shared/QueryClientLoadingIndicator'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -52,12 +55,14 @@ function MyApp({ Component, pageProps }: AppProps): ReactElement {
                     <SearchBarStatusProvider>
                       <FilterProvider>
                         <QueryClientProvider client={queryClient}>
-                          <QueryClientLoadingIndicator />
-                          <QueryClientProvider client={queryClient}>
-                            <App>
-                              <Component {...pageProps} />
-                            </App>
-                          </QueryClientProvider>
+                          <MetadataRequestFilterProvider>
+                            <UserMetadataRequestsProvider>
+                              <QueryClientLoadingIndicator />
+                              <App>
+                                <Component {...pageProps} />
+                              </App>
+                            </UserMetadataRequestsProvider>
+                          </MetadataRequestFilterProvider>
                         </QueryClientProvider>
                       </FilterProvider>
                     </SearchBarStatusProvider>

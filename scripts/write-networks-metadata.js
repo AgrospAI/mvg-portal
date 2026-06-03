@@ -5,7 +5,7 @@ const bargeNetwork = {
   name: 'Ethereum Barge',
   chain: 'ETH',
   icon: 'ethereum',
-  rpc: ['http://127.0.0.1:8545'],
+  rpc: ['http://anvil:8545'],
   faucets: [],
   nativeCurrency: {
     name: 'Ether',
