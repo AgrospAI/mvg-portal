@@ -159,10 +159,12 @@ function UserMetadataRequestsProvider({
 
       return extended
     },
-    [chain.id, discoverRequestDids]
+    [chain?.id, discoverRequestDids]
   )
 
   const requestWhereClause = useMemo(() => {
+    if (!address) return null
+
     const nowInSeconds = Math.floor(Date.now() / 1000)
     const roundedNow = Math.floor(nowInSeconds / 60) * 60
 
@@ -227,6 +229,7 @@ function UserMetadataRequestsProvider({
           requestOrderClause
         ],
         queryFn: async ({ signal }: QueryFunctionContext) => {
+          if (!address || !chain?.id || !requestWhereClause) return null
           const userAddr = address.toLowerCase()
           const directions = filters?.direction || []
           const ctrl = cancelToken(signal)
@@ -270,21 +273,21 @@ function UserMetadataRequestsProvider({
       },
       {
         queryKey: ['metadata-requests-stats', address, chain?.id],
-        queryFn: async () =>
-          fetchData(
+        queryFn: async () => {
+          if (!address || !chain?.id || !requestWhereClause) return {}
+          return fetchData(
             getUserStats,
             {
               id: address.toLowerCase()
             },
             getQueryContext(chain.id)
-          ),
+          )
+        },
         staleTime: 180_000,
-        select: ({ data }) => data?.userCounter
+        select: (data) => data?.data?.userCounter
       }
     ]
   })
-
-  console.log(stats)
 
   return (
     <UserMetadataRequestsContext.Provider

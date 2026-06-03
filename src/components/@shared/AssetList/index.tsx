@@ -153,10 +153,10 @@ export default function AssetList({
             )}
 
             {activeAssetView === AssetViewOptions.Grid &&
-              assets?.map((asset) => (
+              assets?.map((asset, idx) => (
                 <AssetTeaser
                   asset={asset}
-                  key={asset.id}
+                  key={`${asset.id}_${idx}`}
                   noPublisher={noPublisher}
                   noDescription={noDescription}
                   noPrice={noPrice}
