@@ -1,18 +1,18 @@
+import { filterSets } from '@components/Search/Filter'
+import { Filters } from '@context/Filter'
 import { Asset, LoggerInstance } from '@oceanprotocol/lib'
 import { AssetSelectionAsset } from '@shared/FormInput/InputElement/AssetSelection'
-import axios, { CancelToken, AxiosResponse } from 'axios'
-import { OrdersData_orders as OrdersData } from '../../@types/subgraph/OrdersData'
-import { metadataCacheUri, allowDynamicPricing } from '../../../app.config'
+import { isValidDid } from '@utils/ddo'
+import axios, { AxiosResponse, CancelToken } from 'axios'
+import addressConfig from '../../../address.config'
+import { allowDynamicPricing, metadataCacheUri } from '../../../app.config'
 import {
   FilterByTypeOptions,
   SortDirectionOptions,
   SortTermOptions
 } from '../../@types/aquarius/SearchQuery'
+import { OrdersData_orders as OrdersData } from '../../@types/subgraph/OrdersData'
 import { transformAssetToAssetSelection } from '../assetConvertor'
-import addressConfig from '../../../address.config'
-import { isValidDid } from '@utils/ddo'
-import { Filters } from '@context/Filter'
-import { filterSets } from '@components/Search/Filter'
 import { CHAIN_TO_INDEX_MAP, DEFAULT_INDEX } from './_constants'
 
 export interface UserSales {
@@ -140,10 +140,15 @@ export function generateBaseQuery(
           ...(baseQueryParams.chainIds
             ? [getFilterTerm('chainId', baseQueryParams.chainIds)]
             : []),
-          // getFilterTerm(
-          //   '_index',
-          //   getIndexForChainIds(baseQueryParams.chainIds)
-          // ),
+          getFilterTerm(
+            '_index',
+            getIndexForChainIds(baseQueryParams.chainIds)
+          ),
+          getFilterTerm('metadata.tags.keyword', [
+            'agrospai',
+            'udl',
+            'agrifoodtef'
+          ]),
           ...(baseQueryParams.ignorePurgatory
             ? []
             : [getFilterTerm('purgatory.state', false)]),
@@ -363,6 +368,7 @@ export async function getAssetsFromDids(
 
 export async function getAlgorithmDatasetsForCompute(
   algorithmId: string,
+  algorithmPublisher: string,
   datasetProviderUri: string,
   accountId: string,
   datasetChainId?: number,
@@ -374,47 +380,32 @@ export async function getAlgorithmDatasetsForCompute(
       must: [
         { term: { 'metadata.type': 'dataset' } },
         { term: { 'services.type': 'compute' } },
+        { term: { chainId: datasetChainId } },
         {
           bool: {
             should: [
-              // 1. Both lists empty (open to all)
+              // 1. publisherTrustedAlgorithms is null/absent
               {
                 bool: {
-                  must: [
-                    {
-                      bool: {
-                        must_not: {
-                          exists: {
-                            field: 'services.compute.publisherTrustedAlgorithms'
-                          }
-                        }
-                      }
-                    },
-                    {
-                      bool: {
-                        must_not: {
-                          exists: {
-                            field:
-                              'services.compute.publisherTrustedAlgorithmPublishers'
-                          }
-                        }
-                      }
+                  must_not: {
+                    exists: {
+                      field: 'services.compute.publisherTrustedAlgorithms'
                     }
-                  ]
+                  }
                 }
               },
-              // 2. algorithmId is in trusted algorithms list
+              // 2. publisherTrustedAlgorithmPublishers includes the algorithm publisher
+              {
+                term: {
+                  'services.compute.publisherTrustedAlgorithmPublishers.keyword':
+                    algorithmPublisher
+                }
+              },
+              // 3. publisherTrustedAlgorithms includes the algorithm DID
               {
                 term: {
                   'services.compute.publisherTrustedAlgorithms.did.keyword':
                     algorithmId
-                }
-              },
-              // 3. accountId is a trusted publisher
-              {
-                term: {
-                  'services.compute.publisherTrustedAlgorithmPublishers.keyword':
-                    accountId
                 }
               }
             ],
@@ -435,9 +426,28 @@ export async function getAlgorithmDatasetsForCompute(
 
   console.log('Retrieved datasets:', computeDatasets)
 
+  const filteredDatasets = computeDatasets.results.filter((dataset) => {
+    const compute = dataset.services?.[0]?.compute
+    if (!compute) return false
+
+    const trustedAlgorithms = compute.publisherTrustedAlgorithms
+    const trustedPublishers = compute.publisherTrustedAlgorithmPublishers
+
+    // 1. publisherTrustedAlgorithms is null → allow any algorithm
+    if (trustedAlgorithms === null) return true
+
+    // 2. Algorithm DID is in the trusted list
+    if (trustedAlgorithms?.some((a) => a.did === algorithmId)) return true
+
+    // 3. Algorithm publisher is in the trusted publishers list
+    if (trustedPublishers?.includes(algorithmPublisher)) return true
+
+    return false
+  })
+
   const datasets = await transformAssetToAssetSelection(
     datasetProviderUri,
-    computeDatasets.results,
+    filteredDatasets,
     accountId,
     []
   )

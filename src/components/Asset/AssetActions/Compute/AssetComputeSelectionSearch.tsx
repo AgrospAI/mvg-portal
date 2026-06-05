@@ -1,12 +1,12 @@
-import { ReactElement, useEffect, useState, ChangeEvent } from 'react'
-import styles from './AlgorithmDatasetsListForCompute.module.css'
-import { getAlgorithmDatasetsForCompute } from '@utils/aquarius'
+import { useCancelToken } from '@hooks/useCancelToken'
 import AssetSelection, {
   AssetSelectionAsset
 } from '@shared/FormInput/InputElement/AssetSelection'
-import { useCancelToken } from '@hooks/useCancelToken'
+import { getAlgorithmDatasetsForCompute } from '@utils/aquarius'
 import { getServiceByName } from '@utils/ddo'
+import { ChangeEvent, ReactElement, useEffect, useState } from 'react'
 import { useAccount } from 'wagmi'
+import styles from './AlgorithmDatasetsListForCompute.module.css'
 
 export default function AssetComputeSelectionSearch({
   asset,
@@ -35,19 +35,20 @@ export default function AssetComputeSelectionSearch({
       )
       const datasets = await getAlgorithmDatasetsForCompute(
         algorithmDid,
+        asset.nft.owner,
         datasetComputeService?.serviceEndpoint,
         accountId,
         asset?.chainId,
         newCancelToken()
       )
 
-      // Do not render repeated
-      setDatasetsForCompute(
-        datasets.filter(
-          (dataset, index, self) =>
-            index === self.findIndex((d) => d.did === dataset.did)
-        )
-      )
+      // Do not render repeated and also do not render
+      setDatasetsForCompute(datasets)
+
+      // .filter(
+      //   (dataset, index, self) =>
+      //     index === self.findIndex((d) => d.did === dataset.did)
+      // )
     }
     asset.metadata.type === 'algorithm' && getDatasetsAllowedForCompute()
   }, [accountId, asset, algorithmDid, newCancelToken])

@@ -952,7 +952,7 @@ export default function Compute({
         )}
       </div>
 
-      {isUnsupportedPricing ? null : (
+      {isUnsupportedPricing || !accountId ? null : (
         <>
           <Formik
             initialValues={getInitialValues(

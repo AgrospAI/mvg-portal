@@ -30,6 +30,7 @@ export default function AlgorithmDatasetsListForCompute({
       )
       const datasets = await getAlgorithmDatasetsForCompute(
         algorithmDid,
+        asset.nft.owner,
         datasetComputeService?.serviceEndpoint,
         accountId,
         asset?.chainId,
