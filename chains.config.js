@@ -18,11 +18,14 @@ const chains = [
     transactionConfirmationBlocks: 1,
     transactionPollingTimeout: 750,
     gasFeeMultiplier: 1.1,
-    providerUri: 'https://provider.agrospai.udl.cat',
+    providerUri: 'https://provider.pontus-x.eu',
+    // providerUri: 'https://provider.agrospai.udl.cat',
     providerAddress: '0x94549951623DD6c3265DBbB1b032d6cF48Ba7811',
+    // metadataCacheUri: 'https://aquarius.pontus-x.eu',
     metadataCacheUri: 'https://aquarius.agrospai.udl.cat',
     nodeUri: 'https://rpc.dev.pontus-x.eu',
     subgraphUri: 'https://subgraph.dev.agrospai.udl.cat',
+    // subgraphUri: 'https://subgraph.dev.pontus-x.eu',
     explorerUri: 'https://explorer.pontus-x.eu/pontusx/dev'
   },
   {
@@ -41,10 +44,13 @@ const chains = [
     transactionConfirmationBlocks: 1,
     transactionPollingTimeout: 750,
     gasFeeMultiplier: 1.1,
+    // providerUri: 'https://provider.pontus-x.eu',
     providerUri: 'https://provider.agrospai.udl.cat',
     providerAddress: '0x94549951623DD6c3265DBbB1b032d6cF48Ba7811',
+    // metadataCacheUri: 'https://aquarius.pontus-x.eu',
     metadataCacheUri: 'https://aquarius.agrospai.udl.cat',
     nodeUri: 'https://rpc.test.pontus-x.eu',
+    // subgraphUri: 'https://subgraph.test.pontus-x.eu',
     subgraphUri: 'https://subgraph.test.agrospai.udl.cat',
     explorerUri: 'https://explorer.pontus-x.eu/pontusx/test'
   }

@@ -371,37 +371,57 @@ export async function getAlgorithmDatasetsForCompute(
   const baseQueryParams = {
     chainIds: [datasetChainId],
     nestedQuery: {
-      should: [
-        // 1. publisherTrustedAlgorithms is null (not defined)
+      must: [
+        { term: { 'metadata.type': 'dataset' } },
+        { term: { 'services.type': 'compute' } },
         {
           bool: {
-            must_not: {
-              exists: {
-                field: 'services.compute.publisherTrustedAlgorithms'
+            should: [
+              // 1. Both lists empty (open to all)
+              {
+                bool: {
+                  must: [
+                    {
+                      bool: {
+                        must_not: {
+                          exists: {
+                            field: 'services.compute.publisherTrustedAlgorithms'
+                          }
+                        }
+                      }
+                    },
+                    {
+                      bool: {
+                        must_not: {
+                          exists: {
+                            field:
+                              'services.compute.publisherTrustedAlgorithmPublishers'
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              // 2. algorithmId is in trusted algorithms list
+              {
+                term: {
+                  'services.compute.publisherTrustedAlgorithms.did.keyword':
+                    algorithmId
+                }
+              },
+              // 3. accountId is a trusted publisher
+              {
+                term: {
+                  'services.compute.publisherTrustedAlgorithmPublishers.keyword':
+                    accountId
+                }
               }
-            }
-          }
-        },
-
-        // 2. publisherTrustedAlgorithms contains algorithmId
-        {
-          match_phrase: {
-            'services.compute.publisherTrustedAlgorithms.did': {
-              query: algorithmId
-            }
-          }
-        },
-
-        // 3. publisherTrustedAlgorithmPublishers contains accountId
-        {
-          match_phrase: {
-            'services.compute.publisherTrustedAlgorithmPublishers': {
-              query: accountId
-            }
+            ],
+            minimum_should_match: 1
           }
         }
-      ],
-      minimum_should_match: 1
+      ]
     },
     sortOptions: {
       sortBy: SortTermOptions.Created,

@@ -2,17 +2,18 @@
   display: flex;
   flex: 1;
   flex-direction: column;
-  align-items: center;
-  width: auto;
-  margin-top: calc(var(--spacer) / 2);
-  margin-left: calc(var(--spacer) / -1.5);
-  margin-right: calc(var(--spacer) / -1.5);
+  align-items: stretch;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
   padding-left: calc(var(--spacer) / 1.5);
   padding-right: calc(var(--spacer) / 1.5);
+  margin-bottom: calc(var(--spacer) * var(--line-height) / 2);
 }
 
 .datasetsContainer > div:first-of-type {
   width: 100%;
+  min-width: 0;
 }
 
 .datasetsContainer div[class*='AssetSelection-module--selection'] {

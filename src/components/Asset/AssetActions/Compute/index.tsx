@@ -29,10 +29,11 @@ import { AssetSelectionAsset } from '@shared/FormInput/InputElement/AssetSelecti
 import Price from '@shared/Price'
 import SuccessConfetti from '@shared/SuccessConfetti'
 import {
-  getAvailablePrice,
   getAccessDetails,
+  getAvailablePrice,
   getOrderPriceAndFees
 } from '@utils/accessDetailsAndPricing'
+import { getAssetsFromDids } from '@utils/aquarius'
 import {
   getAlgorithmAssetSelectionList,
   getAlgorithmsForAsset,
@@ -47,7 +48,6 @@ import {
   initializeProviderForCompute
 } from '@utils/provider'
 import { getDummySigner } from '@utils/wallet'
-import { getAssetsFromDids } from '@utils/aquarius'
 import { Decimal } from 'decimal.js'
 import { Signer } from 'ethers'
 import { Formik } from 'formik'
@@ -62,13 +62,11 @@ import {
   getComputeValidationSchema,
   getInitialValues
 } from './_constants'
-import AlgorithmDatasetsListForCompute from './AlgorithmDatasetsListForCompute'
+import AssetComputeSelectionSearch from './AssetComputeSelectionSearch'
 import FormStartComputeDataset from './FormComputeDataset'
-import FormStartComputeAlgorithm from './FormComputeAlgorithm'
 import ComputeHistory from './History'
 import styles from './index.module.css'
 import WhitelistIndicator from './WhitelistIndicator'
-import AssetComputeSelectionSearch from './AssetComputeSelectionSearch'
 
 const refreshInterval = 10000 // 10 sec.
 

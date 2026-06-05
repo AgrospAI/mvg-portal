@@ -24,16 +24,20 @@ import { toast } from 'react-toastify'
 import { OCEAN_ERROR_STATES } from '../@constants/errors'
 
 export async function initializeProviderForCompute(
-  dataset: AssetExtended,
+  dataset: AssetExtended | AssetExtended[],
   algorithm: AssetExtended,
   accountId: string,
   computeEnv: ComputeEnvironment = null
 ): Promise<ProviderComputeInitializeResults> {
-  const computeAsset: ComputeAsset = {
-    documentId: dataset.id,
-    serviceId: dataset.services[0].id,
-    transferTxId: dataset?.accessDetails?.validOrderTx
-  }
+  const datasets = Array.isArray(dataset) ? dataset : [dataset]
+  const primaryDataset = datasets[0]
+
+  const computeAssets: ComputeAsset[] = datasets.map((ds) => ({
+    documentId: ds.id,
+    serviceId: ds.services[0].id,
+    transferTxId: ds?.accessDetails?.validOrderTx
+  }))
+
   const computeAlgo: ComputeAlgorithm = {
     documentId: algorithm.id,
     serviceId: algorithm.services[0].id,
@@ -42,17 +46,17 @@ export async function initializeProviderForCompute(
 
   const validUntil = getValidUntilTime(
     computeEnv?.maxJobDuration,
-    dataset.services[0].timeout,
+    primaryDataset.services[0].timeout,
     algorithm.services[0].timeout
   )
 
   try {
     return await ProviderInstance.initializeCompute(
-      [computeAsset],
+      computeAssets,
       computeAlgo,
       computeEnv?.id,
       validUntil,
-      customProviderUrl || dataset.services[0].serviceEndpoint,
+      customProviderUrl || primaryDataset.services[0].serviceEndpoint,
       accountId
     )
   } catch (error) {

@@ -11,7 +11,7 @@ export const consentsTableStyles: TableStyles = {
   },
   responsiveWrapper: {
     style: {
-      overflow: 'hidden',
+      overflow: 'scroll',
       width: '100%'
     }
   },

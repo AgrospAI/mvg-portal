@@ -28,7 +28,7 @@ export default function AssetComputeSelectionSearch({
     if (!asset || !asset?.accessDetails?.type) return
 
     async function getDatasetsAllowedForCompute() {
-      const isCompute = Boolean(getServiceByName(asset, 'compute'))
+      const isCompute = !!getServiceByName(asset, 'compute')
       const datasetComputeService = getServiceByName(
         asset,
         isCompute ? 'compute' : 'access'
@@ -40,7 +40,14 @@ export default function AssetComputeSelectionSearch({
         asset?.chainId,
         newCancelToken()
       )
-      setDatasetsForCompute(datasets)
+
+      // Do not render repeated
+      setDatasetsForCompute(
+        datasets.filter(
+          (dataset, index, self) =>
+            index === self.findIndex((d) => d.did === dataset.did)
+        )
+      )
     }
     asset.metadata.type === 'algorithm' && getDatasetsAllowedForCompute()
   }, [accountId, asset, algorithmDid, newCancelToken])
