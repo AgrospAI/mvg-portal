@@ -11,8 +11,6 @@ export const VerifiablePresentationCardDescription = ({
   credentials,
   selected
 }: Readonly<VerifiablePresentationLegalAddressProps>) => {
-  console.log(credentials)
-
   const legalAddresses = useMemo(
     () => credentials.map((c) => c.credentialSubject?.['gx:legalAddress']),
     [credentials]

@@ -1,4 +1,3 @@
-'use server'
 import { Environment } from '@utils/env/types'
 
 interface IEnvironmentService {

@@ -1,3 +1,4 @@
+import QueryBoundary from '@components/@shared/QueryBoundary'
 import { useAutomation } from '@context/Automation/AutomationProvider'
 import { useUserPreferences } from '@context/UserPreferences'
 import { useCancelToken } from '@hooks/useCancelToken'
@@ -9,7 +10,7 @@ import { useRouter } from 'next/router'
 import { useCallback, useEffect, useState } from 'react'
 import { useAccount } from 'wagmi'
 import ComputeJobs from './ComputeJobs'
-import ConsentsContent from './Consents/ConsentsContent'
+import { ConsentsContent } from './Consents/ConsentsContent'
 import Downloads from './Downloads'
 import styles from './index.module.css'
 import PublishedList from './PublishedList'
@@ -40,21 +41,21 @@ function getTabs(
       content: <Downloads accountId={accountId} />
     }
   ]
+  const computeTab: HistoryTab = {
+    title: 'Compute Jobs',
+    content: (
+      <ComputeJobs
+        jobs={jobs}
+        isLoading={isLoadingJobs}
+        refetchJobs={() => setRefetchJobs(!refetchJobs)}
+      />
+    )
+  }
+  const consentsTab: HistoryTab = {
+    title: 'Requests',
+    content: <ConsentsContent />
+  }
   if (accountId === userAccountId || accountId === autoWalletAccountId) {
-    const computeTab: HistoryTab = {
-      title: 'Compute Jobs',
-      content: (
-        <ComputeJobs
-          jobs={jobs}
-          isLoading={isLoadingJobs}
-          refetchJobs={() => setRefetchJobs(!refetchJobs)}
-        />
-      )
-    }
-    const consentsTab: HistoryTab = {
-      title: 'Consents',
-      content: <ConsentsContent />
-    }
     defaultTabs.push(computeTab, consentsTab)
   }
 
@@ -120,6 +121,8 @@ export default function HistoryPage({ accountIdentifier }: Props) {
           newCancelToken()
         )
 
+        console.log('Found', computeJobs)
+
         setJobs(computeJobs.computeJobs)
         setIsLoadingJobs(!computeJobs.isLoaded)
       } catch (error) {
@@ -174,11 +177,13 @@ export default function HistoryPage({ accountIdentifier }: Props) {
   )
 
   return (
-    <Tabs
-      items={tabs}
-      className={styles.tabs}
-      selectedIndex={Number(tabIndex) || 0}
-      onIndexSelected={updateTab}
-    />
+    <QueryBoundary>
+      <Tabs
+        items={tabs}
+        className={styles.tabs}
+        selectedIndex={Number(tabIndex) || 0}
+        onIndexSelected={updateTab}
+      />
+    </QueryBoundary>
   )
 }

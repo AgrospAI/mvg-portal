@@ -11,7 +11,7 @@
     },
     {
       "name": "Catalogue",
-      "link": "/search?sort=nft.created&sortOrder=desc"
+      "link": "/search?sort=metadata.created&sortOrder=desc"
     },
     {
       "name": "Publish",
@@ -25,7 +25,6 @@
       "name": "Faucet",
       "link": "/faucet"
     },
-
     {
       "name": "Log",
       "link": "https://explorer.pontus-x.eu/"
@@ -220,7 +219,7 @@
           },
           {
             "name": "Catalogue",
-            "link": "/search?sort=nft.created&sortOrder=desc"
+            "link": "/search?sort=metadata.created&sortOrder=desc"
           },
           {
             "name": "Profile",

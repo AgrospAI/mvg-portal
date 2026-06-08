@@ -1,9 +1,8 @@
-import QueryBoundary from '@components/@shared/QueryBoundary'
 import { useProfile } from '@context/Profile'
+import { useMetadataRequests } from '@context/UserMetadataRequests'
 import { ReactElement } from 'react'
 import NumberUnit from './NumberUnit'
 import styles from './Stats.module.css'
-import StatsConsents from './StatsConsents'
 
 interface Props {
   accountId: string
@@ -11,6 +10,7 @@ interface Props {
 
 export default function Stats({ accountId }: Readonly<Props>): ReactElement {
   const { assetsTotal, sales } = useProfile()
+  const { totalCount, pendingCount } = useMetadataRequests()
 
   return (
     <div className={styles.stats}>
@@ -19,9 +19,8 @@ export default function Stats({ accountId }: Readonly<Props>): ReactElement {
         value={typeof sales !== 'number' || sales < 0 ? 0 : sales}
       />
       <NumberUnit label="Published" value={assetsTotal} />
-      <QueryBoundary text="Loading consents stats">
-        <StatsConsents accountId={accountId} />
-      </QueryBoundary>
+      <NumberUnit label="Pending Requests" value={pendingCount ?? 0} />
+      <NumberUnit label="Total Incoming Requests" value={totalCount ?? 0} />
     </div>
   )
 }

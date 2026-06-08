@@ -1,6 +1,9 @@
+import { QueryClientLoadingIndicator } from '@components/@shared/QueryClientLoadingIndicator'
+
 import ConsentProvider from '@context/CookieConsent'
 import { FilterProvider } from '@context/Filter'
 import MarketMetadataProvider from '@context/MarketMetadata'
+import { MetadataRequestFilterProvider } from '@context/MetadataRequestFilter'
 import { SearchBarStatusProvider } from '@context/SearchBarStatus'
 import UrqlProvider from '@context/UrqlProvider'
 import { UserPreferencesProvider } from '@context/UserPreferences'
@@ -17,13 +20,14 @@ import { WagmiConfig } from 'wagmi'
 import App from '../../src/components/App'
 import AutomationProvider from '../@context/Automation/AutomationProvider'
 import '../stylesGlobal/styles.css'
-import { QueryClientLoadingIndicator } from '@components/@shared/QueryClientLoadingIndicator'
+import QueryBoundary from '@components/@shared/QueryBoundary'
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 1000 * 60,
-      retry: 0
+      retry: 0,
+      keepPreviousData: true
     }
   }
 })
@@ -52,12 +56,14 @@ function MyApp({ Component, pageProps }: AppProps): ReactElement {
                     <SearchBarStatusProvider>
                       <FilterProvider>
                         <QueryClientProvider client={queryClient}>
-                          <QueryClientLoadingIndicator />
-                          <QueryClientProvider client={queryClient}>
-                            <App>
-                              <Component {...pageProps} />
-                            </App>
-                          </QueryClientProvider>
+                          <QueryBoundary>
+                            <MetadataRequestFilterProvider>
+                              <QueryClientLoadingIndicator />
+                              <App>
+                                <Component {...pageProps} />
+                              </App>
+                            </MetadataRequestFilterProvider>
+                          </QueryBoundary>
                         </QueryClientProvider>
                       </FilterProvider>
                     </SearchBarStatusProvider>

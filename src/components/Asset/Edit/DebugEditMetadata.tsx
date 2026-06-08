@@ -44,6 +44,13 @@ export default function DebugEditMetadata({
     }
   }
 
+  if (values.ontologyTerms) {
+    newMetadata.additionalInformation = {
+      ...(newMetadata.additionalInformation || {}),
+      'dcat:theme': values.ontologyTerms
+    }
+  }
+
   const showSaas =
     (values.files[0].type === 'hidden' &&
       asset?.metadata?.additionalInformation?.saas) ||
