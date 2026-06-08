@@ -50,6 +50,7 @@ function DetailsAssets({ job }: { job: ComputeJobMetaData }) {
   useEffect(() => {
     async function getAlgoMetadata() {
       const ddo = await getAsset(job.algoDID, newCancelToken())
+      if (!ddo) return
       setAlgoDtSymbol(ddo.datatokens[0].symbol)
       setAlgoName(ddo?.metadata.name)
     }

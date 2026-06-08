@@ -36,6 +36,7 @@ export default function Results({
   useEffect(() => {
     async function getAssetMetadata() {
       const ddo = await getAsset(job.inputDID[0], newCancelToken())
+      if (!ddo) return
       setDatasetProvider(ddo.services[0].serviceEndpoint)
     }
     getAssetMetadata()
