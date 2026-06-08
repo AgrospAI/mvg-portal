@@ -1,3 +1,4 @@
+import QueryBoundary from '@components/@shared/QueryBoundary'
 import { useAutomation } from '@context/Automation/AutomationProvider'
 import { useUserPreferences } from '@context/UserPreferences'
 import { useCancelToken } from '@hooks/useCancelToken'
@@ -174,11 +175,13 @@ export default function HistoryPage({ accountIdentifier }: Props) {
   )
 
   return (
-    <Tabs
-      items={tabs}
-      className={styles.tabs}
-      selectedIndex={Number(tabIndex) || 0}
-      onIndexSelected={updateTab}
-    />
+    <QueryBoundary>
+      <Tabs
+        items={tabs}
+        className={styles.tabs}
+        selectedIndex={Number(tabIndex) || 0}
+        onIndexSelected={updateTab}
+      />
+    </QueryBoundary>
   )
 }

@@ -6,7 +6,6 @@ import MarketMetadataProvider from '@context/MarketMetadata'
 import { MetadataRequestFilterProvider } from '@context/MetadataRequestFilter'
 import { SearchBarStatusProvider } from '@context/SearchBarStatus'
 import UrqlProvider from '@context/UrqlProvider'
-import UserMetadataRequestsProvider from '@context/UserMetadataRequests'
 import { UserPreferencesProvider } from '@context/UserPreferences'
 import '@oceanprotocol/typographies/css/ocean-typo.css'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
@@ -21,12 +20,14 @@ import { WagmiConfig } from 'wagmi'
 import App from '../../src/components/App'
 import AutomationProvider from '../@context/Automation/AutomationProvider'
 import '../stylesGlobal/styles.css'
+import QueryBoundary from '@components/@shared/QueryBoundary'
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 1000 * 60,
-      retry: 0
+      retry: 0,
+      keepPreviousData: true
     }
   }
 })
@@ -55,14 +56,14 @@ function MyApp({ Component, pageProps }: AppProps): ReactElement {
                     <SearchBarStatusProvider>
                       <FilterProvider>
                         <QueryClientProvider client={queryClient}>
-                          <MetadataRequestFilterProvider>
-                            <UserMetadataRequestsProvider>
+                          <QueryBoundary>
+                            <MetadataRequestFilterProvider>
                               <QueryClientLoadingIndicator />
                               <App>
                                 <Component {...pageProps} />
                               </App>
-                            </UserMetadataRequestsProvider>
-                          </MetadataRequestFilterProvider>
+                            </MetadataRequestFilterProvider>
+                          </QueryBoundary>
                         </QueryClientProvider>
                       </FilterProvider>
                     </SearchBarStatusProvider>
