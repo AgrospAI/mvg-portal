@@ -1,15 +1,15 @@
+import Accordion from '@components/@shared/Accordion'
+import Input from '@components/@shared/FormInput'
+import { Sort as SortInterface, useFilter } from '@context/Filter'
+import { useRouter } from 'next/router'
+import queryString from 'query-string'
 import { ReactElement, useEffect } from 'react'
-import { addExistingParamsToUrl } from './utils'
-import styles from './sort.module.css'
 import {
   SortDirectionOptions,
   SortTermOptions
 } from '../../@types/aquarius/SearchQuery'
-import { useRouter } from 'next/router'
-import Accordion from '@components/@shared/Accordion'
-import Input from '@components/@shared/FormInput'
-import { Sort as SortInterface, useFilter } from '@context/Filter'
-import queryString from 'query-string'
+import styles from './sort.module.css'
+import { addExistingParamsToUrl } from './utils'
 
 const sortItems = [
   { display: 'Relevance', value: SortTermOptions.Relevance },

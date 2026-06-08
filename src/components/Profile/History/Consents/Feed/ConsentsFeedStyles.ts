@@ -3,6 +3,18 @@ import { TableStyles } from 'react-data-table-component'
 
 export const consentsTableStyles: TableStyles = {
   ...customStyles,
+  table: {
+    style: {
+      ...customStyles.table?.style,
+      tableLayout: 'fixed'
+    }
+  },
+  responsiveWrapper: {
+    style: {
+      overflow: 'scroll',
+      width: '100%'
+    }
+  },
   cells: {
     style: {
       whiteSpace: 'nowrap',

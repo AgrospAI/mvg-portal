@@ -14,9 +14,19 @@
   gap: calc(var(--spacer) / 2);
 }
 
+.filterList * {
+  margin-top: 0;
+  margin-bottom: 0;
+  text-transform: capitalize;
+}
+
 .sidePositioning h3 {
   color: var(--filter-title-color);
   font-size: var(--filter-title-font-size);
+}
+
+.sidePositioning div {
+  margin: 0 !important;
 }
 
 .sidePositioning h5,
@@ -48,23 +58,22 @@
 }
 
 .filterTypeLabel {
-  margin: calc(var(--spacer) / 4) 0;
+  margin: 0;
 }
 
 .filterType > div:not(:last-child) {
-  margin-bottom: calc(var(--spacer) / 8);
+  margin-bottom: 0;
 }
 
 .compactFilterContainer {
   min-width: max-content;
   height: min-content;
-  padding: calc(var(--spacer) / 4);
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
 }
 
 .compactOptionsContainer > div {
-  margin-top: calc(var(--spacer) / 4) 0;
+  margin-top: 0;
 }
 
 @media screen and (min-width: 65rem) {

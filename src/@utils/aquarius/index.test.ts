@@ -72,7 +72,7 @@ describe('@utils/aquarius', () => {
         sortDirection: SortDirectionOptions.Ascending
       }
     })
-    expect(sortResult.sort).toEqual({ 'nft.created': 'asc' })
+    expect(sortResult.sort).toEqual({ 'metadata.created': 'asc' })
     expect(sortResult.query.bool.filter).toEqual(
       expect.arrayContaining(defaultBaseQueryReturn.query.bool.filter)
     )

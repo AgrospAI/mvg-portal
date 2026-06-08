@@ -11,7 +11,6 @@ import AssetSelection, { AssetSelectionAsset } from './AssetSelection'
 import Nft from './Nft'
 import InputRadio from './Radio'
 import ContainerInput from '@shared/FormInput/InputElement/ContainerInput'
-import TagsAutoComplete from './TagsAutoComplete'
 import TabsFile from '@shared/atoms/TabsFile'
 import { extensions, oceanTheme } from '@utils/codemirror'
 import { ConsumerParameters } from './ConsumerParameters'
@@ -19,6 +18,8 @@ import ServiceCredential from './ServiceCredential'
 import ComputeEnvSelection from './ComputeEnvSelection'
 import Credentials from './Credential'
 import Option from './Radio/Option'
+import AgroPortalAutocomplete from '@components/AgroPortal/AgroPortalAutocomplete'
+import TagsAutoComplete from './TagsAutoComplete'
 
 const cx = classNames.bind(styles)
 
@@ -236,6 +237,8 @@ const InputElement = forwardRef(
         )
       case 'tags':
         return <TagsAutoComplete {...field} {...props} />
+      case 'ontologyTerms':
+        return <AgroPortalAutocomplete {...field} {...props} />
       case 'credentials':
         return <Credentials {...field} {...props} />
       default:

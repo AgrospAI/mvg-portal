@@ -1,42 +1,45 @@
-import Loader from '@components/@shared/atoms/Loader'
 import Modal from '@components/@shared/Modal'
-import { useCurrentConsent } from '@hooks/useCurrentConsent'
 import Info from '@images/info.svg'
-import { Consent } from '@utils/consents/types'
-import { Suspense } from 'react'
-import InspectConsentsModal from '../../../Modal/InspectConsentsModal'
+import { InspectMetadataRequestModal } from '../../../Modal/InspectConsentsModal'
 import styles from './Buttons.module.css'
 
-interface InspectConsentProps {
-  consent: Consent
-  showFull?: boolean
-}
-
-function InspectConsent({ consent, showFull }: InspectConsentProps) {
-  const { setCurrentConsent } = useCurrentConsent()
+const Content = ({
+  request,
+  isRequested
+}: Readonly<{
+  request: ExtendedMetadataRequest
+  isRequested?: boolean
+}>) => {
+  if (!request.dataset || !request.algorithm) {
+    return <>Can not inspect, missing asset</>
+  }
 
   return (
     <>
-      <Modal.Trigger
-        name={String(consent.id)}
-        onClick={() => setCurrentConsent(consent)}
-      >
+      <Modal.Trigger name={String(request.id)}>
         <button
           className={styles.button}
           title="Inspect"
           aria-label="Inspect Consent"
           type="button"
         >
-          {showFull && 'Inspect'} <Info />
+          Inspect <Info />
         </button>
       </Modal.Trigger>
-      <Modal.Content name={String(consent.id)}>
-        <Suspense fallback={<Loader />}>
-          <InspectConsentsModal />
-        </Suspense>
+      <Modal.Content name={String(request.id)}>
+        <InspectMetadataRequestModal
+          request={request}
+          isRequested={isRequested}
+        />
       </Modal.Content>
     </>
   )
 }
 
-export default InspectConsent
+export const InspectModal = ({
+  isRequested,
+  request
+}: Readonly<{
+  request: MetadataRequest
+  isRequested?: boolean
+}>) => <Content request={request} isRequested={isRequested} />

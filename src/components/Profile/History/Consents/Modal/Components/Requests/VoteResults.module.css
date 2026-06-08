@@ -1,0 +1,51 @@
+/* VoteResults.module.css */
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 150px;
+  padding: 8px;
+}
+
+.labelRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.yesText {
+  color: #2f855a;
+}
+.noText {
+  color: #e53e3e;
+}
+
+.barContainer {
+  height: 8px;
+  width: 100%;
+  background-color: #edf2f7; /* Background for "unused" weight */
+  border-radius: 99px;
+  display: flex;
+  overflow: hidden;
+}
+
+.yesBar {
+  height: 100%;
+  background-color: #48bb78;
+  transition: width 0.5s ease-out;
+}
+
+.noBar {
+  height: 100%;
+  background-color: #f56565;
+  transition: width 0.5s ease-out;
+}
+
+.totalLabel {
+  font-size: 10px;
+  color: #718096;
+  text-align: right;
+}

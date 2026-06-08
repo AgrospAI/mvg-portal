@@ -1,0 +1,33 @@
+.badge {
+  display: flex;
+  padding: calc(var(--spacer) / 6) calc(var(--spacer) / 4);
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--border-radius);
+  color: var(--brand-grey-dimmed);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-bold);
+  width: 10rem;
+}
+
+.badge-0 {
+  background-color: var(--brand-alert-orange);
+}
+
+.badge-1 {
+  background-color: black;
+}
+
+.badge-2 {
+  background-color: var(--brand-alert-green);
+  color: black;
+}
+
+.badge-3 {
+  background-color: var(--brand-alert-yellow);
+  color: black;
+}
+
+.badge-4 {
+  background-color: var(--brand-alert-red);
+}

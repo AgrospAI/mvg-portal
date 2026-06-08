@@ -45,7 +45,51 @@ const networksMetadata = [
         standard: ''
       }
     ]
+  },
+  {
+    chainId: 8996,
+    networkId: 8996,
+    name: 'Local Network',
+    chain: 'Anvil',
+    rpc: ['http://anvil:8545'],
+    faucets: [],
+    nativeCurrency: {
+      name: 'ETH',
+      symbol: 'ETH',
+      decimals: 18
+    },
+    infoURL: 'https://docs.pontus-x.eu',
+    shortName: 'Local',
+    explorers: [
+      {
+        name: 'Local Network Explorer',
+        url: 'http://anvil',
+        standard: ''
+      }
+    ]
   }
+  // {
+  //   chainId: 11155111,
+  //   networkId: 11155111,
+  //   name: 'Sepolia Testnet',
+  //   chain: 'Sepolia',
+  //   rpc: ['wss://sepolia.drpc.org'],
+  //   faucets: [],
+  //   nativeCurrency: {
+  //     name: 'ETH',
+  //     symbol: 'ETH',
+  //     decimals: 18
+  //   },
+  //   infoURL: 'https://docs.pontus-x.eu',
+  //   shortName: 'Sepolia',
+  //   explorers: [
+  //     {
+  //       name: 'Sepolia Explorer',
+  //       url: 'https://sepolia.etherscan.io',
+  //       standard: ''
+  //     }
+  //   ]
+  // }
 ]
 
 module.exports = {

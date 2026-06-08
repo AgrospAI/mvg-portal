@@ -1,17 +1,12 @@
 import { useField } from 'formik'
-import { useLayoutEffect, useRef } from 'react'
+import { TextareaHTMLAttributes, useLayoutEffect, useRef } from 'react'
 import styles from './AutoResize.module.css'
 
-interface AutoResizeProps {
+interface AutoResizeProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   name: string
-  placeholder?: string
 }
 
-export const AutoResize = ({
-  name,
-  placeholder,
-  ...props
-}: Readonly<AutoResizeProps>) => {
+export const AutoResize = ({ name, ...props }: Readonly<AutoResizeProps>) => {
   const [field] = useField(name)
   const textareaRef = useRef(null)
 
@@ -27,7 +22,6 @@ export const AutoResize = ({
     <textarea
       {...field}
       {...props}
-      placeholder={placeholder}
       ref={textareaRef}
       className={styles.responseTextbox}
     />

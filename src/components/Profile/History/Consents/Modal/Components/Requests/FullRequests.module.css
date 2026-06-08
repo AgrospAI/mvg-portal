@@ -16,7 +16,7 @@
 
 .requestList > .requestItem {
   display: list-item;
-  margin-left: var(--spacer);
+  list-style-type: none;
   text-align: left;
 }
 

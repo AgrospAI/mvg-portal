@@ -216,10 +216,10 @@ export async function getResults(
 
 export async function addExistingParamsToUrl(
   location: Location,
-  excludedParams: string[]
+  excludedParams: string[],
+  urlLocation = '/search?'
 ): Promise<string> {
   const parsed = queryString.parse(location.search)
-  let urlLocation = '/search?'
   if (Object.keys(parsed).length > 0) {
     for (const queryParam in parsed) {
       if (!excludedParams.includes(queryParam)) {

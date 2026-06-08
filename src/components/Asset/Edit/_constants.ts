@@ -24,6 +24,7 @@ export function getInitialValues(
     timeout: secondsToString(service?.timeout),
     author: metadata?.author,
     tags: metadata?.tags,
+    ontologyTerms: metadata?.additionalInformation?.['dcat:theme'],
     usesConsumerParameters: metadata?.algorithm?.consumerParameters?.length > 0,
     consumerParameters: parseConsumerParameters(
       metadata?.algorithm?.consumerParameters
