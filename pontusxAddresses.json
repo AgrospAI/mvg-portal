@@ -4603,5 +4603,17 @@
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/Viorcam.vp.json"
     ]
+  },
+  "0x4A072d11E13854994AcD183DeC69686974c31D72": {
+    "name": "Hispatec Erpagro SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Hispatec.vp.json"
+    ]
+  },
+  "0xA561a4c93b62a088cAfb9e622408ac7190e61CA3": {
+    "name": "Centre de Ciència i Tecnologia Forestal de Catalunya",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/CTFC.vp.json"
+    ]
   }
 }

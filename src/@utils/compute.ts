@@ -1,61 +1,40 @@
 import {
   Asset,
-  ServiceComputeOptions,
-  PublisherTrustedAlgorithm,
-  getHash,
-  LoggerInstance,
   ComputeAlgorithm,
-  DDO,
-  Service,
-  ProviderInstance,
   ComputeEnvironment,
   ComputeJob,
-  getErrorMessage
+  DDO,
+  getErrorMessage,
+  getHash,
+  LoggerInstance,
+  ProviderInstance,
+  PublisherTrustedAlgorithm,
+  Service,
+  ServiceComputeOptions
 } from '@oceanprotocol/lib'
-import { CancelToken } from 'axios'
-import { gql } from 'urql'
-import {
-  queryMetadata,
-  getFilterTerm,
-  generateBaseQuery,
-  getAssetsFromDids
-} from './aquarius'
-import { fetchDataForMultipleChains } from './subgraph'
-import { getServiceById, getServiceByName } from './ddo'
-import { SortTermOptions } from '../@types/aquarius/SearchQuery'
 import { AssetSelectionAsset } from '@shared/FormInput/InputElement/AssetSelection'
-import { transformAssetToAssetSelection } from './assetConvertor'
-import { ComputeEditForm } from '../components/Asset/Edit/_types'
-import { getFileDidInfo } from './provider'
+import { CancelToken } from 'axios'
 import { toast } from 'react-toastify'
+import { gql } from 'urql'
+import { SortTermOptions } from '../@types/aquarius/SearchQuery'
+import { ComputeEditForm } from '../components/Asset/Edit/_types'
+import {
+  generateBaseQuery,
+  getAssetsFromDids,
+  getFilterTerm,
+  queryMetadata
+} from './aquarius'
+import { transformAssetToAssetSelection } from './assetConvertor'
+import { getServiceById, getServiceByName } from './ddo'
+import { getFileDidInfo } from './provider'
+import { fetchDataForMultipleChains } from './subgraph'
 
-const getComputeOrders = gql`
-  query ComputeOrders($user: String!) {
+const getComputeOrdersByDatatokenList = gql`
+  query ComputeOrdersByDatatokenList($user: String!, $datatokens: [String!]!) {
     orders(
       orderBy: createdTimestamp
       orderDirection: desc
-      where: { payer: $user }
-    ) {
-      id
-      serviceIndex
-      datatoken {
-        address
-      }
-      tx
-      createdTimestamp
-    }
-  }
-`
-
-const getComputeOrdersByDatatokenAddress = gql`
-  query ComputeOrdersByDatatokenAddress(
-    $user: String!
-    $datatokenAddress: String!
-  ) {
-    orders(
-      orderBy: createdTimestamp
-      orderDirection: desc
-      where: { payer: $user, datatoken: $datatokenAddress }
+      where: { payer: $user, datatoken_in: $datatokens }
     ) {
       id
       serviceIndex
@@ -71,19 +50,23 @@ const getComputeOrdersByDatatokenAddress = gql`
 async function getAssetMetadata(
   queryDtList: string[],
   cancelToken: CancelToken,
-  chainIds: number[]
+  chainIds: number[],
+  type: 'dataset' | 'algorithm'
 ): Promise<Asset[]> {
+  const filters = [getFilterTerm('metadata.type', type)]
+
+  if (type === 'algorithm')
+    filters.push(getFilterTerm('services.datatokenAddress', queryDtList))
+
   const baseQueryparams = {
     chainIds,
-    filters: [
-      getFilterTerm('services.datatokenAddress', queryDtList),
-      getFilterTerm('services.type', 'compute'),
-      getFilterTerm('metadata.type', 'dataset')
-    ],
+    filters,
     ignorePurgatory: true
   } as BaseQueryParams
+
   const query = generateBaseQuery(baseQueryparams)
   const result = await queryMetadata(query, cancelToken)
+
   return result?.results
 }
 
@@ -241,52 +224,49 @@ export async function getAlgorithmAssetSelectionList(
 async function getJobs(
   providerUrls: string[],
   accountId: string,
-  assets: Asset[]
+  datasets: Asset[]
 ): Promise<ComputeJobMetaData[]> {
   const uniqueProviders = [...new Set(providerUrls)]
   const providersComputeJobsExtended: ComputeJobExtended[] = []
   const computeJobs: ComputeJobMetaData[] = []
 
   try {
-    for (let i = 0; i < uniqueProviders.length; i++) {
-      const providerComputeJobs = (await ProviderInstance.computeStatus(
-        uniqueProviders[i],
-        accountId
-      )) as ComputeJob[]
+    const results = (await Promise.all(
+      uniqueProviders.map((provider) =>
+        ProviderInstance.computeStatus(provider, accountId)
+      )
+    )) as ComputeJob[][]
 
+    console.log('Results', results)
+
+    results.forEach((providerComputeJobs, idx) => {
       providerComputeJobs.forEach((job) =>
         providersComputeJobsExtended.push({
           ...job,
-          providerUrl: uniqueProviders[i]
+          providerUrl: uniqueProviders[idx]
         })
       )
-    }
+    })
 
-    if (providersComputeJobsExtended) {
-      providersComputeJobsExtended.sort((a, b) => {
-        if (a.dateCreated > b.dateCreated) {
-          return -1
-        }
-        if (a.dateCreated < b.dateCreated) {
-          return 1
-        }
-        return 0
-      })
+    console.log('Results', providersComputeJobsExtended)
 
-      providersComputeJobsExtended.forEach((job) => {
-        const did = job.inputDID[0]
-        const asset = assets.filter((x) => x.id === did)[0]
+    providersComputeJobsExtended
+      .sort((a, b) => Number(b.dateCreated) - Number(a.dateCreated))
+      .forEach((job) => {
+        const did = job.inputDID[0]?.toLowerCase()
+
+        const asset = datasets?.find((x) => x.id.toLowerCase() === did)
+
         if (asset) {
           const compJob: ComputeJobMetaData = {
             ...job,
             assetName: asset.metadata.name,
-            assetDtSymbol: asset.datatokens[0].symbol,
+            assetDtSymbol: asset?.datatokens[0].symbol,
             networkId: asset.chainId
           }
           computeJobs.push(compJob)
         }
       })
-    }
   } catch (err) {
     const message = getErrorMessage(err.message)
     LoggerInstance.error('[Compute to Data] Error:', message)
@@ -313,6 +293,24 @@ export function filterForUniqueJobs(
   })
 }
 
+async function getAlgorithmDatatokenAddresses(
+  chainIds: number[],
+  cancelToken: CancelToken
+): Promise<string[]> {
+  const baseQueryparams = {
+    chainIds,
+    filters: [getFilterTerm('metadata.type', 'algorithm')],
+    ignorePurgatory: true
+  } as BaseQueryParams
+  const query = generateBaseQuery(baseQueryparams)
+  const result = await queryMetadata(query, cancelToken)
+  return (
+    result?.results?.flatMap(
+      (asset) => asset.datatokens?.map((dt) => dt.address.toLowerCase()) || []
+    ) ?? []
+  )
+}
+
 export async function getComputeJobs(
   chainIds: number[],
   accountId: string,
@@ -320,22 +318,25 @@ export async function getComputeJobs(
   cancelToken?: CancelToken
 ): Promise<ComputeResults> {
   if (!accountId) return
+
   const assetDTAddress = asset?.datatokens[0]?.address
   const computeResult: ComputeResults = {
     computeJobs: [],
     isLoaded: false
   }
+
   const variables = assetDTAddress
     ? {
         user: accountId.toLowerCase(),
-        datatokenAddress: assetDTAddress.toLowerCase()
+        datatokens: [assetDTAddress.toLowerCase()]
       }
     : {
-        user: accountId.toLowerCase()
+        user: accountId.toLowerCase(),
+        datatokens: await getAlgorithmDatatokenAddresses(chainIds, cancelToken)
       }
 
   const results = await fetchDataForMultipleChains(
-    assetDTAddress ? getComputeOrdersByDatatokenAddress : getComputeOrders,
+    getComputeOrdersByDatatokenList,
     variables,
     assetDTAddress ? [asset?.chainId] : chainIds
   )
@@ -355,24 +356,36 @@ export async function getComputeJobs(
     (a, b) => b.createdTimestamp - a.createdTimestamp
   )
 
-  const datatokenAddressList = tokenOrders.map(
-    (tokenOrder: TokenOrder) => tokenOrder.datatoken.address
-  )
-  if (!datatokenAddressList) return
+  console.log('tokenOrders', tokenOrders)
 
-  const assets = await getAssetMetadata(
-    datatokenAddressList,
+  const dataDtAddresses = []
+
+  tokenOrders.forEach((order) => {
+    const splitId = order.id.split('-')
+    dataDtAddresses.push(splitId[0])
+  })
+
+  if (!dataDtAddresses) return
+
+  // Now that we have the different algorithm dt -> Get the assets from ES filtering by the active tags.
+  const datasets = await getAssetMetadata(
+    dataDtAddresses,
     cancelToken,
-    chainIds
+    chainIds,
+    'dataset'
   )
+
+  console.log('Datasets', datasets)
 
   const providerUrls: string[] = []
-  assets.forEach((asset: Asset) =>
+  datasets.forEach((asset: Asset) =>
     providerUrls.push(asset.services[0].serviceEndpoint)
   )
 
-  const allProviderJobs = await getJobs(providerUrls, accountId, assets)
-  computeResult.computeJobs = filterForUniqueJobs(allProviderJobs, assets)
+  const allProviderJobs = await getJobs(providerUrls, accountId, datasets)
+
+  // computeResult.computeJobs = allProviderJobs
+  computeResult.computeJobs = filterForUniqueJobs(allProviderJobs, datasets)
 
   computeResult.isLoaded = true
 

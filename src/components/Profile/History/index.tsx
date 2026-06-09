@@ -121,6 +121,8 @@ export default function HistoryPage({ accountIdentifier }: Props) {
           newCancelToken()
         )
 
+        console.log('Found', computeJobs)
+
         setJobs(computeJobs.computeJobs)
         setIsLoadingJobs(!computeJobs.isLoaded)
       } catch (error) {
