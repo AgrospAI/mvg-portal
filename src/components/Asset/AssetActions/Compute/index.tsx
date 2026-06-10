@@ -68,7 +68,7 @@ import ComputeHistory from './History'
 import styles from './index.module.css'
 import WhitelistIndicator from './WhitelistIndicator'
 
-const refreshInterval = 10000 // 10 sec.
+const refreshInterval = 30000 // 10 sec.
 
 export default function Compute({
   accountId,
