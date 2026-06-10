@@ -14,11 +14,14 @@
 }
 
 .asset + .asset {
-  margin-left: var(--spacer);
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   position: relative;
   overflow: visible;
+}
+
+.assetAlgo {
+  margin-left: var(--spacer);
 }
 
 .asset + .asset:before {

@@ -13,14 +13,16 @@ import { useMarketMetadata } from '@context/MarketMetadata'
 function Asset({
   title,
   symbol,
-  did
+  did,
+  className
 }: {
   title: string
   symbol: string
   did: string
+  className?: string
 }) {
   return (
-    <div className={styles.asset}>
+    <div className={`${styles.asset}${className ? ` ${className}` : ''}`}>
       <h3 className={styles.assetTitle}>
         {title}{' '}
         <a
@@ -46,25 +48,50 @@ function DetailsAssets({ job }: { job: ComputeJobMetaData }) {
 
   const [algoName, setAlgoName] = useState<string>()
   const [algoDtSymbol, setAlgoDtSymbol] = useState<string>()
+  const [inputAssets, setInputAssets] = useState<
+    { did: string; name: string; symbol: string }[]
+  >([])
 
   useEffect(() => {
     async function getAlgoMetadata() {
       const ddo = await getAsset(job.algoDID, newCancelToken())
       if (!ddo) return
       setAlgoDtSymbol(ddo.datatokens[0].symbol)
-      setAlgoName(ddo?.metadata.name)
+      setAlgoName(ddo.metadata.name)
     }
+
+    async function getInputAssetsMetadata() {
+      const assets = await Promise.all(
+        job.inputDID.map(async (did) => {
+          const ddo = await getAsset(did, newCancelToken())
+          return ddo
+            ? { did, name: ddo.metadata.name, symbol: ddo.datatokens[0].symbol }
+            : { did, name: did, symbol: '' }
+        })
+      )
+      setInputAssets(assets)
+    }
+
     getAlgoMetadata()
-  }, [appConfig.metadataCacheUri, job.algoDID, newCancelToken])
+    getInputAssetsMetadata()
+  }, [appConfig.metadataCacheUri, job.algoDID, job.inputDID, newCancelToken])
 
   return (
     <>
+      {inputAssets.map((asset) => (
+        <Asset
+          key={asset.did}
+          title={asset.name}
+          symbol={asset.symbol}
+          did={asset.did}
+        />
+      ))}
       <Asset
-        title={job.assetName}
-        symbol={job.assetDtSymbol}
-        did={job.inputDID[0]}
+        title={algoName}
+        symbol={algoDtSymbol}
+        did={job.algoDID}
+        className={styles.assetAlgo}
       />
-      <Asset title={algoName} symbol={algoDtSymbol} did={job.algoDID} />
     </>
   )
 }
