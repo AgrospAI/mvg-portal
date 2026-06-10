@@ -20,7 +20,7 @@ interface HistoryTab {
   content: JSX.Element
 }
 
-const refreshInterval = 10000 // 10 sec.
+const refreshInterval = 30000 // 10 sec.
 
 function getTabs(
   accountId: string,
