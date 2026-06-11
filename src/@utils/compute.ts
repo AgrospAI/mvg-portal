@@ -372,14 +372,13 @@ export const getUserComputeJobs = async (
     )
   ).flat()
 
-  log(tokenOrders)
+  log('tokens', tokenOrders)
 
-  const computeResult: ComputeResults = {
-    computeJobs: [],
-    isLoaded: tokenOrders.length === 0
-  }
-
-  if (tokenOrders.length === 0) return computeResult
+  if (tokenOrders.length === 0)
+    return {
+      computeJobs: [],
+      isLoaded: true
+    } as ComputeResults
 
   // 1. fetch algorithms to get provider URLs
   const algorithms = await getAssetMetadata(
@@ -393,13 +392,25 @@ export const getUserComputeJobs = async (
   const uniqueProviders = [...new Set(getProviders(algorithms))]
   const orderTxs = new Set(tokenOrders.map((order) => order.tx.toLowerCase()))
 
-  const results = (await Promise.all(
+  const settled = await Promise.allSettled(
     uniqueProviders.map((provider) =>
       ProviderInstance.computeStatus(provider, accountId)
     )
-  )) as ComputeJob[][]
+  )
+
+  const results = settled.map((result, idx) => {
+    if (result.status === 'rejected') {
+      LoggerInstance.warn(
+        `[Compute to Data] Failed to fetch jobs from ${uniqueProviders[idx]}:`,
+        result.reason?.message
+      )
+      return []
+    }
+    return result.value
+  }) as ComputeJob[][]
 
   const rawJobs = results
+    .filter((job) => job !== null)
     .flatMap((providerJobs, idx) =>
       providerJobs.map((job) => ({ ...job, providerUrl: uniqueProviders[idx] }))
     )
@@ -435,7 +446,6 @@ export const getUserComputeJobs = async (
   log('jobs', allProviderJobs)
 
   return {
-    ...computeResult,
     computeJobs: filterForUniqueJobs(allProviderJobs, datasets),
     isLoaded: true
   }
@@ -462,12 +472,11 @@ export const getAssetComputeJobs = async (
     )
   )
 
-  const computeResult: ComputeResults = {
-    computeJobs: [],
-    isLoaded: tokenOrders.length === 0
-  }
-
-  if (tokenOrders.length === 0) return computeResult
+  if (tokenOrders.length === 0)
+    return {
+      computeJobs: [],
+      isLoaded: true
+    } as ComputeResults
 
   const providerUrls = asset.services.map((s) => s.serviceEndpoint)
   const rawJobs = await getJobs(accountId, providerUrls, tokenOrders, asset)
@@ -505,10 +514,9 @@ export const getAssetComputeJobs = async (
   log('allProviderJobs', allProviderJobs)
 
   return {
-    ...computeResult,
     computeJobs: filterForUniqueJobs(allProviderJobs, datasets),
     isLoaded: true
-  }
+  } as ComputeResults
 }
 
 export const getComputeJobs = async (
