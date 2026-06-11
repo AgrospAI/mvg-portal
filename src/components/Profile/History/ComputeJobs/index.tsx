@@ -16,10 +16,8 @@ export function Status({ children }: { children: string }): ReactElement {
 
 const columns: TableOceanColumn<ComputeJobMetaData>[] = [
   {
-    name: 'Dataset',
-    selector: (row) => (
-      <AssetListTitle did={row.inputDID[0]} title={row.assetName} />
-    )
+    name: 'Algorithm',
+    selector: (row) => <AssetListTitle did={row.algoDID} />
   },
   {
     name: 'Network',
