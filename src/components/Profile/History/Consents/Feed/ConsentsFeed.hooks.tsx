@@ -3,7 +3,6 @@ import Time from '@components/@shared/atoms/Time'
 import MetadataRequestAssetListTitle from '@components/@shared/MetadataRequestAssetListTitle'
 import Publisher from '@components/@shared/Publisher'
 
-import { useMetadataRequests } from '@context/UserMetadataRequests'
 import {
   isFinished,
   isIncoming,
@@ -109,20 +108,16 @@ const getColumns = (
     }
   ]
 
-  // return columns.map((col) => ({ ...col, width: 0 }))
   return columns.map((col) => ({ ...col, width: `${100 / columns.length}%` }))
 }
 
 export const useConsentsFeed = () => {
   const { address } = useAccount()
-  const { requests, refreshRequests } = useMetadataRequests()
 
   const columns = getColumns(address)
 
   return {
     address,
-    columns,
-    requests,
-    refreshRequests
+    columns
   }
 }

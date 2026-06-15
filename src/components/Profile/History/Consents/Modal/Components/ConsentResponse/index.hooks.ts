@@ -1,7 +1,7 @@
 import { metadataRequestVotesOptions } from '@hooks/useMetadataRequests'
 import { useQueryClient, useSuspenseQuery } from '@tanstack/react-query'
 import { getUserVote } from '@utils/consents/utils'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDebounce } from 'use-debounce'
 import { useAccount, useNetwork } from 'wagmi'
 
@@ -58,10 +58,8 @@ export const useMetadataRequestResponse = (requestId: number) => {
     metadataRequestVotesOptions(requestId, chain.id)
   )
   const userVote = getUserVote(votes, address)
-  const cached = useMemo(() => getFormResponse(requestId), [requestId])
-  const [cachedResponse, setCachedResponse] = useState<FormResponse>(
-    mapVoteToFormResponse(userVote, requestId) ??
-      cached ?? { id: requestId, reason: '', permissions: [] }
+  const [cachedResponse, setCachedResponse] = useState(
+    mapVoteToFormResponse(userVote, requestId) ?? {}
   )
   const [debouncedResponse] = useDebounce(cachedResponse, 1000)
 
@@ -73,14 +71,21 @@ export const useMetadataRequestResponse = (requestId: number) => {
     console.log('Updated response', debouncedResponse)
   }, [debouncedResponse])
 
+  useEffect(() => {
+    if (userVote) {
+      setCachedResponse(mapVoteToFormResponse(userVote, requestId))
+    }
+  }, [userVote, requestId])
+
   return {
     cachedResponse,
     setCachedResponse,
     userVote,
     votes,
-    refreshVotes: () =>
-      queryClient.invalidateQueries({
+    refreshVotes: async () => {
+      await queryClient.refetchQueries({
         queryKey: metadataRequestVotesOptions(requestId, chain.id).queryKey
       })
+    }
   }
 }

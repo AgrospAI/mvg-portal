@@ -5,7 +5,7 @@ import Input from '@components/@shared/FormInput'
 import { Sort, useMetadataRequestFilter } from '@context/MetadataRequestFilter'
 import { useRouter } from 'next/router'
 import queryString from 'query-string'
-import { startTransition, useCallback, useEffect } from 'react'
+import { startTransition, useCallback, useEffect, useRef } from 'react'
 import styles from './index.module.css'
 
 const sortItems = [
@@ -23,12 +23,10 @@ export const MetadataRequestSort = ({ expanded }: { expanded?: boolean }) => {
   const { sort, setSort } = useMetadataRequestFilter()
 
   const router = useRouter()
+  const parsedUrl = router.query
+  const sortKeys = useRef(Object.keys(sort) as (keyof Sort)[])
 
-  const parsedUrl = queryString.parse(location.search, {
-    arrayFormat: 'separator'
-  })
-
-  const getInitialSort = useCallback(
+  const getSortFromUrl = useCallback(
     (
       parsedUrlParams: queryString.ParsedQuery<string>,
       filterIds: (keyof Sort)[]
@@ -65,6 +63,24 @@ export const MetadataRequestSort = ({ expanded }: { expanded?: boolean }) => {
     [router]
   )
 
+  useEffect(() => {
+    const urlFilters = getSortFromUrl(parsedUrl, sortKeys.current)
+    if (!urlFilters) return
+
+    const next = { ...sort }
+    let changed = false
+
+    for (const key of sortKeys.current) {
+      const urlVal = urlFilters[key]
+      if (urlVal !== undefined && urlVal !== sort[key]) {
+        next[key] = urlVal
+        changed = true
+      }
+    }
+
+    if (changed) setSort(next)
+  }, [getSortFromUrl, parsedUrl, setSort, sort])
+
   const handleSelectedSort = useCallback(
     (value: string, sortId: keyof Sort) => {
       startTransition(() => {
@@ -77,16 +93,8 @@ export const MetadataRequestSort = ({ expanded }: { expanded?: boolean }) => {
         applySort(value, sortId)
       })
     },
-    [applySort, setSort, sort]
+    [applySort, setSort]
   )
-
-  useEffect(() => {
-    const initialFilters = getInitialSort(
-      parsedUrl,
-      Object.keys(sort) as (keyof Sort)[]
-    )
-    setSort(initialFilters)
-  }, [])
 
   return (
     <>

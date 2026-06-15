@@ -16,7 +16,7 @@ export default function AccountHeader({
     <div className={styles.grid}>
       <div>
         <Account accountId={accountId} />
-        <Stats accountId={accountId} />
+        <Stats />
       </div>
       {autoWalletAddress && autoWalletAddress !== accountId && (
         <div className={styles.automation}>

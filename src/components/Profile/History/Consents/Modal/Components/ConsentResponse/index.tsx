@@ -41,8 +41,8 @@ function InteractiveResponseForm({
 }: Readonly<{
   chainId: number
   request: MetadataRequest
-  dataset: Asset
-  algorithm: Asset
+  dataset?: Asset
+  algorithm?: Asset
 }>) {
   const { asset } = useAsset()
   const { chain } = useNetwork()
@@ -85,11 +85,14 @@ function InteractiveResponseForm({
           requestId: request.id,
           response
         })
-          .then(() => {
-            closeModal()
+          .then(async () => {
             setSubmitting(false)
-            refreshVotes()
-            refreshRequests()
+
+            await refreshVotes()
+            await refreshRequests()
+
+            closeModal()
+
             toast.success('MetadataRequest responded successfully')
           })
           .catch((err) => {
@@ -127,24 +130,28 @@ function InteractiveResponseForm({
               >
                 Permissions:
               </InteractiveRequests>
-              {hasAlreadyVoted && (
-                <Alert
-                  text="You have already voted this request"
-                  state="info"
-                />
-              )}
-              {isExpired && (
-                <Alert
-                  text="You can't vote in an expired request"
-                  state="info"
-                />
-              )}
-              {}
+              <span className={styles.alerts}>
+                {hasAlreadyVoted && (
+                  <Alert
+                    text="You have already voted this request"
+                    state="info"
+                  />
+                )}
+                {isExpired && (
+                  <Alert
+                    text="You can't vote in an expired request"
+                    state="info"
+                  />
+                )}
+              </span>
               <div className={styles.actions}>
                 <SwitchNetwork
                   chainId={chainId}
                   targetNetwork={asset?.chainId}
                 />
+
+                {isSubmitting && <Loader />}
+
                 <Actions
                   acceptText="Submit"
                   rejectText="Reject All"
@@ -172,8 +179,8 @@ const ResponsePermissions = ({
   children
 }: Readonly<{
   requestId: number
-  dataset: Asset
-  algorithm: Asset
+  dataset?: Asset
+  algorithm?: Asset
   children?: ReactNode
 }>) => (
   <div className={styles.requestInfo}>
@@ -195,3 +202,8 @@ ConsentResponse.InteractiveResponseForm = InteractiveResponseForm
 ConsentResponse.ResponsePermissions = ResponsePermissions
 
 export default ConsentResponse
+function permissionsToBitmap(
+  permissions: { permitted: boolean; requestType: number }[]
+): any | number {
+  throw new Error('Function not implemented.')
+}

@@ -7,10 +7,11 @@ import { getAsset } from '@utils/aquarius'
 import { cancelToken } from '@utils/axios'
 import { fetchData, getQueryContext } from '@utils/subgraph'
 
-export const getAssetQueryOptions = (did: string) =>
+export const getAssetQueryOptions = (did?: string) =>
   queryOptions({
     queryKey: ['asset', did],
-    queryFn: async ({ signal }) => getAsset(did, cancelToken(signal))
+    queryFn: async ({ signal }) => getAsset(did, cancelToken(signal)),
+    enabled: !!did
   })
 
 const filterUniqueTypes = (

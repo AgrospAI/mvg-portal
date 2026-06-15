@@ -5,12 +5,12 @@ import {
 import Accordion from '@components/@shared/Accordion'
 import Button from '@components/@shared/atoms/Button'
 import Input from '@components/@shared/FormInput'
-import styles from './index.module.css'
 import { useMetadataRequestFilter } from '@context/MetadataRequestFilter'
+import { useMetadataRequests } from '@context/UserMetadataRequests'
 import classNames from 'classnames'
 import { useRouter } from 'next/router'
 import { useTransition } from 'react'
-import { useConsentsFeed } from '../ConsentsFeed.hooks'
+import styles from './index.module.css'
 
 interface FilterStructure {
   id: string
@@ -58,7 +58,8 @@ const cx = classNames.bind(styles)
 export const MetadataRequestFilters = ({
   className
 }: Readonly<{ className?: string }>) => {
-  const { refreshRequests } = useConsentsFeed()
+  const { refreshRequests } = useMetadataRequests()
+
   const {
     filters,
     setFilters,

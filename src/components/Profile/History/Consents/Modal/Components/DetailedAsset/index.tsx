@@ -1,6 +1,7 @@
 import Publisher from '@components/@shared/Publisher'
 import IconAlgorithm from '@images/algorithm.svg'
 import IconDataset from '@images/dataset.svg'
+import IconError from '@images/cross.svg'
 import { Asset } from '@oceanprotocol/lib'
 import { PropsWithChildren, ReactNode } from 'react'
 import AssetLink from '../AssetLink'
@@ -11,32 +12,45 @@ function DetailedAsset({ children }: PropsWithChildren) {
   return <div className={styles.content}>{children}</div>
 }
 
-function AssetInfo({
+const AssetInfo = ({
   children,
   asset
 }: {
   children?: ReactNode
-  asset: Asset
-}) {
-  return (
-    <div className={styles.assetInfoContainer}>
+  asset?: Asset
+}) => (
+  <div className={styles.assetInfoContainer}>
+    <>
       <Icon>
-        {asset?.metadata?.algorithm ? (
-          <IconAlgorithm />
+        {asset ? (
+          <>
+            {asset?.metadata?.algorithm ? (
+              <IconAlgorithm />
+            ) : (
+              <IconDataset styles={{ fill: 'red' }} />
+            )}
+          </>
         ) : (
-          <IconDataset styles={{ fill: 'red' }} />
+          <IconError className={styles.error} />
         )}
       </Icon>
       <div>
-        {children && <span className={styles.title}>{children}</span>}
-        <AssetLink asset={asset} className={styles.assetName} />
-        <span className={styles.publisher}>
-          by <Publisher account={asset.nft.owner} showName />
-        </span>
+        <>{children && <span className={styles.title}>{children}</span>}</>
+
+        {asset ? (
+          <>
+            <AssetLink asset={asset} className={styles.assetName} />
+            <span className={styles.publisher}>
+              by <Publisher account={asset?.nft.owner} showName />
+            </span>
+          </>
+        ) : (
+          <span className={styles.error}>Asset Unavailable</span>
+        )}
       </div>
-    </div>
-  )
-}
+    </>
+  </div>
+)
 
 DetailedAsset.AssetInfo = AssetInfo
 
