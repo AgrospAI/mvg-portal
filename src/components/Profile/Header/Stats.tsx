@@ -4,11 +4,7 @@ import { ReactElement } from 'react'
 import NumberUnit from './NumberUnit'
 import styles from './Stats.module.css'
 
-interface Props {
-  accountId: string
-}
-
-export default function Stats({ accountId }: Readonly<Props>): ReactElement {
+export default function Stats(): ReactElement {
   const { assetsTotal, sales } = useProfile()
   const { totalCount, pendingCount } = useMetadataRequests()
 

@@ -9,32 +9,26 @@ const Content = ({
 }: Readonly<{
   request: ExtendedMetadataRequest
   isRequested?: boolean
-}>) => {
-  if (!request.dataset || !request.algorithm) {
-    return <>Can not inspect, missing asset</>
-  }
-
-  return (
-    <>
-      <Modal.Trigger name={String(request.id)}>
-        <button
-          className={styles.button}
-          title="Inspect"
-          aria-label="Inspect Consent"
-          type="button"
-        >
-          Inspect <Info />
-        </button>
-      </Modal.Trigger>
-      <Modal.Content name={String(request.id)}>
-        <InspectMetadataRequestModal
-          request={request}
-          isRequested={isRequested}
-        />
-      </Modal.Content>
-    </>
-  )
-}
+}>) => (
+  <>
+    <Modal.Trigger name={String(request.id)}>
+      <button
+        className={styles.button}
+        title="Inspect"
+        aria-label="Inspect Consent"
+        type="button"
+      >
+        Inspect <Info />
+      </button>
+    </Modal.Trigger>
+    <Modal.Content name={String(request.id)}>
+      <InspectMetadataRequestModal
+        request={request}
+        isRequested={isRequested}
+      />
+    </Modal.Content>
+  </>
+)
 
 export const InspectModal = ({
   isRequested,

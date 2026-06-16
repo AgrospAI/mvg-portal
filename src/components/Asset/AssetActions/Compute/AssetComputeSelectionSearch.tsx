@@ -89,7 +89,9 @@ export default function AssetComputeSelectionSearch({
             onChange={handleSelectAll}
             checked={isAllSelected}
           />
-          <label htmlFor="selectAll">Select all</label>
+          <label htmlFor="selectAll">
+            Select all ({datasetsForCompute.length || 0})
+          </label>
         </div>
       )}
       <AssetSelection

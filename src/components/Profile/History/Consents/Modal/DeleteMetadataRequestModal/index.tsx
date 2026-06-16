@@ -29,9 +29,9 @@ export const DeleteMetadataRequestModal = ({
 
   const { deleteMetadataRequest } = useDeleteMetadataRequest()
 
-  const successCallback = useCallback(() => {
+  const successCallback = useCallback(async () => {
     closeModal()
-    refreshRequests()
+    await refreshRequests()
     toast.success('Succesfully deleted request petition')
   }, [closeModal, refreshRequests])
 

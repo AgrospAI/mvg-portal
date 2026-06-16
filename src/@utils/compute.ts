@@ -48,7 +48,7 @@ const getComputeOrdersByDatatokenList = gql`
 `
 
 const log = (msg: any, ...params: any[]) => {
-  console.log('[compute]', msg, params)
+  LoggerInstance.log('[compute]', msg, params)
 }
 
 async function getAssetMetadata(
@@ -231,79 +231,6 @@ const toOrders = (data: any[]): TokenOrder[] =>
     .flatMap((result) => result.orders as TokenOrder[])
     .sort((a, b) => b.createdTimestamp - a.createdTimestamp)
 
-const getProviders = (assets: Asset[]): string[] =>
-  assets.map((asset: Asset) => asset.services[0].serviceEndpoint)
-
-const getDtAddresses = (tokens: TokenOrder[]) =>
-  tokens.map((order) => order.datatoken.address)
-
-async function getJobs(
-  accountId: string,
-  providerUrls: string[],
-  tokenOrders: TokenOrder[],
-  asset?: Asset
-): Promise<ComputeJobExtended[]> {
-  const uniqueProviders = [...new Set(providerUrls)]
-  const orderTxs = new Set(tokenOrders.map((order) => order.tx.toLowerCase()))
-
-  try {
-    const results = (await Promise.all(
-      uniqueProviders.map((provider) =>
-        ProviderInstance.computeStatus(provider, accountId)
-      )
-    )) as ComputeJob[][]
-
-    log('orderTxs', [...orderTxs].slice(0, 3))
-    log(
-      'sample agreementIds',
-      results
-        .flat()
-        .slice(0, 3)
-        .map((j) => j.agreementId)
-    )
-
-    log('tokenOrders.length', tokenOrders.length)
-    log('first orderTx', tokenOrders[0]?.tx)
-    log('orderTxs size', orderTxs.size)
-
-    const allResults = results.flat()
-    log('total jobs from provider', allResults.length)
-    log(
-      'sample agreementIds',
-      JSON.stringify(
-        allResults.slice(0, 3).map((j) => j.agreementId?.toLowerCase())
-      )
-    )
-    log('sample orderTxs', JSON.stringify([...orderTxs].slice(0, 3)))
-
-    return (
-      results
-        .flatMap((providerComputeJobs, idx) =>
-          providerComputeJobs.map((job) => ({
-            ...job,
-            providerUrl: uniqueProviders[idx]
-          }))
-        )
-        // .filter((job) => orderTxs.has(job.agreementId.toLowerCase()))
-        .sort((a, b) => Number(b.dateCreated) - Number(a.dateCreated))
-        .filter((job) => {
-          if (!asset) return true
-          return asset.metadata.type === 'algorithm'
-            ? job.algoDID?.toLowerCase() === asset.id.toLowerCase()
-            : job.inputDID.some(
-                (did) => did.toLowerCase() === asset.id.toLowerCase()
-              )
-        })
-    )
-  } catch (err) {
-    const message = getErrorMessage(err.message)
-    LoggerInstance.error('[Compute to Data] Error:', message)
-    toast.error(message)
-  }
-
-  return []
-}
-
 /**
  * in case multiple providers return the same computeJob, filter these duplicates
  * e.g. same instance listens on multiple domains
@@ -357,57 +284,53 @@ const gqlVariables = async ({
     : await getAlgorithmDatatokenAddresses(chainIds, cancelToken)
 })
 
-export const getUserComputeJobs = async (
-  chainIds: number[],
+async function fetchRawJobs(
   accountId: string,
-  cancelToken?: CancelToken
-): Promise<ComputeResults> => {
-  if (!chainIds || !accountId) return
-
-  const tokenOrders = toOrders(
-    await fetchDataForMultipleChains(
-      getComputeOrdersByDatatokenList,
-      await gqlVariables({ chainIds, accountId, cancelToken }),
-      chainIds
-    )
-  ).flat()
-
-  log(tokenOrders)
-
-  const computeResult: ComputeResults = {
-    computeJobs: [],
-    isLoaded: tokenOrders.length === 0
-  }
-
-  if (tokenOrders.length === 0) return computeResult
-
-  // 1. fetch algorithms to get provider URLs
-  const algorithms = await getAssetMetadata(
-    getDtAddresses(tokenOrders),
-    cancelToken,
-    chainIds,
-    'algorithm'
-  )
-
-  // 2. fetch raw jobs once using algorithm provider URLs
-  const uniqueProviders = [...new Set(getProviders(algorithms))]
-  const orderTxs = new Set(tokenOrders.map((order) => order.tx.toLowerCase()))
-
-  const results = (await Promise.all(
-    uniqueProviders.map((provider) =>
+  providerUrls: string[],
+  orderTxs?: Set<string>,
+  asset?: Asset
+): Promise<ComputeJobExtended[]> {
+  const settled = await Promise.allSettled(
+    providerUrls.map((provider) =>
       ProviderInstance.computeStatus(provider, accountId)
     )
-  )) as ComputeJob[][]
+  )
 
-  const rawJobs = results
+  const results = settled.map((result, idx) => {
+    if (result.status === 'rejected') {
+      LoggerInstance.warn(
+        `[Compute to Data] Failed to fetch jobs from ${providerUrls[idx]}:`,
+        result.reason?.message
+      )
+      return []
+    }
+    return result.value
+  }) as ComputeJob[][]
+
+  return results
     .flatMap((providerJobs, idx) =>
-      providerJobs.map((job) => ({ ...job, providerUrl: uniqueProviders[idx] }))
+      providerJobs.map((job) => ({ ...job, providerUrl: providerUrls[idx] }))
     )
-    .filter((job) => orderTxs.has(job.agreementId.toLowerCase()))
-    .sort((a, b) => Number(b.dateCreated) - Number(a.dateCreated))
+    .filter((job) => {
+      if (orderTxs && !orderTxs.has(job.agreementId.toLowerCase())) return false
+      if (!asset) return true
 
-  // 3. fetch datasets by inputDID for enrichment
+      return asset.metadata.type === 'algorithm'
+        ? job.algoDID?.toLowerCase() === asset.id.toLowerCase()
+        : job.inputDID.some(
+            (did) => did.toLowerCase() === asset.id.toLowerCase()
+          )
+    })
+    .sort((a, b) => Number(b.dateCreated) - Number(a.dateCreated))
+}
+
+async function enrichJobs(
+  rawJobs: ComputeJobExtended[],
+  chainIds: number[],
+  cancelToken?: CancelToken
+): Promise<ComputeResults> {
   const inputDIDs = [...new Set(rawJobs.flatMap((job) => job.inputDID))]
+
   const datasets = await getAssetMetadata(
     inputDIDs,
     cancelToken,
@@ -416,29 +339,61 @@ export const getUserComputeJobs = async (
     '_id'
   )
 
-  // 4. enrich jobs with dataset info
-  const allProviderJobs = rawJobs.flatMap((job) => {
+  log('datasets', datasets)
+
+  const allProviderJobs: ComputeJobMetaData[] = rawJobs.map((job) => {
     const dataset = datasets.find((x) =>
       job.inputDID.some((did) => did.toLowerCase() === x.id.toLowerCase())
     )
 
-    if (!dataset) return []
+    if (!dataset) {
+      log('DID NOT FIND', job)
+    }
 
     return {
       ...job,
-      assetName: dataset.metadata.name,
-      assetDtSymbol: dataset.datatokens[0].symbol,
-      networkId: dataset.chainId
+      assetName: dataset?.metadata.name ?? job.inputDID[0],
+      assetDtSymbol: dataset?.datatokens[0].symbol ?? '',
+      networkId: dataset?.chainId
     }
   })
 
-  log('jobs', allProviderJobs)
-
   return {
-    ...computeResult,
     computeJobs: filterForUniqueJobs(allProviderJobs, datasets),
     isLoaded: true
   }
+}
+
+const assetsToUniqueProviders = (assets: Asset[]) => [
+  ...new Set(assets.map((asset: Asset) => asset.services[0].serviceEndpoint))
+]
+
+export const getUserComputeJobs = async (
+  tokenOrders: TokenOrder[],
+  chainIds: number[],
+  accountId: string,
+  cancelToken?: CancelToken
+): Promise<ComputeResults> => {
+  if (!chainIds || !accountId) return
+
+  // Fetch all the user data
+  const algorithms = await getAssetMetadata(
+    tokenOrders.map((order) => order.datatoken.address), // dt addresses
+    cancelToken,
+    chainIds,
+    'algorithm'
+  )
+
+  const rawJobs = await fetchRawJobs(
+    accountId,
+    assetsToUniqueProviders(algorithms),
+    new Set(tokenOrders.map((order) => order.tx.toLowerCase()))
+  )
+
+  log('algorithms', algorithms)
+  log('rawJobs', rawJobs)
+
+  return enrichJobs(rawJobs, chainIds, cancelToken)
 }
 
 export const getAssetComputeJobs = async (
@@ -449,66 +404,13 @@ export const getAssetComputeJobs = async (
 ): Promise<ComputeResults> => {
   if (!chainIds || !accountId || !asset) return
 
-  const tokenOrders = toOrders(
-    await fetchDataForMultipleChains(
-      getComputeOrdersByDatatokenList,
-      await gqlVariables({
-        chainIds: [asset.chainId],
-        accountId,
-        asset,
-        cancelToken
-      }),
-      [asset.chainId]
-    )
+  const rawJobs = await fetchRawJobs(
+    accountId,
+    assetsToUniqueProviders([asset]),
+    undefined,
+    asset
   )
-
-  const computeResult: ComputeResults = {
-    computeJobs: [],
-    isLoaded: tokenOrders.length === 0
-  }
-
-  if (tokenOrders.length === 0) return computeResult
-
-  const providerUrls = asset.services.map((s) => s.serviceEndpoint)
-  const rawJobs = await getJobs(accountId, providerUrls, tokenOrders, asset)
-
-  log('providerUrls', providerUrls)
-  log('asset.id', asset.id)
-  log('asset.type', asset.metadata.type)
-  log('tokenOrders', tokenOrders)
-
-  const inputDIDs = [...new Set(rawJobs.flatMap((job) => job.inputDID))]
-  const datasets = await getAssetMetadata(
-    inputDIDs,
-    cancelToken,
-    [asset.chainId],
-    'dataset',
-    '_id'
-  )
-
-  const allProviderJobs: ComputeJobMetaData[] = rawJobs.flatMap((job) => {
-    const dataset = datasets.find((x) =>
-      job.inputDID.some((did) => did.toLowerCase() === x.id.toLowerCase())
-    )
-    if (!dataset) return []
-    return {
-      ...job,
-      assetName: dataset.metadata.name,
-      assetDtSymbol: dataset.datatokens[0].symbol,
-      networkId: dataset.chainId
-    }
-  })
-
-  log('rawJobs', rawJobs)
-  log('inputDIDs', inputDIDs)
-  log('datasets', datasets)
-  log('allProviderJobs', allProviderJobs)
-
-  return {
-    ...computeResult,
-    computeJobs: filterForUniqueJobs(allProviderJobs, datasets),
-    isLoaded: true
-  }
+  return enrichJobs(rawJobs, [asset.chainId], cancelToken)
 }
 
 export const getComputeJobs = async (
@@ -516,10 +418,35 @@ export const getComputeJobs = async (
   accountId: string,
   asset?: AssetExtended,
   cancelToken?: CancelToken
-): Promise<ComputeResults> =>
-  asset
-    ? getAssetComputeJobs(chainIds, accountId, asset, cancelToken)
-    : getUserComputeJobs(chainIds, accountId, cancelToken)
+): Promise<ComputeResults> => {
+  const chains = asset ? [asset.chainId] : chainIds
+
+  // Get past Tokens related to the given asset or user
+  const tokenOrders = toOrders(
+    await fetchDataForMultipleChains(
+      getComputeOrdersByDatatokenList,
+      await gqlVariables({
+        chainIds: chains,
+        accountId,
+        asset,
+        cancelToken
+      }),
+      chains
+    )
+  ).flat()
+
+  if (tokenOrders.length === 0)
+    return {
+      computeJobs: [],
+      isLoaded: true
+    } as ComputeResults
+
+  log('tokens', tokenOrders)
+
+  return asset
+    ? getAssetComputeJobs(chains, accountId, asset, cancelToken)
+    : getUserComputeJobs(tokenOrders, chains, accountId, cancelToken)
+}
 
 export async function createTrustedAlgorithmList(
   selectedAlgorithms: string[], // list of DIDs,

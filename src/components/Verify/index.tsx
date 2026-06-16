@@ -1,19 +1,19 @@
-import { ReactElement, useCallback, useEffect, useState } from 'react'
-import { LoggerInstance } from '@oceanprotocol/lib'
-import styles from './index.module.css'
-import { useRouter } from 'next/router'
+import Alert from '@components/@shared/atoms/Alert'
+import Button from '@components/@shared/atoms/Button'
+import Loader from '@components/@shared/atoms/Loader'
+import InputElement from '@components/@shared/FormInput/InputElement'
+import InputGroup from '@components/@shared/FormInput/InputGroup'
+import ServiceCredentialVisualizer from '@components/@shared/ServiceCredentialVisualizer'
 import {
   getFormattedCodeString,
   getServiceCredential
 } from '@components/Publish/_utils'
-import InputGroup from '@components/@shared/FormInput/InputGroup'
-import InputElement from '@components/@shared/FormInput/InputElement'
-import Button from '@components/@shared/atoms/Button'
-import Loader from '@components/@shared/atoms/Loader'
-import ServiceCredentialVisualizer from '@components/@shared/ServiceCredentialVisualizer'
-import content from '../../../content/pages/verify.json'
 import { useAsset } from '@context/Asset'
-import Alert from '@components/@shared/atoms/Alert'
+import { LoggerInstance } from '@oceanprotocol/lib'
+import { useRouter } from 'next/router'
+import { ReactElement, useCallback, useEffect, useState } from 'react'
+import content from '../../../content/pages/verify.json'
+import styles from './index.module.css'
 
 interface Content {
   title: string
@@ -129,14 +129,10 @@ export default function VerifyPage({
           </Button>
         </InputGroup>
       </form>
-      {!isLoading && !isVerifyingServiceCredential && error ? (
-        <div className={styles.errorContainer}>
-          <Alert title="Asset unavailable" text={error} state="error" />
-        </div>
-      ) : !isLoading &&
-        !isVerifyingServiceCredential &&
-        asset &&
-        !serviceCredential ? (
+      {!isLoading &&
+      !isVerifyingServiceCredential &&
+      asset &&
+      !serviceCredential ? (
         <div className={styles.errorContainer}>
           <Alert
             title="Service Credential unavailable"

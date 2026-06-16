@@ -5,7 +5,7 @@ import { getAssetQueryOptions } from '@hooks/useMetadataRequests'
 import IconCompute from '@images/compute.svg'
 import IconLock from '@images/lock.svg'
 import IconTransaction from '@images/transaction.svg'
-import { useSuspenseQueries } from '@tanstack/react-query'
+import { useQueries } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import ConsentResponse from '../Components/ConsentResponse'
 import DetailedAsset from '../Components/DetailedAsset'
@@ -26,11 +26,15 @@ export const InspectMetadataRequestModal = ({
 
   const [chainId, setChainId] = useState(0)
 
-  const [{ data: dataset }, { data: algorithm }] = useSuspenseQueries({
-    queries: [request.dataset.did, request.algorithm.did].map(
+  const [datasetResponse, algorithmResponse] = useQueries({
+    queries: [request.dataset?.did, request.algorithm?.did].map(
       getAssetQueryOptions
     )
   })
+
+  const dataset = datasetResponse.data
+  const algorithm = algorithmResponse.data
+  const isLoading = datasetResponse.isLoading || algorithmResponse.isLoading
 
   useEffect(() => {
     const updateChainId = async () => {
@@ -48,7 +52,7 @@ export const InspectMetadataRequestModal = ({
         description="Assets involved in this consent, your dataset and the requested algorithm"
       >
         {[dataset, algorithm].map((asset) => (
-          <DetailedAsset key={asset.id}>
+          <DetailedAsset key={asset?.id}>
             <DetailedAsset.AssetInfo asset={asset} />
           </DetailedAsset>
         ))}
@@ -97,7 +101,7 @@ export const InspectMetadataRequestModal = ({
                 />
               </>
             ) : (
-              <AssetProvider did={dataset.id}>
+              <AssetProvider did={dataset?.id}>
                 <ConsentResponse.InteractiveResponseForm
                   chainId={chainId}
                   request={request}

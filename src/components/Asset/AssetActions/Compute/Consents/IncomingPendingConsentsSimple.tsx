@@ -5,6 +5,7 @@ import AssetLink from '@components/Profile/History/Consents/Modal/Components/Ass
 import { useMetadataRequests } from '@context/UserMetadataRequests'
 import { Asset } from '@oceanprotocol/lib'
 import { getUserVote, isFinished, isPending } from '@utils/consents/utils'
+import { useMemo } from 'react'
 import { useAccount } from 'wagmi'
 import styles from './IncomingPendingConsentsSimple.module.css'
 
@@ -16,14 +17,17 @@ export default function IncomingPendingConsentsSimple({
   const { address } = useAccount()
   const { requests } = useMetadataRequests()
 
-  const filtered =
-    requests?.filter(
-      (request) =>
-        isPending(request) &&
-        !isFinished(request) &&
-        request.dataset.did.toLowerCase() === asset.id.toLowerCase() &&
-        !getUserVote(request.votes, address)
-    ) || []
+  const filtered = useMemo(
+    () =>
+      requests?.filter(
+        (request) =>
+          isPending(request) &&
+          !isFinished(request) &&
+          request.dataset.did.toLowerCase() === asset.id.toLowerCase() &&
+          !getUserVote(request.votes, address)
+      ) ?? [],
+    [requests, asset.id, address]
+  )
 
   if (filtered?.length === 0)
     return <div className={styles.noConsents}>No incoming consents</div>
