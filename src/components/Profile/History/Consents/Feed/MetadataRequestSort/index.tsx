@@ -73,7 +73,7 @@ export const MetadataRequestSort = ({ expanded }: { expanded?: boolean }) => {
     for (const key of sortKeys.current) {
       const urlVal = urlFilters[key]
       if (urlVal !== undefined && urlVal !== sort[key]) {
-        next[key] = urlVal
+        ;(next as Record<typeof key, typeof urlVal>)[key] = urlVal
         changed = true
       }
     }
