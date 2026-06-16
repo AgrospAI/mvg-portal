@@ -282,7 +282,7 @@ function UserMetadataRequestsProvider({
       requests: requests ?? [],
       pendingCount: stats?.pendingCount || 0,
       totalCount: stats?.totalCount || 0,
-      refreshRequests: async () =>
+      refreshRequests: async () => {
         await Promise.all([
           queryClient.refetchQueries({
             queryKey: ['metadata-requests']
@@ -291,6 +291,7 @@ function UserMetadataRequestsProvider({
             queryKey: ['metadata-requests-stats']
           })
         ])
+      }
     }),
     [requests, stats, queryClient]
   )
