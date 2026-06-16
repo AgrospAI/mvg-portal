@@ -15,8 +15,8 @@ const SubRequests = ({
   isResponse
 }: Readonly<{
   requestId: number
-  dataset: Asset
-  algorithm: Asset
+  dataset?: Asset
+  algorithm?: Asset
   isResponse?: boolean
 }>) => {
   const { chain } = useNetwork()
@@ -59,8 +59,8 @@ export const FullRequests = ({
 }: Readonly<
   PropsWithChildren<{
     requestId: number
-    dataset: Asset
-    algorithm: Asset
+    dataset?: Asset
+    algorithm?: Asset
     isResponse?: boolean
     children?: ReactNode
   }>

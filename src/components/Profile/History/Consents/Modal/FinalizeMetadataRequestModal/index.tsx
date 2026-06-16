@@ -1,4 +1,5 @@
 import Alert from '@components/@shared/atoms/Alert'
+import Loader from '@components/@shared/atoms/Loader'
 import { useModalContext } from '@components/@shared/Modal'
 import { useMetadataRequests } from '@context/UserMetadataRequests'
 import { getAssetQueryOptions } from '@hooks/useMetadataRequests'
@@ -8,10 +9,10 @@ import {
 } from '@hooks/useUserMetadataRequests'
 import IconCompute from '@images/compute.svg'
 import IconLock from '@images/lock.svg'
-import { LoggerInstance } from '@oceanprotocol/lib'
-import { useSuspenseQueries } from '@tanstack/react-query'
+import { Asset, LoggerInstance } from '@oceanprotocol/lib'
+import { useQueries } from '@tanstack/react-query'
 import { isFinished, isPending } from '@utils/consents/utils'
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import { toast } from 'react-toastify'
 import Actions from '../Components/Actions'
 import ConsentResponse from '../Components/ConsentResponse'
@@ -29,24 +30,36 @@ export const FinalizeMetadataRequestModal = ({
   const { applyMetadataRequest } = useApplyMetadataRequest(request.id)
 
   const { refreshRequests } = useMetadataRequests()
-  const [{ data: dataset }, { data: algorithm }] = useSuspenseQueries({
-    queries: [request.dataset.did, request.algorithm.did].map(
+  const [datasetResult, algorithmResult] = useQueries({
+    queries: [request.dataset?.did, request.algorithm?.did].map(
       getAssetQueryOptions
     )
   })
 
+  const [isFetching, setIsFetching] = useState(false)
+
+  const dataset = datasetResult.data
+  const algorithm = algorithmResult.data
+  const isLoading = datasetResult.isLoading || algorithmResult.isLoading
+
   const callback = useCallback(async () => {
+    if (isFetching) return
+
+    setIsFetching(true)
+
     try {
       await applyMetadataRequest(request)
       toast.success('Successfully applied metadata changes')
     } catch (err) {
       toast.error('Could not apply changes')
       LoggerInstance.error(err)
+      setIsFetching(false)
+      return
     }
 
     try {
       await finalizeMetadataRequest({ requestId: request.id })
-      refreshRequests()
+      await refreshRequests()
       toast.success('Successfully updated request state')
       closeModal()
     } catch (err) {
@@ -54,18 +67,31 @@ export const FinalizeMetadataRequestModal = ({
         "Could not update state, maybe the request hasn't expired yet?"
       )
       LoggerInstance.error(err)
+    } finally {
+      setIsFetching(false)
     }
   }, [
     applyMetadataRequest,
     closeModal,
     finalizeMetadataRequest,
     refreshRequests,
-    request
+    request,
+    isFetching,
+    setIsFetching
   ])
 
-  const isInPendingState = isPending(request)
-  const isAlreadyExpired = isFinished(request)
-  const canRespond = isInPendingState && !isAlreadyExpired
+  const isInPendingState = request ? isPending(request) : false
+  const isAlreadyExpired = request ? isFinished(request) : false
+  const canRespond = isInPendingState && !isAlreadyExpired && !isLoading
+
+  const renderAsset = (asset?: Asset) =>
+    asset ? (
+      <DetailedAsset>
+        <DetailedAsset.AssetInfo asset={asset} />
+      </DetailedAsset>
+    ) : (
+      <div>No asset info available</div>
+    )
 
   return (
     <Sections>
@@ -74,22 +100,18 @@ export const FinalizeMetadataRequestModal = ({
         title="Assets"
         description="Assets involved in this request, the requested dataset and the algorithm"
       >
-        <DetailedAsset>
-          <DetailedAsset.AssetInfo asset={dataset} />
-        </DetailedAsset>
-        <DetailedAsset>
-          <DetailedAsset.AssetInfo asset={algorithm} />
-        </DetailedAsset>
+        {renderAsset(dataset)}
+        {renderAsset(algorithm)}
       </Sections.Section>
       <Sections.Section
         title="Response"
         icon={<IconLock />}
-        description={<ConsentResponse.Status status={request.status} />}
+        description={<ConsentResponse.Status status={request?.status} />}
       >
         <Sections.Column className={styles.customGap}>
           <ConsentResponse>
             <ConsentResponse.ResponsePermissions
-              requestId={request.id}
+              requestId={request?.id}
               dataset={dataset}
               algorithm={algorithm}
             >
@@ -115,12 +137,14 @@ export const FinalizeMetadataRequestModal = ({
         />
       )}
 
+      {isFetching && <Loader />}
+
       <Actions
         acceptText="Apply Changes"
         rejectText="Cancel"
         handleReject={closeModal}
         handleAccept={callback}
-        isLoading={canRespond}
+        isLoading={canRespond || isFetching}
       />
     </Sections>
   )

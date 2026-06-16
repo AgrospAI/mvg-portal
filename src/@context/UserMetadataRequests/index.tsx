@@ -31,7 +31,7 @@ interface UserMetadataRequestsContextValue {
   requests: ExtendedMetadataRequest[]
   pendingCount: number
   totalCount: number
-  refreshRequests: () => void
+  refreshRequests: () => Promise<void>
 }
 
 const UserMetadataRequestsContext = createContext(
@@ -162,20 +162,10 @@ function UserMetadataRequestsProvider({
     [chain?.id, discoverRequestDids]
   )
 
-  const requestWhereClause = useMemo(() => {
+  const stableWhereClause = useMemo(() => {
     if (!address) return null
-
-    const nowInSeconds = Math.floor(Date.now() / 1000)
-    const roundedNow = Math.floor(nowInSeconds / 60) * 60
-
     const userAddr = address.toLowerCase()
-
-    // Base filters only (Status, etc.)
     const where: Record<string, any> = {}
-
-    if (!showExpired) {
-      where.expiresAt_gt = roundedNow
-    }
 
     if (filters.state.length > 0) {
       const statusMap: Record<string, number> = {
@@ -193,9 +183,6 @@ function UserMetadataRequestsProvider({
       where.status_not = 1
     }
 
-    // ONLY apply direction if exactly ONE is selected
-    // If 0 or 2 are selected, we leave 'where' empty of address filters
-    // so the queryFn can handle the merge logic.
     if (filters.direction.length === 1) {
       if (
         filters.direction.includes(MetadataRequestFilterByTypeOptions.Incoming)
@@ -207,7 +194,7 @@ function UserMetadataRequestsProvider({
     }
 
     return where
-  }, [address, filters, showPurgatory, showExpired])
+  }, [address, filters, showPurgatory])
 
   const requestOrderClause = useMemo(() => {
     if (!sort?.sort || !sort?.sortOrder) return {}
@@ -225,11 +212,12 @@ function UserMetadataRequestsProvider({
           'metadata-requests',
           address,
           chain?.id,
-          requestWhereClause,
-          requestOrderClause
+          stableWhereClause,
+          requestOrderClause,
+          showExpired
         ],
         queryFn: async ({ signal }: QueryFunctionContext) => {
-          if (!address || !chain?.id || !requestWhereClause) return null
+          if (!address || !chain?.id || !stableWhereClause) return []
           const userAddr = address.toLowerCase()
           const directions = filters?.direction || []
           const ctrl = cancelToken(signal)
@@ -240,7 +228,7 @@ function UserMetadataRequestsProvider({
               fetchAndExtend(
                 getMetadataRequests,
                 {
-                  where: { ...requestWhereClause, requester: userAddr },
+                  where: { ...stableWhereClause, requester: userAddr },
                   ...requestOrderClause
                 },
                 ctrl
@@ -249,7 +237,7 @@ function UserMetadataRequestsProvider({
                 getMetadataRequests,
                 {
                   where: {
-                    ...requestWhereClause,
+                    ...stableWhereClause,
                     datasetAddress_: { owner: userAddr }
                   },
                   ...requestOrderClause
@@ -262,10 +250,10 @@ function UserMetadataRequestsProvider({
           }
 
           // Scenario 2: Explicit filter (Incoming OR Outgoing)
-          // The requestWhereClause already contains the correct specific filter
+          // The stableWhereClause already contains the correct specific filter
           return fetchAndExtend(
             getMetadataRequests,
-            { where: requestWhereClause, ...requestOrderClause },
+            { where: stableWhereClause, ...requestOrderClause },
             ctrl
           )
         },
@@ -274,7 +262,7 @@ function UserMetadataRequestsProvider({
       {
         queryKey: ['metadata-requests-stats', address, chain?.id],
         queryFn: async () => {
-          if (!address || !chain?.id || !requestWhereClause) return {}
+          if (!address || !chain?.id || !stableWhereClause) return {}
           return fetchData(
             getUserStats,
             {
@@ -289,22 +277,26 @@ function UserMetadataRequestsProvider({
     ]
   })
 
-  return (
-    <UserMetadataRequestsContext.Provider
-      value={{
-        requests,
-        pendingCount: stats?.pendingCount || 0,
-        totalCount: stats?.totalCount || 0,
-        refreshRequests: () => {
-          queryClient.invalidateQueries({
+  const contextValue = useMemo(
+    () => ({
+      requests: requests ?? [],
+      pendingCount: stats?.pendingCount || 0,
+      totalCount: stats?.totalCount || 0,
+      refreshRequests: async () =>
+        await Promise.all([
+          queryClient.refetchQueries({
             queryKey: ['metadata-requests']
-          })
-          queryClient.invalidateQueries({
+          }),
+          queryClient.refetchQueries({
             queryKey: ['metadata-requests-stats']
           })
-        }
-      }}
-    >
+        ])
+    }),
+    [requests, stats, queryClient]
+  )
+
+  return (
+    <UserMetadataRequestsContext.Provider value={contextValue}>
       {children}
     </UserMetadataRequestsContext.Provider>
   )

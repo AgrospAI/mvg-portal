@@ -1,10 +1,10 @@
 import Modal from '@components/@shared/Modal'
+import AssetProvider from '@context/Asset'
+import Key from '@images/key.svg'
 import classNames from 'classnames'
 import { FinalizeMetadataRequestModal } from '../../../Modal/FinalizeMetadataRequestModal/index'
 import { useConsentRowActions } from '../ConsentRowActions.hooks'
 import styles from './Buttons.module.css'
-import Key from '@images/key.svg'
-import AssetProvider from '@context/Asset'
 
 const cx = classNames.bind(styles)
 
@@ -25,13 +25,9 @@ const Content = ({
       </button>
     </Modal.Trigger>
     <Modal.Content name={`${request.id}_finalize`}>
-      {request.dataset ? (
-        <AssetProvider did={request.dataset.did}>
-          <FinalizeMetadataRequestModal request={request} />
-        </AssetProvider>
-      ) : (
-        <>No dataset provided</>
-      )}
+      <AssetProvider did={request.dataset?.did}>
+        <FinalizeMetadataRequestModal request={request} />
+      </AssetProvider>
     </Modal.Content>
   </>
 )

@@ -50,3 +50,13 @@
   align-items: center;
   justify-content: flex-end;
 }
+
+.alerts {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacer) / 16);
+}
+
+.alerts * {
+  margin-top: calc(var(--spacer) / 8) !important;
+}
