@@ -58,8 +58,8 @@ export const useMetadataRequestResponse = (requestId: number) => {
     metadataRequestVotesOptions(requestId, chain.id)
   )
   const userVote = getUserVote(votes, address)
-  const [cachedResponse, setCachedResponse] = useState(
-    mapVoteToFormResponse(userVote, requestId) ?? {}
+  const [cachedResponse, setCachedResponse] = useState<FormResponse>(
+    mapVoteToFormResponse(userVote, requestId) ?? ({} as FormResponse)
   )
   const [debouncedResponse] = useDebounce(cachedResponse, 1000)
 
