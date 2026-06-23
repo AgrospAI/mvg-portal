@@ -30,7 +30,7 @@ const chains = [
   },
   {
     chainId: 32457,
-    isDefault: false,
+    isDefault: true,
     isCustom: true,
     network: 'pontus-x-testnet',
     oceanTokenSymbol: 'OCEAN',
