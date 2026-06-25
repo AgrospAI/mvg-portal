@@ -78,3 +78,12 @@ a.link:focus {
   padding-left: 0;
   margin-left: 0;
 }
+
+.geoBadge {
+  margin-left: calc(var(--spacer) / 4);
+  max-width: 60%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: middle;
+}

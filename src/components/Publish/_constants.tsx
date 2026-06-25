@@ -19,6 +19,7 @@ import Submission from './Submission'
 import { ServiceComputeOptions } from '@oceanprotocol/lib'
 import contentFeedback from '../../../content/publish/feedback.json'
 import PoliciesFields from './Policies'
+import AgriMetadataFields from './AgriMetadata'
 
 export const wizardSteps: StepContent[] = [
   {
@@ -28,26 +29,31 @@ export const wizardSteps: StepContent[] = [
   },
   {
     step: 2,
+    title: content.agriMetadata.title,
+    component: <AgriMetadataFields />
+  },
+  {
+    step: 3,
     title: content.services.title,
     component: <ServicesFields />
   },
   {
-    step: 3,
+    step: 4,
     title: content.policies.title,
     component: <PoliciesFields />
   },
   {
-    step: 4,
+    step: 5,
     title: content.pricing.title,
     component: <PricingFields />
   },
   {
-    step: 5,
+    step: 6,
     title: content.preview.title,
     component: <Preview />
   },
   {
-    step: 6,
+    step: 7,
     title: content.submission.title,
     component: <Submission />
   }
@@ -92,6 +98,17 @@ export const initialValues: FormPublishData = {
       containsPII: false,
       PIIInformation: undefined,
       serviceSD: { url: '' }
+    },
+    agriMetadata: {
+      boundingBox: {
+        wkt: '',
+        label: ''
+      },
+      agrovocConcepts: [],
+      temporalCoverage: {
+        startDate: '',
+        endDate: ''
+      }
     },
     saas: {
       paymentMode: SAAS_PAYMENT_MODE.SUBSCRIPTION

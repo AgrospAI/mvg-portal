@@ -6,6 +6,7 @@ import removeMarkdown from 'remove-markdown'
 import Publisher from '@shared/Publisher'
 import AssetType from '@shared/AssetType'
 import NetworkName from '@shared/NetworkName'
+import Badge from '@shared/atoms/Badge'
 import styles from './index.module.css'
 import { getServiceByName } from '@utils/ddo'
 import { useUserPreferences } from '@context/UserPreferences'
@@ -24,6 +25,12 @@ export default function AssetTeaser({
   noDescription
 }: AssetTeaserProps): ReactElement {
   const { name, type, description } = asset.metadata
+  const additionalInfo = asset.metadata?.additionalInformation as
+    | Record<string, any>
+    | undefined
+  const spatial = additionalInfo?.['dct:spatial']
+  const hasGeoCoverage = Boolean(spatial?.['dcat:bbox']?.['@value'])
+  const geoLabel = spatial?.['skos:prefLabel']
   const { datatokens } = asset
   const isCompute = Boolean(getServiceByName(asset, 'compute'))
   const accessType = isCompute ? 'compute' : 'access'
@@ -49,6 +56,12 @@ export default function AssetTeaser({
           <span className={styles.typeLabel}>
             {datatokens[0]?.symbol.substring(0, 9)}
           </span>
+          {hasGeoCoverage && (
+            <Badge
+              label={geoLabel ? `📍 ${geoLabel}` : '📍 Geo'}
+              className={styles.geoBadge}
+            />
+          )}
         </aside>
         <header className={styles.header}>
           <Dotdotdot tagName="h1" clamp={3} className={styles.title}>

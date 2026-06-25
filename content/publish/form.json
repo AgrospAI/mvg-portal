@@ -154,6 +154,45 @@
       }
     ]
   },
+  "agriMetadata": {
+    "title": "Geographic Information",
+    "fields": [
+      {
+        "name": "boundingBox",
+        "label": "Geographic Coverage",
+        "type": "boundingBoxMap",
+        "help": "Draw a bounding box on the map to define the geographic area covered by this asset. Use the rectangle tool on the map, or search for a location to auto-fill the area.",
+        "placeholder": "Draw a bounding box on the map"
+      },
+      {
+        "name": "locationLabel",
+        "label": "Location Name",
+        "placeholder": "e.g. Lleida, Catalonia, Spain",
+        "help": "Optional: Provide a human-readable name for the geographic area."
+      },
+      {
+        "name": "agrovocConcepts",
+        "label": "AGROVOC Concepts",
+        "type": "agrovocAutocomplete",
+        "help": "Search and select agricultural concepts from the FAO AGROVOC thesaurus. Start typing to search.",
+        "placeholder": "Search AGROVOC concepts..."
+      },
+      {
+        "name": "temporalCoverageStart",
+        "label": "Temporal Coverage Start Date",
+        "type": "date",
+        "help": "The start date of the time period covered by this asset.",
+        "placeholder": "Select start date"
+      },
+      {
+        "name": "temporalCoverageEnd",
+        "label": "Temporal Coverage End Date",
+        "type": "date",
+        "help": "The end date of the time period covered by this asset.",
+        "placeholder": "Select end date"
+      }
+    ]
+  },
   "services": {
     "title": "Access",
     "fields": [

@@ -1,0 +1,55 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacer) / 2);
+}
+
+.mapWrapper {
+  border: var(--input-border-size) solid var(--input-border-color);
+  border-radius: var(--input-border-radius);
+  overflow: hidden;
+}
+
+.map {
+  height: 350px;
+  width: 100%;
+  background-color: var(--input-background);
+}
+
+.loading {
+  height: 350px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--input-background);
+  border: var(--input-border-size) solid var(--input-border-color);
+  border-radius: var(--input-border-radius);
+  color: var(--font-color-text);
+  font-size: var(--font-size-small);
+}
+
+.locationSearch {
+  margin-bottom: calc(var(--spacer) / 3);
+}
+
+.wktDisplay {
+  display: flex;
+  align-items: flex-start;
+  gap: calc(var(--spacer) / 3);
+  padding: calc(var(--spacer) / 3);
+  background-color: var(--background-highlight);
+  border-radius: var(--input-border-radius);
+  font-size: var(--font-size-small);
+}
+
+.wktLabel {
+  color: var(--font-color-text);
+  font-weight: var(--font-weight-bold);
+  white-space: nowrap;
+}
+
+.wktValue {
+  color: var(--font-color-heading);
+  word-break: break-all;
+  font-family: var(--font-family-monospace);
+}
