@@ -21,6 +21,21 @@ export interface FormPublishService {
   consumerParameters?: FormConsumerParameter[]
 }
 
+export interface FormAgriMetadata {
+  boundingBox?: {
+    wkt: string
+    label?: string
+  }
+  agrovocConcepts: Array<{
+    uri: string
+    prefLabel: string
+  }>
+  temporalCoverage?: {
+    startDate?: string
+    endDate?: string
+  }
+}
+
 export interface FormPublishData {
   user: {
     stepCurrent: number
@@ -45,6 +60,7 @@ export interface FormPublishData {
     license?: string
     tags?: string[]
     ontologyTerms?: object
+    agriMetadata?: FormAgriMetadata
     dockerImage?: string
     dockerImageCustom?: string
     dockerImageCustomTag?: string

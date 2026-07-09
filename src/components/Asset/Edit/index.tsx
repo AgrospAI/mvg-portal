@@ -3,6 +3,7 @@ import { useAsset } from '@context/Asset'
 import styles from './index.module.css'
 import Tabs from '@shared/atoms/Tabs'
 import EditMetadata from './EditMetadata'
+import EditAgriMetadata from './EditAgriMetadata'
 import EditComputeDataset from './EditComputeDataset'
 import Page from '@shared/Page'
 import Loader from '@shared/atoms/Loader'
@@ -33,6 +34,10 @@ export default function Edit({ uri }: { uri: string }): ReactElement {
     {
       title: 'Edit Metadata',
       content: <EditMetadata asset={asset} />
+    },
+    {
+      title: 'Edit Geographic Information',
+      content: <EditAgriMetadata asset={asset} />
     },
     ...[
       isCompute && asset?.metadata.type !== 'algorithm'

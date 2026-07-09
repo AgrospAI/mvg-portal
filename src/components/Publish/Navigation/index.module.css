@@ -70,7 +70,10 @@
   position: absolute;
   left: 100%;
   top: 1rem;
-  width: 50%;
+  /* Fixed width spanning the inter-item margin gap (var(--spacer) on each side),
+     instead of a percentage of the item — otherwise long labels stretch the
+     line into the next step's circle. */
+  width: calc(var(--spacer) * 2);
   height: 1px;
   background: var(--border-color);
 }

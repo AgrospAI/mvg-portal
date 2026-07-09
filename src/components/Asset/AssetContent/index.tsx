@@ -23,6 +23,8 @@ import ServiceCredentialVisualizer from '@components/@shared/ServiceCredentialVi
 import Web3Feedback from '@components/@shared/Web3Feedback'
 import { useAccount } from 'wagmi'
 import DDODownloadButton from '@components/@shared/DDODownloadButton'
+import BoundingBoxPreview from '@components/@shared/BoundingBoxPreview'
+import AgrovocTerms from '@components/@shared/AgrovocTerms'
 
 export default function AssetContent({
   asset
@@ -66,6 +68,12 @@ export default function AssetContent({
     isServiceCredentialVerified,
     asset.metadata?.additionalInformation?.gaiaXInformation?.serviceSD
   ])
+
+  const additionalInfo = asset.metadata?.additionalInformation as
+    | Record<string, any>
+    | undefined
+  const bboxWkt = additionalInfo?.['dct:spatial']?.['dcat:bbox']?.['@value']
+  const agrovocSubjects = additionalInfo?.['dct:subject']
 
   return (
     <>
@@ -124,6 +132,8 @@ export default function AssetContent({
         </div>
 
         <div className={styles.actions}>
+          {bboxWkt && <BoundingBoxPreview wkt={bboxWkt} />}
+          <AgrovocTerms themes={agrovocSubjects} />
           <AssetActions asset={asset} />
           {isOwner && isAssetNetwork && (
             <div className={styles.ownerActions}>

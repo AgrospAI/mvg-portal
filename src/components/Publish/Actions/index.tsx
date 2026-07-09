@@ -55,9 +55,10 @@ export default function Actions({
 
   const isContinueDisabled =
     (values.user.stepCurrent === 1 && errors.metadata !== undefined) ||
-    (values.user.stepCurrent === 2 && errors.services !== undefined) ||
-    (values.user.stepCurrent === 3 && errors.policies !== undefined) ||
-    (values.user.stepCurrent === 4 && errors.pricing !== undefined)
+    // Step 2 (AgriMetadata) has no required fields, so no validation needed
+    (values.user.stepCurrent === 3 && errors.services !== undefined) ||
+    (values.user.stepCurrent === 4 && errors.policies !== undefined) ||
+    (values.user.stepCurrent === 5 && errors.pricing !== undefined)
 
   const hasSubmitError =
     values.feedback?.[1].status === 'error' ||

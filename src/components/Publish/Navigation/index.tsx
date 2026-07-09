@@ -31,10 +31,12 @@ export default function Navigation(): ReactElement {
 
     const isSuccess =
       (step === 1 && isSuccessMetadata) ||
-      (step === 2 && isSuccessServices) ||
-      (step === 3 && isSuccessPolices) ||
-      (step === 4 && isSuccessPricing) ||
-      (step === 5 && isSuccessPreview)
+      // Step 2 (AgriMetadata) has no required fields
+      step === 2 ||
+      (step === 3 && isSuccessServices) ||
+      (step === 4 && isSuccessPolices) ||
+      (step === 5 && isSuccessPricing) ||
+      (step === 6 && isSuccessPreview)
 
     return isSuccess ? styles.success : null
   }
