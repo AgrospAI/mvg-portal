@@ -18,11 +18,6 @@ export default function AgriMetadataFields(): ReactElement {
         name="metadata.agriMetadata.boundingBox.label"
       />
       <Field
-        {...getFieldContent('agrovocConcepts', content.agriMetadata.fields)}
-        component={Input}
-        name="metadata.agriMetadata.agrovocConcepts"
-      />
-      <Field
         {...getFieldContent(
           'temporalCoverageStart',
           content.agriMetadata.fields

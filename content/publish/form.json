@@ -171,13 +171,6 @@
         "help": "Optional: Provide a human-readable name for the geographic area."
       },
       {
-        "name": "agrovocConcepts",
-        "label": "AGROVOC Concepts",
-        "type": "agrovocAutocomplete",
-        "help": "Search and select agricultural concepts from the FAO AGROVOC thesaurus. Start typing to search.",
-        "placeholder": "Search AGROVOC concepts..."
-      },
-      {
         "name": "temporalCoverageStart",
         "label": "Temporal Coverage Start Date",
         "type": "date",

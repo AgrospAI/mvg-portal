@@ -83,10 +83,7 @@ export function transformAgriMetadata(
     formAgriMetadata.temporalCoverage?.startDate ||
     formAgriMetadata.temporalCoverage?.endDate
 
-  const hasContent =
-    formAgriMetadata.boundingBox?.wkt ||
-    formAgriMetadata.agrovocConcepts?.length > 0 ||
-    hasTemporalCoverage
+  const hasContent = formAgriMetadata.boundingBox?.wkt || hasTemporalCoverage
 
   if (!hasContent) return undefined
 
@@ -113,22 +110,6 @@ export function transformAgriMetadata(
       spatial['skos:prefLabel'] = formAgriMetadata.boundingBox.label
     }
     agriMetadata['dct:spatial'] = spatial
-  }
-
-  // AGROVOC concepts are stored under `dct:subject` (not `dcat:theme`) to
-  // avoid colliding with the existing AgroPortal ontologyTerms, which already
-  // occupy `dcat:theme`. Both are valid DCAT ways to describe an asset's topic.
-  if (formAgriMetadata.agrovocConcepts?.length > 0) {
-    agriMetadata['dct:subject'] = formAgriMetadata.agrovocConcepts.map(
-      (concept) => ({
-        '@id': concept.uri,
-        '@type': 'skos:Concept',
-        'skos:prefLabel': {
-          '@value': concept.prefLabel,
-          '@language': 'en'
-        }
-      })
-    )
   }
 
   if (hasTemporalCoverage) {
@@ -330,9 +311,9 @@ export async function transformPublishFormToDdo(
     }
   }
 
-  // Geographic / agricultural DCAT metadata (bounding box, AGROVOC, temporal).
+  // Geographic / temporal DCAT metadata (bounding box, temporal coverage).
   // Stored as a flat DCAT JSON-LD fragment at the root of additionalInformation.
-  // Uses dct:spatial / dct:subject / dct:temporal, which do not collide with the
+  // Uses dct:spatial / dct:temporal, which do not collide with the
   // ontologyTerms `dcat:theme` above.
   const agriMetadata = transformAgriMetadata(values.metadata.agriMetadata)
   if (agriMetadata) {

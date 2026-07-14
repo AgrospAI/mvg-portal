@@ -26,10 +26,6 @@ export interface FormAgriMetadata {
     wkt: string
     label?: string
   }
-  agrovocConcepts: Array<{
-    uri: string
-    prefLabel: string
-  }>
   temporalCoverage?: {
     startDate?: string
     endDate?: string

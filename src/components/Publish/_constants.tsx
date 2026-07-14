@@ -104,7 +104,6 @@ export const initialValues: FormPublishData = {
         wkt: '',
         label: ''
       },
-      agrovocConcepts: [],
       temporalCoverage: {
         startDate: '',
         endDate: ''

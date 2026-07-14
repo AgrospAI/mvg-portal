@@ -21,7 +21,6 @@ import Option from './Radio/Option'
 import AgroPortalAutocomplete from '@components/AgroPortal/AgroPortalAutocomplete'
 import TagsAutoComplete from './TagsAutoComplete'
 import BoundingBoxMap from './BoundingBoxMap'
-import AgrovocAutocomplete from './AgrovocAutocomplete'
 
 const cx = classNames.bind(styles)
 
@@ -245,8 +244,6 @@ const InputElement = forwardRef(
         return <Credentials {...field} {...props} />
       case 'boundingBoxMap':
         return <BoundingBoxMap {...field} {...props} />
-      case 'agrovocAutocomplete':
-        return <AgrovocAutocomplete {...field} {...props} />
       default:
         return prefix || postfix ? (
           <div

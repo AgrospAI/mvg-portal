@@ -29,7 +29,6 @@ function reverseTransformAgriMetadata(
 ): FormAgriMetadata {
   const empty: FormAgriMetadata = {
     boundingBox: { wkt: '', label: '' },
-    agrovocConcepts: [],
     temporalCoverage: { startDate: '', endDate: '' }
   }
 
@@ -38,9 +37,6 @@ function reverseTransformAgriMetadata(
   const spatial = storedAgriMetadata['dct:spatial'] as Record<
     string,
     unknown
-  > | null
-  const subjects = storedAgriMetadata['dct:subject'] as Array<
-    Record<string, unknown>
   > | null
   const temporal = storedAgriMetadata['dct:temporal'] as Record<
     string,
@@ -52,15 +48,6 @@ function reverseTransformAgriMetadata(
       wkt: (spatial?.['dcat:bbox'] as Record<string, string>)?.['@value'] || '',
       label: (spatial?.['skos:prefLabel'] as string) || ''
     },
-    agrovocConcepts: Array.isArray(subjects)
-      ? subjects.map((subject) => ({
-          uri: (subject['@id'] as string) || '',
-          prefLabel:
-            (subject['skos:prefLabel'] as Record<string, string>)?.['@value'] ||
-            (subject['skos:prefLabel'] as string) ||
-            ''
-        }))
-      : [],
     temporalCoverage: {
       startDate:
         (temporal?.['dcat:startDate'] as Record<string, string>)?.['@value'] ||
