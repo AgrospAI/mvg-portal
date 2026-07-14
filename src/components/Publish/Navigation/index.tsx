@@ -21,6 +21,14 @@ export default function Navigation(): ReactElement {
 
   function getSuccessClass(step: number) {
     const isSuccessMetadata = errors.metadata === undefined
+    const agriMetadata = values.metadata?.agriMetadata
+    // AgriMetadata has no required fields, so completeness is based on
+    // whether the user actually entered any geographic info, not on errors.
+    const isSuccessAgriMetadata = Boolean(
+      agriMetadata?.boundingBox?.wkt ||
+        agriMetadata?.temporalCoverage?.startDate ||
+        agriMetadata?.temporalCoverage?.endDate
+    )
     const isSuccessServices = errors.services === undefined
     const isSuccessPolices = errors.policies === undefined
     const isSuccessPricing =
@@ -31,8 +39,7 @@ export default function Navigation(): ReactElement {
 
     const isSuccess =
       (step === 1 && isSuccessMetadata) ||
-      // Step 2 (AgriMetadata) has no required fields
-      step === 2 ||
+      (step === 2 && isSuccessAgriMetadata) ||
       (step === 3 && isSuccessServices) ||
       (step === 4 && isSuccessPolices) ||
       (step === 5 && isSuccessPricing) ||
