@@ -53,31 +53,31 @@ const chains = [
     // subgraphUri: 'https://subgraph.test.pontus-x.eu',
     subgraphUri: 'https://subgraph.test.agrospai.udl.cat',
     explorerUri: 'https://explorer.pontus-x.eu/pontusx/test'
+  },
+  {
+    chainId: 8996,
+    isDefault: true,
+    isCustom: true,
+    network: 'development',
+    oceanTokenSymbol: 'OCEAN',
+    // DO NOT UNCOMMENT UNLESS YOU DONT WANT TO USE ENV
+    // oceanTokenAddress: '',
+    // nftFactoryAddress: '',
+    // fixedRateExchangeAddress: '',
+    // dispenserAddress: '',
+    // opfCommunityFeeCollector: '',
+    startBlock: 0,
+    transactionBlockTimeout: 50,
+    transactionConfirmationBlocks: 1,
+    transactionPollingTimeout: 750,
+    gasFeeMultiplier: 1.1,
+    providerAddress: '0xe2DD09d719Da89e5a3D0F2549c7E24566e947260',
+    providerUri: 'http://provider:8030',
+    metadataCacheUri: 'http://aquarius:10000',
+    nodeUri: 'http://localhost:8545',
+    subgraphUri: 'http://graph-node:9000',
+    explorerUri: ''
   }
-  // {
-  //   chainId: 8996,
-  //   isDefault: true,
-  //   isCustom: true,
-  //   network: 'development',
-  //   oceanTokenSymbol: 'OCEAN',
-  //   // DO NOT UNCOMMENT UNLESS YOU DONT WANT TO USE ENV
-  //   // oceanTokenAddress: '',
-  //   // nftFactoryAddress: '',
-  //   // fixedRateExchangeAddress: '',
-  //   // dispenserAddress: '',
-  //   // opfCommunityFeeCollector: '',
-  //   startBlock: 0,
-  //   transactionBlockTimeout: 50,
-  //   transactionConfirmationBlocks: 1,
-  //   transactionPollingTimeout: 750,
-  //   gasFeeMultiplier: 1.1,
-  //   providerAddress: '0xe2DD09d719Da89e5a3D0F2549c7E24566e947260',
-  //   providerUri: 'http://provider:8030',
-  //   metadataCacheUri: 'http://aquarius:10000',
-  //   nodeUri: 'http://anvil:8545',
-  //   subgraphUri: 'http://graph-node:9000',
-  //   explorerUri: ''
-  // }
 ]
 
 const getDefaultChainIds = () => {

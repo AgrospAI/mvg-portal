@@ -51,7 +51,7 @@ const networksMetadata = [
     networkId: 8996,
     name: 'Local Network',
     chain: 'Anvil',
-    rpc: ['http://anvil:8545'],
+    rpc: ['http://localhost:8545'],
     faucets: [],
     nativeCurrency: {
       name: 'ETH',
@@ -63,7 +63,7 @@ const networksMetadata = [
     explorers: [
       {
         name: 'Local Network Explorer',
-        url: 'http://anvil',
+        url: 'http://localhost',
         standard: ''
       }
     ]
