@@ -1,6 +1,7 @@
 <h1 align="center">AgrospAI Data Space</h1>
 
 [![Build Status](https://github.com/agrospai/mvg-portal/workflows/deploy/badge.svg)](https://github.com/rhizomik/mvg-portal/actions)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FAgrospAI%2Fmvg-portal.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FAgrospAI%2Fmvg-portal?ref=badge_shield)
 
 **Table of Contents**
 
@@ -463,3 +464,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ```
+
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FAgrospAI%2Fmvg-portal.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FAgrospAI%2Fmvg-portal?ref=badge_large)
