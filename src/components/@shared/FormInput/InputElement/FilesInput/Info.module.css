@@ -36,6 +36,16 @@
   user-select: none;
 }
 
+.edcMeta {
+  padding-right: calc(var(--spacer) / 2);
+}
+
+.edcDescription {
+  margin: calc(var(--spacer) / 4) 0 0;
+  font-size: var(--font-size-small);
+  color: var(--color-secondary);
+}
+
 .warning {
   margin-top: calc(var(--spacer) / 3);
   margin-left: 0;

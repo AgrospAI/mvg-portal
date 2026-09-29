@@ -312,6 +312,16 @@
             "prominentHelp": true,
             "type": "files",
             "required": true
+          },
+          {
+            "value": "edc",
+            "title": "EDC",
+            "label": "EDC provider asset",
+            "help": "Connect to an Eclipse Dataspace Components provider, pick one of its available assets, and the resolved file URL will be stored encrypted after publishing.",
+            "computeHelp": "For a compute dataset, your file should match the file type required by the algorithm, and should not exceed 1 GB in file size. ",
+            "prominentHelp": true,
+            "type": "edc",
+            "required": true
           }
         ],
         "sortOptions": false,

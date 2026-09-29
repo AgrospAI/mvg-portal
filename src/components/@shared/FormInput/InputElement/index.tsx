@@ -3,6 +3,7 @@ import CodeMirror from '@uiw/react-codemirror'
 import styles from './index.module.css'
 import { InputProps } from '..'
 import FilesInput from './FilesInput'
+import EDCInput from './EDCInput'
 import CustomProvider from './Provider'
 import BoxSelection, { BoxSelectionOption } from './BoxSelection'
 import Datatoken from './Datatoken'
@@ -132,14 +133,22 @@ const InputElement = forwardRef(
             title: field.title,
             field,
             props,
-            content: (
-              <FilesInput
-                key={`fileInput_${i}`}
-                {...field}
-                form={form}
-                {...props}
-              />
-            )
+            content:
+              field.type === 'edc' ? (
+                <EDCInput
+                  key={`edcInput_${i}`}
+                  {...field}
+                  form={form}
+                  {...props}
+                />
+              ) : (
+                <FilesInput
+                  key={`fileInput_${i}`}
+                  {...field}
+                  form={form}
+                  {...props}
+                />
+              )
           })
         })
 

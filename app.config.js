@@ -30,6 +30,13 @@ module.exports = {
 
   customProviderUrl: process.env.NEXT_PUBLIC_PROVIDER_URL,
 
+  // Base URL of the eclipse-edc-mvd API, used by the EDC file source option
+  // on the publish form to list a provider's assets and resolve a file URL.
+  edcApiUrl:
+    process.env.NEXT_PUBLIC_EDC_API_URL ||
+    (process.env.NODE_ENV === 'development'
+      ? 'http://localhost:8001'
+      : 'https://edc-api.agrospai.udl.cat'),
   infuraProjectId: process.env.NEXT_PUBLIC_INFURA_PROJECT_ID || 'xxx',
 
   defaultDatatokenTemplateIndex: 2,
