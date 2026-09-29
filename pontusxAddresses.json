@@ -1428,7 +1428,9 @@
   },
   "0xc1dF3Cd04BE1159f1b6e27Dfa04a846FAbc959dc": {
     "name": "BEEBUCKET GmbH",
-    "credentials": []
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Beebucket.vp.json"
+    ]
   },
   "0xd794CeB60d49755762C17bD7Cc5f613FE363b9F6": {
     "name": "Neoception GmbH",
@@ -3646,6 +3648,972 @@
     "name": "Piszolla SLU",
     "credentials": [
       "https://compliance.agrospai.udl.cat/.well-known/Piszolla.vp.json"
+    ]
+  },
+  "0x59B4161cA3516fDBB2a63d0C1aE4497cD6AC112f": {
+    "name": "Sercom Informática SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Sercom.vp.json"
+    ]
+  },
+  "0x7d446Cc71bc6a63a900bfb99630FACC6888cb1F3": {
+    "name": "Advanced Technology and Innovation Systems Cantabria SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Artisca.vp.json"
+    ]
+  },
+  "0x68611Ec6096BbCaeCdaB891461755703DD496890": {
+    "name": "Signlab Nuevas Tecnologías SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Signlab.vp.json"
+    ]
+  },
+  "0x34C89d5A7f9b3bbB6f71098aA6F465d213CDb898": {
+    "name": "Confederación Española de Empresas de Tecnologías de la Información, Comunicaciones y Electrónica",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/CONETIC.vp.json"
+    ]
+  },
+  "0x893E1c29A66AFE8fF71Af7c6dDBC07c90840F79c": {
+    "name": "SRT Ingeniería Desarrollo y Aplicaciones Técnicas SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/STR.vp.json"
+    ]
+  },
+  "0x5fA316E70F9fC51523405427D06da2b526C7D8DB": {
+    "name": "Fragadis SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Fragadis.vp.json"
+    ]
+  },
+  "0xb9aC60c85DA7e4f654EdBEAc4E6dc3e37bF368aa": {
+    "name": "Aplicaciones Profesionales Chafer SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/APChafer.vp.json"
+    ]
+  },
+  "0x00339025B3250d6f8018306C1C012Ad083781809": {
+    "name": "Inversiones Patrimoniales MIPE SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/MIPE.vp.json"
+    ]
+  },
+  "0x65c52A35320A443440ae15e764D6667849dDf705": {
+    "name": "Productos Químicos Miravalls SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/PQMiravalls.vp.json"
+    ]
+  },
+  "0x1356a85e9D5C4217b7aa825bA32861d6c6f6e674": {
+    "name": "Agrobrox SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Agrobrox.vp.json"
+    ]
+  },
+  "0x27Ad0A4A3dE6620EfE77f923a390F4B57ECc8C99": {
+    "name": "Gestora Laboral Mediterranea ETT SA",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/GLM-ETT-EMPLEO.vp.json"
+    ]
+  },
+  "0x2B1dc41B076Ee56c7Fdf8c62Ae304a9019AA12Fb": {
+    "name": "Hydrotecna Green SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Hydrotecna.vp.json"
+    ]
+  },
+  "0x44db17FC65C7bAb5d6DB90F8081D109143566B09": {
+    "name": "Rocor Agrícola SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Rocor.vp.json"
+    ]
+  },
+  "0xDF54DE28eF858a9c0d3711eFBE06d1b6bbea7e3f": {
+    "name": "Cilanis SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Cilanis.vp.json"
+    ]
+  },
+  "0x6e6f9c154625c0153fb7dCc7E623C3dC69DaD436": {
+    "name": "Explotaciones Agrícolas Campaña y Montes SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/EACampañaYMontes.vp.json"
+    ]
+  },
+  "0x5D244Af8A3b377B7b141e4F64B6ea37f2c95A90C": {
+    "name": "APPISTACO Trade SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/APPISTACO.vp.json"
+    ]
+  },
+  "0xA12eCA037A55238C9182c7a2C1be2Cbb5E3B86F3": {
+    "name": "Consultoría Estratégica para la Financiación de la Innovación SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/ConsultoraCEF.vp.json"
+    ]
+  },
+  "0x308daCA2D2ee5b58022Ed2A5Ecd6E896A6CEa1F3": {
+    "name": "MPR Olive Growing SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/MPROliveGrowing.vp.json"
+    ]
+  },
+  "0x1EdE4B850F1aB7249DE3c25c6A96e7c1eF8a35F0": {
+    "name": "Secrán Consultores SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Secran.vp.json"
+    ]
+  },
+  "0x80f7E506F37af0f3B5AceFD30b893AA4f481570b": {
+    "name": "Deepfarm Technologies SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Deepfarm.vp.json"
+    ]
+  },
+  "0xC2E5c19D80010c4Cca29C45d114aAA33Ed1fF601": {
+    "name": "Asociación Pasión por el Hombre-Bocatas",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/AsociacionPasionHombre.vp.json"
+    ]
+  },
+  "0x8a73AE8E67392C3ebE4227921D6728A786B6f880": {
+    "name": "Fundación Bocatas - Pasión por el Hombre",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/FundacionBocatas.vp.json"
+    ]
+  },
+  "0xe158B0e2C7f451b73ffC61e1e3Ea55D30A4749A2": {
+    "name": "YOTTAQUBIT SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/YOTTAQUBIT.vp.json"
+    ]
+  },
+  "0x481CCe2A481854145df39031E4CE95fb0beDe05f": {
+    "name": "Imatge Publicitat i Marketing SLU",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/IPMProjects.vp.json"
+    ]
+  },
+  "0x7E98eF12E435434f6ED9C98e8A17C62C5537eb7c": {
+    "name": "Explotació Ramadera Amerenca SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Amerenca.vp.json"
+    ]
+  },
+  "0x31093f7548eaF83fe823B4c0322ecBb10e31c455": {
+    "name": "AMP Investigación y Análisis Alimentarios SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/AMPLab.vp.json"
+    ]
+  },
+  "0xc9766c380e71eDCCCD460Ac7e74782e4518a0eb7": {
+    "name": "Hábitat Colaborativo SCA",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/HabitatColaborativo.vp.json"
+    ]
+  },
+  "0x3aCe8E8B050a9A17eA4Af05D382eAAFca41D19AD": {
+    "name": "Innoune Group SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Innoune.vp.json"
+    ]
+  },
+  "0x12F4d2F55E56eb4C5Fc279b126848c92CdD51014": {
+    "name": "Centro de Demostración y Transferencia Agraria El Mirador SCoop",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/CDTAElMirador.vp.json"
+    ]
+  },
+  "0xd775591B70EE727B91Bf788F6C616e16c7080aef": {
+    "name": "Okos Agronegocios SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/VentanasAgroalimentarias.vp.json"
+    ]
+  },
+  "0x82855975e550f0f46F36F93c7E48c81AE9A1771d": {
+    "name": "Fidelityfarma SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Fidelityfarma.vp.json"
+    ]
+  },
+  "0x0C5Fc3A742BB3DBD8141d1ad5bEBd7443Bf447a0": {
+    "name": "Qualque SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Qualque.vp.json"
+    ]
+  },
+  "0x68e20DD04834003A84d0BCc8dd34b15ac1aA0013": {
+    "name": "Distribuidora Joan SA",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/DistJoan.vp.json"
+    ]
+  },
+  "0x3b4a13B45581d63e29C3374Ab15bd650D8ccB33A": {
+    "name": "Auria Ventures SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/AuriaVentures.vp.json"
+    ]
+  },
+  "0x668fe9B100622F1f0e9E672048432EbAac005033": {
+    "name": "Agricolum SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Agricolum.vp.json"
+    ]
+  },
+  "0x506d53ec8f9EF83305A0E90a40995b7c18a1230b": {
+    "name": "Agroaerospace SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Sanzar.vp.json"
+    ]
+  },
+  "0xe11D0017A41B2630e6E97776131AB2089dAd7fF2": {
+    "name": "Agrícola Consolación SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/AgricolaConsolacion.vp.json"
+    ]
+  },
+  "0xC0357E4FEb7ae97AB3dB0e3c15dFDD4EBDD8b11C": {
+    "name": "Cuarterola SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Cuarterola.vp.json"
+    ]
+  },
+  "0x1D7A10AFD66321a6575f1C8345636699438b9Ad8": {
+    "name": "Eoloarroz SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Eoloarroz.vp.json"
+    ]
+  },
+  "0xEe6a9e382729cE4A32DBf6A103F09b9B21Cba245": {
+    "name": "Nido de Ideas Avanzadas SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/NidoIDi.vp.json"
+    ]
+  },
+  "0x1c6095Dd6CA6a356D5d149Df16FD28416B5751DA": {
+    "name": "Fundación EMET",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/FundacionEMET.vp.json"
+    ]
+  },
+  "0xcd081BA12d0315617A0a7E452B02721248c1DB9c": {
+    "name": "AGE Agrocinegética SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/AGEAgrocinegetica.vp.json"
+    ]
+  },
+  "0x24947C5d5b3F1e7d832316057C615C577EA23bc2": {
+    "name": "Asociación Agraria de Galicia",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/ASAGA.vp.json"
+    ]
+  },
+  "0xB8E18DE01a32f241e5236018FCDBb599Fde23e90": {
+    "name": "Asociación Agraria Jóvenes Agricultores de Ávila",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/ASAJAAvila.vp.json"
+    ]
+  },
+  "0xC3e515F87da3ca91Abfac5fd680Fe675e3135b3e": {
+    "name": "Jóvenes Agricultores y Ganaderos de Cantabria",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/ASAJACantabria.vp.json"
+    ]
+  },
+  "0x5274fa3E44e2Ef5F687904c57Ea2BAa662239027": {
+    "name": "Asociación Agraria Jóvenes Agricultores y Ganaderos de Asturias",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/ASAJAAsturias.vp.json"
+    ]
+  },
+  "0x72F4457F6348e8c2cad4EC7dCe0787761A2D0949": {
+    "name": "Horticola El Alto SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/HorticolaElAlto.vp.json"
+    ]
+  },
+  "0xe975b6AdB7c65f5Cf2deA9C8eB3D2107D84345F2": {
+    "name": "Exagayca SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Exagayca.vp.json"
+    ]
+  },
+  "0x395101Dc168d9A98D759AaFC87cDCaAe6C2d9A15": {
+    "name": "ADEC Assessors SLP",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/ADECAssessors.vp.json"
+    ]
+  },
+  "0x70753e2131C9a23A051015a94a4bA30Ba4a64860": {
+    "name": "Aquí Hay Marketing Digital SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/AquiHayMarketingDigital.vp.json"
+    ]
+  },
+  "0x2654cA0B70Fae4ca21dA57A6cd5bf8833cB96338": {
+    "name": "Audidata Sistemas SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/AudidataSistemas.vp.json"
+    ]
+  },
+  "0xA78f583148D21E8e8BB3f7FF71e22Ee9fc24FE9a": {
+    "name": "Cortamotor SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Cortamotor.vp.json"
+    ]
+  },
+  "0xD7E43B8992e0324C864EB953aBB349cE3c079EBf": {
+    "name": "Exactio 365 Cloud Consulting SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Exactio365.vp.json"
+    ]
+  },
+  "0xFA844bC81FD1a166cEFe6f066c91C53CaA85D3D4": {
+    "name": "Expediciones del Mediterráneo SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/ExpedicionesMediterraneo.vp.json"
+    ]
+  },
+  "0x741112f9fbCBC5fCe5D2Bc7A211ee59E61A3eEdd": {
+    "name": "F.F. Inmobles SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/FFInmobles.vp.json"
+    ]
+  },
+  "0x675576bD44D41dE1ff5D94517C5C6a8b4D519c5d": {
+    "name": "Grupo Expertsis SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/GrupoExpertsis.vp.json"
+    ]
+  },
+  "0x311b2f4fED4bC4487518de4220145c915BDDe04E": {
+    "name": "Italian Dough SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/ItalianDough.vp.json"
+    ]
+  },
+  "0xf0A01E6D8F072B2044f11547FFD13E4382F51171": {
+    "name": "JNC Sistemas Informáticos SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/JNCSistemasInformaticos.vp.json"
+    ]
+  },
+  "0xF4D89B9F4cE70E60F637e5dc00560966ecbD4f49": {
+    "name": "Líder Aliment SAU",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/LiderAliment.vp.json"
+    ]
+  },
+  "0x190F981032BABb5fC6F03F68cb749f2D61c3EceA": {
+    "name": "Marfrallo SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Marfrallo.vp.json"
+    ]
+  },
+  "0xB4237811ca999fb0d92a9360986ECC61a311E121": {
+    "name": "Pollos Planes SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/PollosPlanes.vp.json"
+    ]
+  },
+  "0x3c8F4c9a4319294B4E2a2ED18A9aD139DCd1Ea66": {
+    "name": "Pollos Planes Barcelona SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/PollosPlanesBarcelona.vp.json"
+    ]
+  },
+  "0xd603576CAADc133CA176E9bCe389C8B4Fc92650c": {
+    "name": "Atzaro PG Financial Services SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Atzaro.vp.json"
+    ]
+  },
+  "0x02a6c7780f744c2262e488c5D1fD432Bf8A14490": {
+    "name": "Campora Abogados y Asesores Tributarios SLP",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/CamporaAbogados.vp.json"
+    ]
+  },
+  "0x029545F024AF3E61D3980470fbdb91841Aa859f1": {
+    "name": "Factory Soul Torrent SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/FactorySoul.vp.json"
+    ]
+  },
+  "0xA587794e88F5Eb85aD1BB2cDe8Ab1373834D3750": {
+    "name": "LUCALB 2006 SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/LUCALB.vp.json"
+    ]
+  },
+  "0xe0DBd25628744DEC02A991E28A9E29C1BBCc9B4B": {
+    "name": "Lucas Abogados y Asesores Legales SLP",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/LucasAbogados.vp.json"
+    ]
+  },
+  "0xCfeb0e450494a13fB8BFC92B98Da5940e6D4cB1F": {
+    "name": "Moon Distillery SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/MOA.vp.json"
+    ]
+  },
+  "0xe387Bb1B7396ECe512B8092114Cca4943Da31932": {
+    "name": "Odisea Foods SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/OdiseaFoods.vp.json"
+    ]
+  },
+  "0x52e6f5b8261223aEE6Eb21728e6713CDCEE6a706": {
+    "name": "Soul Coffe Beer and Kitchen SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/SoulCoffee.vp.json"
+    ]
+  },
+  "0xfd9d40507596698Fe3cBE85a189a2502A1EE2fA0": {
+    "name": "Street Soul Valencia SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/StreetSoul.vp.json"
+    ]
+  },
+  "0xce2EfBE0AccFad8341695Ab8832037516B61d328": {
+    "name": "VR Soccer Solutions SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/VRSoccer.vp.json"
+    ]
+  },
+  "0x07ac8DB2602b983a0062615Aa8e63CEB91b003f1": {
+    "name": "Provaluta España Reciclaje de Metales SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Provaluta.vp.json"
+    ]
+  },
+  "0x6226A587e4F8Fb1386C0C73dFA83EfE7D92F576D": {
+    "name": "Trans HEDESA SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/TransHEDESA.vp.json"
+    ]
+  },
+  "0x4DcCe8E2D31a26ab4AD9fB1bbb3Cbf6d71da1551": {
+    "name": "Asociación Agraria – Jóvenes Agricultores de Sevilla",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/ASAJASevilla.vp.json"
+    ]
+  },
+  "0xf4B8b84Dc6DEcB4795CDccE7e3b00D19b0423246": {
+    "name": "Arcodan SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Arcodan.vp.json"
+    ]
+  },
+  "0x4d12637C29089605D5167e52569E37ef795781e7": {
+    "name": "Asegrain Agricultura SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/AsegrainAgricultura.vp.json"
+    ]
+  },
+  "0x0Db96B7b3Dd6f2c1F3762D50b8E46a549407cB44": {
+    "name": "Servicios Asegrain Gordaliza SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/ServiciosAsegrainGordaliza.vp.json"
+    ]
+  },
+  "0xa35ddc73683Ac6919bD3816135fd415Ea91c9071": {
+    "name": "UPIntelligence SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/UPIntelligence.vp.json"
+    ]
+  },
+  "0xF5106959C11aC93d93De4bdb71f1dCD2dBCAb86B": {
+    "name": "Zona Enginy SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/ZLWorks.vp.json"
+    ]
+  },
+  "0x8Ece787B43C4592F8408EE0Eee4AEF02Edf91D40": {
+    "name": "Centro y Entidades de Formación de Andalucía",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/AndaluciaCEFOFormacion.vp.json"
+    ]
+  },
+  "0x3FE9F0dd36d326A853258bed9694f7faBA2D4d4C": {
+    "name": "Beepallet SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Beepallet.vp.json"
+    ]
+  },
+  "0xa5aCDEdfCA992743C78Aa2d52414862E4E881CDA": {
+    "name": "Centro Autorizado de Tratamiento Campiña Sur SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/CATCampinaSurSL.vp.json"
+    ]
+  },
+  "0xb2aC9190ed477384e8c8199258F60227100c8278": {
+    "name": "Esfain Almassora SLU",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Esfain.vp.json"
+    ]
+  },
+  "0x709883567ddF959FB13dCbAAb28f0D8f5843Cc5E": {
+    "name": "Innovaciones Tecnológicas NIR SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/InnTechNIR.vp.json"
+    ]
+  },
+  "0x81018B5f23248E8985799fC4C0De5FE88b7B2979": {
+    "name": "Laboratorio Agroalimentario Aproa SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/LaboratorioAproa.vp.json"
+    ]
+  },
+  "0xCB097b56d3d4e0CC28178fD873E94FFa6444a552": {
+    "name": "Tresbits Ingenieros de Software SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Tresbits.vp.json"
+    ]
+  },
+  "0x153E70De4dD71a71F0F5b5E389b2e02Ae8eb32Eb": {
+    "name": "Veracid SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Veracid.vp.json"
+    ]
+  },
+  "0x24B9f548e942e6fa4E68bEe900f8beebc236A430": {
+    "name": "ServInmDelta, SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/ViuAlDelta.vp.json"
+    ]
+  },
+  "0xC41B4dc4a77CDaa3c4Cf1BF4f9A77f438F343031": {
+    "name": "Asociación Española Agricultura Conservación Suelos Vivos",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/AgriculturaConservación.vp.json"
+    ]
+  },
+  "0xBD217a176c4813fC1c3D6e306A5FA788b7aAcF0b": {
+    "name": "Comercial Ovinos SCoop",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/ComercialOvinos.vp.json"
+    ]
+  },
+  "0xae09FbE5A2931Fa01e1aA097317b56706DF2f479": {
+    "name": "Corderos Campiña Sur SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/CorderoCampinaSur.vp.json"
+    ]
+  },
+  "0xD3869dEA77b07c7236575c685AEC453c0B1acb9E": {
+    "name": "Desguace y Gruas Baena SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/DesguaceBaena.vp.json"
+    ]
+  },
+  "0xBed09D666F2b15424604f361AFC9f49Fe4DDCb0B": {
+    "name": "Desguace Suspiro del Moro SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/DesguaceSuspiroMoro.vp.json"
+    ]
+  },
+  "0xe8f85dfA1d1172950eE0E560F5F97a0A0f3d6B6f": {
+    "name": "EA Group SCoop",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/EAGroup.vp.json"
+    ]
+  },
+  "0x2d99613a40D84d6d5a084D7CDC49167E80BEde2C": {
+    "name": "European Conservation Agriculture Federation",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/ECAF.vp.json"
+    ]
+  },
+  "0x260e303E0E9187F3D66ca476F7a05c28240CEA48": {
+    "name": "Manantiales del Portell SA",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/ManantialesPortell.vp.json"
+    ]
+  },
+  "0x295aCC2ddbA50828a46AC294c1144a38Ba85fdDC": {
+    "name": "Ovipiel SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Ovipiel.vp.json"
+    ]
+  },
+  "0xe23ecB06200d2775d10fc23a786045257BcCa063": {
+    "name": "Reciclados y Desguaces Industriales y de Automoción PyV SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/RecicladosPyV.vp.json"
+    ]
+  },
+  "0xb8082F938dc3D1432136d2E8616822F4c4934475": {
+    "name": "Standard Cableteam Spain SLU",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/StandardCableteam.vp.json"
+    ]
+  },
+  "0xe6e23fAfF09420F4D2602C4ED2A9350288C5d400": {
+    "name": "Arrufat Sanchez SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/ArrufatGrup.vp.json"
+    ]
+  },
+  "0x0f0B1d2bFdfcAa355D32E1f0c29169F28269B20b": {
+    "name": "Capen Suministros SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/CapenSuministros.vp.json"
+    ]
+  },
+  "0x0CA31d1014718D358C5b9C75deeC85a3aA69Ce23": {
+    "name": "Calogon SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Cologon.vp.json"
+    ]
+  },
+  "0x28B8e953df64dF27E2064fCd0e4295dE49f4f338": {
+    "name": "Data Recover SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/DataRecover.vp.json"
+    ]
+  },
+  "0x4A02b711108941b585ae1E7AEd5ce3199fd64126": {
+    "name": "Metrohm Dropsens SLU",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Dropsens.vp.json"
+    ]
+  },
+  "0xE2402BB8C4FeB9A0539840dE4Cb4FD23f3BcDF2b": {
+    "name": "IM Wisdom SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/IMWisdom.vp.json"
+    ]
+  },
+  "0xAc9065EaaF15C1d910Ef435b14eD126F419733cB": {
+    "name": "Radian Space SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Radian.vp.json"
+    ]
+  },
+  "0xEAA931770B8162A69bc8FCcD20E2c9dC576120a2": {
+    "name": "Sumando Más Vida En Valladolid SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/SumandoVida.vp.json"
+    ]
+  },
+  "0x8c4e8807B75321Ef59843675c2aA41370AeE0240": {
+    "name": "Thinking5zero Soluciones SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Thinking5zero.vp.json"
+    ]
+  },
+  "0x20cC3507be7704Af6A6eCA5932E3a5F5F8D025AF": {
+    "name": "Automation Technical Advice SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Atead.vp.json"
+    ]
+  },
+  "0x598FBa06680d658d0a180105Cd21119d16B4EaF0": {
+    "name": "Fides Servicios Jurídicos SLP",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Fides.vp.json"
+    ]
+  },
+  "0x2F93826B03b7abFA8a0953455128A0F075eD84aF": {
+    "name": "Proyectos Tecnológicos Sostenibles SLU",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/ProyTecnSostenibles.vp.json"
+    ]
+  },
+  "0x2b35e1286114E4f42DFe6c6cABA6D429fc584B3B": {
+    "name": "Terrastar SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Terrastar.vp.json"
+    ]
+  },
+  "0x2A06DA90531A62DB334bA444e2199D9484C58b48": {
+    "name": "Comunidad General de Regantes del Canal de Navarra",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/CGRCanalNavarra.vp.json"
+    ]
+  },
+  "0x00Af2819d2AF84F20062f5feC5C36fC7278593B1": {
+    "name": "Cooperativa Agrícola de Artajona",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/CoopArtajona.vp.json"
+    ]
+  },
+  "0xE1E09a16740E34C679B4a9A82508EBFCDa39143E": {
+    "name": "Rurápolis SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Rurapolis.vp.json"
+    ]
+  },
+  "0xb5a4066e9d9C77560aa2d868E6f7677f7F7811EF": {
+    "name": "Rustic Architecture Mallorca SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/RusticArchitectureMallorca.vp.json"
+    ]
+  },
+  "0x3bf33C48bBb0cE5a9bc1a8574CA1Bc98980Df33f": {
+    "name": "Tamarindos Peñíscola SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Tamarindos.vp.json"
+    ]
+  },
+  "0x453447C69b05f9547D6618055E2cb0f3047008f6": {
+    "name": "Bioconsum SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Bioconsum.vp.json"
+    ]
+  },
+  "0xEFD5A88D3d67dB1A5E39A6114ca80B623e7Ad83A": {
+    "name": "Eamsa 75 SA",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Eamsa.vp.json"
+    ]
+  },
+  "0x948ec60062c7ed880C11669AbF1d1D1e46e7B3Cf": {
+    "name": "Sinfines Factory SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/SinfinesFactory.vp.json"
+    ]
+  },
+  "0x1Fac355dE317540Dec424777Eb41dAB543d30525": {
+    "name": "A3 Sides SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/A3Sides.vp.json"
+    ]
+  },
+  "0x492503734387228b917B468C695BaD843FD613b2": {
+    "name": "Cal Gironella SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/CalGironella.vp.json"
+    ]
+  },
+  "0xe2e9BAeC0F3162911d8C79db952bD18e1314FB7d": {
+    "name": "Crismar Activa't SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/CrismarActivat.vp.json"
+    ]
+  },
+  "0xD6C38d883FE2104025E2e0c0444Bdf681910170C": {
+    "name": "Crismar Salut SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/CrismarSalut.vp.json"
+    ]
+  },
+  "0x32Ec168e8C4E8EfbF5d25aD16cf1d21d973BA633": {
+    "name": "Excavacions Ramon Roma S.L.",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/ExcavacionsRR.vp.json"
+    ]
+  },
+  "0x55a6b8ca257185Cc00da60d2580b0e426111c5F2": {
+    "name": "Fuentes Pujol SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/FuentesPujol.vp.json"
+    ]
+  },
+  "0x8a42bffe1E94Dd93755c6511Ea73e5B332037e7c": {
+    "name": "Fuentes Pujol Integracions SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/FuentesPujolIntegracions.vp.json"
+    ]
+  },
+  "0x4A03A5Eeef2e09247c8Cf99AA5E51dC35073571e": {
+    "name": "Bertomeu i Santiago Assessors SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/GabinetAdministratiu.vp.json"
+    ]
+  },
+  "0x28915D33588d748f8EEFdA3157c020210a3d0504": {
+    "name": "Investigación, Desarrollo y Soporte de Aplicaciones Informáticas SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/IDSOP.vp.json"
+    ]
+  },
+  "0x7FbBD9056320137715a786b41d3BDBe2f5d3BB71": {
+    "name": "Soluciones Informáticas Globales SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Infosegovia.vp.json"
+    ]
+  },
+  "0x6762E222064bC35a3Fc61641125e5dBe050a7d02": {
+    "name": "Kenus Informática SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/KenusInformatica.vp.json"
+    ]
+  },
+  "0xE8a5B2ad09FaD2ca28f1447677845a06dE76FDfd": {
+    "name": "Agropecuaria Les Sogues SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/LesSogues.vp.json"
+    ]
+  },
+  "0xFBf52C0aE9143527328E5FaF67F8C34f87A43E3F": {
+    "name": "Limgest i Associats Serveis Empresarials SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Limgest.vp.json"
+    ]
+  },
+  "0xa7e01c796417AEae7CCA1b715829f0c1DF87C920": {
+    "name": "Maposa Quess, SLU",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/MaposaQuess.vp.json"
+    ]
+  },
+  "0xE3f276b59d15A77ee9340C9606b5BBa900Cd3305": {
+    "name": "Natural Cria SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/NaturalCria.vp.json"
+    ]
+  },
+  "0xA1d2C56041a6530190e4d5844C9D009Cdb3E2B32": {
+    "name": "Orbatrans Barna SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Orbatrans.vp.json"
+    ]
+  },
+  "0x0a2E3Ce932522f386cD0B61B4fB951aca344323C": {
+    "name": "Valdevilloco Sociedad Cooperativa",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/ValdevillocoCoop.vp.json"
+    ]
+  },
+  "0xa653b93d3cE763A2c1e2aB317a10352e06ade482": {
+    "name": "Emp Sport Events SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/WeFeel.vp.json"
+    ]
+  },
+  "0x67dc7BC781EF5f6BA5cA418698020F4f77C7E309": {
+    "name": "Wiese Sieben UG (Haftungsbeschränkt)",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/WieseSieben.vp.json"
+    ]
+  },
+  "0xF819387Af03d18F5b15C597f115F6Fa365099A5F": {
+    "name": "Agromasana SCCL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Agromasana.vp.json"
+    ]
+  },
+  "0xC385923C53Fdb8F17180c13848D6A33131b839d7": {
+    "name": "Ajuntament de Pujalt",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/AjuntamentPujalt.vp.json"
+    ]
+  },
+  "0x3498b43b93c5d451C1b9b5a34468C67826b7F2FF": {
+    "name": "Environmental Smart Device SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/ENVISAD.vp.json"
+    ]
+  },
+  "0xd1f38e9a28638F0d0Ba53CaB10d3445B9797e484": {
+    "name": "Fundació Ernest Guillé i Moliné",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/FundacioErnestGuille.vp.json"
+    ]
+  },
+  "0x6b96Df442009fBFc085b9E58B53D89D7cC018C8a": {
+    "name": "OCC Sport Plus Europe SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/OCCSportPlus.vp.json"
+    ]
+  },
+  "0xB725e7A7Cf6AC3af77a692BA39376439864e14E9": {
+    "name": "Treballs Agrícoles Reverter SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/TreballsAgricolesReverter.vp.json"
+    ]
+  },
+  "0x3F659E2e6A2b49ac14aE690D855b576Fd6723a8C": {
+    "name": "Zzircon Technologies SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/ZZircon.vp.json"
+    ]
+  },
+  "0xb5ee3f6073BC5C2798B0bf03b620131004b7cCe6": {
+    "name": "Agrobaiona SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Agrobaiona.vp.json"
+    ]
+  },
+  "0x8d5158482fd6504DacCcd7bb4380113ca31Ac2d0": {
+    "name": "Transports I Excavacions Marsol SA",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Marsol.vp.json"
+    ]
+  },
+  "0x747D5A67d9d09B3F96892C9338E04A5aaef0E860": {
+    "name": "Forrajes Alfredo Pascual SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/ForrajesAlfredoPascual.vp.json"
+    ]
+  },
+  "0xB2268697A90fF88BD2940aA8676eB45104cA9C22": {
+    "name": "Shia Logística Integral SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/GrupoShia.vp.json"
+    ]
+  },
+  "0x7C702A045C0105B0b10cFE9b7D0029039bFAc8dC": {
+    "name": "Ciscar Projects SLU",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Khumbu.vp.json"
+    ]
+  },
+  "0x30527c9b73ecde10e094F9fE5F4181cD5CE4D991": {
+    "name": "Trans Sarria SLU",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/TransSarria.vp.json"
+    ]
+  },
+  "0x36861aE4422fFAb21906Fa8d006feCC206FEfDa5": {
+    "name": "Estudio de Gastronomía y Ocio SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Vrro.vp.json"
+    ]
+  },
+  "0x6dCdA0c8568e432f82ec7F3cA4D91AcF25669d42": {
+    "name": "iRiego New Generation SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/iRiego.vp.json"
+    ]
+  },
+  "0x31A1295486B71681C4cA9E112DBF0C225172D4eB": {
+    "name": "Consultoría Estratégica Delta SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/ConsultoriaEstrategicaDelta.vp.json"
+    ]
+  },
+  "0xa0a1d190c3E46A087b29b72fEb12508b84b29a8A": {
+    "name": "Restaurant Rally SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/RestaurantRally.vp.json"
+    ]
+  },
+  "0x246caFA15C518B05ECF52c4f2dC7738209b2AbAB": {
+    "name": "Singular Delta SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/SingularDelta.vp.json"
+    ]
+  },
+  "0x8Bf107AcbDb99158cE2A1B89D89d09D8e486746D": {
+    "name": "Viorcam Vinyols SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Viorcam.vp.json"
+    ]
+  },
+  "0x4A072d11E13854994AcD183DeC69686974c31D72": {
+    "name": "Hispatec Erpagro SL",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/Hispatec.vp.json"
+    ]
+  },
+  "0xA561a4c93b62a088cAfb9e622408ac7190e61CA3": {
+    "name": "Centre de Ciència i Tecnologia Forestal de Catalunya",
+    "credentials": [
+      "https://compliance.agrospai.udl.cat/.well-known/CTFC.vp.json"
     ]
   }
 }

@@ -73,7 +73,7 @@ export function useAddressConfig(): UseAddressConfig {
       (key) => key.toLowerCase() === address.toLowerCase()
     )
     const data = verifiedAddresses[addressKey]
-    return data.name
+    return data?.name
   }
 
   return {
