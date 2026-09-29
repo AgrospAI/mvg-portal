@@ -4,6 +4,9 @@ module.exports = (phase, { defaultConfig }) => {
    */
   const nextConfig = {
     output: 'standalone',
+    // Page-data collection can exceed Next.js's 60-second default on the
+    // resource-constrained remote builder.
+    staticPageGenerationTimeout: 300,
     webpack: (config, options) => {
       config.module.rules.push(
         {
