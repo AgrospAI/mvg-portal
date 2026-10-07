@@ -4,6 +4,7 @@ import styles from './index.module.css'
 import { InputProps } from '..'
 import FilesInput from './FilesInput'
 import EDCInput from './EDCInput'
+import REAInput from './REAInput'
 import CustomProvider from './Provider'
 import BoxSelection, { BoxSelectionOption } from './BoxSelection'
 import Datatoken from './Datatoken'
@@ -133,7 +134,9 @@ const InputElement = forwardRef(
             field,
             props,
             content:
-              field.type === 'edc' ? (
+              field.type === 'rea' ? (
+                <REAInput key={`reaInput_${i}`} {...field} {...props} />
+              ) : field.type === 'edc' ? (
                 <EDCInput
                   key={`edcInput_${i}`}
                   {...field}

@@ -315,6 +315,14 @@
             "prominentHelp": true,
             "type": "edc",
             "required": true
+          },
+          {
+            "value": "url",
+            "title": "REA",
+            "label": "REA",
+            "type": "rea",
+            "endpoint": "http://rea-cue-api-wrapper-svc.agrospai.svc.cluster.local:8000/rea",
+            "required": true
           }
         ],
         "sortOptions": false,

@@ -25,6 +25,15 @@ export default function TabsFile({
 }: TabsProps): ReactElement {
   const { values, setFieldValue } = useFormikContext<FormPublishData>()
   const initialState = () => {
+    const reaIndex = items.findIndex(
+      (tab) =>
+        tab.field.type === 'rea' &&
+        values?.services?.[0]?.files?.[0]?.url?.startsWith(
+          `${tab.field.endpoint}?`
+        )
+    )
+    if (reaIndex >= 0) return reaIndex
+
     const index = items.findIndex((tab: any) => {
       // fallback for edit mode (starts at index 0 with hidden element)
       if (!values?.services) return 0
