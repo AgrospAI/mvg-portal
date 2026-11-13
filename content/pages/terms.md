@@ -60,7 +60,7 @@ Capitalised terms shall have the meaning given to them in this Agreement; and:
 
 **"Third-Party Content"** means Service Offerings published by other parties but the Customer.
 
-**"Website"** means the website at https://portal.agrospai.udl.cat (and any successor or related site designated by UdL), as may be updated by UdL from time to time.
+**"Website"** means the website at https://portal-old.agrospai.udl.cat (and any successor or related site designated by UdL), as may be updated by UdL from time to time.
 
 **1.2 Interpretation**  
 **1.2.1** Unless specified otherwise, these Terms shall be construed as follows:
