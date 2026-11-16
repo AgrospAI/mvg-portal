@@ -74,7 +74,7 @@ export default function Seo({
       <script
         defer
         src="https://umami.agrospai.udl.cat/umami"
-        data-website-id="dd68db0f-4cc5-4114-b3b2-9d9621a7ce27"
+        data-website-id="a26f32c7-cbfb-427a-aa2c-7377a3f17f78"
       ></script>
     </Head>
   )
